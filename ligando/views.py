@@ -261,13 +261,36 @@ def peptide_query_result(request):
     return {'project': your_json, 'grouping': grouping}
 
 
-@view_config(route_name='upload_metadata_source', renderer='templates/base_layout.pt', request_method="GET")
+@view_config(route_name='upload_metadata_source', renderer='templates/upload_metadata_source.pt', request_method="GET")
 def upload_metadata_source(request):
-    return dict()
+    try:
+        result_dict = dict()
+        allowed_elements = {"source_names": Source.name, "organ": Source.organ,
+                            "organism": Source.organism, "histology": Source.histology, "dignity": Source.dignity,
+                            "celltype": Source.celltype, "location": Source.location, "metastatis": Source.metastatis, "person": Source.person}
+        for k, v in allowed_elements.iteritems():
+            query = DBSession.query(v)
+            query = query.group_by(v)
+            query_result = js_list_creator(query.all())
+            result_dict[k] = query_result
+
+        #query = DBSession.query(Source.name)
+        #query = query.group_by(Source.name)
+        #source_names = js_list_creator(query.all())
+
+    except:
+        return Response(conn_err_msg, content_type='text/plain', status_int=500)
+    return result_dict
 @view_config(route_name='upload_metadata_ms_run', renderer='templates/base_layout.pt', request_method="GET")
 def upload_metadata_ms_run(request):
     return dict()
 
+def js_list_creator(input):
+    result_string = '['
+    for i in input:
+        result_string += '"' + str(i[0]) + '",'
+    result_string += ']'
+    return result_string
 
 def create_filter(query, parameter, request, sql_object, sql_parent, rule, like, fk=None):
     if len(request.params[parameter]) is not 0:

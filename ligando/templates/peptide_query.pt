@@ -11,7 +11,7 @@
     </head>
 
     <body>
-    <div id="peptide_query_wrapper">
+    <div id="peptide_query_wrapper" class="wrapper">
 
     <!--
     <form method="POST" action=peptide_query>
