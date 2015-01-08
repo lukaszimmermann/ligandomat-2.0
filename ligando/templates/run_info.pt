@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+
+<html metal:use-macro="load: base_layout.pt">
+<html lang="${request.locale_name}">
+  <head>
+
+  <!-- DataTables CSS -->
+    <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.4/css/jquery.dataTables.css">
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" type="text/css" href="${request.static_url('ligando:static/dataTables.tableTools.css')}">
+
+
+  </head>
+
+  <body>
+    <div style="margin-left: 50pt;margin-top:20pt">
+    <table id="example" class="display" cellspacing="0" width="80%"> <thead>
+            <tr>
+                <th>Name</th>
+                <th>Source Name</th>
+                <th>Organ</th>
+                <th>Dignity</th>
+                <th>Date</th>
+                <th>Antibody</th>
+                <th>Preperation Comment</th>
+                <th>Used Share</th>
+                <th>Sample Mass</th>
+            </tr>
+        </thead></table>
+
+    </div>
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+
+    <!-- jQuery -->
+    <script type="text/javascript" charset="utf8" src="//code.jquery.com/jquery-1.10.2.min.js"></script>
+
+    <!-- DataTables -->
+    <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.4/js/jquery.dataTables.js"></script>
+        <!-- TableTools -->
+    <script type="text/javascript" charset="utf8" src="${request.static_url('ligando:static/js/dataTables.tableTools.js')}"></script>
+
+
+       <script>
+
+    $(document).ready(function() {
+
+    $('#example').dataTable( {
+        data: ${project},
+        columns: [
+            { data: "filename" },
+            { data: "name" },
+            { data: "organ"},
+            { data: "dignity" },
+            { data: "ms_run_date"},
+            { data: "antibody_set"},
+            { data: "prep_comment" },
+            { data: "used_share"},
+            { data: "sample_mass"}
+        ],
+        "sDom": 'T<"clear">lfrtip',
+        oTableTools: {
+            "sSwfPath": "${request.static_url('ligando:static/swf/copy_csv_xls_pdf.swf')}",
+            "aButtons":  ["csv"]
+        }
+    } );
+    } );
+    </script>
+
+  </body>
+</html>

@@ -1,0 +1,192 @@
+
+<html metal:use-macro="load: base_layout.pt">
+<!DOCTYPE html>
+<html lang="${request.locale_name}">
+  <head>
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.4/css/jquery.dataTables.css">
+    <link rel="stylesheet" type="text/css" href="${request.static_url('ligando:static/dataTables.tableTools.css')}">
+
+  </head>
+
+  <body>
+    <div style="margin-left: 50pt;margin-top:20pt">
+    <table id="example" auto class="display" cellspacing="0" width="80%"> <thead>
+            <tr tal:condition="grouping == 'run'">
+                <th>Sequence</th>
+                <th>min RT</th>
+                <th>max RT</th>
+                <th>min Score</th>
+                <th>max Score</th>
+                <th>min E-value</th>
+                <th>max E-value</th>
+                <th>min Q-value</th>
+                <th>max Q-value</th>
+                <th>PSM</th>
+                <th>HLA Typing</th>
+                <th>Protein</th>
+                <th>Histology</th>
+                <th>Source</th>
+                <th>MS Run</th>
+            </tr>
+            <tr tal:condition="grouping == 'peptide'">
+                <th>Sequence</th>
+                <th>Protein</th>
+                <th>Histology</th>
+            </tr>
+            <tr tal:condition="grouping == 'source'">
+                <th>Sequence</th>
+                <th>min RT</th>
+                <th>max RT</th>
+                <th>min Score</th>
+                <th>max Score</th>
+                <th>min E-value</th>
+                <th>max E-value</th>
+                <th>min Q-value</th>
+                <th>max Q-value</th>
+                <th>HLA Typing</th>
+                <th>Protein</th>
+                <th>Histology</th>
+                <th>Source</th>
+            </tr>
+            <tr tal:condition="grouping == 'source_psm'">
+                <th>Sequence</th>
+                <th>min Score</th>
+                <th>max Score</th>
+                <th>min E-value</th>
+                <th>max E-value</th>
+                <th>min Q-value</th>
+                <th>max Q-value</th>
+                <th>PSM</th>
+                <th>HLA Typing</th>
+                <th>Protein</th>
+                <th>Histology</th>
+                <th>Source</th>
+            </tr>
+        </thead></table>
+    </div>
+
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+
+    <!-- jQuery -->
+    <script type="text/javascript" charset="utf8" src="//code.jquery.com/jquery-1.10.2.min.js"></script>
+
+    <!-- DataTables -->
+    <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.4/js/jquery.dataTables.js"></script>
+
+    <!-- TableTools -->
+    <script type="text/javascript" charset="utf8" src="${request.static_url('ligando:static/js/dataTables.tableTools.js')}"></script>
+
+
+    <script>
+
+    //$.fn.dataTable.TableTools.defaults.aButtons = [ "csv"];
+    $(document).ready(function() {
+    if ("${grouping}" == "run") {
+        $('#example').dataTable( {
+            data: ${project},
+            columns: [
+                { data: "sequence" },
+                { data: "minRT"},
+                { data: "maxRT" },
+                { data: "minScore"},
+                { data: "maxScore"},
+                { data: "minE"},
+                { data: "maxE"},
+                { data: "minQ"},
+                { data: "maxQ"},
+                { data: "PSM"},
+                { data: "hla_category"},
+                { data: "name"},
+                { data: "histology"},
+                { data: "source_name"},
+                { data: "filename"}
+            ],
+            "sDom": 'T<"clear">lfrtip',
+            oTableTools: {
+                "sSwfPath": "${request.static_url('ligando:static/swf/copy_csv_xls_pdf.swf')}",
+                "aButtons":  ["csv"]
+
+
+            }
+        } );
+    }else if ("${grouping}" == "peptide"){
+        $('#example').dataTable( {
+            data: ${project},
+            columns: [
+                { data: "sequence" },
+                { data: "name"},
+                { data: "histology"}
+            ],
+            "sDom": 'T<"clear">lfrtip',
+            oTableTools: {
+                "sSwfPath": "${request.static_url('ligando:static/swf/copy_csv_xls_pdf.swf')}",
+                "aButtons":  ["csv"]
+            }
+        } );
+        }
+     else if ("${grouping}" == "source"){
+        $('#example').dataTable( {
+            data: ${project},
+            columns: [
+                { data: "sequence" },
+                { data: "minRT"},
+                { data: "maxRT" },
+                { data: "minScore"},
+                { data: "maxScore"},
+                { data: "minE"},
+                { data: "maxE"},
+                { data: "minQ"},
+                { data: "maxQ"},
+                { data: "hla_category"},
+                { data: "name"},
+                { data: "histology"},
+                { data: "source_name"}
+            ],
+            "sDom": 'T<"clear">lfrtip',
+            oTableTools: {
+                "sSwfPath": "${request.static_url('ligando:static/swf/copy_csv_xls_pdf.swf')}",
+                "aButtons":  ["csv"]
+
+
+            }
+        } );
+    }
+        else if ("${grouping}" == "source_psm"){
+        $('#example').dataTable( {
+            data: ${project},
+            columns: [
+                { data: "sequence" },
+                { data: "minScore"},
+                { data: "maxScore"},
+                { data: "minE"},
+                { data: "maxE"},
+                { data: "minQ"},
+                { data: "maxQ"},
+                { data: "PSM"},
+                { data: "hla_category"},
+                { data: "name"},
+                { data: "histology"},
+                { data: "source_name"}
+            ],
+            "sDom": 'T<"clear">lfrtip',
+            oTableTools: {
+                "sSwfPath": "${request.static_url('ligando:static/swf/copy_csv_xls_pdf.swf')}",
+                "aButtons":  ["csv"]
+
+
+            }
+        } );
+    }
+    } );
+
+
+
+    </script>
+
+
+  </body>
+</html>

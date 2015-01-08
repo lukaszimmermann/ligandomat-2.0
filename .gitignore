@@ -1,0 +1,5 @@
+*.ini
+/dist/*
+*.pyc
+ligando.egg-info/*
+.idea/*

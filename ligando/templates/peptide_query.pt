@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html metal:use-macro="load: base_layout.pt">
+<html lang="${request.locale_name}">
+      <head>
+        <!-- DataTables CSS -->
+        <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.4/css/jquery.dataTables.css">
+
+        <link rel="stylesheet" type="text/css" href="${request.static_url('ligando:static/main_styles.css')}">
+
+
+    </head>
+
+    <body>
+    <div id="peptide_query_wrapper">
+
+    <!--
+    <form method="POST" action=peptide_query>
+    <div id="sequence">Sequence:<input id="sequence_input" name="sequence" type="text"><button type="button" onclick="show_hide('#sequence')">-</button></div>
+    <input type="submit" value="Submit"/>
+    </form>
+    -->
+        <table>
+            <td>
+                <button id="sequence_button" type="button" onclick="show_hide('#sequence', '#sequence_button')" class="nice_button">Sequence</button>
+            </td>
+            <td>
+                <button id="source_button" type="button" onclick="show_hide('#source','#source_button')" class="nice_button">Source</button>
+            </td>
+            <td>
+                <button id="run_name_button" type="button" onclick="show_hide('#run_name','#run_name_button')" class="nice_button">MsRun</button>
+            </td>
+            <td>
+                <button id="organ_button" type="button" onclick="show_hide('#organ','#organ_button')" class="nice_button">Organ</button>
+            </td>
+            <td>
+                <button id="histology_button" type="button" onclick="show_hide('#histology','#histology_button')" class="nice_button">Histology</button>
+            </td>
+            <td>
+                <button id="dignity_button" type="button" onclick="show_hide('#dignity','#dignity_button')" class="nice_button">Dignity</button>
+            </td>
+            <td>
+                <button id="hla_typing_button" type="button" onclick="show_hide('#hla_typing','#hla_typing_button')" class="nice_button">HLA</button>
+            </td>
+            <td>
+                <button id="protein_button" type="button" onclick="show_hide('#protein','#protein_button')" class="nice_button">Protein</button>
+            </td>
+            <td>
+                <button id="length_button" type="button" onclick="show_hide('#length','#length_button', '#length')" class="nice_button">Length</button>
+            </td>
+        </table>
+
+    <form method="POST" action=peptide_query>
+        <table>
+        <tr id="sequence"  class="hidden">
+            <td><span class="standard_text">Sequence:</span></td>
+            <td><input id="sequence_input" name="sequence" type="text"></td>
+            <td><select name="sequence_rule" class="nice_dropdown_boolean"><option selected>AND</option><option>OR</option></select></td>
+        </tr>
+        <tr id="source" class="hidden">
+            <td><span class="standard_text">Source name:</span></td>
+            <td><input id="source_input" name="source" type="text"></td>
+            <td><select name="source_rule" class="nice_dropdown_boolean"><option selected>AND</option><option>OR</option></select></td>
+        </tr>
+        <tr id="run_name" class="hidden">
+            <td><span class="standard_text">MS Run:</span></td>
+            <td><input id="run_name_input" name="run_name" type="text"></td>
+            <td><select name="run_name_rule" class="nice_dropdown_boolean"><option selected>AND</option><option>OR</option></select></td>
+        </tr>
+        <tr id="organ" class="hidden">
+            <td><span class="standard_text">Organ:</span></td>
+            <td><input id="organ_input" name="organ" type="text"></td>
+            <td><select name="organ_rule" class="nice_dropdown_boolean"><option selected>AND</option><option>OR</option></select></td>
+        </tr>
+        <tr id="histology" class="hidden">
+            <td><span class="standard_text">Histology:</span></td>
+            <td><input id="histology_input" name="histology" type="text"></td>
+            <td><select name="histology_rule" class="nice_dropdown_boolean"><option selected>AND</option><option>OR</option></select></td>
+        </tr>
+        <tr id="dignity" class="hidden">
+            <td><span class="standard_text">Dignity:</span></td>
+            <td><input id="dignity_input" name="dignity" type="text"></td>
+            <td><select name="dignity_rule" class="nice_dropdown_boolean"><option selected>AND</option><option>OR</option></select></td>
+        </tr>
+         <tr id="hla_typing" class="hidden">
+            <td><span class="standard_text">HLA Typing:</span></td>
+            <td><input id="hla_typing_input" name="hla_typing" type="text"></td>
+            <td><select name="hla_typing_rule" class="nice_dropdown_boolean"><option selected>AND</option><option>OR</option></select></td>
+        </tr>
+        <tr id="protein" class="hidden">
+            <td><span class="standard_text">Protein:</span></td>
+            <td><input id="protein_input" name="protein" type="text"></td>
+            <td><select name="protein_rule" class="nice_dropdown_boolean"><option selected>AND</option><option>OR</option></select></td>
+        </tr>
+
+        <tr id="length" class="hidden">
+            <td><input id="length_input_1" name="length_1" type="text"></td>
+            <td><span class="standard_text">< Peptide length < </span></td>
+            <td><input id="length_input_2" name="length_2" type="text"></td>
+        </tr>
+
+
+        </table>
+        <br>
+        <span class="standard_text">Grouping: </span> <select name="grouping" class="nice_dropdown">
+        <option  selected value="run">Run</option>
+        <option value="peptide">Peptide</option>
+        <option value="source">Source without PSM</option>
+        <option value="source_psm">Source with PSM (slow)</option>
+    </select> <br>
+        <input  type="submit" value="Submit" class="nice_button" style="width: 100px;margin-left: 10px"/>
+
+    </form>
+    </div>
+
+     <!-- backup
+
+     <div id="peptide_query_wrapper">
+    <select id="query_selector" onChange="show_hide(value)" textsize="15">
+    <option value="#sequence" >Sequence</option>
+    <option value="#run_name">MS Run name</option>
+    <option value="#source">Source name</option>
+    <option value="#organ">Organ</option>
+    <option value="#tissue">Tissue</option>
+    <option value="#histology">Histology</option>
+    <option value="#hla_typing">Hla typing</option>
+    <option value="#protein">Protein</option>
+    </select>
+
+     <form method="POST" action=peptide_query>
+        <table>
+        <tr id="sequence">
+            <td>Sequence:</td>
+            <td><input id="sequence_input" name="sequence" type="text"></td>
+            <td><button type="button" onclick="show_hide('#sequence')">-</button></td>
+        </tr>
+        <tr id="source">
+            <td>Source name:</td>
+            <td><input id="source_input" name="source" type="text"></td>
+            <td><button type="button" onclick="show_hide('#source')">-</button></td>
+        </tr>
+        <tr id="run_name">
+            <td>MS Run:</td>
+            <td><input id="run_name_input" name="run_name" type="text"></td>
+            <td><button type="button" onclick="show_hide('#run_name')">-</button></td>
+        </tr>
+        <tr id="organ">
+            <td>Organ:</td>
+            <td><input id="organ_input" name="organ" type="text"></td>
+            <td><button type="button" onclick="show_hide('#organ')">-</button></td>
+        </tr>
+        <tr id="histology">
+            <td>Histology:</td>
+            <td><input id="histology_input" name="histology" type="text"></td>
+            <td><button type="button" onclick="show_hide('#histology')">-</button></td>
+        </tr>
+        <tr id="dignity">
+            <td>Dignity:</td>
+            <td><input id="dignity_input" name="dignity" type="text"></td>
+            <td><button type="button" onclick="show_hide('#dignity')">-</button></td>
+        </tr>
+        <tr id="hla_typing">
+            <td>HLA Typing:</td>
+            <td><input id="hla_typing_input" name="hla_typing" type="text"></td>
+            <td><button type="button" onclick="show_hide('#hla_typing')">-</button></td>
+        </tr>
+        <tr id="protein">
+            <td>Protein:</td>
+            <td><input id="protein_input" name="protein" type="text"></td>
+            <td><button type="button" onclick="show_hide('#protein')">-</button></td>
+        </tr>
+        <input type="submit" value="Submit"/>
+
+        </table>
+    </form>
+    </div>
+    -->
+
+
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+
+
+        <!-- jQuery -->
+        <script type="text/javascript" charset="utf8" src="//code.jquery.com/jquery-1.10.2.min.js"></script>
+
+        <!-- DataTables -->
+        <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.4/js/jquery.dataTables.js"></script>
+
+
+
+
+
+        <script>
+        function show_hide(id, button_id, id2) {
+            if($(id).is(":visible")){
+                $(button_id).css('background-color', 'rgb(180,160,105)');
+                $(button_id).css('-webkit-box-shadow', 'inset 0 -2px rgb(180,160,105)');
+                //-webkit-box-shadow: inset 0 -2px rgb(180,160,105);
+                $(button_id).css('box-shadow', 'inset 0 -2px rgb(180,160,105)');
+
+                $(button_id).css('text-shadow', 'rgb(180,160,105)');
+
+            }else{
+                $(button_id).css('background-color', 'rgb(165, 30, 55)');
+                $(button_id).css('-webkit-box-shadow', 'inset 0 -2px rgb(165, 30, 55)');
+                //-webkit-box-shadow: inset 0 -2px rgb(180,160,105);
+                $(button_id).css('box-shadow', 'inset 0 -2px rgb(165, 30, 55)');
+                $(button_id).css('text-shadow', 'rgb(217, 205, 177)');
+                //box-shadow: inset 0 -2px rgb(180,160,105);
+                //$(button_id).css('color', 'rgb(50, 65 , 75)');
+            }
+            if(typeof id2 !== 'undefined'){
+                $(id+"_input_1").val("");
+                $(id+"_input_2").val("");
+                $(id).toggle();
+            }else{
+                $(id+"_input").val("");
+                $(id).toggle();
+            }
+        };
+
+
+        </script>
+
+
+    </body>
+</html>
