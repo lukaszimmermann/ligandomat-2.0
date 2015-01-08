@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html metal:use-macro="load: base_layout.pt">
+<html lang="${request.locale_name}">
+      <head>
+        <!-- DataTables CSS -->
+        <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.4/css/jquery.dataTables.css">
+
+        <link rel="stylesheet" type="text/css" href="${request.static_url('ligando:static/main_styles.css')}">
+        <link rel="stylesheet" type="text/css" href="//code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css">
+
+
+    </head>
+
+    <body>
+<div id="metadata_wrapper" class="wrapper">
+    <table>
+    <tr>
+        <td><label for="sourcetags">Sourcename: </label></td><td> <input type="text" title="The name of the source e.g. AML1" id="sourcetags"></td>
+    <td><label for="organtags">Organ: </label></td><td> <input title=" e.g. kidney, liver" id="organtags"></td>
+    <td><label for="organismtags">Organism: </label></td><td> <input title=" e.g. human, dog" id="organismtags"></td>
+    </tr>
+    <tr>
+        <td><label for="histologytags">Histology: </label></td><td> <input title="e.g. benign, AML, CLL" id="histologytags"></td>
+    <td><label for="dignitytags">Dignity: </label></td><td> <input title=" e.g. malignant, benign" id="dignitytags"></td>
+    <td><label for="celltypetags">Celltype: </label></td><td> <input title=" e.g. bulk, PBMC" id="celltypetags"></td>
+    </tr>
+    <tr><td><label for="locationtags">Location: </label></td><td> <input title=" e.g. NA" id="locationtags"></td>
+    <td><label for="metastatistags">Metastatis: </label></td><td> <input title="0 = no, 1 = metastatis" id="metastatistags"></td>
+    <td><label for="persontags">Person: </label></td><td> <input title="Your name. Umlaute like ä = ae, ü = ue, ö = oe"id="persontags"></td>
+    </tr>
+    <tr>
+        <td><label for="tags">HLA-Typing: </label></td><td> <input id="tags"></td>
+    </tr>
+
+
+    </table>
+    <div class="datagrid">
+    <button onclick="addSource()" class="nice_button">Add Source to list</button><br>
+
+        <table>
+        <thead><tr>
+            <th>Sourcename</th><th>Organ</th><th>Organism</th><th>Histology</th><th>Dignity</th><th>Celltype</th><th>Location</th><th>Metastatis</th><th>HLA-Typing</th><th>Person</th>
+        </tr></thead>
+            <tbody>
+        <tr id="row1">
+            <td> InahltSourcename</td><td>Organ</td><td>Organism</td><td>Histology</td><td>Dignity</td><td>Celltype</td><td>Location</td><td>metastatis</td><td>HLA-Typing</td><td>Person</td>
+        </tr>
+        <tr id="row2" class="alt">
+            <td> InahltSourcename</td><td>Organ</td><td>Organism</td><td>Histology</td><td>Dignity</td><td>Celltype</td><td>Location</td><td>metastatis</td><td>HLA-Typing</td><td>Person</td>
+        </tr>
+        <tr id="row3">
+            <td> InahltSourcename</td><td>Organ</td><td>Organism</td><td>Histology</td><td>Dignity</td><td>Celltype</td><td>Location</td><td>metastatis</td><td>HLA-Typing</td><td>Person</td>
+        </tr>
+        <tr id="row4" class="alt">
+            <td> InahltSourcename</td><td>Organ</td><td>Organism</td><td>Histology</td><td>Dignity</td><td>Celltype</td><td>Location</td><td>metastatis</td><td>HLA-Typing</td><td>Person</td>
+        </tr>
+        <tr  id="row5">
+            <td> InahltSourcename</td><td>Organ</td><td>Organism</td><td>Histology</td><td>Dignity</td><td>Celltype</td><td>Location</td><td>metastatis</td><td>HLA-Typing</td><td>Person</td>
+        </tr>
+        <tr id="row6" class="alt">
+            <td> InahltSourcename</td><td>Organ</td><td>Organism</td><td>Histology</td><td>Dignity</td><td>Celltype</td><td>Location</td><td>metastatis</td><td>HLA-Typing</td><td>Person</td>
+        </tr>
+        <tr id="row7">
+            <td> InahltSourcename</td><td>Organ</td><td>Organism</td><td>Histology</td><td>Dignity</td><td>Celltype</td><td>Location</td><td>metastatis</td><td>HLA-Typing</td><td>Person</td>
+        </tr>
+        <tr id="row8" class="alt">
+            <td> InahltSourcename</td><td>Organ</td><td>Organism</td><td>Histology</td><td>Dignity</td><td>Celltype</td><td>Location</td><td>metastatis</td><td>HLA-Typing</td><td>Person</td>
+        </tr>
+            </tbody>
+
+
+    </table>
+    <button class="nice_button">Commit Sources</button>
+    </div>
+</div>
+
+
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+
+
+        <!-- jQuery -->
+        <script type="text/javascript" charset="utf8" src="//code.jquery.com/jquery-1.10.2.min.js"></script>
+
+
+        <!-- DataTables -->
+        <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.4/js/jquery.dataTables.js"></script>
+
+        <script src="//code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
+
+
+
+
+
+        <script>
+  $(function() {
+    $( "#sourcetags" ).autocomplete({
+      minLength: 0,
+      minChars: 0,
+      source: ${source_names}
+    }).on('focus', function(event) {
+    $(this).autocomplete("search", "");
+});
+    $( "#organtags" ).autocomplete({
+        minLength: 0,
+      minChars: 0,
+      source: ${organ}
+    }).on('focus', function(event) {
+    $(this).autocomplete("search", "");
+});
+    $( "#organismtags" ).autocomplete({
+        minLength: 0,
+      minChars: 0,
+      source: ${organism}
+    }).on('focus', function(event) {
+    $(this).autocomplete("search", "");
+});
+    $( "#histologytags" ).autocomplete({
+        minLength: 0,
+      minChars: 0,
+      source: ${histology}
+    }).on('focus', function(event) {
+    $(this).autocomplete("search", "");
+});
+    $( "#dignitytags" ).autocomplete({
+        minLength: 0,
+      minChars: 0,
+      source: ${dignity}
+    }).on('focus', function(event) {
+    $(this).autocomplete("search", "");
+});
+    $( "#celltypetags" ).autocomplete({
+        minLength: 0,
+      minChars: 0,
+      source: ${celltype}
+    }).on('focus', function(event) {
+    $(this).autocomplete("search", "");
+});
+    $( "#locationtags" ).autocomplete({
+        minLength: 0,
+      minChars: 0,
+      source: ${location}
+    }).on('focus', function(event) {
+    $(this).autocomplete("search", "");
+});
+    $( "#metastatistags" ).autocomplete({
+        minLength: 0,
+      minChars: 0,
+      source: ${metastatis}
+    }).on('focus', function(event) {
+    $(this).autocomplete("search", "");
+});
+    $( "#persontags" ).autocomplete({
+        minLength: 0,
+      minChars: 0,
+      source: ${person}
+    }).on('focus', function(event) {
+    $(this).autocomplete("search", "");
+});
+
+  });
+
+  $(function() {
+    $( document ).tooltip();
+  });
+
+  function addSource(){
+  };
+  </script>
+
+
+
+    </body>
+</html>

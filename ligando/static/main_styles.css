@@ -1,10 +1,17 @@
 
-#peptide_query_wrapper {
+.wrapper {
     margin-top: 20pt;
     margin-left: auto;
     margin-right: auto;
     width: 50%;
 }
+
+#metadata_wrapper {
+    width: 75%;
+    align-content: center;
+
+}
+
 .hidden {
     display: none;
 }
@@ -14,6 +21,7 @@
 }
 
 .title {
+    align-content: center;
     text-align: center;
     color: rgb(165, 30, 55);
     font-size: 50px;
@@ -21,57 +29,135 @@
 }
 
 .nice_button {
-  position: relative;
-  vertical-align: top;
-  width: 100%;
-  height: 30px;
-  padding: 5px;
-  padding-bottom: 5px;
-  font-size: 18px;
-  color: black;
-  text-align: center;
-  margin: 5pt;
-  text-shadow: rgb(217, 205, 177);
-  background: rgb(180,160,105);
-  border: 0pt;
-  cursor: pointer;
-  -webkit-box-shadow: inset 0 -2px rgb(180,160,105);
-  box-shadow: inset 0 -2px rgb(180,160,105);
-}
-button.nice_button:active {
-  top: 1px;
-  outline: none;
-  /*-webkit-box-shadow: none;
-  box-shadow: none;*/
-}
-.nice_dropdown {
-  position: relative;
-  vertical-align: middle;
-  width: auto;
-  height: 25px;
-  padding: 5px;
-  padding-bottom: 30px;
-  font-size: 14px;
-  color: black;
-  text-align: center;
-  margin: 5pt;
-  background: rgb(164, 163, 169);
-  border: 0pt;
-  cursor: pointer;
-}
-.nice_dropdown_boolean {
-  position: relative;
-  vertical-align: middle;
-  width: auto;
-  height: 25px;
-  padding: 5px;
-  padding-bottom: 30px;
-  font-size: 14px !important;
-  color: #000000;
-  text-align: center;
-  margin: 5pt;
-  background: rgb(164, 163, 169);
-  border: 0pt;
-  cursor: pointer;
+    position: relative;
+    vertical-align: top;
+    width: 100%;
+    height: 30px;
+    padding: 5px;
+    padding-bottom: 5px;
+    font-size: 18px;
+    color: black;
+    text-align: center;
+    margin: 5pt;
+    text-shadow: rgb(217, 205, 177);
+    background: rgb(180, 160, 105);
+    border: 0pt;
+    cursor: pointer;
+    -webkit-box-shadow: inset 0 -2px rgb(180, 160, 105);
+    box-shadow: inset 0 -2px rgb(180, 160, 105);
 }
 
+button.nice_button:active {
+    top: 1px;
+    outline: none;
+    /*-webkit-box-shadow: none;
+    box-shadow: none;*/
+}
+
+.nice_dropdown {
+    position: relative;
+    vertical-align: middle;
+    width: auto;
+    height: 25px;
+    padding: 5px;
+    padding-bottom: 30px;
+    font-size: 14px;
+    color: black;
+    text-align: center;
+    margin: 5pt;
+    background: rgb(164, 163, 169);
+    border: 0pt;
+    cursor: pointer;
+}
+
+.nice_dropdown_boolean {
+    position: relative;
+    vertical-align: middle;
+    width: auto;
+    height: 25px;
+    padding: 5px;
+    padding-bottom: 30px;
+    font-size: 14px !important;
+    color: #000000;
+    text-align: center;
+    margin: 5pt;
+    background: rgb(164, 163, 169);
+    border: 0pt;
+    cursor: pointer;
+}
+
+
+
+/* upload table style */
+.datagrid table {
+    border-collapse: collapse;
+    text-align: left;
+    width: 100%;
+}
+
+.datagrid {
+    font: normal 12px/150% Arial, Helvetica, sans-serif;
+    background: #fff;
+    overflow: hidden;
+    border: 1px solid rgb(180, 160, 105);
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+}
+
+.datagrid table td, .datagrid table th {
+    padding: 3px 10px;
+}
+
+.datagrid table thead th {
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0.05, rgb(217, 205,177)), color-stop(1, rgb(195, 178, 133)));
+    background: -moz-linear-gradient(center top, rgb(217, 205,177) 5%, rgb(195, 178, 133) 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=rgb(217, 205,177), endColorstr=rgb(195, 178, 133));
+    background-color: rgb(195, 178, 133);
+    color: black
+    font-size: 15px;
+    font-weight: bold;
+    border-left: 0px solid rgb(180, 160, 105);
+}
+
+.datagrid table thead th:first-child {
+    border: none;
+}
+
+.datagrid table tbody td {
+    color: black;
+    border-left: 1px solid #E1EEF4;
+    font-size: 12px;
+    font-weight: normal;
+}
+
+.datagrid table tbody .alt td {
+    background: rgb(232, 225, 208);
+    color: black;
+}
+
+.datagrid table tbody td:first-child {
+    border-left: none;
+}
+
+.datagrid table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+/* autocomplete */
+.ui-autocomplete {
+    max-height: 200px;
+    overflow-y: auto;
+    /* prevent horizontal scrollbar */
+    overflow-x: hidden;
+    /* add padding to account for vertical scrollbar */
+    padding-right: 20px;
+    font-size: 14px !important;
+}
+
+/* tooltips */
+
+  .ui-tooltip {
+    width: 210px;
+    font-size: 14px !important;
+  }
