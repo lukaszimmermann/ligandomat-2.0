@@ -1,0 +1,77 @@
+
+#peptide_query_wrapper {
+    margin-top: 20pt;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+}
+.hidden {
+    display: none;
+}
+
+.standard_text {
+    font-size: 18px;
+}
+
+.title {
+    text-align: center;
+    color: rgb(165, 30, 55);
+    font-size: 50px;
+    font-weight: bold;
+}
+
+.nice_button {
+  position: relative;
+  vertical-align: top;
+  width: 100%;
+  height: 30px;
+  padding: 5px;
+  padding-bottom: 5px;
+  font-size: 18px;
+  color: black;
+  text-align: center;
+  margin: 5pt;
+  text-shadow: rgb(217, 205, 177);
+  background: rgb(180,160,105);
+  border: 0pt;
+  cursor: pointer;
+  -webkit-box-shadow: inset 0 -2px rgb(180,160,105);
+  box-shadow: inset 0 -2px rgb(180,160,105);
+}
+button.nice_button:active {
+  top: 1px;
+  outline: none;
+  /*-webkit-box-shadow: none;
+  box-shadow: none;*/
+}
+.nice_dropdown {
+  position: relative;
+  vertical-align: middle;
+  width: auto;
+  height: 25px;
+  padding: 5px;
+  padding-bottom: 30px;
+  font-size: 14px;
+  color: black;
+  text-align: center;
+  margin: 5pt;
+  background: rgb(164, 163, 169);
+  border: 0pt;
+  cursor: pointer;
+}
+.nice_dropdown_boolean {
+  position: relative;
+  vertical-align: middle;
+  width: auto;
+  height: 25px;
+  padding: 5px;
+  padding-bottom: 30px;
+  font-size: 14px !important;
+  color: #000000;
+  text-align: center;
+  margin: 5pt;
+  background: rgb(164, 163, 169);
+  border: 0pt;
+  cursor: pointer;
+}
+

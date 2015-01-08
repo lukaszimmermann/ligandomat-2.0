@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="${request.locale_name}">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <title>Ligandome Database</title>
+
+
+    <!-- or gx-sidemenu-light.css -->
+    <link rel="stylesheet" href="${request.static_url('ligando:static/gx-sidemenu-blue.css')}">
+    <link rel="stylesheet" type="text/css" href="${request.static_url('ligando:static/main_styles.css')}">
+
+    <!-- Bootstrap core CSS -->
+    <!-- <link href="//oss.maxcdn.com/libs/twitter-bootstrap/3.0.3/css/bootstrap.min.css" rel="stylesheet"> -->
+
+    <!-- Custom styles for this scaffold -->
+    <!--<link href="${request.static_url('ligando:static/theme.css')}" rel="stylesheet"> -->
+
+
+</head>
+
+<body>
+<!-- <a href="javascript:" class="gx-menu-open list"></a> -->
+
+<div  class="title">Ligandome Database</div>
+<hr style="width: 70%" size="3" color="black" >
+<div id="gx-sidemenu" style="z-index: 9998">
+    <div class="gx-sidemenu-inner" id="gx-sidemenu-inner-1">
+        <div class="scroll">
+            <ul class="gx-menu">
+                <li class="home">
+                    <a href="/">
+                        <span class="text">Home</span>
+                    </a></li>
+                <li class="sources">
+                    <a href="/sources">
+                        <span class="text">Source Information</span>
+                    </a></li>
+                <li class="MsRun">
+                    <a href="/runs">
+                        <span class="text">MsRun Information</span>
+                    </a></li>
+                <li class="peptide_query">
+                    <a href="/peptide_query">
+                        <span class="text">Search for Peptides</span>
+                    </a></li>
+                <li class="upload_metadata">
+                    <a href="#upload_metadata">
+                    <span class="text">Upload your Metadata</span>
+                        </a>
+                    <ul>
+                        <li class="source_upload">
+                            <a href="/upload_metadata_source">
+                                <span class="text">Source</span>
+                            </a>
+                        </li>
+                        <li class="ms_run_upload">
+                            <a href="/upload_metadata_ms_run">
+                                <span class="text">Ms Run</span>
+                            </a>
+                        </li>
+                    </ul>
+                 </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="//oss.maxcdn.com/libs/jquery/1.10.2/jquery.min.js"></script>
+<script src="//oss.maxcdn.com/libs/twitter-bootstrap/3.0.3/js/bootstrap.min.js"></script>
+<script src="${request.static_url('ligando:static/js/iscroll.js')}"></script>
+<script src="${request.static_url('ligando:static/js/gx.sidemenu.js')}"></script>
+<script>
+    //$(function() {
+	$('#gx-sidemenu').gxSideMenu({
+		mode: isMobile.any() ? 'tiny' : 'normal', // normal | tiny
+		interval: 500, // animations' interval
+		direction: 'left', // left | right
+		openOnHover: true, // true | false
+		clickTrigger: true, // true | false
+		followURLs: true, // true | false
+		trigger: ".gx-menu-open.list", // class or id of trigger element
+		startFrom: 60, // start pixel from corner on hover trigger
+		startClosed: false, // menu opens on document load
+		scrolling: true, // menu scrollable (iScroll plugin needed!)
+		urlBase: '/sidemenu/', // document base URL
+		backText: 'Prev | Back', // Back button text
+		onOpen: function() { }, // Open callback
+		onClose: function() { } // Close callback
+	    });
+    //    });
+    </script>
+</body>
+</html>
