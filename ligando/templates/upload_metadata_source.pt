@@ -1,212 +1,269 @@
 <!DOCTYPE html>
 <html metal:use-macro="load: base_layout.pt">
 <html lang="${request.locale_name}">
-      <head>
-        <!-- DataTables CSS -->
-        <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.4/css/jquery.dataTables.css">
+<head>
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.4/css/jquery.dataTables.css">
 
-        <link rel="stylesheet" type="text/css" href="${request.static_url('ligando:static/main_styles.css')}">
-        <link rel="stylesheet" type="text/css" href="//code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css">
+    <link rel="stylesheet" type="text/css" href="${request.static_url('ligando:static/main_styles.css')}">
+    <link rel="stylesheet" type="text/css" href="//code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css">
 
 
+</head>
 
-    </head>
-
-    <body>
+<body>
 <div id="metadata_wrapper" class="wrapper">
     <table>
-    <tr>
-        <td><label for="sourcetags">Sourcename: </label></td><td> <input type="text" title="The name of the source e.g. AML1" id="sourcetags"></td>
-    <td><label for="organtags">Organ: </label></td><td> <input title=" e.g. kidney, liver" id="organtags"></td>
-    <td><label for="organismtags">Organism: </label></td><td> <input title=" e.g. human, dog" id="organismtags"></td>
-    </tr>
-    <tr>
-        <td><label for="histologytags">Histology: </label></td><td> <input title="e.g. benign, AML, CLL" id="histologytags"></td>
-    <td><label for="dignitytags">Dignity: </label></td><td> <input title=" e.g. malignant, benign" id="dignitytags"></td>
-    <td><label for="celltypetags">Celltype: </label></td><td> <input title=" e.g. bulk, PBMC" id="celltypetags"></td>
-    </tr>
-    <tr><td><label for="locationtags">Location: </label></td><td> <input title=" e.g. NA" id="locationtags"></td>
+        <tr>
+            <td><label for="sourcetags">Sourcename: </label></td>
+            <td><input type="text" title="The name of the source e.g. AML1" id="sourcetags"></td>
+            <td><label for="organtags">Organ: </label></td>
+            <td><input title=" e.g. kidney, liver" id="organtags"></td>
+            <td><label for="organismtags">Organism: </label></td>
+            <td><input title=" e.g. human, dog" id="organismtags"></td>
+        </tr>
+        <tr>
+            <td><label for="histologytags">Histology: </label></td>
+            <td><input title="e.g. benign, AML, CLL" id="histologytags"></td>
+            <td><label for="dignitytags">Dignity: </label></td>
+            <td><input title=" e.g. malignant, benign" id="dignitytags"></td>
+            <td><label for="celltypetags">Celltype: </label></td>
+            <td><input title=" e.g. bulk, PBMC" id="celltypetags"></td>
+        </tr>
+        <tr>
+            <td><label for="locationtags">Location: </label></td>
+            <td><input title=" e.g. NA" id="locationtags"></td>
 
-    <td><label for="metastatistags">Metastatis: </label></td><td> <input value="0" title="0 = no, 1 = metastatis" id="metastatistags"></td>
-    <td><label for="persontags">Person: </label></td><td> <input title="Your name. Umlaute like ä = ae, ü = ue, ö = oe"id="persontags"></td>
-    </tr>
-    <tr>
-        <td>HLA-Typing:</td><td> <input id="typingtags" title="Write or select HLA-Typing. Seperate with ; "></td><td><select id="typing_menu" onchange="addTyping()"></select></td>
-    </tr>
+            <td><label for="metastatistags">Metastatis: </label></td>
+            <td><input value="0" title="0 = no, 1 = metastatis" id="metastatistags"></td>
+            <td><label for="persontags">Person: </label></td>
+            <td><input title="Your name. Umlaute like ä = ae, ü = ue, ö = oe" id="persontags"></td>
+        </tr>
+        <tr>
+            <td>HLA-Typing:</td>
+            <td><input id="typingtags" title="Write or select HLA-Typing. Seperate with ; "></td>
+            <td><select id="typing_menu" onchange="addTyping()"></select></td>
+        </tr>
 
 
     </table>
     <div class="datagrid">
-    <button onclick="addSource()" class="nice_button">Add Source to list</button><br>
+        <button onclick="addSource()" class="nice_button">Add Source to list</button>
+        <br>
 
 
         <table id="source_table">
-        <!-- The table is created dynamically with js -->
+            <!-- The table is created dynamically with js -->
         </table>
 
-    <button class="nice_button">Commit Sources</button>
+        <button id="check_button" class="nice_button" onclick="checkInput()">Check Sources</button>
+        <form value="test">
+            <button id="commit_button" class="nice_button" hidden>Commit Sources</button>
+        </form>
     </div>
 </div>
 
 
-    <!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
 
 
-        <!-- jQuery -->
-        <script type="text/javascript" charset="utf8" src="//code.jquery.com/jquery-1.10.2.min.js"></script>
+<!-- jQuery -->
+<script type="text/javascript" charset="utf8" src="//code.jquery.com/jquery-1.10.2.min.js"></script>
 
 
-        <!-- DataTables -->
-        <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.4/js/jquery.dataTables.js"></script>
+<!-- DataTables -->
+<script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.4/js/jquery.dataTables.js"></script>
 
-        <script src="//code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
-
-
-        <script>
-            var cells = ['source',
-          'organ',
-          'organism',
-          'histology',
-          'dignity',
-          'location',
-          'metastatis',
-          'celltype',
-          'typing',
-          'person'];
-         var autocomplete_dict = {'source':${source_names},
-          'organ':${organ},
-          'organism':${organism},
-          'histology':${histology},
-          'dignity':${dignity},
-          'location':${location},
-          'metastatis':${metastatis},
-          'celltype':${celltype},
-          'person':${person}};
-
-   $(function(){
-       table = document.getElementById('source_table');
-var markup = ['<thead><tr><th>Sourcename</th><th>Organ</th><th>Organism</th><th>Histology</th><th>Dignity</th><th>Celltype</th><th>Location</th><th>Metastatis</th><th>HLA-Typing</th><th>Person</th><th>Options</th></tr></thead><tbody>'];
+<script src="//code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
 
 
+<script>
+    var cells = ['source',
+        'organ',
+        'organism',
+        'histology',
+        'dignity',
+        'location',
+        'metastatis',
+        'celltype',
+        'typing',
+        'person'];
+    var nice_names = {'source':'Sourcename',
+        'organ':'Organ',
+        'organism':'Organism',
+        'histology':'Histology',
+        'dignity':'Dignity',
+        'location':'Location',
+        'metastatis':'Metastatis',
+        'celltype':'Celltype',
+        'typing':'HLA-Typing',
+        'person':'Person'};
+    var autocomplete_dict = {'source':${source_names},
+        'organ':${organ},
+        'organism':${organism},
+        'histology':${histology},
+        'dignity':${dignity},
+        'location':${location},
+        'metastatis':${metastatis},
+        'celltype':${celltype},
+        'person':${person}};
 
-for(var i=1; i <= 11; i++){
-    if(i%2==0) {
-        markup.push('<tr id="row' + i + '" class="alt">');
-    }else{
-        markup.push('<tr id="row' + i + '" >');
-    }
-    markup.push('<td id="source_'+i+'"> </td>' +
-            '<td id="organ_'+i+'"></td>' +
-            '<td id="organism_'+i+'"></td>' +
-            '<td id="histology_'+i+'"></td>' +
-            '<td id="dignity_'+i+'"></td>' +
-            '<td id="celltype_'+i+'"></td>' +
-            '<td id="location_'+i+'"></td>' +
-            '<td id="metastatis_'+i+'"></td>' +
-            '<td id="typing_'+i+'"></td>' +
-            '<td id="person_'+i+'"></td>' +
-            '<td>' +
-            '<button type="button" title="Edit" onclick="editRow('+i+')"> <img height="12px" src="${request.static_url('ligando:static/images/Pencil-icon.png')}"> </button> <button type="button" title="Copy"  onclick="copyRow('+i+')"> <img height="12px" src="${request.static_url('ligando:static/images/copy-icon.png')}"> </button><button type="button" title="Remove" onclick="removeRow('+i+')"> <img height="12px" src="${request.static_url('ligando:static/images/Remove-icon.png')}"> </button> </td></tr>')
-   }
-markup.push('</tbody>');
-table.innerHTML = markup.join("");
-   })
-
-
-  $(function() {
-      for(i = 0; i < cells.length; i++){
-
-          if(cells[i]=='typing'){
-              continue;
-          }else{
-          $( "#"+cells[i]+"tags" ).autocomplete({
-          minLength: 0,
-          minChars: 0,
-          source: autocomplete_dict[cells[i]]
-        }).focus(function() {
-        $( this).autocomplete("search", "");
-          });
-}};
-    });
+    $(function () {
+        table = document.getElementById('source_table');
+        var markup = ['<thead><tr><th>Sourcename</th><th>Organ</th><th>Organism</th><th>Histology</th><th>Dignity</th><th>Celltype</th><th>Location</th><th>Metastatis</th><th>HLA-Typing</th><th>Person</th><th>Options</th></tr></thead><tbody>'];
 
 
-  $(function() {
-    $( document ).tooltip();
-  });
-
-
-  // HLA Typing menu
-  $(function(){
-      var _select = $("#typing_menu");
-      _select.append($('<option ></option>').val('-').html('-'));
-      $.each(${typing}, function(val, text) {
-        if(text=="NULL"){
-            return;
+        for (var i = 1; i <= 11; i++) {
+            if (i % 2 == 0) {
+                markup.push('<tr id="row' + i + '" class="alt">');
+            } else {
+                markup.push('<tr id="row' + i + '" >');
+            }
+            markup.push('<td id="source_' + i + '"> </td>' +
+                    '<td id="organ_' + i + '"></td>' +
+                    '<td id="organism_' + i + '"></td>' +
+                    '<td id="histology_' + i + '"></td>' +
+                    '<td id="dignity_' + i + '"></td>' +
+                    '<td id="celltype_' + i + '"></td>' +
+                    '<td id="location_' + i + '"></td>' +
+                    '<td id="metastatis_' + i + '"></td>' +
+                    '<td id="typing_' + i + '"></td>' +
+                    '<td id="person_' + i + '"></td>' +
+                    '<td>' +
+                    '<button type="button" title="Edit" onclick="editRow(' + i + ')"> <img height="12px" src="${request.static_url('ligando:static/images/Pencil-icon.png')}"> </button> <button type="button" title="Copy"  onclick="copyRow(' + i + ')"> <img height="12px" src="${request.static_url('ligando:static/images/copy-icon.png')}"> </button><button type="button" title="Remove" onclick="removeRow(' + i + ')"> <img height="12px" src="${request.static_url('ligando:static/images/Remove-icon.png')}"> </button> </td></tr>')
         }
-        _select.append(
-            $('<option ></option>').val(text).html(text)
-        );
+        markup.push('</tbody>');
+        table.innerHTML = markup.join("");
+    })
+
+
+    $(function () {
+        for (i = 0; i < cells.length; i++) {
+
+            if (cells[i] == 'typing') {
+                continue;
+            } else {
+                $("#" + cells[i] + "tags").autocomplete({
+                    minLength: 0,
+                    minChars: 0,
+                    source: autocomplete_dict[cells[i]]
+                }).focus(function () {
+                    $(this).autocomplete("search", "");
+                });
+            }
+        }
+        ;
     });
-    $("#typing_menu").append(_select.html());
-  })
 
-  function findEmptyRow(){
-      for(var i = 1; i<11; i++){
-          if(document.getElementById("source_"+i).innerText=="") {
-              return i;
-          }
-      }
-      return 0;
-  }
 
-  function editRow(id){
-    recoverRow(id);
-    removeRow(id);
-  }
+    $(function () {
+        $(document).tooltip();
+    });
 
-  function removeRow(id){
-    for(i = 0; i < cells.length; i++){
-           document.getElementById(cells[i]+"_"+id).innerText = "";
+
+    // HLA Typing menu
+    $(function () {
+        var _select = $("#typing_menu");
+        _select.append($('<option ></option>').val('-').html('-'));
+        $.each(${typing}, function (val, text) {
+            if (text == "NULL") {
+                return;
+            }
+            _select.append(
+                    $('<option ></option>').val(text).html(text)
+            );
+        });
+        $("#typing_menu").append(_select.html());
+    })
+
+    function findEmptyRow() {
+        for (var i = 1; i < 11; i++) {
+            if (document.getElementById("source_" + i).innerText == "") {
+                return i;
+            }
+        }
+        return 0;
     }
-  }
 
-  function copyRow(id){
-    recoverRow(id)
-  }
+    function editRow(id) {
+        recoverRow(id);
+        removeRow(id);
+    }
 
-  function recoverRow(id){
-      for(i = 0; i < cells.length; i++){
-           document.getElementById(cells[i]+'tags').value = document.getElementById(cells[i]+"_"+id).innerText;
-       }
-  }
+    function removeRow(id) {
+        for (i = 0; i < cells.length; i++) {
+            document.getElementById(cells[i] + "_" + id).innerText = "";
+        }
+    }
 
-  function addSource(){
-      var id = findEmptyRow();
-      if(id==0){
-          alert("no free row")
-      }else{
-          for(i = 0; i < cells.length; i++){
-              document.getElementById(cells[i]+"_"+id).innerText = document.getElementById(cells[i]+'tags').value;
-          }
-      }
-  };
+    function copyRow(id) {
+        recoverRow(id)
+    }
 
-  function addTyping(){
-      var item = document.getElementById("typing_menu").value ;
-      if(item != "-"){
-      if(document.getElementById("typingtags").value == ""){
-        document.getElementById("typingtags").value = item
-      }else{
-        document.getElementById("typingtags").value += ";"+item
-      }
-      }
-  }
+    function recoverRow(id) {
+        for (i = 0; i < cells.length; i++) {
+            document.getElementById(cells[i] + 'tags').value = document.getElementById(cells[i] + "_" + id).innerText;
+        }
+    }
 
-  </script>
+    function addSource() {
+        var id = findEmptyRow();
+        if (id == 0) {
+            alert("no free row")
+        } else {
+            for (i = 0; i < cells.length; i++) {
+                document.getElementById(cells[i] + "_" + id).innerText = document.getElementById(cells[i] + 'tags').value;
+            }
+        }
+        $("#commit_button").hide();
+    }
+    ;
+
+    function addTyping() {
+        var item = document.getElementById("typing_menu").value;
+        if (item != "-") {
+            if (document.getElementById("typingtags").value == "") {
+                document.getElementById("typingtags").value = item
+            } else {
+                document.getElementById("typingtags").value += ";" + item
+            }
+        }
+    }
+
+    function checkInput(){
+        for(var i=1; i<11; i++){
+            if(document.getElementById("source_"+i).innerText != "") {
+                for (l = 0; l < cells.length; l++) {
+                    if (cells[l] != "typing") {
+                        if(document.getElementById(cells[l] + "_" + i).innerText == ""){
+                            alert(nice_names[cells[l]] + " in row "+ i + " is not allowed to be empty!");
+                            return;
+                        }
+                        if(($.inArray(document.getElementById(cells[l] + "_" + i).innerText, autocomplete_dict[cells[l]])) == -1) {
+                            if (!confirm("The " + nice_names[cells[l]] + " " + document.getElementById(cells[l] + "_" + i).innerText + "in row " + i + " is unknown. Is it really correct? (No typos?)")) {
+                                return;
+                            }
+                        }
+                    }else{
+                        if(document.getElementById(cells[l] + "_" + i).innerText.indexOf(",") != -1 ) {
+                            alert(", is not allowed in HLA-Typing");
+                            return;
+                        }else if(document.getElementById(cells[l] + "_" + i).innerText.indexOf("HLA") != -1 ) {
+                            alert("The 'HLA' prefix is not necessary in HLA-Typing. Please shorten your typings.");
+                            return;
+                        }
+                    }
+                }
+            }
+        }
+        // TODO: create return value
+        $("#commit_button").show();
+    }
+
+</script>
 
 
-
-    </body>
+</body>
 </html>
