@@ -268,6 +268,7 @@ def upload_metadata_source(request):
         allowed_elements = {"source_names": Source.name, "organ": Source.organ,
                             "organism": Source.organism, "histology": Source.histology, "dignity": Source.dignity,
                             "celltype": Source.celltype, "location": Source.location, "metastatis": Source.metastatis, "person": Source.person, "typing": HlaType.hla_string}
+
         for k, v in allowed_elements.iteritems():
             query = DBSession.query(v)
             query = query.group_by(v)

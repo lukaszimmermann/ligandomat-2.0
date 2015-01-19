@@ -26,6 +26,7 @@
     <td><label for="celltypetags">Celltype: </label></td><td> <input title=" e.g. bulk, PBMC" id="celltypetags"></td>
     </tr>
     <tr><td><label for="locationtags">Location: </label></td><td> <input title=" e.g. NA" id="locationtags"></td>
+
     <td><label for="metastatistags">Metastatis: </label></td><td> <input value="0" title="0 = no, 1 = metastatis" id="metastatistags"></td>
     <td><label for="persontags">Person: </label></td><td> <input title="Your name. Umlaute like ä = ae, ü = ue, ö = oe"id="persontags"></td>
     </tr>
@@ -33,16 +34,20 @@
         <td>HLA-Typing:</td><td> <input id="typingtags" title="Write or select HLA-Typing. Seperate with ; "></td><td><select id="typing_menu" onchange="addTyping()"></select></td>
     </tr>
 
+
     </table>
     <div class="datagrid">
     <button onclick="addSource()" class="nice_button">Add Source to list</button><br>
 
+
         <table id="source_table">
         <!-- The table is created dynamically with js -->
         </table>
+
     <button class="nice_button">Commit Sources</button>
     </div>
 </div>
+
 
     <!-- Bootstrap core JavaScript
     ================================================== -->
@@ -57,6 +62,7 @@
         <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.4/js/jquery.dataTables.js"></script>
 
         <script src="//code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
+
 
         <script>
             var cells = ['source',
@@ -125,9 +131,11 @@ table.innerHTML = markup.join("");
 }};
     });
 
+
   $(function() {
     $( document ).tooltip();
   });
+
 
   // HLA Typing menu
   $(function(){
@@ -195,6 +203,7 @@ table.innerHTML = markup.join("");
       }
       }
   }
+
   </script>
 
 
