@@ -2,7 +2,10 @@
 /dist/*
 *.pyc
 ligando.egg-info/*
+<<<<<<< HEAD
 *.sqlite
+=======
+>>>>>>> 80d1bc0c31ed15b8c8247a1c6814dedc9e435e53
 .idea/*
 +# Byte-compiled / optimized / DLL files
 +__pycache__/
