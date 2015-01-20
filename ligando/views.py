@@ -1,3 +1,4 @@
+import ast
 import datetime
 from pyramid.httpexceptions import HTTPFound
 from pyramid.response import Response
@@ -282,8 +283,18 @@ def upload_metadata_source(request):
     except:
         return Response(conn_err_msg, content_type='text/plain', status_int=500)
     return result_dict
+
+@view_config(route_name='upload_metadata_source', renderer='templates/base_layout.pt', request_method="POST")
+def upload_metadata_source_post(request):
+    source_upload = ast.literal_eval( request.params["sources"])
+
+    # TODO: upload all the stuff.................
+
+    return dict()
+
 @view_config(route_name='upload_metadata_ms_run', renderer='templates/base_layout.pt', request_method="GET")
 def upload_metadata_ms_run(request):
+
     return dict()
 
 def js_list_creator(input):

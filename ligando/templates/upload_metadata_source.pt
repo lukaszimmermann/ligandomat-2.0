@@ -57,8 +57,9 @@
         </table>
 
         <button id="check_button" class="nice_button" onclick="checkInput()">Check Sources</button>
-        <form value="test">
-            <button id="commit_button" class="nice_button" hidden>Commit Sources</button>
+        <form id="submit" method="POST" action=upload_metadata_source>
+            <input type='text' id='commit_field' hidden name="sources">
+            <input type="submit" id="commit_button" class="nice_button" hidden value="Commit Sources">
         </form>
     </div>
 </div>
@@ -259,6 +260,22 @@
             }
         }
         // TODO: create return value
+        //{'jack': 4098, 'sape': 4139}
+        var val = "[";
+        for(var i=1; i<11; i++){
+            if(document.getElementById("source_" + i).innerText != "") {
+                var temp_dict = "{";
+                for (l = 0; l < cells.length; l++) {
+                    temp_dict += "'" + cells[l] + "':'" + document.getElementById(cells[l] + "_" + i).innerText + "',";
+                }
+                temp_dict = temp_dict.replace(/,\s*$/, "");
+                temp_dict += "},";
+                val += temp_dict;
+            }
+        }
+        val = val.replace(/,\s*$/, "");
+        val += "]";
+        document.getElementById("commit_field").value = val;
         $("#commit_button").show();
     }
 
