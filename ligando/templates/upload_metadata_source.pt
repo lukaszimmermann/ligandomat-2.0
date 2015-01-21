@@ -38,6 +38,8 @@
             <td><input value="0" title="0 = no, 1 = metastatis" id="metastatistags"></td>
             <td><label for="persontags">Person: </label></td>
             <td><input title="Your name. Umlaute like ä = ae, ü = ue, ö = oe" id="persontags"></td>
+            <td><label for="commenttags">Comment: </label></td>
+            <td><input title="Comment. Umlaute like ä = ae, ü = ue, ö = oe" id="commenttags"></td>
         </tr>
         <tr>
             <td>HLA-Typing:</td>
@@ -90,7 +92,8 @@
         'metastatis',
         'celltype',
         'typing',
-        'person'];
+        'person',
+        'comment'];
     var nice_names = {'source':'Sourcename',
         'organ':'Organ',
         'organism':'Organism',
@@ -100,7 +103,8 @@
         'metastatis':'Metastatis',
         'celltype':'Celltype',
         'typing':'HLA-Typing',
-        'person':'Person'};
+        'person':'Person',
+        'comment':'Comment'};
     var autocomplete_dict = {'source':${source_names},
         'organ':${organ},
         'organism':${organism},
@@ -113,7 +117,7 @@
 
     $(function () {
         table = document.getElementById('source_table');
-        var markup = ['<thead><tr><th>Sourcename</th><th>Organ</th><th>Organism</th><th>Histology</th><th>Dignity</th><th>Celltype</th><th>Location</th><th>Metastatis</th><th>HLA-Typing</th><th>Person</th><th>Options</th></tr></thead><tbody>'];
+        var markup = ['<thead><tr><th>Sourcename</th><th>Organ</th><th>Organism</th><th>Histology</th><th>Dignity</th><th>Celltype</th><th>Location</th><th>Metastatis</th><th>HLA-Typing</th><th>Person</th><th>Comment</th><th>Options</th></tr></thead><tbody>'];
 
 
         for (var i = 1; i <= 11; i++) {
@@ -132,6 +136,7 @@
                     '<td id="metastatis_' + i + '"></td>' +
                     '<td id="typing_' + i + '"></td>' +
                     '<td id="person_' + i + '"></td>' +
+                    '<td id="comment_' + i + '"></td>' +
                     '<td>' +
                     '<button type="button" title="Edit" onclick="editRow(' + i + ')"> <img height="12px" src="${request.static_url('ligando:static/images/Pencil-icon.png')}"> </button> <button type="button" title="Copy"  onclick="copyRow(' + i + ')"> <img height="12px" src="${request.static_url('ligando:static/images/copy-icon.png')}"> </button><button type="button" title="Remove" onclick="removeRow(' + i + ')"> <img height="12px" src="${request.static_url('ligando:static/images/Remove-icon.png')}"> </button> </td></tr>')
         }
@@ -243,7 +248,7 @@
                             return;
                         }
                         if(($.inArray(document.getElementById(cells[l] + "_" + i).innerText, autocomplete_dict[cells[l]])) == -1) {
-                            if (!confirm("The " + nice_names[cells[l]] + " " + document.getElementById(cells[l] + "_" + i).innerText + "in row " + i + " is unknown. Is it really correct? (No typos?)")) {
+                            if (!confirm("The " + nice_names[cells[l]] + " " + document.getElementById(cells[l] + "_" + i).innerText + " in row " + i + " is unknown. Is it really correct? (No typos?)")) {
                                 return;
                             }
                         }

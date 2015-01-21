@@ -288,6 +288,15 @@ def upload_metadata_source(request):
 def upload_metadata_source_post(request):
     source_upload = ast.literal_eval(request.params["sources"])
     for source in source_upload:
+        try:
+            sources = DBSession.query(Source.source_id).filter(Source.name == source['source']).all()
+        except DBAPIError:
+            return Response(conn_err_msg, content_type='text/plain', status_int=500)
+        if len(sources) > 0:
+            return Response("The source " + source['source'] + " is already in the Database. Aborted whole upload!",
+                            content_type='text/plain', status_int=500)
+
+    for source in source_upload:
         if source['typing'] is not "":
             # ###############
             # hla_lookup   #
@@ -309,7 +318,7 @@ def upload_metadata_source_post(request):
                 except DBAPIError:
                     return Response(conn_err_msg+"\n HLA-Category insert failed", content_type='text/plain', status_int=500)
             else:
-                hla_lookup_id = hla_lookup_ids[0]
+                hla_lookup_id = hla_lookup_ids[0][0]
                 hla_lookup = DBSession.query(HlaLookup).filter(HlaLookup.hla_category == source['typing']).all()[0]
 
             # ###############
@@ -354,82 +363,31 @@ def upload_metadata_source_post(request):
                             hla_lookup.fk_hla_typess.append(hla_type)
                             DBSession.add(hla_lookup)
                             DBSession.flush()
-                            #hla_type.children.append()
-                            #DBSession.execute(t_hla_map.insert(), fk_hla_types_id = hla_types_id, fk_hla_lookup_id = hla_lookup_id)
-                            #mapper()
-
-                            #temp.fk_hla_types_id=hla_types_id
-                            #temp.fk_hla_lookup_id=hla_lookup_id
-                            #DBSession.add(temp)
                             DBSession.flush()
-                            #hla_map_id = temp.hla_map_id
                         except DBAPIError:
                             return Response(conn_err_msg + "\n Insert into Hla-Map failed!",
                                             content_type='text/plain', status_int=500)
 
                     print "test"
+        else:
+            hla_lookup_id = "NULL"
 
 
 
-
-
-    print "source source"
-    # TODO: upload all the stuff.................
-    """
-
-
-    # ####################################################
-    # Source:                                           #
-    #####################################################
-    try:
-        c.execute("SELECT source_id from source where name = '%s'" % sample_name)
-        source = c.fetchone()
-    except (MySQLdb.DatabaseError), e:
-        print e + " at SELECT SOURCE" + " " + metadata_file
-        continue
-
-    #unknown source
-    if source is None:
-        #Check if organ is allowed value in enum
-        if not check_enum("organ", organ, "source"):
-            return
-        #Check if organism is allowed value in enum
-        if not check_enum("organism", organism, "source"):
-            return
-        #Check if histology is allowed value in enum
-        if not check_enum("histology", histology, "source"):
-            return
-        #Check if dignity is allowed value in enum
-        if not check_enum("dignity", dignity, "source"):
-            return
-        #Check if celltype is allowed value in enum
-        if not check_enum("celltype", celltype, "source"):
-            return
-        #Check if location is allowed value in enum
-        if not check_enum("location", location, "source"):
-            return
-        #Check if person is allowed value in enum
-        if not check_enum("person", person, "source"):
-            return
-        #source information
-        #name, comment, timestamp, organ, organism, tissue, dignity, celltype, A_1, A_2, B_1, B_2, C_1, C_2, DPA1, DPB1, DQA1, DQA2, DQB1, DQB2, DQB3, DRA, DRB1_1, DRB1_2, DRB3, DRB4, DRB5, person
-        source_insert_query = "INSERT INTO source (name, comment, organ, organism, histology, dignity, celltype, location, metastatis, person, fk_hla_lookup_id)" \
-                              "VALUES ( '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s',%s,'%s','%d')" % (
-                                  sample_name, "", organ, organism, histology, dignity,
-                                  celltype, location, metastatis, person, hla_lookup_id)
+        #####################################################
+        # Source:                                           #
+        #####################################################
         try:
-            c.execute(source_insert_query)
-            c.execute("Select source_id from source where name = '%s'" % (sample_name))
-            source = c.fetchone()
-        except (MySQLdb.DatabaseError), e:
-            print source_insert_query
-            print str(e) + " at INSERT SOURCE" + " " + metadata_file
-            continue
+            source_insert = Source(name=source['source'], organ=source['organ'], organism=source['organism'],
+                               histology=source['histology'], dignity=source['dignity'], location=source['location'],
+                               metastatis=source['metastatis'], celltype=source['celltype'], fk_hla_lookup_id= hla_lookup_id, person=source['person'], comment=source['comment'])
+            DBSession.add(source_insert)
+            DBSession.flush()
+        except DBAPIError:
+            return Response(conn_err_msg + "\n Insert into Source failed!",
+                            content_type='text/plain', status_int=500)
 
-    #source_timestamp = source['timestamp']
-    source_id = source["source_id"]
-    #username = timestamp.split(']')[0]"
-    """
+
 
     return dict()
 
@@ -518,6 +476,7 @@ dthandler = lambda obj: (
     if isinstance(obj, datetime.datetime)
        or isinstance(obj, datetime.date)
     else None)
+
 
 conn_err_msg = """\
 Pyramid is having a problem using your SQL database.  The problem
