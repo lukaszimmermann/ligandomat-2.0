@@ -3,7 +3,7 @@ import datetime
 from pyramid.httpexceptions import HTTPFound
 from pyramid.response import Response
 from pyramid.view import view_config
-from sqlalchemy import func, or_
+from sqlalchemy import func, or_, bindparam, ForeignKey
 from sqlalchemy.dialects.postgresql import json
 from sqlalchemy.ext.declarative import DeclarativeMeta
 from sqlalchemy.exc import DBAPIError
@@ -286,9 +286,150 @@ def upload_metadata_source(request):
 
 @view_config(route_name='upload_metadata_source', renderer='templates/base_layout.pt', request_method="POST")
 def upload_metadata_source_post(request):
-    source_upload = ast.literal_eval( request.params["sources"])
+    source_upload = ast.literal_eval(request.params["sources"])
+    for source in source_upload:
+        if source['typing'] is not "":
+            # ###############
+            # hla_lookup   #
+            # ###############
+            try:
+                query = DBSession.query(HlaLookup.hla_lookup_id)
+                query = query.filter(HlaLookup.hla_category == source['typing'])
+                hla_lookup_ids = query.all()
 
+            except DBAPIError:
+                return Response(conn_err_msg, content_type='text/plain', status_int=500)
+            if len(hla_lookup_ids) == 0:
+                try:
+                    #stmt = DBSession.insert(HlaLookup.insert).values(hla_category=source['typing'])
+                    hla_lookup = HlaLookup(hla_category=source['typing'])
+                    DBSession.add(hla_lookup)
+                    DBSession.flush()
+                    hla_lookup_id = hla_lookup.hla_lookup_id
+                except DBAPIError:
+                    return Response(conn_err_msg+"\n HLA-Category insert failed", content_type='text/plain', status_int=500)
+            else:
+                hla_lookup_id = hla_lookup_ids[0]
+                hla_lookup = DBSession.query(HlaLookup).filter(HlaLookup.hla_category == source['typing']).all()[0]
+
+            # ###############
+            # hla_types    #
+            ################
+            hla_alleles = source['typing'].split(";")
+            #hla_types_id_list = list()
+            for hla_typing in hla_alleles:
+                hla_typing_split = hla_typing.strip().split(":")
+                for i in range(0, len(hla_typing_split)):
+                    sub_type = ":".join(hla_typing_split[0:i + 1])
+                    try:
+                        query = DBSession.query(HlaType.hla_types_id).filter(HlaType.hla_string == sub_type)
+                        hla_types_id = query.all()
+                    except DBAPIError:
+                        return Response(conn_err_msg, content_type='text/plain', status_int=500)
+                    #unknown hla_lookup
+                    if len(hla_types_id) == 0:
+                        try:
+                            hla_type = HlaType(hla_string=sub_type)
+                            DBSession.add(hla_type)
+                            DBSession.flush()
+                            hla_types_id = hla_type.hla_types_id
+                        except DBAPIError:
+                            return Response(conn_err_msg+ "\n Insert into Hla-Types failed!", content_type='text/plain', status_int=500)
+                    #hla_types_id_list.append(hla_types_id)
+                    else:
+                        hla_types_id = hla_types_id[0]
+                        hla_type = query = DBSession.query(HlaType).filter(HlaType.hla_string == sub_type).all()[0]
+                    ################
+                    # hla_map      #
+                    ################
+
+                    try:
+                        query = DBSession.query(t_hla_map).filter(HlaType.hla_types_id== hla_types_id).filter(HlaLookup.hla_lookup_id == hla_lookup_id)
+                        hla_map_ids = query.all()
+                    except DBAPIError:
+                        return Response(conn_err_msg, content_type='text/plain', status_int=500)
+
+                    if len(hla_map_ids) == 0:
+                        try:
+                            hla_lookup.fk_hla_typess.append(hla_type)
+                            DBSession.add(hla_lookup)
+                            DBSession.flush()
+                            #hla_type.children.append()
+                            #DBSession.execute(t_hla_map.insert(), fk_hla_types_id = hla_types_id, fk_hla_lookup_id = hla_lookup_id)
+                            #mapper()
+
+                            #temp.fk_hla_types_id=hla_types_id
+                            #temp.fk_hla_lookup_id=hla_lookup_id
+                            #DBSession.add(temp)
+                            DBSession.flush()
+                            #hla_map_id = temp.hla_map_id
+                        except DBAPIError:
+                            return Response(conn_err_msg + "\n Insert into Hla-Map failed!",
+                                            content_type='text/plain', status_int=500)
+
+                    print "test"
+
+
+
+
+
+    print "source source"
     # TODO: upload all the stuff.................
+    """
+
+
+    # ####################################################
+    # Source:                                           #
+    #####################################################
+    try:
+        c.execute("SELECT source_id from source where name = '%s'" % sample_name)
+        source = c.fetchone()
+    except (MySQLdb.DatabaseError), e:
+        print e + " at SELECT SOURCE" + " " + metadata_file
+        continue
+
+    #unknown source
+    if source is None:
+        #Check if organ is allowed value in enum
+        if not check_enum("organ", organ, "source"):
+            return
+        #Check if organism is allowed value in enum
+        if not check_enum("organism", organism, "source"):
+            return
+        #Check if histology is allowed value in enum
+        if not check_enum("histology", histology, "source"):
+            return
+        #Check if dignity is allowed value in enum
+        if not check_enum("dignity", dignity, "source"):
+            return
+        #Check if celltype is allowed value in enum
+        if not check_enum("celltype", celltype, "source"):
+            return
+        #Check if location is allowed value in enum
+        if not check_enum("location", location, "source"):
+            return
+        #Check if person is allowed value in enum
+        if not check_enum("person", person, "source"):
+            return
+        #source information
+        #name, comment, timestamp, organ, organism, tissue, dignity, celltype, A_1, A_2, B_1, B_2, C_1, C_2, DPA1, DPB1, DQA1, DQA2, DQB1, DQB2, DQB3, DRA, DRB1_1, DRB1_2, DRB3, DRB4, DRB5, person
+        source_insert_query = "INSERT INTO source (name, comment, organ, organism, histology, dignity, celltype, location, metastatis, person, fk_hla_lookup_id)" \
+                              "VALUES ( '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s',%s,'%s','%d')" % (
+                                  sample_name, "", organ, organism, histology, dignity,
+                                  celltype, location, metastatis, person, hla_lookup_id)
+        try:
+            c.execute(source_insert_query)
+            c.execute("Select source_id from source where name = '%s'" % (sample_name))
+            source = c.fetchone()
+        except (MySQLdb.DatabaseError), e:
+            print source_insert_query
+            print str(e) + " at INSERT SOURCE" + " " + metadata_file
+            continue
+
+    #source_timestamp = source['timestamp']
+    source_id = source["source_id"]
+    #username = timestamp.split(']')[0]"
+    """
 
     return dict()
 
