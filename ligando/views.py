@@ -371,9 +371,6 @@ def upload_metadata_source_post(request):
                     print "test"
         else:
             hla_lookup_id = "NULL"
-
-
-
         #####################################################
         # Source:                                           #
         #####################################################
@@ -391,9 +388,28 @@ def upload_metadata_source_post(request):
 
     return dict()
 
-@view_config(route_name='upload_metadata_ms_run', renderer='templates/base_layout.pt', request_method="GET")
+@view_config(route_name='upload_metadata_ms_run', renderer='templates/upload_metadata_msrun.pt', request_method="GET")
 def upload_metadata_ms_run(request):
+    try:
+        result_dict = dict()
+        allowed_elements = {"filename": MsRun.filename, "used_share": MsRun.used_share, "source": Source.name,
+                            "sample_mass": MsRun.sample_mass, "sample_volume": MsRun.sample_volume,
+                            "antibody_set": MsRun.antibody_set, "antibody_mass": MsRun.antibody_mass,
+                            "magna": MsRun.magna}
 
+        for k, v in allowed_elements.iteritems():
+            query = DBSession.query(v)
+            query = query.group_by(v)
+            query_result = js_list_creator(query.all())
+            result_dict[k] = query_result
+
+
+    except:
+        return Response(conn_err_msg, content_type='text/plain', status_int=500)
+    return result_dict
+
+@view_config(route_name='upload_metadata_ms_run', renderer='templates/base_layout.pt', request_method="POST")
+def upload_metadata_ms_run_post(request):
     return dict()
 
 def js_list_creator(input):

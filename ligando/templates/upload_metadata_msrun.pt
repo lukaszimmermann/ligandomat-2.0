@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html metal:use-macro="load: base_layout.pt">
+<html lang="${request.locale_name}">
+<head>
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.4/css/jquery.dataTables.css">
+
+    <link rel="stylesheet" type="text/css" href="${request.static_url('ligando:static/main_styles.css')}">
+    <link rel="stylesheet" type="text/css" href="//code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css">
+
+
+</head>
+
+<body>
+<div id="metadata_wrapper" class="wrapper">
+    <table >
+        <tr>
+            <td><label for="filenametags">Filename: </label></td>
+            <td><input type="text" title="The filename of the MS run" id="filenametags"></td>
+            <td><label for="sourcetags">Source: </label></td>
+            <td><input title="The Source name e.g. AML1" id="sourcetags"></td>
+            <td>Ms run date:</td>
+            <td><input type="text" id="datetags"></td>
+        </tr>
+        <tr>
+            <td><label for="used_sharetags">Used share: </label></td>
+            <td><input title="The used sample share" id="used_sharetags"></td>
+            <td>MS run comment: </td>
+            <td><input title="Comment about the Ms run (not the prep or source)" id="commenttags"></td>
+            <td><label for="sample_masstags">Sample mass: </label></td>
+            <td><input title="The used sample mass" id="sample_masstags"></td>
+        </tr>
+        <tr>
+            <td><label for="sample_volumetags">Sample volume: </label></td>
+            <td><input title="The used sample volume" id="sample_volumetags"></td>
+
+            <td><label for="antibody_settags">Antibody: </label></td>
+            <td><input title="The used antibodies" id="antibody_settags"></td>
+            <td><label for="antibody_masstags">Antibody mass: </label></td>
+            <td><input title="The mass of the antibody used. If more then one is used please sum them up." id="antibody_masstags"></td>
+
+        </tr>
+        <tr>
+            <td><label for="magnatags">Magna: </label></td>
+            <td><input value=0 title="Magna" id="magnatags"></td>
+            <td>Preparation date: </td>
+            <td><input type="text" id="prep_datetags"></td>
+            <td>Preparation comment: </td>
+            <td><input title="Comment about the preparation (not the ms run or source)" id="prep_commenttags"></td>
+        </tr>
+
+
+    </table>
+    <div class="datagrid">
+        <button onclick="addSource()" class="nice_button">Add Ms run to list</button>
+        <br>
+
+
+        <table id="ms_table" width="100%">
+            <!-- The table is created dynamically with js -->
+        </table>
+
+        <button id="check_button" class="nice_button" onclick="checkInput()">Check Ms Runs</button>
+        <form id="submit" method="POST" action=upload_metadata_source>
+            <input type='text' id='commit_field' hidden name="sources">
+            <input type="submit" id="commit_button" class="nice_button" hidden value="Commit Ms Run">
+        </form>
+    </div>
+</div>
+
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+
+
+<!-- jQuery -->
+<script type="text/javascript" charset="utf8" src="//code.jquery.com/jquery-1.10.2.min.js"></script>
+
+
+<!-- DataTables -->
+<script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.4/js/jquery.dataTables.js"></script>
+
+<script src="//code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
+
+
+
+<script>
+
+    var cells = ['filename',
+        'source',
+        'date',
+        'used_share',
+        'comment',
+        'sample_mass',
+        'sample_volume',
+        'antibody_set',
+        'antibody_mass',
+        'magna',
+        'prep_date',
+        'prep_comment'];
+    var nice_names = {'filename':'Filename',
+        'source': 'Source name',
+        'date':'Ms Run Date',
+        'used_share':'Used share',
+        'comment':'MS Comment',
+        'sample_mass':'Sample mass',
+        'sample_volume':'Sample volume',
+        'antibody_set': 'Antibody set',
+        'antibody_mass':'Antibody mass',
+        'magna':'Magna',
+        'prep_date':'Prep date',
+        'prep_comment':'Prep comment'};
+    var autocomplete_dict = {'filename':${filename},
+        'source':${source},
+        'used_share':${used_share},
+        'sample_mass':${sample_mass},
+        'sample_volume':${sample_volume},
+        'antibody_set':${antibody_set},
+        'antibody_mass':${antibody_mass},
+        'magna':${magna}};
+
+    $(function () {
+        table = document.getElementById('ms_table');
+        var markup = ['<thead><tr><th>Filename</th><th>Source</th><th>Ms Run Date</th><th>Used Share</th><th>MS Comment</th><th>Sample Mass</th><th>Sample Volume</th><th>Antibody Set</th><th>Antibody Mass</th><th>Magna</th><th>Prep Date</th><th>Prep Comment</th><th>Options</th></tr></thead><tbody>'];
+
+
+        for (var i = 1; i <= 11; i++) {
+            if (i % 2 == 0) {
+                markup.push('<tr id="row' + i + '" class="alt">');
+            } else {
+                markup.push('<tr id="row' + i + '" >');
+            }
+            markup.push('<td id="filename_' + i + '"> </td>' +
+                    '<td id="source_' + i + '"></td>' +
+                    '<td id="date_' + i + '"></td>' +
+                    '<td id="used_share_' + i + '"></td>' +
+                    '<td id="comment_' + i + '"></td>' +
+                    '<td id="sample_mass_' + i + '"></td>' +
+                    '<td id="sample_volume_' + i + '"></td>' +
+                    '<td id="antibody_set_' + i + '"></td>' +
+                    '<td id="antibody_mass_' + i + '"></td>' +
+                    '<td id="magna_' + i + '"></td>' +
+                    '<td id="prep_date_' + i + '"></td>' +
+                    '<td id="prep_comment_' + i + '"></td>' +
+                    '<td>' +
+                    '<button type="button" title="Edit" onclick="editRow(' + i + ')"> <img height="12px" src="${request.static_url('ligando:static/images/Pencil-icon.png')}"> </button> <button type="button" title="Copy"  onclick="copyRow(' + i + ')"> <img height="12px" src="${request.static_url('ligando:static/images/copy-icon.png')}"> </button><button type="button" title="Remove" onclick="removeRow(' + i + ')"> <img height="12px" src="${request.static_url('ligando:static/images/Remove-icon.png')}"> </button> </td></tr>')
+        }
+        markup.push('</tbody>');
+        table.innerHTML = markup.join("");
+    })
+
+
+    $(function () {
+        for (i = 0; i < cells.length; i++) {
+
+            if (cells[i] == 'date' || cells[i] == 'comment' || cells[i] == 'prep_date' || cells[i] == 'prep_comment' ) {
+                continue;
+            } else {
+                $("#" + cells[i] + "tags").autocomplete({
+                    minLength: 0,
+                    minChars: 0,
+                    source: autocomplete_dict[cells[i]]
+                }).focus(function () {
+                    $(this).autocomplete("search", "");
+                });
+            }
+        }
+        ;
+    });
+
+
+    $(function () {
+        $(document).tooltip();
+    });
+
+    $(function() {
+        $( "#datetags" ).datepicker();
+        $( "#prep_datetags" ).datepicker();
+    });
+
+
+
+    function findEmptyRow() {
+        for (var i = 1; i < 11; i++) {
+            if (document.getElementById("filename_" + i).innerText == "") {
+                return i;
+            }
+        }
+        return 0;
+    }
+
+    function editRow(id) {
+        recoverRow(id);
+        removeRow(id);
+    }
+
+    function removeRow(id) {
+        for (i = 0; i < cells.length; i++) {
+            document.getElementById(cells[i] + "_" + id).innerText = "";
+        }
+        $('#ms_table').dataTable().fnAdjustColumnSizing();
+    }
+
+    function copyRow(id) {
+        recoverRow(id)
+    }
+
+    function recoverRow(id) {
+        for (i = 0; i < cells.length; i++) {
+            document.getElementById(cells[i] + 'tags').value = document.getElementById(cells[i] + "_" + id).innerText;
+        }
+    }
+
+    function addSource() {
+        var id = findEmptyRow();
+        if (id == 0) {
+            alert("no free row")
+        } else {
+            for (i = 0; i < cells.length; i++) {
+                document.getElementById(cells[i] + "_" + id).innerText = document.getElementById(cells[i] + 'tags').value;
+            }
+        }
+        $('#ms_table').dataTable().fnAdjustColumnSizing();
+        $("#commit_button").hide();
+    }
+    ;
+
+    function checkInput(){
+        for(var i=1; i<11; i++){
+            if(document.getElementById("filename_"+i).innerText != "") {
+                for (l = 0; l < cells.length; l++) {
+                    if (cells[l] == "antibody_set" && cells[l] != "prep_comment" && cells[l] != "used_share") {
+                        if(document.getElementById(cells[l] + "_" + i).innerText.indexOf(";") != -1 ) {
+                            alert("; is not allowed in Antibody set");
+                            return;
+                        }
+                    }if(cells[l] == "filename" || cells[l] == "source" || cells[l] == "antibody_set" || cells[l] == "antibody_mass" || cells[l] == "magna"){
+                        if(document.getElementById(cells[l] + "_" + i).innerText == ""){
+                            alert(nice_names[cells[l]] + " in row "+ i + " is not allowed to be empty!");
+                            return;
+                        }
+                        if(($.inArray(document.getElementById(cells[l] + "_" + i).innerText, autocomplete_dict[cells[l]])) == -1) {
+                            if (!confirm("The " + nice_names[cells[l]] + " " + document.getElementById(cells[l] + "_" + i).innerText + " in row " + i + " is unknown. Is it really correct? (No typos?)")) {
+                                return;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        // TODO: create return value
+        //{'jack': 4098, 'sape': 4139}
+        var val = "[";
+        for(var i=1; i<11; i++){
+            if(document.getElementById("source_" + i).innerText != "") {
+                var temp_dict = "{";
+                for (l = 0; l < cells.length; l++) {
+                    temp_dict += "'" + cells[l] + "':'" + document.getElementById(cells[l] + "_" + i).innerText + "',";
+                }
+                temp_dict = temp_dict.replace(/,\s*$/, "");
+                temp_dict += "},";
+                val += temp_dict;
+            }
+        }
+        val = val.replace(/,\s*$/, "");
+        val += "]";
+        document.getElementById("commit_field").value = val;
+        $("#commit_button").show();
+    }
+
+
+    $(document).ready(function() {
+        var oTable = $('#ms_table').dataTable({
+            "paging":false,
+            "ordering":false,
+            "info":false,
+            "bFilter":false,
+            "scrollX": true
+    });
+        $(window).bind('resize', function () {
+            oTable.fnAdjustColumnSizing();
+  } );
+    } );
+
+
+</script>
+
+
+</body>
+</html>

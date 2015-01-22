@@ -202,6 +202,7 @@
         for (i = 0; i < cells.length; i++) {
             document.getElementById(cells[i] + "_" + id).innerText = "";
         }
+        $('#source_table').dataTable().fnAdjustColumnSizing();
     }
 
     function copyRow(id) {
@@ -223,6 +224,7 @@
                 document.getElementById(cells[i] + "_" + id).innerText = document.getElementById(cells[i] + 'tags').value;
             }
         }
+        $('#source_table').dataTable().fnAdjustColumnSizing();
         $("#commit_button").hide();
     }
     ;
@@ -283,6 +285,19 @@
         document.getElementById("commit_field").value = val;
         $("#commit_button").show();
     }
+
+    $(document).ready(function() {
+            var oTable = $('#source_table').dataTable({
+                "paging":false,
+                "ordering":false,
+                "info":false,
+                "bFilter":false,
+                "scrollX": true
+        });
+            $(window).bind('resize', function () {
+                oTable.fnAdjustColumnSizing();
+      } );
+        } );
 
 </script>
 
