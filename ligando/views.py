@@ -25,14 +25,16 @@ from .models import (
     t_spectrum_protein_map)
 
 
-@view_config(route_name='home', renderer='templates/base_layout.pt')
+@view_config(route_name='home', renderer='templates/home.pt')
 def my_view(request):
-    try:
-        # one = DBSession.query(MyModel).filter(MyModel.name == 'one').first()
-        one = 1
-    except DBAPIError:
-        return Response(conn_err_msg, content_type='text/plain', status_int=500)
-    return {'one': one, 'project': 'ligando'}
+    return dict()
+
+    # try:
+    # # one = DBSession.query(MyModel).filter(MyModel.name == 'one').first()
+    #     one = 1
+    # except DBAPIError:
+    #     return Response(conn_err_msg, content_type='text/plain', status_int=500)
+    # return {'one': one, 'project': 'ligando'}
 
 
 @view_config(route_name='source_overview', renderer='templates/source_info.pt')
@@ -72,7 +74,8 @@ def peptide_query(request):
 
 @view_config(route_name='peptide_query', renderer='templates/peptide_query_result.pt', request_method="POST")
 def peptide_query_result(request):
-    params_check_dict = ['sequence', 'source', 'run_name', 'organ', 'histology', 'dignity', 'hla_typing', 'protein', 'length_1', 'length_2']
+    params_check_dict = ['sequence', 'source', 'run_name', 'organ', 'histology', 'dignity', 'hla_typing', 'protein',
+                         'length_1', 'length_2']
     input_check = False
     for param in params_check_dict:
         if len(request.params[param]) > 0:
@@ -80,10 +83,10 @@ def peptide_query_result(request):
     if not input_check:
         return HTTPFound(request.route_url('peptide_query'))
 
-
     if request.params['grouping'] == "peptide":
         try:
-            query = DBSession.query(PeptideRun.sequence, func.group_concat(Protein.name.distinct().op('separator')(', ')),
+            query = DBSession.query(PeptideRun.sequence,
+                                    func.group_concat(Protein.name.distinct().op('separator')(', ')),
                                     func.group_concat(Source.histology.distinct().op('separator')(', ')))
             query = query.join(Source)
             query = query.join(MsRun, PeptideRun.ms_run_ms_run_id == MsRun.ms_run_id)
@@ -121,14 +124,15 @@ def peptide_query_result(request):
             # print your_json
         except DBAPIError:
             return Response(conn_err_msg, content_type='text/plain', status_int=500)
-    #elif: request.params['source_grouping']:
+    # elif: request.params['source_grouping']:
     elif request.params['grouping'] == "run":
         try:
             query = DBSession.query(PeptideRun.peptide_run_id,
                                     PeptideRun.sequence, PeptideRun.minRT, PeptideRun.maxRT,
                                     PeptideRun.minScore, PeptideRun.maxScore, PeptideRun.minE, PeptideRun.maxE,
                                     PeptideRun.minQ, PeptideRun.maxQ, PeptideRun.PSM,
-                                    HlaLookup.hla_category, func.group_concat(Protein.name.distinct().op('separator')(', ')),
+                                    HlaLookup.hla_category,
+                                    func.group_concat(Protein.name.distinct().op('separator')(', ')),
                                     Source.histology, Source.name, MsRun.filename)
             query = query.join(Source)
             query = query.join(MsRun, PeptideRun.ms_run_ms_run_id == MsRun.ms_run_id)
@@ -139,14 +143,16 @@ def peptide_query_result(request):
             query = query.join(Protein)
 
             # Sequence filter
-            query = create_filter(query, 'sequence', request,"sequence", PeptideRun, 'sequence_rule', True)
+            query = create_filter(query, 'sequence', request, "sequence", PeptideRun, 'sequence_rule', True)
             query = create_filter(query, 'source', request, "name", Source, 'source_rule', True)
             query = create_filter(query, 'run_name', request, "filename", MsRun, 'run_name_rule', True)
             query = create_filter(query, 'organ', request, "organ", Source, 'organ_rule', False)
             query = create_filter(query, 'histology', request, "histology", Source, 'histology_rule', False)
             query = create_filter(query, 'dignity', request, "dignity", Source, 'dignity_rule', False)
-            query = create_filter(query, 'hla_typing', request, "hla_string", HlaType, 'hla_typing_rule', False, HlaLookup.fk_hla_typess)
-            query = create_filter(query, 'protein', request, "name", Protein, 'protein_rule', False, PeptideRun.protein_proteins)
+            query = create_filter(query, 'hla_typing', request, "hla_string", HlaType, 'hla_typing_rule', False,
+                                  HlaLookup.fk_hla_typess)
+            query = create_filter(query, 'protein', request, "name", Protein, 'protein_rule', False,
+                                  PeptideRun.protein_proteins)
             query = create_filter(query, 'length_1', request, 'length', PeptideRun, ">", False)
             query = create_filter(query, 'length_2', request, 'length', PeptideRun, "<", False)
 
@@ -154,8 +160,10 @@ def peptide_query_result(request):
             query = query.group_by(PeptideRun.peptide_run_id)
 
             serialized_labels = [
-                serialize(label, ["peptide_run_id", "sequence", "minRT", "maxRT", "minScore", "maxScore", "minE", "maxE",
-                                  "minQ", "maxQ", "PSM", "hla_category", "name", "histology", "source_name", "filename"], joined=True, specified=True)
+                serialize(label,
+                          ["peptide_run_id", "sequence", "minRT", "maxRT", "minScore", "maxScore", "minE", "maxE",
+                           "minQ", "maxQ", "PSM", "hla_category", "name", "histology", "source_name", "filename"],
+                          joined=True, specified=True)
                 for label in query.all()
             ]
             your_json = json.dumps(serialized_labels, default=dthandler)
@@ -213,14 +221,14 @@ def peptide_query_result(request):
     elif request.params['grouping'] == "source_psm":
         try:
             query = DBSession.query(
-                                    SpectrumHit.sequence,
-                                    func.min(SpectrumHit.ionscore), func.max(SpectrumHit.ionscore),
-                                    func.min(SpectrumHit.e_value), func.max(SpectrumHit.e_value),
-                                    func.min(SpectrumHit.q_value), func.max(SpectrumHit.q_value),
-                                    func.count(SpectrumHit.spectrum_hit_id.distinct()),
-                                    HlaLookup.hla_category,
-                                    func.group_concat(Protein.name.distinct().op('separator')(', ')),
-                                    Source.histology, Source.name)
+                SpectrumHit.sequence,
+                func.min(SpectrumHit.ionscore), func.max(SpectrumHit.ionscore),
+                func.min(SpectrumHit.e_value), func.max(SpectrumHit.e_value),
+                func.min(SpectrumHit.q_value), func.max(SpectrumHit.q_value),
+                func.count(SpectrumHit.spectrum_hit_id.distinct()),
+                HlaLookup.hla_category,
+                func.group_concat(Protein.name.distinct().op('separator')(', ')),
+                Source.histology, Source.name)
             query = query.join(Source)
             query = query.join(MsRun, SpectrumHit.ms_run_ms_run_id == MsRun.ms_run_id)
             query = query.join(HlaLookup)
@@ -268,7 +276,8 @@ def upload_metadata_source(request):
         result_dict = dict()
         allowed_elements = {"source_names": Source.name, "organ": Source.organ,
                             "organism": Source.organism, "histology": Source.histology, "dignity": Source.dignity,
-                            "celltype": Source.celltype, "location": Source.location, "metastatis": Source.metastatis, "person": Source.person, "typing": HlaType.hla_string}
+                            "celltype": Source.celltype, "location": Source.location, "metastatis": Source.metastatis,
+                            "person": Source.person, "typing": HlaType.hla_string}
 
         for k, v in allowed_elements.iteritems():
             query = DBSession.query(v)
@@ -276,13 +285,14 @@ def upload_metadata_source(request):
             query_result = js_list_creator(query.all())
             result_dict[k] = query_result
 
-        #query = DBSession.query(Source.name)
-        #query = query.group_by(Source.name)
-        #source_names = js_list_creator(query.all())
+            # query = DBSession.query(Source.name)
+            #query = query.group_by(Source.name)
+            #source_names = js_list_creator(query.all())
 
     except:
         return Response(conn_err_msg, content_type='text/plain', status_int=500)
     return result_dict
+
 
 @view_config(route_name='upload_metadata_source', renderer='templates/base_layout.pt', request_method="POST")
 def upload_metadata_source_post(request):
@@ -310,20 +320,21 @@ def upload_metadata_source_post(request):
                 return Response(conn_err_msg, content_type='text/plain', status_int=500)
             if len(hla_lookup_ids) == 0:
                 try:
-                    #stmt = DBSession.insert(HlaLookup.insert).values(hla_category=source['typing'])
+                    # stmt = DBSession.insert(HlaLookup.insert).values(hla_category=source['typing'])
                     hla_lookup = HlaLookup(hla_category=source['typing'])
                     DBSession.add(hla_lookup)
                     DBSession.flush()
                     hla_lookup_id = hla_lookup.hla_lookup_id
                 except DBAPIError:
-                    return Response(conn_err_msg+"\n HLA-Category insert failed", content_type='text/plain', status_int=500)
+                    return Response(conn_err_msg + "\n HLA-Category insert failed", content_type='text/plain',
+                                    status_int=500)
             else:
                 hla_lookup_id = hla_lookup_ids[0][0]
                 hla_lookup = DBSession.query(HlaLookup).filter(HlaLookup.hla_category == source['typing']).all()[0]
 
             # ###############
             # hla_types    #
-            ################
+            # ###############
             hla_alleles = source['typing'].split(";")
             #hla_types_id_list = list()
             for hla_typing in hla_alleles:
@@ -343,7 +354,8 @@ def upload_metadata_source_post(request):
                             DBSession.flush()
                             hla_types_id = hla_type.hla_types_id
                         except DBAPIError:
-                            return Response(conn_err_msg+ "\n Insert into Hla-Types failed!", content_type='text/plain', status_int=500)
+                            return Response(conn_err_msg + "\n Insert into Hla-Types failed!",
+                                            content_type='text/plain', status_int=500)
                     #hla_types_id_list.append(hla_types_id)
                     else:
                         hla_types_id = hla_types_id[0]
@@ -353,7 +365,8 @@ def upload_metadata_source_post(request):
                     ################
 
                     try:
-                        query = DBSession.query(t_hla_map).filter(HlaType.hla_types_id== hla_types_id).filter(HlaLookup.hla_lookup_id == hla_lookup_id)
+                        query = DBSession.query(t_hla_map).filter(HlaType.hla_types_id == hla_types_id).filter(
+                            HlaLookup.hla_lookup_id == hla_lookup_id)
                         hla_map_ids = query.all()
                     except DBAPIError:
                         return Response(conn_err_msg, content_type='text/plain', status_int=500)
@@ -367,32 +380,32 @@ def upload_metadata_source_post(request):
                         except DBAPIError:
                             return Response(conn_err_msg + "\n Insert into Hla-Map failed!",
                                             content_type='text/plain', status_int=500)
-
-                    print "test"
         else:
             hla_lookup_id = "NULL"
-        #####################################################
+        # ####################################################
         # Source:                                           #
         #####################################################
         try:
             source_insert = Source(name=source['source'], organ=source['organ'], organism=source['organism'],
-                               histology=source['histology'], dignity=source['dignity'], location=source['location'],
-                               metastatis=source['metastatis'], celltype=source['celltype'], fk_hla_lookup_id= hla_lookup_id, person=source['person'], comment=source['comment'])
+                                   histology=source['histology'], dignity=source['dignity'],
+                                   location=source['location'],
+                                   metastatis=source['metastatis'], celltype=source['celltype'],
+                                   comment=source['comment'],
+                                   fk_hla_lookup_id=hla_lookup_id, person=source['person'])
             DBSession.add(source_insert)
             DBSession.flush()
         except DBAPIError:
             return Response(conn_err_msg + "\n Insert into Source failed!",
                             content_type='text/plain', status_int=500)
-
-
-
     return dict()
+
 
 @view_config(route_name='upload_metadata_ms_run', renderer='templates/upload_metadata_msrun.pt', request_method="GET")
 def upload_metadata_ms_run(request):
     try:
         result_dict = dict()
-        allowed_elements = {"filename": MsRun.filename, "used_share": MsRun.used_share, "source": Source.name,
+        # TODO: Show only processed runs without metadata
+        allowed_elements = {"used_share": MsRun.used_share, "source": Source.name,
                             "sample_mass": MsRun.sample_mass, "sample_volume": MsRun.sample_volume,
                             "antibody_set": MsRun.antibody_set, "antibody_mass": MsRun.antibody_mass,
                             "magna": MsRun.magna}
@@ -403,14 +416,92 @@ def upload_metadata_ms_run(request):
             query_result = js_list_creator(query.all())
             result_dict[k] = query_result
 
-
+        allowed_elements = {"filename": MsRun.filename}
+        for k, v in allowed_elements.iteritems():
+            query = DBSession.query(v)
+            query = query.filter(MsRun.source_source_id == None)
+            query = query.group_by(v)
+            query_result = js_list_creator(query.all())
+            result_dict[k] = query_result
     except:
         return Response(conn_err_msg, content_type='text/plain', status_int=500)
     return result_dict
 
+
 @view_config(route_name='upload_metadata_ms_run', renderer='templates/base_layout.pt', request_method="POST")
 def upload_metadata_ms_run_post(request):
+    ms_run_upload = ast.literal_eval(request.params["ms_runs"])
+    for ms_run in ms_run_upload:
+        try:
+            ms_runs = DBSession.query(MsRun.ms_run_id).filter(MsRun.filename == ms_run['filename']).filter(
+                MsRun.source_source_id != None).all()
+        except DBAPIError:
+            return Response(conn_err_msg, content_type='text/plain', status_int=500)
+        if len(ms_runs) > 0:
+            return Response("The source " + ms_run['source'] + " is already in the Database. Aborted whole upload!",
+                            content_type='text/plain', status_int=500)
+
+    for ms_run in ms_run_upload:
+        try:
+            source = DBSession.query(Source.source_id).filter(Source.name == ms_run["source"]).all()
+        except DBAPIError:
+            return Response(conn_err_msg, content_type='text/plain', status_int=500)
+        if len(source) == 0:
+            return Response("The source " + ms_run['source'] + " is not known in the Database. Aborted whole upload!",
+                            content_type='text/plain', status_int=500)
+        else:
+            source_id = source[0][0]
+
+        # update if already in DB (without metadata included)
+        try:
+            ms_run_update = DBSession.query(MsRun).filter(MsRun.filename == ms_run["filename"]).filter(
+                MsRun.source_source_id == None).all()
+        except:
+            DBAPIError
+            return Response(conn_err_msg + " \n MsRun insert failed", content_type='text/plain', status_int=500)
+
+        if len(ms_run_update) > 0:
+            ms_run_update[0].source_source_id = source_id
+            if(ms_run['date'] != "" ):
+                ms_run_update[0].ms_run_date = ms_run['date']
+            if (ms_run['used_share'] != "" and ms_run['used_share'] != "None"):
+                ms_run_update[0].used_share = ms_run['used_share']
+            if ( ms_run['comment'] != ""):
+                ms_run_update[0].comment = ms_run['comment']
+            if (ms_run['sample_mass'] != "" and ms_run['sample_mass'] !=  "None"):
+                ms_run_update[0].sample_mass = ms_run['sample_mass']
+            if (ms_run['sample_volume'] != "" and ms_run['sample_volume'] != "None"):
+                ms_run_update[0].sample_volume = ms_run['sample_volume']
+            ms_run_update[0].antibody_set = ms_run['antibody_set'].replace(" ","")
+            if (ms_run['antibody_mass'] != "" and ms_run['antibody_mass'] != "None"):
+                ms_run_update[0].antibody_mass = ms_run['antibody_mass']
+            ms_run_update[0].magna = ms_run['magna']
+            if (ms_run['prep_date'] != ""):
+                ms_run_update[0].prep_date = ms_run['prep_date']
+            if (ms_run['prep_comment'] != ""):
+                ms_run_update[0].prep_comment = ms_run['prep_comment']
+            DBSession.flush()
+        else:
+            try:
+                ms_run_insert = MsRun(filename=ms_run['filename'],
+                                      source_source_id=source_id,
+                                      ms_run_date=ms_run['date'] if ms_run['date'] != "" else None,
+                                      used_share=ms_run['used_share'] if ms_run['used_share'] != "" and ms_run['used_share'] != "None" else None,
+                                      comment=ms_run['comment'] if ms_run['comment'] != "" else None,
+                                      sample_mass=ms_run['sample_mass'] if ms_run['sample_mass'] != "" and ms_run['sample_mass'] != "None" else None,
+                                      sample_volume=ms_run['sample_volume'] if ms_run['sample_volume'] != "" and ms_run['sample_volume'] != "None" else None,
+                                      antibody_set=ms_run['antibody_set'].replace(" ",""),
+                                      antibody_mass=ms_run['antibody_mass'] if ms_run['antibody_mass'] != "" and ms_run['antibody_mass'] != "None" else None,
+                                      magna=ms_run['magna'],
+                                      prep_date=ms_run['prep_date'] if ms_run['prep_date'] != "" else None,
+                                      prep_comment=ms_run['prep_comment'] if ms_run['prep_comment'] != "" else None)
+                DBSession.add(ms_run_insert)
+                DBSession.flush()
+            except DBAPIError:
+                return Response(conn_err_msg + " \n MsRun insert failed", content_type='text/plain', status_int=500)
+
     return dict()
+
 
 def js_list_creator(input):
     result_string = '['
@@ -419,17 +510,18 @@ def js_list_creator(input):
     result_string += ']'
     return result_string
 
+
 def create_filter(query, parameter, request, sql_object, sql_parent, rule, like, fk=None):
     if len(request.params[parameter]) is not 0:
         split = request.params[parameter].split(';')
         if len(split) > 1:
             if request.params[rule] == "AND":
-                for s in range(0,len(split)):
+                for s in range(0, len(split)):
                     if s == 0:
                         if like:
                             query = query.filter(getattr(sql_parent, sql_object).like(split[s]))
                         else:
-                            query = query.filter(getattr(sql_parent,sql_object) == split[s])
+                            query = query.filter(getattr(sql_parent, sql_object) == split[s])
                     else:
                         a_alias = aliased(sql_parent)
                         query = query.join(a_alias, fk)
@@ -437,18 +529,18 @@ def create_filter(query, parameter, request, sql_object, sql_parent, rule, like,
                             query = query.filter(getattr(a_alias, sql_object).like(split[s]))
                         else:
                             query = query.filter(getattr(a_alias, sql_object) == split[s])
-                        # TODO: add second search to result (e.g. second Protein)
+                            # TODO: add second search to result (e.g. second Protein)
             else:
                 temp_code = "query = query.filter(or_("
                 for s in split:
                     if like:
-                        temp_code += "getattr(sql_parent, sql_object).like(split[s])," %s
+                        temp_code += "getattr(sql_parent, sql_object).like(split[s])," % s
                     else:
                         temp_code += "getattr(sql_parent,sql_object) == '%s'," % s
                 temp_code = temp_code.strip(",")
                 temp_code += "))"
                 exec temp_code
-                #query.filter(or_(getattr(sql_parent,sql_object) == s for s in split))
+                # query.filter(or_(getattr(sql_parent,sql_object) == s for s in split))
         else:
             if rule == ">" or rule == "<":
                 if rule == ">":
@@ -492,7 +584,6 @@ dthandler = lambda obj: (
     if isinstance(obj, datetime.datetime)
        or isinstance(obj, datetime.date)
     else None)
-
 
 conn_err_msg = """\
 Pyramid is having a problem using your SQL database.  The problem
