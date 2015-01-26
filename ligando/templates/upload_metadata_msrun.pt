@@ -61,8 +61,8 @@
         </table>
 
         <button id="check_button" class="nice_button" onclick="checkInput()">Check Ms Runs</button>
-        <form id="submit" method="POST" action=upload_metadata_source>
-            <input type='text' id='commit_field' hidden name="sources">
+        <form id="submit" method="POST" action=upload_metadata_ms_run>
+            <input type='text' id='commit_field' hidden name="ms_runs">
             <input type="submit" id="commit_button" class="nice_button" hidden value="Commit Ms Run">
         </form>
     </div>
@@ -175,8 +175,13 @@
     });
 
     $(function() {
-        $( "#datetags" ).datepicker();
-        $( "#prep_datetags" ).datepicker();
+        $( "#datetags" ).datepicker({
+                    dateFormat: "yy-mm-dd"
+                }
+        );
+        $( "#prep_datetags" ).datepicker({
+            dateFormat: "yy-mm-dd"
+        });
     });
 
 
@@ -230,12 +235,23 @@
         for(var i=1; i<11; i++){
             if(document.getElementById("filename_"+i).innerText != "") {
                 for (l = 0; l < cells.length; l++) {
-                    if (cells[l] == "antibody_set" && cells[l] != "prep_comment" && cells[l] != "used_share") {
+                    if (cells[l] == "antibody_set") {
                         if(document.getElementById(cells[l] + "_" + i).innerText.indexOf(";") != -1 ) {
                             alert("; is not allowed in Antibody set");
                             return;
                         }
-                    }if(cells[l] == "filename" || cells[l] == "source" || cells[l] == "antibody_set" || cells[l] == "antibody_mass" || cells[l] == "magna"){
+                        if(document.getElementById(cells[l] + "_" + i).innerText == ""){
+                            alert(nice_names[cells[l]] + " in row "+ i + " is not allowed to be empty!");
+                            return;
+                        }
+                        var ab = document.getElementById(cells[l] + "_" + i).innerText.split(",");
+                        for (j = 0; j < ab.length; j++){
+                            if($.inArray(ab[j].trim(), autocomplete_dict[cells[l]])==-1){
+                                alert(ab[j].trim());
+                                alert("The antibody "+ ab + " is unknown. If you really want to add a new antibody please contact the admin!");
+                            }
+                        }
+                    }if(cells[l] == "filename" || cells[l] == "source" || cells[l] == "magna"){
                         if(document.getElementById(cells[l] + "_" + i).innerText == ""){
                             alert(nice_names[cells[l]] + " in row "+ i + " is not allowed to be empty!");
                             return;
@@ -245,15 +261,18 @@
                                 return;
                             }
                         }
+                    }if(cells[l] == "source" ){
+                        if(($.inArray(document.getElementById(cells[l] + "_" + i).innerText, autocomplete_dict[cells[l]])) == -1) {
+                            alert("The " + nice_names[cells[l]] + " " + document.getElementById(cells[l] + "_" + i).innerText + " in row " + i + " is unknown. Please submit the source first.")
+                            return;
+                        }
                     }
                 }
             }
         }
-        // TODO: create return value
-        //{'jack': 4098, 'sape': 4139}
         var val = "[";
         for(var i=1; i<11; i++){
-            if(document.getElementById("source_" + i).innerText != "") {
+            if(document.getElementById("filename_" + i).innerText != "") {
                 var temp_dict = "{";
                 for (l = 0; l < cells.length; l++) {
                     temp_dict += "'" + cells[l] + "':'" + document.getElementById(cells[l] + "_" + i).innerText + "',";
@@ -277,7 +296,7 @@
             "info":false,
             "bFilter":false,
             "scrollX": true
-    });
+        });
         $(window).bind('resize', function () {
             oTable.fnAdjustColumnSizing();
   } );
