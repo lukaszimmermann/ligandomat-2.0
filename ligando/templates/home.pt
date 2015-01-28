@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html metal:use-macro="load: base_layout.pt">
+<html lang="${request.locale_name}">
+<head>
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.4/css/jquery.dataTables.css">
+
+    <link rel="stylesheet" type="text/css" href="${request.static_url('ligando:static/main_styles.css')}">
+    <link rel="stylesheet" type="text/css" href="//code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css">
+
+
+</head>
+
+<body>
+<div id="statistic_wrapper" class="wrapper" >
+    <table width="100%">
+    <tr>
+        <td>
+        <div id="msrun_plot" style="width:300px;height:300px"></div>
+        </td>
+        <td>
+        <h3>Database Statistics</h3><br>
+        Sources: ${sources_count}<br>
+        Ms Runs: ${all_msrun_count}<br>
+        Orphan Ms Runs: ${orphan_msrun_count}
+        </td>
+
+        <td>
+            <div class="datagrid">
+        <table id="orphan_table">
+        </table>
+                </div>
+        </td>
+    </tr>
+    </table>
+</div>
+
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+
+
+<!-- jQuery -->
+<script type="text/javascript" charset="utf8" src="//code.jquery.com/jquery-1.10.2.min.js"></script>
+
+<script type="text/javascript" charset="utf8" src="${request.static_url('ligando:static/js/jquery.flot.js')}"></script>
+
+<!-- DataTables -->
+<script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.4/js/jquery.dataTables.js"></script>
+
+<script src="//code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
+
+
+<script>
+    $(function() {
+        var ms_run = [[1,${all_msrun_count}]];
+        var orphan_ms_run = [[2,200]]; //${orphan_msrun_count}]];
+
+        var data = [{label: 'Complete MS Runs', data:ms_run,color: "rgb("+180+","+160+","+105+")"},
+                {label: 'Orphan MS Runs', data:orphan_ms_run, color: "rgb("+165+","+30+","+55+")"}]
+        var options = {series: {stack: 0,
+
+                 lines: {show: false, steps: false },
+                 bars: {show: true, barWidth: 0.5, align: 'center',fill :1}},
+                xaxis: {min: 0, max:3, show:false}}
+        $.plot("#msrun_plot",data,options);
+    })
+
+
+    $(function () {
+        table = document.getElementById('orphan_table');
+        var markup = ['<thead> <tr><th>Orphan Ms Runs</th></tr>  </thead><tbody>'];
+
+        for (var i = 0; i < 10; i++) {
+            if (i % 2 != 0) {
+                markup.push('<tr class="alt">');
+            } else {
+                markup.push('<tr >');
+            }
+            markup.push('<td>' +${orphan_msrun}[i]+ '</td></tr>')
+        }
+        markup.push('</tbody>');
+        table.innerHTML = markup.join("");
+    })
+
+
+</script>
+
+
+</body>
+</html>
