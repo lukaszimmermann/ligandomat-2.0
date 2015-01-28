@@ -3,7 +3,7 @@ import datetime
 from pyramid.httpexceptions import HTTPFound
 from pyramid.response import Response
 from pyramid.view import view_config
-from sqlalchemy import func, or_, bindparam, ForeignKey
+from sqlalchemy import func, or_, bindparam, ForeignKey, distinct
 from sqlalchemy.dialects.postgresql import json
 from sqlalchemy.ext.declarative import DeclarativeMeta
 from sqlalchemy.exc import DBAPIError
@@ -27,7 +27,33 @@ from .models import (
 
 @view_config(route_name='home', renderer='templates/home.pt')
 def my_view(request):
-    return dict()
+    try:
+        result_dict = dict()
+        allowed_elements = {"source_names": Source.name, "organ": Source.organ,
+                            "organism": Source.organism, "histology": Source.histology, "dignity": Source.dignity,
+                            "celltype": Source.celltype, "location": Source.location, "metastatis": Source.metastatis,
+                            "person": Source.person, "typing": HlaType.hla_string}
+
+        for k, v in allowed_elements.iteritems():
+            query = DBSession.query(v)
+            query = query.group_by(v)
+            query_result = js_list_creator(query.all())
+            result_dict[k] = query_result
+
+        result_dict["orphan_msrun_count"] =  DBSession.query(func.count(distinct(MsRun.filename))).filter(MsRun.source_source_id is None).one()[0]
+        result_dict["all_msrun_count"] = DBSession.query(func.count(distinct(MsRun.filename))).one()[0]
+        result_dict["sources_count"] = DBSession.query(func.count(distinct(Source.name))).one()[0]
+        # TODO: activate the filter, if there are finally orphan runs
+        #result_dict["orphan_msrun"] = js_list_creator(
+        #    DBSession.query(distinct(MsRun.filename)).filter(MsRun.source_source_id is None).all())
+        result_dict["orphan_msrun"] = js_list_creator(
+            DBSession.query(distinct(MsRun.filename)).limit(10).all())
+
+        return result_dict
+    except:
+        return Response(conn_err_msg, content_type='text/plain', status_int=500)
+
+
 
     # try:
     # # one = DBSession.query(MyModel).filter(MyModel.name == 'one').first()
@@ -402,8 +428,12 @@ def upload_metadata_source_post(request):
 
 @view_config(route_name='upload_metadata_ms_run', renderer='templates/upload_metadata_msrun.pt', request_method="GET")
 def upload_metadata_ms_run(request):
+    result_dict = dict()
+    if("run" in request.params):
+        result_dict["run"] = request.params["run"]
+    else:
+        result_dict["run"] = ""
     try:
-        result_dict = dict()
         # TODO: Show only processed runs without metadata
         allowed_elements = {"used_share": MsRun.used_share, "source": Source.name,
                             "sample_mass": MsRun.sample_mass, "sample_volume": MsRun.sample_volume,

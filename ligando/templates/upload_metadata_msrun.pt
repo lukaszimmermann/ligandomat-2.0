@@ -51,6 +51,7 @@
 
 
     </table>
+
     <div class="datagrid">
         <button onclick="addSource()" class="nice_button">Add Ms run to list</button>
         <br>
@@ -301,6 +302,12 @@
             oTable.fnAdjustColumnSizing();
   } );
     } );
+
+    $(document).ready(function() {
+        if("${run}" != ""){
+            document.getElementById('filenametags').value = "${run}" ;
+        }
+    });
 
 
 </script>

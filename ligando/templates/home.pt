@@ -78,7 +78,9 @@
             } else {
                 markup.push('<tr >');
             }
-            markup.push('<td>' +${orphan_msrun}[i]+ '</td></tr>')
+            markup.push('<td>')
+            var run = ${orphan_msrun}[i]
+            markup.push('<a href="/upload_metadata_ms_run?run='+ run + '">'+run+ '</a></td></tr>')
         }
         markup.push('</tbody>');
         table.innerHTML = markup.join("");
