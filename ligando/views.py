@@ -184,6 +184,7 @@ def peptide_query_result(request):
 
             #results = query.all()
             query = query.group_by(PeptideRun.peptide_run_id)
+            #test = query.all()
 
             serialized_labels = [
                 serialize(label,
@@ -279,6 +280,7 @@ def peptide_query_result(request):
 
             # results = query.all()
             query = query.group_by(Source.source_id, SpectrumHit.sequence)
+
 
             serialized_labels = [
                 serialize(label,
