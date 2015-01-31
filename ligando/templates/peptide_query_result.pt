@@ -32,7 +32,8 @@
             <tr tal:condition="grouping == 'peptide'">
                 <th>Sequence</th>
                 <th>Protein</th>
-                <th>Histology</th>
+                <th>Source</th>
+                <th>HLA Typing</th>
             </tr>
             <tr tal:condition="grouping == 'source'">
                 <th>Sequence</th>
@@ -102,7 +103,7 @@
                 { data: "hla_category"},
                 { data: "name"},
                 { data: "histology"},
-                { data: "source_name"},
+                { data: "name"},
                 { data: "filename"}
             ],
             "sDom": 'T<"clear">lfrtip',
@@ -118,8 +119,9 @@
             data: ${project},
             columns: [
                 { data: "sequence" },
+                { data: "protein"},
                 { data: "name"},
-                { data: "histology"}
+                { data: "hla_category"}
             ],
             "sDom": 'T<"clear">lfrtip',
             oTableTools: {
@@ -142,7 +144,7 @@
                 { data: "minQ"},
                 { data: "maxQ"},
                 { data: "hla_category"},
-                { data: "name"},
+                { data: "protein"},
                 { data: "histology"},
                 { data: "source_name"}
             ],
@@ -168,7 +170,7 @@
                 { data: "maxQ"},
                 { data: "PSM"},
                 { data: "hla_category"},
-                { data: "name"},
+                { data: "protein"},
                 { data: "histology"},
                 { data: "source_name"}
             ],

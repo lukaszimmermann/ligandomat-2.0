@@ -3,12 +3,11 @@ import datetime
 from pyramid.httpexceptions import HTTPFound, exception_response
 from pyramid.response import Response
 from pyramid.view import view_config
-from sqlalchemy import func, or_, bindparam, ForeignKey, distinct
-from sqlalchemy.dialects.postgresql import json
-from sqlalchemy.ext.declarative import DeclarativeMeta
+from sqlalchemy import func, distinct, String
 from sqlalchemy.exc import DBAPIError
 import simplejson as json
 from sqlalchemy.orm import class_mapper, aliased
+
 
 from .models import (
     DBSession,
@@ -55,25 +54,12 @@ def my_view(request):
 
 
 
-    # try:
-    # # one = DBSession.query(MyModel).filter(MyModel.name == 'one').first()
-    #     one = 1
-    # except DBAPIError:
-    #     return Response(conn_err_msg, content_type='text/plain', status_int=500)
-    # return {'one': one, 'project': 'ligando'}
-
-
 @view_config(route_name='source_overview', renderer='templates/source_info.pt')
 def source_overview(request):
     try:
-        serialized_labels = [
-            serialize(label, ['name', 'dignity', 'celltype', 'histology', 'location', 'metastatis', 'person', 'organ',
-                              'organism'])
-            for label in
+        your_json = json.dumps(
             DBSession.query(Source.name, Source.dignity, Source.celltype, Source.histology, Source.location,
-                            Source.metastatis, Source.person, Source.organ, Source.organism)
-        ]
-        your_json = json.dumps(serialized_labels)
+                            Source.metastatis, Source.person, Source.organ, Source.organism).all())
     except DBAPIError:
         return Response(conn_err_msg, content_type='text/plain', status_int=500)
     return {'project': your_json}
@@ -82,12 +68,11 @@ def source_overview(request):
 @view_config(route_name='run_overview', renderer='templates/run_info.pt')
 def run_overview(request):
     try:
-        serialized_labels = [
-            serialize(label, ["filename", "name", "organ", "dignity", "ms_run_date", "antibody_set", "prep_comment",
-                              "used_share", "sample_mass"], joined=True)
-            for label in DBSession.query(MsRun, Source).filter(Source.source_id == MsRun.source_source_id)
-        ]
-        your_json = json.dumps(serialized_labels, default=dthandler)
+        your_json = json.dumps(DBSession.query(MsRun.filename,Source.name.label("name"), Source.organ, Source.dignity,
+                                           func.cast(MsRun.ms_run_date, String).label("ms_run_date"), MsRun.antibody_set,
+                                           MsRun.prep_comment, MsRun.used_share,
+                                           MsRun.sample_mass).filter(Source.source_id == MsRun.source_source_id).all())
+
     except DBAPIError:
         return Response(conn_err_msg, content_type='text/plain', status_int=500)
     return {'project': your_json}
@@ -112,8 +97,9 @@ def peptide_query_result(request):
     if request.params['grouping'] == "peptide":
         try:
             query = DBSession.query(PeptideRun.sequence,
-                                    func.group_concat(Protein.name.distinct().op('separator')(', ')),
-                                    func.group_concat(Source.histology.distinct().op('separator')(', ')))
+                                    func.group_concat(Protein.name.distinct().op('separator')(', ')).label("protein"),
+                                    func.group_concat(Source.histology.distinct().op('separator')(', ')).label("name"),
+                                    HlaLookup.hla_category)
             query = query.join(Source)
             query = query.join(MsRun, PeptideRun.ms_run_ms_run_id == MsRun.ms_run_id)
             query = query.join(HlaLookup)
@@ -139,18 +125,10 @@ def peptide_query_result(request):
             # results = query.all()
             query = query.group_by(PeptideRun.sequence)
 
-            serialized_labels = [
-                serialize(label,
-                          ["sequence", "name", "histology"],
-                          joined=True, specified=True)
-                for label in query.all()
-            ]
-            your_json = json.dumps(serialized_labels, default=dthandler)
+            your_json = json.dumps(query.all())
             grouping = "peptide"
-            # print your_json
         except DBAPIError:
             return Response(conn_err_msg, content_type='text/plain', status_int=500)
-    # elif: request.params['source_grouping']:
     elif request.params['grouping'] == "run":
         try:
             query = DBSession.query(PeptideRun.peptide_run_id,
@@ -182,32 +160,26 @@ def peptide_query_result(request):
             query = create_filter(query, 'length_1', request, 'length', PeptideRun, ">", False)
             query = create_filter(query, 'length_2', request, 'length', PeptideRun, "<", False)
 
-            #results = query.all()
             query = query.group_by(PeptideRun.peptide_run_id)
-            #test = query.all()
-
-            serialized_labels = [
-                serialize(label,
-                          ["peptide_run_id", "sequence", "minRT", "maxRT", "minScore", "maxScore", "minE", "maxE",
-                           "minQ", "maxQ", "PSM", "hla_category", "name", "histology", "source_name", "filename"],
-                          joined=True, specified=True)
-                for label in query.all()
-            ]
-            your_json = json.dumps(serialized_labels, default=dthandler)
+            your_json = json.dumps(query.all())
             grouping = "run"
-            # print your_json
         except DBAPIError:
             return Response(conn_err_msg, content_type='text/plain', status_int=500)
     elif request.params['grouping'] == "source":
         try:
             query = DBSession.query(PeptideRun.peptide_run_id,
-                                    PeptideRun.sequence, func.min(PeptideRun.minRT), func.max(PeptideRun.maxRT),
-                                    func.min(PeptideRun.minScore), func.max(PeptideRun.maxScore),
-                                    func.min(PeptideRun.minE), func.max(PeptideRun.maxE),
-                                    func.min(PeptideRun.minQ), func.max(PeptideRun.maxQ),
+                                    PeptideRun.sequence,
+                                    func.min(PeptideRun.minRT).label("minRT"),
+                                    func.max(PeptideRun.maxRT).label("maxRT"),
+                                    func.min(PeptideRun.minScore).label("minScore"),
+                                    func.max(PeptideRun.maxScore).label("maxScore"),
+                                    func.min(PeptideRun.minE).label("minE"),
+                                    func.max(PeptideRun.maxE).label("maxE"),
+                                    func.min(PeptideRun.minQ).label("minQ"),
+                                    func.max(PeptideRun.maxQ).label("maxQ"),
                                     HlaLookup.hla_category,
-                                    func.group_concat(Protein.name.distinct().op('separator')(', ')),
-                                    Source.histology, Source.name)
+                                    func.group_concat(Protein.name.distinct().op('separator')(', ')).label("protein"),
+                                    Source.histology, Source.name.label("source_name"))
             query = query.join(Source)
             query = query.join(MsRun, PeptideRun.ms_run_ms_run_id == MsRun.ms_run_id)
             query = query.join(HlaLookup)
@@ -230,32 +202,26 @@ def peptide_query_result(request):
             query = create_filter(query, 'length_1', request, 'length', PeptideRun, ">", False)
             query = create_filter(query, 'length_2', request, 'length', PeptideRun, "<", False)
 
-            # results = query.all()
             query = query.group_by(Source.source_id, PeptideRun.sequence)
 
-            serialized_labels = [
-                serialize(label,
-                          ["peptide_run_id", "sequence", "minRT", "maxRT", "minScore", "maxScore", "minE", "maxE",
-                           "minQ", "maxQ", "hla_category", "name", "histology", "source_name"],
-                          joined=True, specified=True)
-                for label in query.all()
-            ]
-            your_json = json.dumps(serialized_labels, default=dthandler)
+            your_json = json.dumps(query.all())
             grouping = "source"
-            # print your_json
         except DBAPIError:
             return Response(conn_err_msg, content_type='text/plain', status_int=500)
     elif request.params['grouping'] == "source_psm":
         try:
             query = DBSession.query(
                 SpectrumHit.sequence,
-                func.min(SpectrumHit.ionscore), func.max(SpectrumHit.ionscore),
-                func.min(SpectrumHit.e_value), func.max(SpectrumHit.e_value),
-                func.min(SpectrumHit.q_value), func.max(SpectrumHit.q_value),
-                func.count(SpectrumHit.spectrum_hit_id.distinct()),
+                func.min(SpectrumHit.ionscore).label("minScore"),
+                func.max(SpectrumHit.ionscore).label("maxScore"),
+                func.min(SpectrumHit.e_value).label("minE"),
+                func.max(SpectrumHit.e_value).label("maxE"),
+                func.min(SpectrumHit.q_value).label("minQ"),
+                func.max(SpectrumHit.q_value).label("maxQ"),
+                func.count(SpectrumHit.spectrum_hit_id.distinct()).label("PSM"),
                 HlaLookup.hla_category,
-                func.group_concat(Protein.name.distinct().op('separator')(', ')),
-                Source.histology, Source.name)
+                func.group_concat(Protein.name.distinct().op('separator')(', ')).label("protein"),
+                Source.histology, Source.name.label("source_name"))
             query = query.join(Source)
             query = query.join(MsRun, SpectrumHit.ms_run_ms_run_id == MsRun.ms_run_id)
             query = query.join(HlaLookup)
@@ -278,20 +244,10 @@ def peptide_query_result(request):
             query = create_filter(query, 'length_1', request, 'length', SpectrumHit, ">", False)
             query = create_filter(query, 'length_2', request, 'length', SpectrumHit, "<", False)
 
-            # results = query.all()
             query = query.group_by(Source.source_id, SpectrumHit.sequence)
 
-
-            serialized_labels = [
-                serialize(label,
-                          ["sequence", "minScore", "maxScore", "minE", "maxE",
-                           "minQ", "maxQ", "PSM", "hla_category", "name", "histology", "source_name"],
-                          joined=True, specified=True)
-                for label in query.all()
-            ]
-            your_json = json.dumps(serialized_labels, default=dthandler)
+            your_json = json.dumps(query.all())
             grouping = "source_psm"
-            # print your_json
         except DBAPIError:
             return Response(conn_err_msg, content_type='text/plain', status_int=500)
 
@@ -312,11 +268,6 @@ def upload_metadata_source(request):
             query = query.group_by(v)
             query_result = js_list_creator(query.all())
             result_dict[k] = query_result
-
-            # query = DBSession.query(Source.name)
-            #query = query.group_by(Source.name)
-            #source_names = js_list_creator(query.all())
-
     except:
         return Response(conn_err_msg, content_type='text/plain', status_int=500)
     return result_dict
@@ -364,7 +315,6 @@ def upload_metadata_source_post(request):
             # hla_types    #
             # ###############
             hla_alleles = source['typing'].split(";")
-            #hla_types_id_list = list()
             for hla_typing in hla_alleles:
                 hla_typing_split = hla_typing.strip().split(":")
                 for i in range(0, len(hla_typing_split)):
@@ -384,7 +334,6 @@ def upload_metadata_source_post(request):
                         except DBAPIError:
                             return Response(conn_err_msg + "\n Insert into Hla-Types failed!",
                                             content_type='text/plain', status_int=500)
-                    #hla_types_id_list.append(hla_types_id)
                     else:
                         hla_types_id = hla_types_id[0]
                         hla_type = query = DBSession.query(HlaType).filter(HlaType.hla_string == sub_type).all()[0]
@@ -599,7 +548,6 @@ def create_filter(query, parameter, request, sql_object, sql_parent, rule, like,
                 temp_code = temp_code.strip(",")
                 temp_code += "))"
                 exec temp_code
-                # query.filter(or_(getattr(sql_parent,sql_object) == s for s in split))
         else:
             if rule == ">" or rule == "<":
                 if rule == ">":
@@ -612,37 +560,6 @@ def create_filter(query, parameter, request, sql_object, sql_parent, rule, like,
                 else:
                     query = query.filter(getattr(sql_parent, sql_object) == split[0])
     return query
-
-
-def serialize(model, columns, joined=False, specified=False):
-    """Transforms a model into a dictionary which can be dumped to JSON."""
-    # first we get the names of all the columns on your model
-    if specified:
-        result = dict()
-        for i in range(0, len(columns)):
-            result[columns[i]] = model[i]
-        return result
-    elif joined:
-        result = dict()
-        for c in columns:
-            for m in model:
-                if hasattr(m, c):
-                    result[c] = getattr(m, c)
-                    continue
-        return result
-
-    else:
-        if columns is None:
-            columns = [c.key for c in class_mapper(model.__class__).columns]
-        # then we return their values in a dict
-        return dict((c, getattr(model, c)) for c in columns)
-
-# Datetime handler. Allows Json serialization for datetime
-dthandler = lambda obj: (
-    obj.isoformat()
-    if isinstance(obj, datetime.datetime)
-       or isinstance(obj, datetime.date)
-    else None)
 
 conn_err_msg = """\
 Pyramid is having a problem using your SQL database.  The problem
