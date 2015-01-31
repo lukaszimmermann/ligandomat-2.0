@@ -1,6 +1,6 @@
 import ast
 import datetime
-from pyramid.httpexceptions import HTTPFound
+from pyramid.httpexceptions import HTTPFound, exception_response
 from pyramid.response import Response
 from pyramid.view import view_config
 from sqlalchemy import func, or_, bindparam, ForeignKey, distinct
@@ -532,6 +532,33 @@ def upload_metadata_ms_run_post(request):
 
     return dict()
 
+
+@view_config(route_name='peptide', renderer='templates/peptide.pt', request_method="get")
+def peptide_page(request):
+
+    if ("peptide" in request.params):
+        try:
+            query = DBSession.query(SpectrumHit.spectrum_hit_id,
+                                    SpectrumHit.sequence,
+                                    HlaLookup.hla_category,
+                                    func.group_concat(Protein.name.distinct().op('separator')(', ')),
+                                    Source.histology, Source.name)
+            query = query.join(Source)
+            query = query.join(MsRun, SpectrumHit.ms_run_ms_run_id == SpectrumHit.ms_run_id)
+            query = query.join(HlaLookup)
+            query = query.join(t_hla_map)
+            query = query.join(HlaType)
+            query = query.join(t_peptide_protein_map)
+            query = query.join(Protein)
+            query = query.filter(SpectrumHit.sequence == request.params["peptide"])
+
+            raise exception_response(404)
+        except:
+            return Response(conn_err_msg, content_type='text/plain', status_int=500)
+    else:
+        return dict()
+
+    return dict()
 
 def js_list_creator(input):
     result_string = '['
