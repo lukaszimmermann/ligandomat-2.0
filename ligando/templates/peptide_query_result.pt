@@ -14,15 +14,11 @@
     <table id="example" auto class="display" cellspacing="0" width="80%"> <thead>
             <tr tal:condition="grouping == 'run'">
                 <th>Sequence</th>
-                <th>min RT</th>
-                <th>max RT</th>
-                <th>min Score</th>
-                <th>max Score</th>
-                <th>min E-value</th>
-                <th>max E-value</th>
-                <th>min Q-value</th>
-                <th>max Q-value</th>
-                <th>PSM</th>
+                <th>RT [min]</th>
+                <th>Score</th>
+                <th>E-value</th>
+                <th>Q-value</th>
+                <th>#PSM</th>
                 <th>HLA Typing</th>
                 <th>Protein</th>
                 <th>Histology</th>
@@ -37,14 +33,10 @@
             </tr>
             <tr tal:condition="grouping == 'source'">
                 <th>Sequence</th>
-                <th>min RT</th>
-                <th>max RT</th>
-                <th>min Score</th>
-                <th>max Score</th>
-                <th>min E-value</th>
-                <th>max E-value</th>
-                <th>min Q-value</th>
-                <th>max Q-value</th>
+                <th>RT [min]</th>
+                <th>Score</th>
+                <th>E-value</th>
+                <th>Q-value</th>
                 <th>HLA Typing</th>
                 <th>Protein</th>
                 <th>Histology</th>
@@ -52,12 +44,9 @@
             </tr>
             <tr tal:condition="grouping == 'source_psm'">
                 <th>Sequence</th>
-                <th>min Score</th>
-                <th>max Score</th>
-                <th>min E-value</th>
-                <th>max E-value</th>
-                <th>min Q-value</th>
-                <th>max Q-value</th>
+                <th>Score</th>
+                <th>E-value</th>
+                <th>Q-value</th>
                 <th>PSM</th>
                 <th>HLA Typing</th>
                 <th>Protein</th>
@@ -73,7 +62,7 @@
     <!-- Placed at the end of the document so the pages load faster -->
 
     <!-- jQuery -->
-    <script type="text/javascript" charset="utf8" src="//code.jquery.com/jquery-1.10.2.min.js"></script>
+    <!-- <script type="text/javascript" charset="utf8" src="//code.jquery.com/jquery-1.10.2.min.js"></script> -->
 
     <!-- DataTables -->
     <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.4/js/jquery.dataTables.js"></script>
@@ -84,24 +73,32 @@
 
     <script>
 
-    //$.fn.dataTable.TableTools.defaults.aButtons = [ "csv"];
+    //TODO: choose delimiter
     $(document).ready(function() {
     if ("${grouping}" == "run") {
         $('#example').dataTable( {
             data: ${project},
             columns: [
                 { data: "sequence" },
-                { data: "minRT"},
-                { data: "maxRT" },
-                { data: "minScore"},
-                { data: "maxScore"},
-                { data: "minE"},
-                { data: "maxE"},
-                { data: "minQ"},
-                { data: "maxQ"},
+                { data: "minRT",
+                "render": function ( data, type, row ) {
+                    return data +' - '+ row.maxRT+'';
+                }},
+                { data: "minScore",
+                "render": function ( data, type, row ) {
+                    return data +' - '+ row.maxScore+'';
+                }},
+                { data: "minE",
+                "render": function ( data, type, row ) {
+                    return data +' - '+ row.maxE+'';
+                }},
+                { data: "minQ",
+                "render": function ( data, type, row ) {
+                    return data +' - '+ row.maxQ+'';
+                }},
                 { data: "PSM"},
                 { data: "hla_category"},
-                { data: "name"},
+                { data: "protein"},
                 { data: "histology"},
                 { data: "name"},
                 { data: "filename"}
@@ -110,9 +107,8 @@
             oTableTools: {
                 "sSwfPath": "${request.static_url('ligando:static/swf/copy_csv_xls_pdf.swf')}",
                 "aButtons":  ["csv"]
-
-
             }
+
         } );
     }else if ("${grouping}" == "peptide"){
         $('#example').dataTable( {
@@ -135,14 +131,22 @@
             data: ${project},
             columns: [
                 { data: "sequence" },
-                { data: "minRT"},
-                { data: "maxRT" },
-                { data: "minScore"},
-                { data: "maxScore"},
-                { data: "minE"},
-                { data: "maxE"},
-                { data: "minQ"},
-                { data: "maxQ"},
+                    { data: "minRT",
+                "render": function ( data, type, row ) {
+                    return data +' - '+ row.maxRT+'';
+                }},
+                { data: "minScore",
+                "render": function ( data, type, row ) {
+                    return data +' - '+ row.maxScore+'';
+                }},
+                { data: "minE",
+                "render": function ( data, type, row ) {
+                    return data +' - '+ row.maxE+'';
+                }},
+                { data: "minQ",
+                "render": function ( data, type, row ) {
+                    return data +' - '+ row.maxQ+'';
+                }},
                 { data: "hla_category"},
                 { data: "protein"},
                 { data: "histology"},
@@ -162,12 +166,18 @@
             data: ${project},
             columns: [
                 { data: "sequence" },
-                { data: "minScore"},
-                { data: "maxScore"},
-                { data: "minE"},
-                { data: "maxE"},
-                { data: "minQ"},
-                { data: "maxQ"},
+                { data: "minScore",
+                "render": function ( data, type, row ) {
+                    return data +' - '+ row.maxScore+'';
+                }},
+                { data: "minE",
+                "render": function ( data, type, row ) {
+                    return data +' - '+ row.maxE+'';
+                }},
+                { data: "minQ",
+                "render": function ( data, type, row ) {
+                    return data +' - '+ row.maxQ+'';
+                }},
                 { data: "PSM"},
                 { data: "hla_category"},
                 { data: "protein"},

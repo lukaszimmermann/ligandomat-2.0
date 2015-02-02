@@ -46,7 +46,7 @@ def my_view(request):
         #result_dict["orphan_msrun"] = js_list_creator(
         #    DBSession.query(distinct(MsRun.filename)).filter(MsRun.source_source_id is None).all())
         result_dict["orphan_msrun"] = js_list_creator(
-            DBSession.query(distinct(MsRun.filename)).limit(10).all())
+            DBSession.query(distinct(MsRun.filename)).order_by(MsRun.filename.desc()).limit(10).all())
 
         return result_dict
     except:
@@ -136,7 +136,7 @@ def peptide_query_result(request):
                                     PeptideRun.minScore, PeptideRun.maxScore, PeptideRun.minE, PeptideRun.maxE,
                                     PeptideRun.minQ, PeptideRun.maxQ, PeptideRun.PSM,
                                     HlaLookup.hla_category,
-                                    func.group_concat(Protein.name.distinct().op('separator')(', ')),
+                                    func.group_concat(Protein.name.distinct().op('separator')(', ')).label("protein"),
                                     Source.histology, Source.name, MsRun.filename)
             query = query.join(Source)
             query = query.join(MsRun, PeptideRun.ms_run_ms_run_id == MsRun.ms_run_id)
@@ -484,8 +484,9 @@ def upload_metadata_ms_run_post(request):
     return dict()
 
 
-@view_config(route_name='peptide', renderer='templates/peptide.pt', request_method="get")
+@view_config(route_name='peptide', renderer='templates/base_layout.pt', request_method="GET")
 def peptide_page(request):
+    print("peptide")
 
     if ("peptide" in request.params):
         try:
@@ -507,7 +508,7 @@ def peptide_page(request):
         except:
             return Response(conn_err_msg, content_type='text/plain', status_int=500)
     else:
-        return dict()
+        raise exception_response(404)
 
     return dict()
 
