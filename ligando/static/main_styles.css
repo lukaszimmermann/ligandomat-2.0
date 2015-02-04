@@ -1,14 +1,15 @@
 
+
+
 .wrapper {
     margin-top: 20pt;
     margin-right: auto;
     overflow:auto;
-    margin-left: 100pt;
+    width: 95%;
+    margin-left: auto;
     align-content: center;
 
 }
-
-
 
 .hidden {
     display: none;
@@ -48,42 +49,7 @@
 button.nice_button:active {
     top: 1px;
     outline: none;
-    /*-webkit-box-shadow: none;
-    box-shadow: none;*/
 }
-/*
-.nice_dropdown {
-    position: relative;
-    vertical-align: middle;
-    width: auto;
-    height: 25px;
-    padding: 5px;
-    padding-bottom: 30px;
-    font-size: 14px;
-    color: black;
-    text-align: center;
-    margin: 5pt;
-    background: rgb(164, 163, 169);
-    border: 0pt;
-    cursor: pointer;
-}
-
-.nice_dropdown_boolean {
-    position: relative;
-    vertical-align: middle;
-    width: auto;
-    height: 25px;
-    padding: 5px;
-    padding-bottom: 30px;
-    font-size: 14px !important;
-    color: #000000;
-    text-align: center;
-    margin: 5pt;
-    background: rgb(164, 163, 169);
-    border: 0pt;
-    cursor: pointer;
-}
-*/
 
 
 /* upload table style */
@@ -108,10 +74,7 @@ button.nice_button:active {
 }
 
 .datagrid table thead th {
-    /*background: -webkit-gradient(linear, left top, left bottom, color-stop(0.05, rgb(217, 205,177)), color-stop(1, rgb(195, 178, 133)));*/
-    /*background: -moz-linear-gradient(center top, rgb(217, 205,177) 5%, rgb(195, 178, 133) 100%);*/
-    /*filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=rgb(217, 205,177), endColorstr=rgb(195, 178, 133));*/
-    background-color: rgb(195, 178, 133);
+     background-color: rgb(195, 178, 133);
     color: black;
 }
 

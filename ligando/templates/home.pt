@@ -5,7 +5,6 @@
     <!-- DataTables CSS -->
     <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.4/css/jquery.dataTables.css">
 
-    <link rel="stylesheet" type="text/css" href="${request.static_url('ligando:static/main_styles.css')}">
     <link rel="stylesheet" type="text/css" href="//code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css">
 
 
@@ -36,20 +35,8 @@
 </div>
 
 
-<!-- Bootstrap core JavaScript
-================================================== -->
-<!-- Placed at the end of the document so the pages load faster -->
-
-
-<!-- jQuery -->
-<script type="text/javascript" charset="utf8" src="//code.jquery.com/jquery-1.10.2.min.js"></script>
-
 <script type="text/javascript" charset="utf8" src="${request.static_url('ligando:static/js/jquery.flot.js')}"></script>
 
-<!-- DataTables -->
-<script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.4/js/jquery.dataTables.js"></script>
-
-<script src="//code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
 
 
 <script>

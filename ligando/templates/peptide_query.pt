@@ -2,11 +2,6 @@
 <html metal:use-macro="load: base_layout.pt">
 <html lang="${request.locale_name}">
       <head>
-        <!-- DataTables CSS -->
-        <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.4/css/jquery.dataTables.css">
-
-        <link rel="stylesheet" type="text/css" href="${request.static_url('ligando:static/main_styles.css')}">
-
 
     </head>
 
@@ -111,83 +106,6 @@
 
     </form>
     </div>
-
-     <!-- backup
-
-     <div id="peptide_query_wrapper">
-    <select id="query_selector" onChange="show_hide(value)" textsize="15">
-    <option value="#sequence" >Sequence</option>
-    <option value="#run_name">MS Run name</option>
-    <option value="#source">Source name</option>
-    <option value="#organ">Organ</option>
-    <option value="#tissue">Tissue</option>
-    <option value="#histology">Histology</option>
-    <option value="#hla_typing">Hla typing</option>
-    <option value="#protein">Protein</option>
-    </select>
-
-     <form method="POST" action=peptide_query>
-        <table>
-        <tr id="sequence">
-            <td>Sequence:</td>
-            <td><input id="sequence_input" name="sequence" type="text"></td>
-            <td><button type="button" onclick="show_hide('#sequence')">-</button></td>
-        </tr>
-        <tr id="source">
-            <td>Source name:</td>
-            <td><input id="source_input" name="source" type="text"></td>
-            <td><button type="button" onclick="show_hide('#source')">-</button></td>
-        </tr>
-        <tr id="run_name">
-            <td>MS Run:</td>
-            <td><input id="run_name_input" name="run_name" type="text"></td>
-            <td><button type="button" onclick="show_hide('#run_name')">-</button></td>
-        </tr>
-        <tr id="organ">
-            <td>Organ:</td>
-            <td><input id="organ_input" name="organ" type="text"></td>
-            <td><button type="button" onclick="show_hide('#organ')">-</button></td>
-        </tr>
-        <tr id="histology">
-            <td>Histology:</td>
-            <td><input id="histology_input" name="histology" type="text"></td>
-            <td><button type="button" onclick="show_hide('#histology')">-</button></td>
-        </tr>
-        <tr id="dignity">
-            <td>Dignity:</td>
-            <td><input id="dignity_input" name="dignity" type="text"></td>
-            <td><button type="button" onclick="show_hide('#dignity')">-</button></td>
-        </tr>
-        <tr id="hla_typing">
-            <td>HLA Typing:</td>
-            <td><input id="hla_typing_input" name="hla_typing" type="text"></td>
-            <td><button type="button" onclick="show_hide('#hla_typing')">-</button></td>
-        </tr>
-        <tr id="protein">
-            <td>Protein:</td>
-            <td><input id="protein_input" name="protein" type="text"></td>
-            <td><button type="button" onclick="show_hide('#protein')">-</button></td>
-        </tr>
-        <input type="submit" value="Submit"/>
-
-        </table>
-    </form>
-    </div>
-    -->
-
-
-
-    <!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-
-
-        <!-- jQuery -->
-        <script type="text/javascript" charset="utf8" src="//code.jquery.com/jquery-1.10.2.min.js"></script>
-
-        <!-- DataTables -->
-        <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.4/js/jquery.dataTables.js"></script>
-
 
 
 

@@ -47,7 +47,7 @@
                 <th>Score</th>
                 <th>E-value</th>
                 <th>Q-value</th>
-                <th>PSM</th>
+                <th>#PSM</th>
                 <th>HLA Typing</th>
                 <th>Protein</th>
                 <th>Histology</th>

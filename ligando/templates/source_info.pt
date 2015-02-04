@@ -4,12 +4,6 @@
 <html lang="${request.locale_name}">
   <head>
 
-
-    <!-- DataTables CSS -->
-    <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.4/css/jquery.dataTables.css">
-<!-- DataTables CSS -->
-    <link rel="stylesheet" type="text/css" href="${request.static_url('ligando:static/dataTables.tableTools.css')}">
-
   </head>
 
   <body>
@@ -29,19 +23,6 @@
             </tr>
         </thead></table>
     </div>
-
-
-    <!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-
-    <!-- jQuery -->
-    <script type="text/javascript" charset="utf8" src="//code.jquery.com/jquery-1.10.2.min.js"></script>
-
-    <!-- DataTables -->
-    <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.4/js/jquery.dataTables.js"></script>
-<!-- TableTools -->
-    <script type="text/javascript" charset="utf8" src="${request.static_url('ligando:static/js/dataTables.tableTools.js')}"></script>
 
     <script>
 
