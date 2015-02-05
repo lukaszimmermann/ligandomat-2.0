@@ -6,18 +6,20 @@
 
     <title>Ligandome Database</title>
 
-
     <link rel="stylesheet" type="text/css" href="${request.static_url('ligando:static/main_styles.css')}">
     <link rel="stylesheet" type="text/css" href="${request.static_url('ligando:static/css/menu.css')}">
     <!-- DataTables CSS -->
     <link rel="stylesheet" type="text/css" href="${request.static_url('ligando:static/css/jquery.dataTables.min.css')}">
     <link rel="stylesheet" type="text/css" href="${request.static_url('ligando:static/css/jquery-ui.min.css')}">
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" type="text/css" href="${request.static_url('ligando:static/dataTables.tableTools.css')}">
+
 
 
 </head>
 
 <body>
-
+<div class="main_wrapper">
 <div  class="title">Ligandome Database</div>
 <br>
 <div id="menu">
@@ -54,14 +56,16 @@
 <div style="clear:both"></div>
 
 <hr style="width: 70%" size="3" color="black" >
-
+</div>
 <!-- Placed at the end of the document so the pages load faster -->
 <script src="${request.static_url('ligando:static/js/jquery-1.10.2.min.js')}"></script>
 
 <!-- DataTables -->
 <script src="${request.static_url('ligando:static/js/jquery.dataTables.min.js')}"></script>
 
-<script src="${request.static_url('ligando:static/js/jquery-ui.min.js.js')}"></script>
+
+
+<script src="${request.static_url('ligando:static/js/jquery-ui.min.js')}"></script>
 <script src="${request.static_url('ligando:static/js/menu.js')}"></script>
 </body>
 </html>

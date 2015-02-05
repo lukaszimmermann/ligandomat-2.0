@@ -1,0 +1,57 @@
+
+<html metal:use-macro="load: base_layout.pt">
+<!DOCTYPE html>
+<html lang="${request.locale_name}">
+<head>
+
+
+</head>
+
+<body>
+<div class="main_wrapper">
+    <h1 style="text-align: center">${hla}</h1>
+    <table id="example"  class="display" cellspacing="0" width="80%">
+        <thead>
+        <tr>
+        <th>Source</th>
+        <th>Organ</th>
+        <th>Histology</th>
+        </tr>
+        </thead>
+    </table>
+</div>
+
+<script>
+
+$(document).ready(function() {
+
+$('#example').dataTable( {
+    "paging":   false,
+    "ordering": false,
+    "info":     false,
+    searching: false,
+    data: ${sources},
+    columns: [
+        { data: "name",
+            "render": function ( data, type, row ) {
+                return "<a class='nostylelink'  href= '/source/"+data + "'>"+data + "</a>" ;
+            }},
+        { data: "organ",
+            "render": function ( data, type, row ) {
+                return "<a class='nostylelink' href= '/organ/"+data + "'>"+data + "</a>" ;
+            }},
+        { data: "histology",
+            "render": function ( data, type, row ) {
+                return "<a class='nostylelink' href= '/histology/"+data + "'>"+data + "</a>" ;
+            }}
+    ],
+    "sDom": 'T<"clear">lfrtip'
+} );
+} );
+</script>
+
+
+
+</body>
+
+</html>

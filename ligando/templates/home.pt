@@ -2,15 +2,11 @@
 <html metal:use-macro="load: base_layout.pt">
 <html lang="${request.locale_name}">
 <head>
-    <!-- DataTables CSS -->
-    <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.4/css/jquery.dataTables.css">
-
-    <link rel="stylesheet" type="text/css" href="//code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css">
-
 
 </head>
 
 <body>
+<div class="main_wrapper">
 <div id="statistic_wrapper" class="wrapper" >
     <table width="100%">
     <tr>
@@ -33,7 +29,7 @@
     </tr>
     </table>
 </div>
-
+</div>
 
 <script type="text/javascript" charset="utf8" src="${request.static_url('ligando:static/js/jquery.flot.js')}"></script>
 

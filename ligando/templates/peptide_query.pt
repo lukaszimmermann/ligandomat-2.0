@@ -6,14 +6,9 @@
     </head>
 
     <body>
-    <div id="peptide_query_wrapper" class="wrapper">
+    <div class="main_wrapper">
+    <div id="peptide_query_wrapper" style="width: 80%" class="wrapper">
 
-    <!--
-    <form method="POST" action=peptide_query>
-    <div id="sequence">Sequence:<input id="sequence_input" name="sequence" type="text"><button type="button" onclick="show_hide('#sequence')">-</button></div>
-    <input type="submit" value="Submit"/>
-    </form>
-    -->
         <table>
             <td>
                 <button id="sequence_button" type="button" onclick="show_hide('#sequence', '#sequence_button')" class="nice_button">Sequence</button>
@@ -107,7 +102,7 @@
     </form>
     </div>
 
-
+</div>
 
 
         <script>

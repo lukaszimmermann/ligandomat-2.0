@@ -486,31 +486,72 @@ def upload_metadata_ms_run_post(request):
 
 @view_config(route_name='peptide', renderer='templates/base_layout.pt', request_method="GET")
 def peptide_page(request):
-    print("peptide")
+    #try:
+    query = DBSession.query(SpectrumHit.spectrum_hit_id,
+                            SpectrumHit.sequence,
+                            HlaLookup.hla_category,
+                            func.group_concat(Protein.name.distinct().op('separator')(', ')),
+                            Source.histology, Source.name)
+    query = query.join(Source)
+    query = query.join(MsRun, SpectrumHit.ms_run_ms_run_id == MsRun.ms_run_id)
+    query = query.join(HlaLookup)
+    query = query.join(t_hla_map)
+    query = query.join(HlaType)
+    query = query.join(t_spectrum_protein_map)
+    query = query.join(Protein)
+    query = query.filter(SpectrumHit.sequence == request.matchdict["peptide"])
 
-    if ("peptide" in request.params):
-        try:
-            query = DBSession.query(SpectrumHit.spectrum_hit_id,
-                                    SpectrumHit.sequence,
-                                    HlaLookup.hla_category,
-                                    func.group_concat(Protein.name.distinct().op('separator')(', ')),
-                                    Source.histology, Source.name)
-            query = query.join(Source)
-            query = query.join(MsRun, SpectrumHit.ms_run_ms_run_id == SpectrumHit.ms_run_id)
-            query = query.join(HlaLookup)
-            query = query.join(t_hla_map)
-            query = query.join(HlaType)
-            query = query.join(t_peptide_protein_map)
-            query = query.join(Protein)
-            query = query.filter(SpectrumHit.sequence == request.params["peptide"])
+    print(query.all())
 
-            raise exception_response(404)
-        except:
-            return Response(conn_err_msg, content_type='text/plain', status_int=500)
-    else:
-        raise exception_response(404)
+    #except:
+    #    return Response(conn_err_msg, content_type='text/plain', status_int=500)
+
 
     return dict()
+
+@view_config(route_name='source', renderer='templates/source.pt', request_method="GET")
+def source_page(request):
+    try:
+        query = DBSession.query(func.count(SpectrumHit.spectrum_hit_id).label("count_hits"),
+                                func.count( SpectrumHit.sequence.distinct()).label("count_pep"),
+                                HlaLookup.hla_category,
+                                func.count(Protein.name.distinct()).label("count_prot"),
+                                Source.histology, Source.name)
+        query = query.join(Source)
+        query = query.join(MsRun, SpectrumHit.ms_run_ms_run_id == MsRun.ms_run_id)
+        query = query.join(HlaLookup)
+        query = query.join(t_hla_map)
+        query = query.join(HlaType)
+        query = query.join(t_spectrum_protein_map)
+        query = query.join(Protein)
+        query = query.filter(Source.name == request.matchdict["source"])
+        statistics = json.dumps(query.all())
+
+        query = DBSession.query(MsRun.filename).join(Source).filter(Source.name == request.matchdict["source"])
+        runs = json.dumps(query.all())
+
+
+    except:
+        return Response(conn_err_msg, content_type='text/plain', status_int=500)
+    return {"statistics":statistics, "runs": runs, "source":request.matchdict["source"]}
+
+@view_config(route_name='hla', renderer='templates/hla.pt', request_method="GET")
+def hla_page(request):
+    try:
+        query = DBSession.query(Source.organ,
+                                Source.histology, Source.name)
+        query = query.join(HlaLookup)
+        query = query.join(t_hla_map)
+        query = query.join(HlaType)
+        query = query.filter(HlaType.hla_string == request.matchdict["hla"])
+        # * --> %2A cause * is reserved character
+        # : --> %3A
+
+        sources = json.dumps(query.all())
+    except:
+        return Response(conn_err_msg, content_type='text/plain', status_int=500)
+    return {"sources":sources, "hla": request.matchdict["hla"]}
+
 
 def js_list_creator(input):
     result_string = '['

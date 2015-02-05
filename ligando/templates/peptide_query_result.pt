@@ -3,14 +3,12 @@
 <!DOCTYPE html>
 <html lang="${request.locale_name}">
   <head>
-    <!-- DataTables CSS -->
-    <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.4/css/jquery.dataTables.css">
-    <link rel="stylesheet" type="text/css" href="${request.static_url('ligando:static/dataTables.tableTools.css')}">
 
   </head>
 
   <body>
-    <div style="margin-left: 50pt;margin-top:20pt">
+  <div class="main_wrapper">
+    <div style="margin-top:20pt">
     <table id="example" auto class="display" cellspacing="0" width="80%"> <thead>
             <tr tal:condition="grouping == 'run'">
                 <th>Sequence</th>
@@ -55,20 +53,7 @@
             </tr>
         </thead></table>
     </div>
-
-
-    <!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-
-    <!-- jQuery -->
-    <!-- <script type="text/javascript" charset="utf8" src="//code.jquery.com/jquery-1.10.2.min.js"></script> -->
-
-    <!-- DataTables -->
-    <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.4/js/jquery.dataTables.js"></script>
-
-    <!-- TableTools -->
-    <script type="text/javascript" charset="utf8" src="${request.static_url('ligando:static/js/dataTables.tableTools.js')}"></script>
+</div>
 
 
     <script>

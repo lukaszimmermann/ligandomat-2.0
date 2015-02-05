@@ -9,6 +9,8 @@
 </head>
 
 <body>
+<div class="main_wrapper">
+
 <div id="metadata_wrapper" class="wrapper">
     <table>
         <tr>
@@ -63,7 +65,7 @@
     </div>
 </div>
 
-
+</div>
 
 
 <script>
@@ -171,7 +173,7 @@ $(function () {
 
 function findEmptyRow() {
     for (var i = 1; i < 11; i++) {
-        if (document.getElementById("source_" + i).innerText == "") {
+        if (document.getElementById("source_" + i).innerHTML == " ") {
             return i;
         }
     }
@@ -185,7 +187,7 @@ function editRow(id) {
 
 function removeRow(id) {
     for (i = 0; i < cells.length; i++) {
-        document.getElementById(cells[i] + "_" + id).innerText = "";
+        document.getElementById(cells[i] + "_" + id).innerHTML = " ";
     }
     $('#source_table').dataTable().fnAdjustColumnSizing();
 }
@@ -196,7 +198,7 @@ function copyRow(id) {
 
 function recoverRow(id) {
     for (i = 0; i < cells.length; i++) {
-        document.getElementById(cells[i] + 'tags').value = document.getElementById(cells[i] + "_" + id).innerText;
+        document.getElementById(cells[i] + 'tags').value = document.getElementById(cells[i] + "_" + id).innerHTML;
     }
 }
 
@@ -206,7 +208,7 @@ function addSource() {
         alert("no free row")
     } else {
         for (i = 0; i < cells.length; i++) {
-            document.getElementById(cells[i] + "_" + id).innerText = document.getElementById(cells[i] + 'tags').value;
+            document.getElementById(cells[i] + "_" + id).innerHTML = document.getElementById(cells[i] + 'tags').value;
         }
     }
     $('#source_table').dataTable().fnAdjustColumnSizing();
@@ -227,23 +229,23 @@ function addTyping() {
 
 function checkInput() {
     for (var i = 1; i < 11; i++) {
-        if (document.getElementById("source_" + i).innerText != "") {
+        if (document.getElementById("source_" + i).innerHTML != " ") {
             for (l = 0; l < cells.length; l++) {
                 if (cells[l] != "typing" && cells[l] != "comment") {
-                    if (document.getElementById(cells[l] + "_" + i).innerText == "") {
+                    if (document.getElementById(cells[l] + "_" + i).innerHTML == " ") {
                         alert(nice_names[cells[l]] + " in row " + i + " is not allowed to be empty!");
                         return;
                     }
-                    if (($.inArray(document.getElementById(cells[l] + "_" + i).innerText, autocomplete_dict[cells[l]])) == -1) {
-                        if (!confirm("The " + nice_names[cells[l]] + " " + document.getElementById(cells[l] + "_" + i).innerText + " in row " + i + " is unknown. Is it really correct? (No typos?)")) {
+                    if (($.inArray(document.getElementById(cells[l] + "_" + i).innerHTML, autocomplete_dict[cells[l]])) == -1) {
+                        if (!confirm("The " + nice_names[cells[l]] + " " + document.getElementById(cells[l] + "_" + i).innerHTML + " in row " + i + " is unknown. Is it really correct? (No typos?)")) {
                             return;
                         }
                     }
                 } else if (cells[l] == "typing") {
-                    if (document.getElementById(cells[l] + "_" + i).innerText.indexOf(",") != -1) {
+                    if (document.getElementById(cells[l] + "_" + i).innerHTML.indexOf(",") != -1) {
                         alert(", is not allowed in HLA-Typing");
                         return;
-                    } else if (document.getElementById(cells[l] + "_" + i).innerText.indexOf("HLA") != -1) {
+                    } else if (document.getElementById(cells[l] + "_" + i).innerHTML.indexOf("HLA") != -1) {
                         alert("The 'HLA' prefix is not necessary in HLA-Typing. Please shorten your typings.");
                         return;
                     }
@@ -253,10 +255,10 @@ function checkInput() {
     }
     var val = "[";
     for (var i = 1; i < 11; i++) {
-        if (document.getElementById("source_" + i).innerText != "") {
+        if (document.getElementById("source_" + i).innerHTML != " ") {
             var temp_dict = "{";
             for (l = 0; l < cells.length; l++) {
-                temp_dict += "'" + cells[l] + "':'" + document.getElementById(cells[l] + "_" + i).innerText + "',";
+                temp_dict += "'" + cells[l] + "':'" + document.getElementById(cells[l] + "_" + i).innerHTML + "',";
             }
             temp_dict = temp_dict.replace(/,\s*$/, "");
             temp_dict += "},";
