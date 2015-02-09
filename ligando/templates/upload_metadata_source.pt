@@ -89,7 +89,7 @@ var nice_names = {'source': 'Sourcename',
     'location': 'Location',
     'metastatis': 'Metastatis',
     'celltype': 'Celltype',
-    'typing': 'HLA-Typing',
+    'typing': 'Typing',
     'person': 'Person',
     'comment': 'Comment'};
 var autocomplete_dict = {'source':${source_names},
@@ -104,7 +104,7 @@ var autocomplete_dict = {'source':${source_names},
 
 $(function () {
     table = document.getElementById('source_table');
-    var markup = ['<thead><tr><th>Sourcename</th><th>Organ</th><th>Organism</th><th>Histology</th><th>Dignity</th><th>Celltype</th><th>Location</th><th>Metastatis</th><th>HLA-Typing</th><th>Person</th><th>Comment</th><th>Options</th></tr></thead><tbody>'];
+    var markup = ['<thead><tr><th>Sourcename</th><th>Organ</th><th>Organism</th><th>Histology</th><th>Dignity</th><th>Celltype</th><th>Location</th><th>Metastatis</th><th>Typing</th><th>Person</th><th>Comment</th><th>Options</th></tr></thead><tbody>'];
 
 
     for (var i = 1; i <= 11; i++) {

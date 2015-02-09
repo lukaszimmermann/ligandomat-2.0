@@ -11,28 +11,59 @@
 <div class="main_wrapper">
 <div class="wrapper">
     <h1 style="text-align: center">${source}</h1>
-    <div  style="margin-left: auto; margin-right: auto;width: 700px;
-  display: block;">
-        <table>
+    <div style="align-content: center;margin-left: auto; margin-right: auto;">
+        <h3>Basic Statistics</h3>
+            <table class="info_table" width="25%">
             <tr>
-                <td>Number of peptides: </td><td id="pep_stat"> </td>
+                <td>Peptides: </td><td id="pep_stat"> </td>
+            </tr>
+            <tr class="alt">
+                <td >Spectra: </td><td id="spec_stat"> </td>
             </tr>
             <tr>
-                <td>Number of spectra: </td><td id="spec_stat"> </td>
+                <td>Proteins: </td><td id="prot_stat"> </td>
+            </tr>
+            </table>
+        <br>
+        <h3>Source Information</h3>
+            <table class="info_table" width="50%">
+            <tr>
+                <td width="50%">Histology:</td><td id="histology"></td>
+            </tr>
+            <tr class="alt">
+                <td>Dignity:</td><td id="dignity"></td>
             </tr>
             <tr>
-                <td>Number of protein: </td><td id="prot_stat"> </td>
+                <td>Organ:</td><td id="organ"></td>
+            </tr>
+            <tr class="alt">
+                <td>Organism:</td><td id="organism"></td>
             </tr>
             <tr>
+                <td>Celltype:</td><td id="celltype"></td>
+            </tr>
+            <tr class="alt">
+                <td>Location:</td><td id="location"></td>
+            </tr>
+            <tr >
+                <td>Metastatis:</td><td id="metastatis"></td>
+            </tr>
+            <tr class="alt">
                 <td>HLA-Typing: </td><td id="typing"> </td>
             </tr>
-        </table>
+            <tr >
+                <td>Responsible Person:</td><td id="person"></td>
+            </tr>
+            <tr class="alt">
+                <td>Comment: </td><td id="comment"> </td>
+            </tr>
+                </table>
 
     </div>
     </div>
 <br>
 
-    <table id="example"  class="display" cellspacing="0" width="80%">
+    <table id="example"  class="display" cellspacing="0" width="100%">
         <thead>
         <tr>
         <th>MS Run</th>
@@ -43,13 +74,39 @@
 
 <script>
 $(document).ready(function() {
-    document.getElementById("pep_stat").innerHTML = ${statistics}[0]["count_pep"];
+    // Setting the statistics
+    document.getElementById("pep_stat").innerHTML = "<a title='Show all Peptides'  class='nostylelink' href='javascript:post(\x22../peptide_query\x22, {source: \x22${source}\x22, grouping:\x22source\x22})'> "+${statistics}[0]["count_pep"]+"</a>";
+    // TODO: create spectrum hit query
     document.getElementById("spec_stat").innerHTML = ${statistics}[0]["count_hits"];
     document.getElementById("prot_stat").innerHTML = ${statistics}[0]["count_prot"];
-    document.getElementById("typing").innerHTML = ${statistics}[0]["hla_category"];
+    // extract alles and link them
+    var alleles = ${statistics}[0]["hla_category"].split(",");
+    var allele_string = "";
+    for(var i=0; i<alleles.length; i++){
+        var a = alleles[i].trim();
+        allele_string = allele_string + "<a class='nostylelink'  href= '/hla/"+a + "'>"+a + "</a>, ";
+    }
+    document.getElementById("typing").innerHTML = allele_string.slice(0, -2);
+    document.getElementById("histology").innerHTML = ${statistics}[0]["histology"];
+    document.getElementById("organ").innerHTML = ${statistics}[0]["organ"];
+    document.getElementById("comment").innerHTML = ${statistics}[0]["comment"];
+    document.getElementById("organism").innerHTML = ${statistics}[0]["organism"];
+    document.getElementById("dignity").innerHTML = ${statistics}[0]["dignity"];
+    document.getElementById("celltype").innerHTML = ${statistics}[0]["celltype"];
+    document.getElementById("location").innerHTML = ${statistics}[0]["location"];
+    // Write Yes or No instead 0 and 1
+    if(${statistics}[0]["metastatis"]==0){
+        document.getElementById("metastatis").innerHTML = "No"
+    }else{
+        document.getElementById("metastatis").innerHTML = "Yes"
+    }
+    document.getElementById("person").innerHTML = ${statistics}[0]["person"];
+
+
 
 
 });
+
 
 $(document).ready(function() {
 
@@ -65,12 +122,13 @@ $('#example').dataTable( {
     columns: [
         { data: "filename",
             "render": function ( data, type, row ) {
-                return "<a class='nostylelink'  href= '/msrun/"+data + "'>"+data + "</a>" ;
-            }}
-    ],
-    "sDom": 'T<"clear">lfrtip'
+                return "<a class='nostylelink'  href= '/msrun/"+row["ms_run_id"] + "'>"+data + "</a>" ;
+            }
+        }
+    ]
 } );
 } );
+
 </script>
 
 

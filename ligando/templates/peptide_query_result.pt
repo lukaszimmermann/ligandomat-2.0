@@ -85,7 +85,10 @@
                 { data: "hla_category"},
                 { data: "protein"},
                 { data: "histology"},
-                { data: "name"},
+                { data: "name",
+            "render": function ( data, type, row ) {
+                return "<a class='nostylelink'  href= '/source/"+data + "'>"+data + "</a>" ;
+            }},
                 { data: "filename"}
             ],
             "sDom": 'T<"clear">lfrtip',
@@ -101,7 +104,10 @@
             columns: [
                 { data: "sequence" },
                 { data: "protein"},
-                { data: "name"},
+                { data: "name",
+            "render": function ( data, type, row ) {
+                return "<a class='nostylelink'  href= '/source/"+data + "'>"+data + "</a>" ;
+            }},
                 { data: "hla_category"}
             ],
             "sDom": 'T<"clear">lfrtip',
@@ -135,7 +141,10 @@
                 { data: "hla_category"},
                 { data: "protein"},
                 { data: "histology"},
-                { data: "source_name"}
+                { data: "source_name",
+            "render": function ( data, type, row ) {
+                return "<a class='nostylelink'  href= '/source/"+data + "'>"+data + "</a>" ;
+            }}
             ],
             "sDom": 'T<"clear">lfrtip',
             oTableTools: {
@@ -167,7 +176,10 @@
                 { data: "hla_category"},
                 { data: "protein"},
                 { data: "histology"},
-                { data: "source_name"}
+                { data: "source_name",
+            "render": function ( data, type, row ) {
+                return "<a class='nostylelink'  href= '/source/"+data + "'>"+data + "</a>" ;
+            }}
             ],
             "sDom": 'T<"clear">lfrtip',
             oTableTools: {

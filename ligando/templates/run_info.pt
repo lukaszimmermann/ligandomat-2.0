@@ -8,8 +8,8 @@
 
   <body>
   <div class="main_wrapper">
-    <div style="margin-left: 50pt;margin-top:20pt">
-    <table id="example" class="display" cellspacing="0" width="80%"> <thead>
+    <div style="margin-top:20pt">
+    <table id="example" class="display" cellspacing="0" > <thead>
             <tr>
                 <th>Name</th>
                 <th>Source Name</th>
@@ -32,9 +32,18 @@
     $('#example').dataTable( {
         data: ${project},
         columns: [
-            { data: "filename" },
-            { data: "name" },
-            { data: "organ"},
+            { data: "filename" ,
+            "render": function ( data, type, row ) {
+                return "<a class='nostylelink'  href= '/msrun/"+row["ms_run_id"] + "'>"+data + "</a>" ;
+            }},
+            { data: "name" ,
+            "render": function ( data, type, row ) {
+                return "<a class='nostylelink'  href= '/source/"+data + "'>"+data + "</a>" ;
+            }},
+            { data: "organ",
+            "render": function ( data, type, row ) {
+                return "<a class='nostylelink'  href= '/organ/"+data + "'>"+data + "</a>" ;
+            }},
             { data: "dignity" },
             { data: "ms_run_date"},
             { data: "antibody_set"},

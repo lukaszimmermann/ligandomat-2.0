@@ -1,0 +1,85 @@
+
+<html metal:use-macro="load: base_layout.pt">
+<!DOCTYPE html>
+<html lang="${request.locale_name}">
+<head>
+
+
+</head>
+
+<body>
+<div class="main_wrapper">
+<div class="wrapper">
+    <h1 style="text-align: center" id="title"></h1>
+    <div style="align-content: center;margin-left: auto; margin-right: auto;">
+            <table class="info_table" width="50%">
+            <tr>
+                <td width="50%">Gene </td><td id="gene_name"> </td>
+            </tr>
+            <tr class="alt">
+                <td>Description:</td><td id="description"> </td>
+            </tr>
+            <tr>
+                <td>Organism:</td><td id="organism"> </td>
+            </tr>
+            <tr class="alt">
+                <td>Uniprot:</td> <td id="uniprot"></td>
+            </tr>
+            </table>
+        <br>
+        <h3>Sequence:</h3>
+        <table class="info_table" width="500px" style="font-family: monospace,monospace;white-space: pre-wrap;
+word-wrap: break-word;  text-align: left">
+            <tr class="alt">
+                <td width="50%" id="sequence"></td>
+            </tr>
+
+        </table>
+    </div>
+    </div>
+</div>
+
+<script>
+$(document).ready(function() {
+    // Setting the title
+    document.getElementById("title").innerHTML = ${statistics}[0]["name"];
+    // Setting basic information
+    document.getElementById("gene_name").innerHTML = ${statistics}[0]["gene_name"];
+    document.getElementById("description").innerHTML = ${statistics}[0]["description"].split("HUMAN")[1].split("OS=")[0];
+    document.getElementById("organism").innerHTML = ${statistics}[0]["organism"];
+    document.getElementById("uniprot").innerHTML = "<a title='Go to Uniprot' class='nostylelink' href='http://www.uniprot.org/uniprot/"+${statistics}[0]["name"]+"'>"+${statistics}[0]["name"]+"</a>";
+    var sequence = ${statistics}[0]["sequence"];
+    var complete_sequence = "";
+    var numbers = "";
+    var modified_sequence = "";
+    for(var i =0; i<sequence.length; i=i+10){
+        for(var n =0; n< 10- (i+10).toString().length; n++ ){
+            numbers = numbers + " ";
+        }
+        numbers = numbers + (i+10) +" ";
+        modified_sequence = modified_sequence + sequence.substring(i, Math.min(i + 10, sequence.length - 1)) + " ";
+        if((i+10)%50 == 0 && i!= 0) {
+            complete_sequence = complete_sequence + numbers + "<br>" + modified_sequence + "<br>";
+            modified_sequence = "";
+            numbers = "";
+        }
+    }
+    complete_sequence = complete_sequence + numbers + "<br>" + modified_sequence + "<br>";
+    document.getElementById("sequence").innerHTML = complete_sequence;
+
+
+
+
+
+
+});
+
+
+
+</script>
+
+
+
+</body>
+
+</html>

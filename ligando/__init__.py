@@ -26,5 +26,7 @@ def main(global_config, **settings):
     config.add_route('peptide', '/peptide/{peptide}')
     config.add_route('source', '/source/{source}')
     config.add_route('hla', '/hla/{hla}')
+    config.add_route('msrun', '/msrun/{msrun}')
+    config.add_route('protein', '/protein/{protein}')
     config.scan()
     return config.make_wsgi_app()

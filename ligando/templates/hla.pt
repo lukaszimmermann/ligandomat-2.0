@@ -10,7 +10,15 @@
 <body>
 <div class="main_wrapper">
     <h1 style="text-align: center">${hla}</h1>
-    <table id="example"  class="display" cellspacing="0" width="80%">
+    <table >
+            <tr>
+                <td>Peptides: </td><td id="pep_stat"> </td>
+            </tr>
+            <tr>
+                <td>Sources</td><td id="source_stat"> </td>
+            </tr>
+    </table>
+    <table id="example"  class="display" cellspacing="0" width="100%">
         <thead>
         <tr>
         <th>Source</th>
@@ -44,10 +52,16 @@ $('#example').dataTable( {
             "render": function ( data, type, row ) {
                 return "<a class='nostylelink' href= '/histology/"+data + "'>"+data + "</a>" ;
             }}
-    ],
-    "sDom": 'T<"clear">lfrtip'
+    ]
 } );
 } );
+
+$(document).ready(function() {
+    document.getElementById("pep_stat").innerHTML = "<a title='Show all Peptides'  class='nostylelink' href='javascript:post(\x22../peptide_query\x22, {hla_typing: \x22${hla}\x22, grouping:\x22peptide\x22})'> "+${statistic}[0]["pep_count"]+"</a>";
+    document.getElementById("source_stat").innerHTML = ${sources}.length;
+
+});
+
 </script>
 
 

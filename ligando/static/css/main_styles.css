@@ -1,6 +1,6 @@
 
 .nostylelink {
-    text-decoration:none;
+    text-decoration:solid;
     color:black;
 }
 .nostylelink:hover {
@@ -11,11 +11,25 @@
 .main_wrapper {
     margin-right: auto;
     overflow:auto;
-    width: 980px;
+    width: 1000px;
     margin-left: auto;
     align-content: center;
 }
 
+.info_table{
+    font: normal 14px Arial;
+    overflow: hidden;
+    border: 0px solid rgb(232, 225, 208);
+    -webkit-border-radius: 3px;
+    /*-moz-border-radius: 3px;*/
+    border-radius: 3px;
+    background-color: rgb(232, 225, 208);
+    color: black;
+}
+.info_table tbody .alt td {
+    background: white;
+    color: black;
+}
 
 .wrapper {
     margin-top: 20pt;
@@ -67,17 +81,16 @@ button.nice_button:active {
     outline: none;
 }
 
-
-
-/* upload table style */
-.datagrid table {
+/* home table style*/
+.homegrid table {
     border-collapse: collapse;
     text-align: left;
-    width: 100%;
 }
 
-.datagrid {
-    font: normal 12px/150% Arial;
+
+.homegrid {
+    width: 300pt;
+    font: normal 12px Arial;
     background: #fff;
     overflow: hidden;
     border: 0px solid rgb(180, 160, 105);
@@ -86,11 +99,65 @@ button.nice_button:active {
     border-radius: 3px;
 }
 
+
+.homegrid table td, .homegrid table th {
+    padding: 1px 3px;
+}
+
+.homegrid table thead th {
+     background-color: rgb(195, 178, 133);
+    color: black;
+}
+
+.homegrid table thead th:first-child {
+
+}
+
+.homegrid table tbody td {
+    color: black;
+    border-left: 1px solid #E1EEF4;
+    font-size: 12px;
+    font-weight: normal;
+}
+
+.homegrid table tbody .alt td {
+    background: rgb(232, 225, 208);
+    color: black;
+}
+
+.homegrid table tbody td:first-child {
+    border-left: none;
+}
+
+.homegrid table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+/* upload table style */
+.datagrid table {
+    border-collapse: collapse;
+    text-align: left;
+}
+
+
+.datagrid {
+    width: 100%;
+    font: normal 11px Arial;
+    background: #fff;
+    overflow: hidden;
+    border: 0px solid rgb(180, 160, 105);
+    -webkit-border-radius: 3px;
+    /*-moz-border-radius: 3px;*/
+    border-radius: 3px;
+}
+
+
 .datagrid table td, .datagrid table th {
-    padding: 3px 10px;
+    padding: 1px 3px;
 }
 
 .datagrid table thead th {
+
      background-color: rgb(195, 178, 133);
     color: black;
 }
@@ -102,7 +169,7 @@ button.nice_button:active {
 .datagrid table tbody td {
     color: black;
     border-left: 1px solid #E1EEF4;
-    font-size: 12px;
+    font-size: 10px;
     font-weight: normal;
 }
 
@@ -134,7 +201,7 @@ button.nice_button:active {
 
   .ui-tooltip {
     width: auto;
-    font-size: 14px !important;
+    font-size: 12px !important;
   }
 
   .ui-datepicker {

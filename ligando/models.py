@@ -132,6 +132,10 @@ class Protein(Base):
 
     protein_id = Column(Integer, primary_key=True)
     name = Column(String(12), nullable=False, unique=True)
+    description = Column(Text)
+    sequence = Column(Text)
+    organism = Column(String(45))
+    gene_name = Column(String(45))
 
     spectrum_hit_spectrum_hits = relationship(u'SpectrumHit', secondary='spectrum_protein_map')
 

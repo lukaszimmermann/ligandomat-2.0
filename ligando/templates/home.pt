@@ -10,18 +10,17 @@
 <div id="statistic_wrapper" class="wrapper" >
     <table width="100%">
     <tr>
+        <td width="350px">
+        <h3>Database Statistics</h3>
+        <a class='nostylelink'  href='/sources'>Sources: ${sources_count}</a><br>
+        <a class='nostylelink'  href='/runs'>Ms Runs: ${all_msrun_count}</a><br>
+        Orphan Ms Runs: ${orphan_msrun_count}
+        </td>
         <td>
         <div id="msrun_plot" style="width:300px;height:300px"></div>
         </td>
         <td>
-        <h3>Database Statistics</h3><br>
-        Sources: ${sources_count}<br>
-        Ms Runs: ${all_msrun_count}<br>
-        Orphan Ms Runs: ${orphan_msrun_count}
-        </td>
-
-        <td>
-            <div class="datagrid">
+            <div class="homegrid">
         <table id="orphan_table">
         </table>
                 </div>
@@ -63,7 +62,7 @@
             }
             markup.push('<td>')
             var run = ${orphan_msrun}[i]
-            markup.push('<a href="/upload_metadata_ms_run?run='+ run + '">'+run+ '</a></td></tr>')
+            markup.push('<a class="nostylelink" href="/upload_metadata_ms_run?run='+ run + '">'+run+ '</a></td></tr>')
         }
         markup.push('</tbody>');
         table.innerHTML = markup.join("");

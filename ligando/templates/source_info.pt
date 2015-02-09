@@ -8,9 +8,9 @@
 
   <body>
   <div class="main_wrapper">
-  <div style="margin-left: 50pt;margin-top:20pt">
+  <div style="margin-top:20pt">
 
-    <table id="example" class="display" cellspacing="0" width="80%"> <thead>
+    <table id="example" class="display" cellspacing="0" width="100%"> <thead>
             <tr>
                 <th>Name</th>
                 <th>Organ</th>
@@ -36,15 +36,27 @@
     $('#example').dataTable( {
         data: ${project},
         columns: [
-            { data: "name" },
-            { data: "organ"},
+            { data: "name" ,
+            "render": function ( data, type, row ) {
+                return "<a class='nostylelink'  href= '/source/"+data + "'>"+data + "</a>" ;
+            }},
+            { data: "organ",
+            "render": function ( data, type, row ) {
+                return "<a class='nostylelink'  href= '/organ/"+data + "'>"+data + "</a>" ;
+            }},
             { data: "dignity" },
             { data: "celltype"},
-            { data: "histology"},
+            { data: "histology",
+            "render": function ( data, type, row ) {
+                return "<a class='nostylelink'  href= '/dignity/"+data + "'>"+data + "</a>" ;
+            }},
             { data: "location"},
             { data: "metastatis"},
             { data: "organism"},
-            { data: "person"}
+            { data: "person",
+            "render": function ( data, type, row ) {
+                return "<a class='nostylelink'  href= '/person/"+data + "'>"+data + "</a>" ;
+            }}
         ],
         "sDom": 'T<"clear">lfrtip',
         oTableTools: {
