@@ -83,7 +83,20 @@
                 }},
                 { data: "PSM"},
                 { data: "hla_category"},
-                { data: "protein"},
+                { data: "protein",
+                    // split protein string and create single links
+            "render": function ( data, type, row ) {
+                prot_split = data.split(", ")
+                return_string = ""
+                for (var prot =0; prot<prot_split.length; prot++){
+                    if(prot <prot_split.length-1) {
+                        return_string += "<a class='nostylelink'  href= '/protein/" + prot_split[prot] + "'>" + prot_split[prot] + "</a>, ";
+                    }else{
+                            return_string += "<a class='nostylelink'  href= '/protein/" + prot_split[prot] + "'>" + prot_split[prot] + "</a>";
+                    }
+                }
+                return return_string
+            }},
                 { data: "histology"},
                 { data: "name",
             "render": function ( data, type, row ) {
@@ -103,7 +116,20 @@
             data: ${project},
             columns: [
                 { data: "sequence" },
-                { data: "protein"},
+                { data: "protein",
+                    // split protein string and create single links
+            "render": function ( data, type, row ) {
+                prot_split = data.split(", ")
+                return_string = ""
+                for (var prot =0; prot<prot_split.length; prot++){
+                    if(prot <prot_split.length-1) {
+                        return_string += "<a class='nostylelink'  href= '/protein/" + prot_split[prot] + "'>" + prot_split[prot] + "</a>, ";
+                    }else{
+                            return_string += "<a class='nostylelink'  href= '/protein/" + prot_split[prot] + "'>" + prot_split[prot] + "</a>";
+                    }
+                }
+                return return_string
+            }},
                 { data: "name",
             "render": function ( data, type, row ) {
                 return "<a class='nostylelink'  href= '/source/"+data + "'>"+data + "</a>" ;
@@ -139,7 +165,20 @@
                     return data +' - '+ row.maxQ+'';
                 }},
                 { data: "hla_category"},
-                { data: "protein"},
+                { data: "protein",
+                    // split protein string and create single links
+            "render": function ( data, type, row ) {
+                prot_split = data.split(", ")
+                return_string = ""
+                for (var prot =0; prot<prot_split.length; prot++){
+                    if(prot <prot_split.length-1) {
+                        return_string += "<a class='nostylelink'  href= '/protein/" + prot_split[prot] + "'>" + prot_split[prot] + "</a>, ";
+                    }else{
+                            return_string += "<a class='nostylelink'  href= '/protein/" + prot_split[prot] + "'>" + prot_split[prot] + "</a>";
+                    }
+                }
+                return return_string
+            }},
                 { data: "histology"},
                 { data: "source_name",
             "render": function ( data, type, row ) {
@@ -174,7 +213,20 @@
                 }},
                 { data: "PSM"},
                 { data: "hla_category"},
-                { data: "protein"},
+                { data: "protein",
+                    // split protein string and create single links
+            "render": function ( data, type, row ) {
+                prot_split = data.split(", ")
+                return_string = ""
+                for (var prot =0; prot<prot_split.length; prot++){
+                    if(prot <prot_split.length-1) {
+                        return_string += "<a class='nostylelink'  href= '/protein/" + prot_split[prot] + "'>" + prot_split[prot] + "</a>, ";
+                    }else{
+                            return_string += "<a class='nostylelink'  href= '/protein/" + prot_split[prot] + "'>" + prot_split[prot] + "</a>";
+                    }
+                }
+                return return_string
+            }},
                 { data: "histology"},
                 { data: "source_name",
             "render": function ( data, type, row ) {
@@ -191,9 +243,6 @@
         } );
     }
     } );
-
-
-
     </script>
 
 
