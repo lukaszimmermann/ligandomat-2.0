@@ -2,7 +2,13 @@
  * Created by Backert on 05/02/15.
  */
 
-function post(path, params, method) {
+function post(path, params, count, method) {
+    console.log(count)
+    if(count >5000){
+        if(!confirm("This query will probably take some time. Are you sure you want to get the whole list?")){
+            return;
+        }
+    }
     method = method || "post"; // Set method to post by default if not specified.
 
     // The rest of this code assumes you are not using a library.

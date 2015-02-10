@@ -43,7 +43,7 @@ def source_page(request):
 
     except:
         return Response(conn_err_msg, content_type='text/plain', status_int=500)
-    return {"statistics": statistics, "runs": runs, "source": request.matchdict["source"]}
+    return {"statistic": statistics, "runs": runs, "source": request.matchdict["source"]}
 
 
 @view_config(route_name='hla', renderer='../templates/hla.pt', request_method="GET")
@@ -121,3 +121,19 @@ def protein_page(request):
         return Response(conn_err_msg, content_type='text/plain', status_int=500)
     return {"statistics": statistics, "protein": request.matchdict["protein"]}
 
+@view_config(route_name='organ', renderer='../templates/organ.pt', request_method="GET")
+def organ_page(request):
+    try:
+        query = DBSession.query(Source.organ,
+                                Source.histology, Source.name)
+        query = query.filter(Source.organ == request.matchdict["organ"])
+        sources = json.dumps(query.all())
+
+        query = DBSession.query(func.count(SpectrumHit.sequence.distinct()).label("pep_count"))
+        query = query.join(Source)
+        query = query.filter(Source.organ == request.matchdict["organ"])
+        statistic = json.dumps(query.all())
+
+    except:
+        return Response(conn_err_msg, content_type='text/plain', status_int=500)
+    return {"sources": sources, "organ": request.matchdict["organ"], "statistic": statistic}

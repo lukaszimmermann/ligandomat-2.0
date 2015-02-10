@@ -1,0 +1,33 @@
+
+<html metal:use-macro="load: base_layout.pt">
+<!DOCTYPE html>
+<html lang="${request.locale_name}">
+<head>
+
+
+</head>
+
+<body>
+<div class="main_wrapper">
+<div class="wrapper">
+    <h1 style="text-align: center" id="title"></h1>
+    Some random text which describes the histology and also the full name
+    </div>
+    </div>
+</div>
+
+<script>
+$(document).ready(function() {
+    // Setting the title
+    document.getElementById("title").innerHTML = ${statistics}[0]["name"];
+});
+
+
+
+</script>
+
+
+
+</body>
+
+</html>

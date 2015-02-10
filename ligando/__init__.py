@@ -28,5 +28,6 @@ def main(global_config, **settings):
     config.add_route('hla', '/hla/{hla}')
     config.add_route('msrun', '/msrun/{msrun}')
     config.add_route('protein', '/protein/{protein}')
+    config.add_route('organ', '/organ/{organ}')
     config.scan()
     return config.make_wsgi_app()

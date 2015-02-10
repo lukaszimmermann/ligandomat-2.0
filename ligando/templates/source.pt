@@ -75,32 +75,32 @@
 <script>
 $(document).ready(function() {
     // Setting the statistics
-    document.getElementById("pep_stat").innerHTML = "<a title='Show all Peptides'  class='nostylelink' href='javascript:post(\x22../peptide_query\x22, {source: \x22${source}\x22, grouping:\x22source\x22})'> "+${statistics}[0]["count_pep"]+"</a>";
+    document.getElementById("pep_stat").innerHTML = "<a title='Show all Peptides'  class='nostylelink' href='javascript:post(\x22../peptide_query\x22, {source: \x22${source}\x22, grouping:\x22source\x22}," +${statistic}[0]["count_pep"]+ " )'> "+${statistic}[0]["count_pep"]+"</a>";
     // TODO: create spectrum hit query
-    document.getElementById("spec_stat").innerHTML = ${statistics}[0]["count_hits"];
-    document.getElementById("prot_stat").innerHTML = ${statistics}[0]["count_prot"];
+    document.getElementById("spec_stat").innerHTML = ${statistic}[0]["count_hits"];
+    document.getElementById("prot_stat").innerHTML = ${statistic}[0]["count_prot"];
     // extract alles and link them
-    var alleles = ${statistics}[0]["hla_category"].split(",");
+    var alleles = ${statistic}[0]["hla_category"].split(",");
     var allele_string = "";
     for(var i=0; i<alleles.length; i++){
         var a = alleles[i].trim();
         allele_string = allele_string + "<a class='nostylelink'  href= '/hla/"+a + "'>"+a + "</a>, ";
     }
     document.getElementById("typing").innerHTML = allele_string.slice(0, -2);
-    document.getElementById("histology").innerHTML = ${statistics}[0]["histology"];
-    document.getElementById("organ").innerHTML = ${statistics}[0]["organ"];
-    document.getElementById("comment").innerHTML = ${statistics}[0]["comment"];
-    document.getElementById("organism").innerHTML = ${statistics}[0]["organism"];
-    document.getElementById("dignity").innerHTML = ${statistics}[0]["dignity"];
-    document.getElementById("celltype").innerHTML = ${statistics}[0]["celltype"];
-    document.getElementById("location").innerHTML = ${statistics}[0]["location"];
+    document.getElementById("histology").innerHTML = ${statistic}[0]["histology"];
+    document.getElementById("organ").innerHTML = ${statistic}[0]["organ"];
+    document.getElementById("comment").innerHTML = ${statistic}[0]["comment"];
+    document.getElementById("organism").innerHTML = ${statistic}[0]["organism"];
+    document.getElementById("dignity").innerHTML = ${statistic}[0]["dignity"];
+    document.getElementById("celltype").innerHTML = ${statistic}[0]["celltype"];
+    document.getElementById("location").innerHTML = ${statistic}[0]["location"];
     // Write Yes or No instead 0 and 1
-    if(${statistics}[0]["metastatis"]==0){
+    if(${statistic}[0]["metastatis"]==0){
         document.getElementById("metastatis").innerHTML = "No"
     }else{
         document.getElementById("metastatis").innerHTML = "Yes"
     }
-    document.getElementById("person").innerHTML = ${statistics}[0]["person"];
+    document.getElementById("person").innerHTML = ${statistic}[0]["person"];
 
 
 
