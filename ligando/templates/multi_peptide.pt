@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html metal:use-macro="load: base_layout.pt">
+<html lang="${request.locale_name}">
+      <head>
+
+    </head>
+
+    <body>
+    <div class="main_wrapper">
+    <div class="wrapper">
+        Please paste your list of peptides into the textbox. <br>
+        One peptide per row.
+        <form  method="POST" action=multi_peptide>
+         <textarea name="peptide_input" cols="50" rows="10"></textarea>
+            <br>
+            <select title="Select your HLA class" name="hla_class" class="nice_dropdown_boolean"><option selected>Class 1</option><option>Class 2</option></select>
+
+            <select title="Select the number of digits for the typing" name="digits" class="nice_dropdown_boolean"><option selected>2-digits</option><option>4-digits</option></select>
+            <br><br>
+            <input  type="submit" value="Submit" class="nice_button" style="width: 100px;margin-left: 10px"/>
+        </form>
+    </div>
+    </div>
+
+
+        <script>
+
+    $(function () {
+        $(document).tooltip();
+    });
+
+        </script>
+
+
+    </body>
+</html>

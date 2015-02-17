@@ -3,8 +3,7 @@
 <!DOCTYPE html>
 <html lang="${request.locale_name}">
 <head>
-
-
+<link rel="stylesheet" type="text/css" href="${request.static_url('ligando:static/css/peptide_marker.css')}">
 </head>
 
 <body>
@@ -28,19 +27,64 @@
             </table>
         <br>
         <h3>Sequence:</h3>
+        <div style="float: left;">
         <table class="info_table" width="500px" style="font-family: monospace,monospace;white-space: pre-wrap;
 word-wrap: break-word;  text-align: left">
             <tr class="alt">
-                <td width="50%" id="sequence"></td>
+                <td id="sequence"></td>
             </tr>
-
         </table>
+            </div>
+        <div style="float: right;">Warning! The peptides may be also found in other Proteins!</div>
     </div>
     </div>
 </div>
 
 <script>
+
+// Function for the peptide highlighting in the sequence
+function open_highlighting(pos_list){
+    var result = "";
+    for(var item in pos_list){
+        result += '<span class="sI' + item+ '">';
+    }
+    return result;
+}
+
+function close_highlighting(pos_list){
+    var result = "";
+    for(var item in pos_list){
+        result += '</span>';
+    }
+    return result;
+}
+function add_pep_to_id_list(pos_list, pos){
+    var i = 0;
+    while(true){
+        if(!pos_list.hasOwnProperty(i.toString())){
+            pos_list[i.toString()] = pos;
+            return pos_list;
+        }
+        i++;
+    }
+}
+function remove_pep_to_id_list(pos_list, pos){
+    var i = 0;
+    while(true){
+        if(pos_list.hasOwnProperty(''+i)){
+            if(pos_list[i.toString()] == pos){
+                delete pos_list[i.toString()];
+                return pos_list;
+            }
+        }
+        i++;
+    }
+}
+
+
+
 $(document).ready(function() {
+    // TODO: add link to peptides
     // Setting the title
     document.getElementById("title").innerHTML = ${statistics}[0]["name"];
     // Setting basic information
@@ -52,13 +96,30 @@ $(document).ready(function() {
     var complete_sequence = "";
     var numbers = "";
     var modified_sequence = "";
-    for(var i =0; i<sequence.length; i=i+10){
-        for(var n =0; n< 10- (i+10).toString().length; n++ ){
+    var sequence_start = ${sequence_start};
+    var sequence_end = ${sequence_end};
+    var pos_list = {};
+
+    for(var j = 0; j < sequence.length; j=j+10){
+        for(var i =j; i<j+10; i=i+1){
+            if($.inArray(i, sequence_start) > -1){
+                pos_list = add_pep_to_id_list(pos_list, $.inArray(i, sequence_start));
+            }
+            if($.inArray(i, sequence_end) > -1){
+                pos_list = remove_pep_to_id_list(pos_list, $.inArray(i, sequence_end));
+            }
+            // Sequence row
+            if(i < sequence.length) {
+                modified_sequence = modified_sequence + open_highlighting(pos_list) + sequence.substring(i, i + 1) + close_highlighting(pos_list);
+            }
+        }
+        modified_sequence += " ";
+             // Numbers row
+        for(var n =0; n< 10- (j+10).toString().length; n++ ){
             numbers = numbers + " ";
         }
-        numbers = numbers + (i+10) +" ";
-        modified_sequence = modified_sequence + sequence.substring(i, Math.min(i + 10, sequence.length - 1)) + " ";
-        if((i+10)%50 == 0 && i!= 0) {
+        numbers = numbers + (j+10) +" ";
+        if((j+10)%50 == 0 && j!= 0) {
             complete_sequence = complete_sequence + numbers + "<br>" + modified_sequence + "<br>";
             modified_sequence = "";
             numbers = "";
@@ -66,12 +127,6 @@ $(document).ready(function() {
     }
     complete_sequence = complete_sequence + numbers + "<br>" + modified_sequence + "<br>";
     document.getElementById("sequence").innerHTML = complete_sequence;
-
-
-
-
-
-
 });
 
 

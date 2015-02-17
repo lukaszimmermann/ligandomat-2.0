@@ -12,8 +12,8 @@
     <tr>
         <td width="350px">
         <h3>Database Statistics</h3>
-        <a class='nostylelink'  href='/sources'>Sources: ${sources_count}</a><br>
-        <a class='nostylelink'  href='/runs'>Ms Runs: ${all_msrun_count}</a><br>
+        Sources: <a class='nostylelink'  href='/sources'>${sources_count}</a><br>
+        Ms Runs: <a class='nostylelink'  href='/runs'>${all_msrun_count}</a><br>
         Orphan Ms Runs: ${orphan_msrun_count}
         </td>
         <td>

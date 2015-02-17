@@ -38,8 +38,15 @@
         <a href="/runs">MS Run Information</a>
         </div>
     </li>
-    <li>
-		<a href="/peptide_query">Search Database </a>
+    <li><a href="#"
+        onmouseover="mopen('m3')"
+        onmouseout="mclosetime()">Search Database</a>
+        <div id="m3"
+            onmouseover="mcancelclosetime()"
+            onmouseout="mclosetime()">
+        <a href="/peptide_query">Complete Database Search</a>
+        <a href="/multi_peptide">Multi Peptide Search</a>
+        </div>
 	</li>
     <li><a href="#"
         onmouseover="mopen('m2')"

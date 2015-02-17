@@ -136,7 +136,7 @@
         }
         markup.push('</tbody>');
         table.innerHTML = markup.join("");
-    })
+    });
 
 
     $(function () {

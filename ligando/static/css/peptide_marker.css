@@ -1,0 +1,39 @@
+.sI0 {
+    border-bottom:1px solid #0000ff;
+    padding-bottom:0px;
+    position:relative;
+}
+
+.sI1 {
+    border-bottom:1px solid #0000ff;
+    padding-bottom:2px;
+    position:relative;
+}
+
+.sI2 {
+    border-bottom:1px solid #0000ff;
+    padding-bottom:4px;
+    position:relative;
+}
+.sI3 {
+    border-bottom:1px solid #0000ff;
+    padding-bottom:6px;
+    position:relative;
+}
+.sI4 {
+    border-bottom:1px dotted #00CC00;
+    padding-bottom:0px;
+    position:relative;
+}
+
+.sI5 {
+    border-bottom:1px dotted #00CC00;
+    padding-bottom:2px;
+    position:relative;
+}
+
+.sI6 {
+    border-bottom:1px dotted #00CC00;
+    padding-bottom:6px;
+    position:relative;
+}

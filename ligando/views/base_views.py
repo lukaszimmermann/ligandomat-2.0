@@ -108,18 +108,28 @@ def protein_page(request):
                                 Protein.sequence,
                                 Protein.gene_name)
         query = query.filter(Protein.name == request.matchdict["protein"])
-        statistics = json.dumps(query.all())
-        query = DBSession.query(SpectrumHit.sequence)
+        temp_statistics = query.all()
+        statistics = json.dumps(temp_statistics)
+        query = DBSession.query(SpectrumHit.sequence.distinct())
         query = query.join(t_spectrum_protein_map)
         query = query.join(Protein)
         query = query.filter(Protein.name == request.matchdict["protein"])
         sequences = query.all()
         #print sequences
-        # TODO: mark peptides in sequence
+        sequence_start = list()
+        sequence_end = list()
+        for seq in sequences:
+            pos = temp_statistics[0][3].find(seq[0])
+            sequence_start.append(pos)
+            sequence_end.append(pos+len(seq[0]))
+        sequence_start = json.dumps(sequence_start)
+        sequence_end = json.dumps(sequence_end)
 
     except:
         return Response(conn_err_msg, content_type='text/plain', status_int=500)
-    return {"statistics": statistics, "protein": request.matchdict["protein"]}
+    return {"statistics": statistics,
+            "protein": request.matchdict["protein"],
+            "sequence_start": sequence_start, "sequence_end": sequence_end}
 
 @view_config(route_name='organ', renderer='../templates/organ.pt', request_method="GET")
 def organ_page(request):
@@ -137,3 +147,20 @@ def organ_page(request):
     except:
         return Response(conn_err_msg, content_type='text/plain', status_int=500)
     return {"sources": sources, "organ": request.matchdict["organ"], "statistic": statistic}
+
+
+@view_config(route_name='person', renderer='../templates/person.pt', request_method="GET")
+def person_page(request):
+    try:
+        query = DBSession.query(Source.histology, Source.name, Source.organ,
+                                Source.comment, Source.dignity, Source.celltype, Source.location,
+                                Source.metastatis, Source.person, Source.organism)
+        query = query.filter(Source.person == request.matchdict["person"])
+        sources = json.dumps(query.all())
+
+        query = DBSession.query(MsRun.ms_run_id, MsRun.filename).join(Source).filter(Source.person == request.matchdict["person"])
+        runs = json.dumps(query.all())
+
+    except:
+        return Response(conn_err_msg, content_type='text/plain', status_int=500)
+    return {"sources": sources, "runs": runs, "person": request.matchdict["person"]}

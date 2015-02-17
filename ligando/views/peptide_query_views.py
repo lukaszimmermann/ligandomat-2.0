@@ -4,6 +4,7 @@ from pyramid.view import view_config
 from sqlalchemy import func
 from sqlalchemy.exc import DBAPIError
 import simplejson as json
+from sqlalchemy import or_
 
 from ligando.models import (
     DBSession,
@@ -17,7 +18,7 @@ from ligando.models import (
     t_peptide_protein_map,
     SpectrumHit,
     t_spectrum_protein_map)
-from ligando.views.view_helper import  conn_err_msg, create_filter
+from ligando.views.view_helper import conn_err_msg, create_filter
 
 
 

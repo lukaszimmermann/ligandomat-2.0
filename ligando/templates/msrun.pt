@@ -8,7 +8,6 @@
 </head>
 
 <body>
-<href ></href>
 
 
 <div class="main_wrapper">
@@ -98,7 +97,7 @@
     </div>
 </div>
 <br>
-<object width="100%" height="4000px" data="${request.static_url('ligando:static/qcML/samplefile_0_0_8.qcML.xml')}"></object>
+<object  width="100%" height="4000px" data="${request.static_url('ligando:static/qcML/samplefile_0_0_8.qcML.xml')}"></object>
 
 <script>
     $(document).ready(
@@ -140,7 +139,8 @@ $(document).ready(function() {
     }else{
         document.getElementById("metastatis").innerHTML = "Yes"
     }
-    document.getElementById("person").innerHTML = ${statistics}[0]["person"];
+    document.getElementById("person").innerHTML = "<a class='nostylelink'  href= '/person/"+${statistics}[0]["person"] + "'>"+${statistics}[0]["person"] + "</a>, ";
+
     document.getElementById("ms_run_date").innerHTML = ${statistics}[0]["ms_run_date"];
     document.getElementById("used_share").innerHTML = ${statistics}[0]["used_share"];
     if(${statistics}[0]["msrun_comment"] == "NULL"){
