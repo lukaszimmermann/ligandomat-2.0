@@ -13,8 +13,7 @@ from ligando.models import (
     t_hla_map,
     SpectrumHit,
     t_spectrum_protein_map)
-from ligando.views.view_helper import conn_err_msg
-
+from ligando.views.view_helper import conn_err_msg, js_list_creator, js_list_creator_dataTables
 
 
 @view_config(route_name='source', renderer='../templates/source.pt', request_method="GET")
@@ -124,12 +123,13 @@ def protein_page(request):
             sequence_end.append(pos+len(seq[0]))
         sequence_start = json.dumps(sequence_start)
         sequence_end = json.dumps(sequence_end)
+        sequences = js_list_creator_dataTables(sequences)
 
     except:
         return Response(conn_err_msg, content_type='text/plain', status_int=500)
     return {"statistics": statistics,
             "protein": request.matchdict["protein"],
-            "sequence_start": sequence_start, "sequence_end": sequence_end}
+            "sequence_start": sequence_start, "sequence_end": sequence_end, "sequences": sequences}
 
 @view_config(route_name='organ', renderer='../templates/organ.pt', request_method="GET")
 def organ_page(request):

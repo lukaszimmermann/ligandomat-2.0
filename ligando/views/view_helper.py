@@ -1,3 +1,5 @@
+from sqlalchemy import or_
+
 __author__ = 'Linus Backert'
 
 from sqlalchemy.orm import aliased
@@ -10,6 +12,12 @@ def js_list_creator(input):
     result_string += ']'
     return result_string
 
+def js_list_creator_dataTables(input):
+    result_string = '['
+    for i in input:
+        result_string += '["' + str(i[0]) + '"],'
+    result_string += ']'
+    return result_string
 
 def create_filter(query, parameter, request, sql_object, sql_parent, rule, like, fk=None):
     if len(request[parameter]) is not 0:
@@ -31,15 +39,16 @@ def create_filter(query, parameter, request, sql_object, sql_parent, rule, like,
                             query = query.filter(getattr(a_alias, sql_object) == split[s])
                             # TODO: add second search to result (e.g. second Protein)
             else:
-                temp_code = "query = query.filter(or_("
-                for s in split:
-                    if like:
-                        temp_code += "getattr(sql_parent, sql_object).like(split[s])," % s
-                    else:
-                        temp_code += "getattr(sql_parent,sql_object) == '%s'," % s
-                temp_code = temp_code.strip(",")
-                temp_code += "))"
-                exec temp_code
+                # temp_code = "query = query.filter(or_("
+                # for s in split:
+                #     if like:
+                #         temp_code += "getattr(sql_parent, sql_object).like(split[s])," % s
+                #     else:
+                #         temp_code += "getattr(sql_parent,sql_object) == '%s'," % s
+                # temp_code = temp_code.strip(",")
+                # temp_code += "))"
+                # exec temp_code
+                query = query.filter(or_(*[(getattr(sql_parent, sql_object).like(split[s])) for s in split]))
         else:
             if rule == ">" or rule == "<":
                 if rule == ">":
