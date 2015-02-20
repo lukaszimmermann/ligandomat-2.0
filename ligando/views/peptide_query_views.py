@@ -56,11 +56,11 @@ def peptide_query_result(request):
     if request.params['grouping'] == "peptide":
         try:
             query = DBSession.query(PeptideRun.sequence,
-                                    func.group_concat(Protein.name.distinct().op('separator')(', ')).label("protein"),
-                                    func.group_concat(Source.histology.distinct().op('separator')(', ')).label("name"),
-                                    #func.group_concat((HlaType.hla_string.distinct().op('order by')(HlaType.hla_string)).op('separator')(', ')).label('hla_typing'))
-            func.group_concat(HlaType.hla_string.distinct().op('separator')(', ')).label(
-                                         'hla_typing'))
+                                    func.group_concat(Protein.name.distinct().op('order by')(Protein.name)).label("protein"),
+                                    func.group_concat(Source.histology.distinct().op('order by')(Source.histology)).label("name"),
+                                    func.group_concat(Source.dignity.distinct().op('order by')(Source.dignity)).label("dignity"),
+                                    func.group_concat((HlaType.hla_string.distinct().op('order by')(HlaType.hla_string))).label('hla_typing'))
+            #func.group_concat(HlaType.hla_string.distinct().op('separator')(', ')).label('hla_typing'))
             query = query.join(Source)
             query = query.join(MsRun, PeptideRun.ms_run_ms_run_id == MsRun.ms_run_id)
             query = query.join(HlaLookup)
@@ -98,8 +98,8 @@ def peptide_query_result(request):
                                     PeptideRun.sequence, PeptideRun.minRT, PeptideRun.maxRT,
                                     PeptideRun.minScore, PeptideRun.maxScore, PeptideRun.minE, PeptideRun.maxE,
                                     PeptideRun.minQ, PeptideRun.maxQ, PeptideRun.PSM,
-                                    func.group_concat(HlaType.hla_string.distinct().op('separator')(', ')).label('hla_typing'),
-                                    func.group_concat(Protein.name.distinct().op('separator')(', ')).label("protein"),
+                                    func.group_concat(HlaType.hla_string.distinct().op('order by')(HlaType.hla_string)).label('hla_typing'),
+                                    func.group_concat(Protein.name.distinct().op('order by')(Protein.name)).label("protein"),
                                     Source.histology, Source.name, MsRun.filename)
             query = query.join(Source)
             query = query.join(MsRun, PeptideRun.ms_run_ms_run_id == MsRun.ms_run_id)
@@ -143,9 +143,9 @@ def peptide_query_result(request):
                                     func.max(PeptideRun.maxE).label("maxE"),
                                     func.min(PeptideRun.minQ).label("minQ"),
                                     func.max(PeptideRun.maxQ).label("maxQ"),
-                                    func.group_concat(HlaType.hla_string.distinct().op('separator')(', ')).label(
+                                    func.group_concat(HlaType.hla_string.distinct().op('order by')(HlaType.hla_string)).label(
                                         'hla_typing'),
-                                    func.group_concat(Protein.name.distinct().op('separator')(', ')).label("protein"),
+                                    func.group_concat(Protein.name.distinct().op('order by')(Protein.name)).label("protein"),
                                     Source.histology, Source.name.label("source_name"))
             query = query.join(Source)
             query = query.join(MsRun, PeptideRun.ms_run_ms_run_id == MsRun.ms_run_id)
@@ -188,8 +188,8 @@ def peptide_query_result(request):
                 func.min(SpectrumHit.q_value).label("minQ"),
                 func.max(SpectrumHit.q_value).label("maxQ"),
                 func.count(SpectrumHit.spectrum_hit_id.distinct()).label("PSM"),
-                func.group_concat(HlaType.hla_string.distinct().op('separator')(', ')).label('hla_typing'),
-                func.group_concat(Protein.name.distinct().op('separator')(', ')).label("protein"),
+                func.group_concat(HlaType.hla_string.distinct().op('order by')(HlaType.hla_string)).label('hla_typing'),
+                func.group_concat(Protein.name.distinct().op('order by')(Protein.name)).label("protein"),
                 Source.histology, Source.name.label("source_name"))
             query = query.join(Source)
             query = query.join(MsRun, SpectrumHit.ms_run_ms_run_id == MsRun.ms_run_id)

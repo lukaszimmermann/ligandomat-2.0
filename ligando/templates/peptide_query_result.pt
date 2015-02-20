@@ -27,6 +27,7 @@
                 <th>Sequence</th>
                 <th>Protein</th>
                 <th>Source</th>
+                <th>Dignity</th>
                 <th>HLA Typing</th>
             </tr>
             <tr tal:condition="grouping == 'source'">
@@ -88,7 +89,7 @@
                 { data: "hla_typing",
                     // split HLA string and create single links
                     "render": function ( data, type, row ) {
-                hla_split = data.split(", ");
+                hla_split = data.split(",");
                 return_string = "";
                 for (var hla =0; hla<hla_split.length; hla++){
                     if(hla <hla_split.length-1) {
@@ -102,8 +103,8 @@
                 { data: "protein",
                     // split protein string and create single links
             "render": function ( data, type, row ) {
-                prot_split = data.split(", ")
-                return_string = ""
+                prot_split = data.split(",");
+                return_string = "";
                 for (var prot =0; prot<prot_split.length; prot++){
                     if(prot <prot_split.length-1) {
                         return_string += "<a class='nostylelink'  href= '/protein/" + prot_split[prot] + "'>" + prot_split[prot] + "</a>, ";
@@ -141,7 +142,7 @@
                 { data: "protein",
                     // split protein string and create single links
             "render": function ( data, type, row ) {
-                prot_split = data.split(", ")
+                prot_split = data.split(",")
                 return_string = ""
                 for (var prot =0; prot<prot_split.length; prot++){
                     if(prot <prot_split.length-1) {
@@ -155,7 +156,7 @@
                 { data: "name",
                     // split protein string and create single links
                     "render": function ( data, type, row ) {
-                protein_split = data.split(", ");
+                protein_split = data.split(",");
                 return_string = "";
                 for (var protein =0; protein<protein_split.length; protein++){
                     if(protein <protein_split.length-1) {
@@ -166,10 +167,24 @@
                 }
                 return return_string
             }},
+                    { data: "dignity",
+                    // split protein string and create single links
+            "render": function ( data, type, row ) {
+                dignity_split = data.split(",");
+                return_string = ""
+                for (var dignity =0; dignity<dignity_split.length; dignity++){
+                    if(dignity <dignity_split.length-1) {
+                        return_string += "<a class='nostylelink'  href= '/protein/" + dignity_split[dignity] + "'>" + dignity_split[dignity] + "</a>, ";
+                    }else{
+                            return_string += "<a class='nostylelink'  href= '/protein/" + dignity_split[dignity] + "'>" + dignity_split[dignity] + "</a>";
+                    }
+                }
+                return return_string
+            }},
                 { data: "hla_typing",
                     // split HLA string and create single links
                     "render": function ( data, type, row ) {
-                hla_split = data.split(", ");
+                hla_split = data.split(",");
                 return_string = "";
                 for (var hla =0; hla<hla_split.length; hla++){
                     if(hla <hla_split.length-1) {
@@ -215,7 +230,7 @@
                 { data: "hla_typing",
                     // split HLA string and create single links
                     "render": function ( data, type, row ) {
-                hla_split = data.split(", ");
+                hla_split = data.split(",");
                 return_string = "";
                 for (var hla =0; hla<hla_split.length; hla++){
                     if(hla <hla_split.length-1) {
@@ -229,7 +244,7 @@
                 { data: "protein",
                     // split protein string and create single links
             "render": function ( data, type, row ) {
-                prot_split = data.split(", ")
+                prot_split = data.split(",");
                 return_string = ""
                 for (var prot =0; prot<prot_split.length; prot++){
                     if(prot <prot_split.length-1) {
@@ -282,7 +297,7 @@
                 { data: "hla_typing",
                     // split HLA string and create single links
                     "render": function ( data, type, row ) {
-                hla_split = data.split(", ");
+                hla_split = data.split(",");
                 return_string = "";
                 for (var hla =0; hla<hla_split.length; hla++){
                     if(hla <hla_split.length-1) {
@@ -296,7 +311,7 @@
                 { data: "protein",
                     // split protein string and create single links
             "render": function ( data, type, row ) {
-                prot_split = data.split(", ");
+                prot_split = data.split(",");
                 return_string = "";
                 for (var prot =0; prot<prot_split.length; prot++){
                     if(prot <prot_split.length-1) {
