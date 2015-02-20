@@ -1,5 +1,5 @@
 
-<html metal:use-macro="load: base_layout.pt">
+<html metal:use-macro="load: ../base_layout.pt">
 <!DOCTYPE html>
 <html lang="${request.locale_name}">
 <head>
@@ -28,7 +28,7 @@
         <br>
         <h3>Sequence:</h3>
         <div style="float: left;">
-        <table class="info_table" width="500px" style="font-family: monospace,monospace;white-space: pre-wrap;
+        <table class="info_table" width="500px" style=" font-family: monospace,monospace;white-space: pre-wrap;
 word-wrap: break-word;  text-align: left">
             <tr class="alt">
                 <td id="sequence"></td>
@@ -111,11 +111,16 @@ $(document).ready(function() {
 
     for(var j = 0; j < sequence.length; j=j+10){
         for(var i =j; i<j+10; i=i+1){
-            if($.inArray(i, sequence_start) > -1){
-                pos_list = add_pep_to_id_list(pos_list, $.inArray(i, sequence_start));
+            // Can not use inArray cause multi peptides in the array may have the same start/end
+            for(var start = 0; start < sequence_start.length; start++ ) {
+                if( sequence_start[start] == i){
+                    pos_list = add_pep_to_id_list(pos_list, start);
+                }
             }
-            if($.inArray(i, sequence_end) > -1){
-                pos_list = remove_pep_to_id_list(pos_list, $.inArray(i, sequence_end));
+            for(var end = 0; end < sequence_end.length; end++ ) {
+                if( sequence_end[end] == i){
+                    pos_list = remove_pep_to_id_list(pos_list, end);
+                }
             }
             // Sequence row
             if(i < sequence.length) {
@@ -129,12 +134,12 @@ $(document).ready(function() {
         }
         numbers = numbers + (j+10) +" ";
         if((j+10)%50 == 0 && j!= 0) {
-            complete_sequence = complete_sequence + numbers + "<br>" + modified_sequence + "<br>";
+            complete_sequence = complete_sequence  +numbers + "<br>" +  "<p style='margin-bottom: 8px;margin-top:0px'>"+modified_sequence + "<br>" + "</p>";
             modified_sequence = "";
             numbers = "";
         }
     }
-    complete_sequence = complete_sequence + numbers + "<br>" + modified_sequence + "<br>";
+    complete_sequence = complete_sequence +numbers +"<br>" +"<p style='margin-bottom: 8px;margin-top:0px'>"+ modified_sequence + "<br>" + "</p>";
     document.getElementById("sequence").innerHTML = complete_sequence;
 });
 $(document).ready(function() {
@@ -146,7 +151,9 @@ $(document).ready(function() {
     searching: false,
         data: ${sequences},
         columns: [
-            {}
+            {"render": function ( data, type, row ) {
+                return "<a class='nostylelink'  href= '/peptide/"+data + "'>"+data + "</a>" ;
+            }}
         ]
     } );
     } );

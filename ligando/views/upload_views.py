@@ -13,10 +13,10 @@ from ligando.models import (
     HlaType,
     HlaLookup,
     t_hla_map)
-from ligando.views.view_helper import js_list_creator, conn_err_msg
+from ligando.views.view_helper import js_list_creator, conn_err_msg, hla_digits_extractor
 
 
-@view_config(route_name='upload_metadata_source', renderer='../templates/upload_metadata_source.pt', request_method="GET")
+@view_config(route_name='upload_metadata_source', renderer='../templates/upload_templates/upload_metadata_source.pt', request_method="GET")
 def upload_metadata_source(request):
     try:
         result_dict = dict()
@@ -35,7 +35,7 @@ def upload_metadata_source(request):
     return result_dict
 
 
-@view_config(route_name='upload_metadata_source', renderer='../templates/base_layout.pt', request_method="POST")
+@view_config(route_name='upload_metadata_source', renderer='../templates/upload_templates/base_layout.pt', request_method="POST")
 def upload_metadata_source_post(request):
     source_upload = ast.literal_eval(request.params["sources"])
     for source in source_upload:
@@ -89,7 +89,7 @@ def upload_metadata_source_post(request):
                     # unknown hla_lookup
                     if len(hla_types_id) == 0:
                         try:
-                            hla_type = HlaType(hla_string=sub_type)
+                            hla_type = HlaType(hla_string=sub_type, digits=hla_digits_extractor(sub_type))
                             DBSession.add(hla_type)
                             DBSession.flush()
                             hla_types_id = hla_type.hla_types_id
@@ -139,7 +139,7 @@ def upload_metadata_source_post(request):
     return dict()
 
 
-@view_config(route_name='upload_metadata_ms_run', renderer='../templates/upload_metadata_msrun.pt', request_method="GET")
+@view_config(route_name='upload_metadata_ms_run', renderer='../templates/upload_templates/upload_metadata_msrun.pt', request_method="GET")
 def upload_metadata_ms_run(request):
     result_dict = dict()
     if ("run" in request.params):
@@ -171,7 +171,7 @@ def upload_metadata_ms_run(request):
     return result_dict
 
 
-@view_config(route_name='upload_metadata_ms_run', renderer='../templates/base_layout.pt', request_method="POST")
+@view_config(route_name='upload_metadata_ms_run', renderer='../templates/upload_templates/base_layout.pt', request_method="POST")
 def upload_metadata_ms_run_post(request):
     ms_run_upload = ast.literal_eval(request.params["ms_runs"])
     for ms_run in ms_run_upload:
@@ -249,3 +249,28 @@ def upload_metadata_ms_run_post(request):
 
     return dict()
 
+@view_config(route_name='blacklist_msrun', renderer='../templates/upload_templates/blacklist_msrun.pt', request_method="GET")
+def blacklist_ms_run(request):
+    result_dict = dict()
+    if ("run" in request.params):
+        result_dict["run"] = request.params["run"]
+    else:
+        result_dict["run"] = ""
+    try:
+        # TODO: Show only processed runs without metadata
+        allowed_elements = {"person": Source.person}
+        for k, v in allowed_elements.iteritems():
+            query = DBSession.query(v)
+            query = query.group_by(v)
+            query_result = js_list_creator(query.all())
+            result_dict[k] = query_result
+
+        allowed_elements = {"filename": MsRun.filename}
+        for k, v in allowed_elements.iteritems():
+            query = DBSession.query(v)
+            query = query.group_by(v)
+            query_result = js_list_creator(query.all())
+            result_dict[k] = query_result
+    except:
+        return Response(conn_err_msg, content_type='text/plain', status_int=500)
+    return result_dict

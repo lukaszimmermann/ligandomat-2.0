@@ -31,6 +31,9 @@
     color: black;
 }
 
+table.info_table tr.odd { background-color: white; }
+table.info_table tr.even { background-color: rgb(240, 235, 224); }
+
 .wrapper {
     margin-top: 20pt;
     margin-right: auto;

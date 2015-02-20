@@ -29,8 +29,17 @@ def peptide_query(request):
 
 @view_config(route_name='peptide_query', renderer='../templates/peptide_query_result.pt', request_method="POST")
 def peptide_query_result(request):
-    params_check_dict = ['sequence', 'source', 'run_name', 'organ', 'histology', 'dignity', 'hla_typing', 'protein',
-                         'length_1', 'length_2']
+    params_check_dict = ['sequence', 'sequence_rule',
+                         'source', 'source_rule',
+                         'run_name', 'run_name_rule',
+                         'organ', 'organ_rule',
+                         'histology', 'histology_rule',
+                         'dignity', 'dignity_rule',
+                         'hla_typing', 'hla_typing_rule',
+                         'digits',
+                         'protein', 'protein_rule',
+                         'length_1', 'length_2',
+                         'antibody', 'antibody_rule']
     input_check = False
     filter_dict = dict()
     for param in params_check_dict:
@@ -43,12 +52,15 @@ def peptide_query_result(request):
         else:
             filter_dict[param] = ""
 
+    # TODO: sort group_concat items before concat
     if request.params['grouping'] == "peptide":
         try:
             query = DBSession.query(PeptideRun.sequence,
                                     func.group_concat(Protein.name.distinct().op('separator')(', ')).label("protein"),
                                     func.group_concat(Source.histology.distinct().op('separator')(', ')).label("name"),
-                                    HlaLookup.hla_category)
+                                    #func.group_concat((HlaType.hla_string.distinct().op('order by')(HlaType.hla_string)).op('separator')(', ')).label('hla_typing'))
+            func.group_concat(HlaType.hla_string.distinct().op('separator')(', ')).label(
+                                         'hla_typing'))
             query = query.join(Source)
             query = query.join(MsRun, PeptideRun.ms_run_ms_run_id == MsRun.ms_run_id)
             query = query.join(HlaLookup)
@@ -58,20 +70,22 @@ def peptide_query_result(request):
             query = query.join(Protein)
 
             # Sequence filter
-            query = create_filter(query, 'sequence', filter_dict, "sequence", PeptideRun, 'sequence_rule', True)
-            query = create_filter(query, 'source', filter_dict, "name", Source, 'source_rule', True)
-            query = create_filter(query, 'run_name', filter_dict, "filename", MsRun, 'run_name_rule', True)
-            query = create_filter(query, 'organ', filter_dict, "organ", Source, 'organ_rule', False)
-            query = create_filter(query, 'histology', filter_dict, "histology", Source, 'histology_rule', False)
-            query = create_filter(query, 'dignity', filter_dict, "dignity", Source, 'dignity_rule', False)
-            query = create_filter(query, 'hla_typing', filter_dict, "hla_string", HlaType, 'hla_typing_rule', False,
-                                  HlaLookup.fk_hla_typess)
-            query = create_filter(query, 'protein', filter_dict, "name", Protein, 'protein_rule', False,
-                                  PeptideRun.protein_proteins)
-            query = create_filter(query, 'length_1', filter_dict, 'length', PeptideRun, ">", False)
-            query = create_filter(query, 'length_2', filter_dict, 'length', PeptideRun, "<", False)
+            query = create_filter(query, 'sequence', filter_dict, "sequence", PeptideRun, 'sequence_rule', True, set=False)
+            query = create_filter(query, 'source', filter_dict, "name", Source, 'source_rule', True, set=False)
+            query = create_filter(query, 'run_name', filter_dict, "filename", MsRun, 'run_name_rule', True, set=False)
+            query = create_filter(query, 'organ', filter_dict, "organ", Source, 'organ_rule', False, set=False)
+            query = create_filter(query, 'histology', filter_dict, "histology", Source, 'histology_rule', False, set=False)
+            query = create_filter(query, 'dignity', filter_dict, "dignity", Source, 'dignity_rule', False, set=False)
+            query = create_filter(query, 'hla_typing', filter_dict, "hla_string", HlaType, 'hla_typing_rule', False, set=False,
+                                  fk=HlaLookup.fk_hla_typess)
+            query = create_filter(query, 'digits', filter_dict, 'digits', HlaType, None, False, set=False)
+            query = create_filter(query, 'protein', filter_dict, "name", Protein, 'protein_rule', False, set=False,
+                                  fk=PeptideRun.protein_proteins)
+            query = create_filter(query, 'length_1', filter_dict, 'length', PeptideRun, ">", False, set=False)
+            query = create_filter(query, 'length_2', filter_dict, 'length', PeptideRun, "<", False, set=False)
+            query = create_filter(query, 'antibody', filter_dict, "antibody_set", MsRun, 'antibody_rule', False, set=True)
 
-            # results = query.all()
+
             query = query.group_by(PeptideRun.sequence)
 
             your_json = json.dumps(query.all())
@@ -84,7 +98,7 @@ def peptide_query_result(request):
                                     PeptideRun.sequence, PeptideRun.minRT, PeptideRun.maxRT,
                                     PeptideRun.minScore, PeptideRun.maxScore, PeptideRun.minE, PeptideRun.maxE,
                                     PeptideRun.minQ, PeptideRun.maxQ, PeptideRun.PSM,
-                                    HlaLookup.hla_category,
+                                    func.group_concat(HlaType.hla_string.distinct().op('separator')(', ')).label('hla_typing'),
                                     func.group_concat(Protein.name.distinct().op('separator')(', ')).label("protein"),
                                     Source.histology, Source.name, MsRun.filename)
             query = query.join(Source)
@@ -96,18 +110,21 @@ def peptide_query_result(request):
             query = query.join(Protein)
 
             # Sequence filter
-            query = create_filter(query, 'sequence', filter_dict, "sequence", PeptideRun, 'sequence_rule', True)
-            query = create_filter(query, 'source', filter_dict, "name", Source, 'source_rule', True)
-            query = create_filter(query, 'run_name', filter_dict, "filename", MsRun, 'run_name_rule', True)
-            query = create_filter(query, 'organ', filter_dict, "organ", Source, 'organ_rule', False)
-            query = create_filter(query, 'histology', filter_dict, "histology", Source, 'histology_rule', False)
-            query = create_filter(query, 'dignity', filter_dict, "dignity", Source, 'dignity_rule', False)
-            query = create_filter(query, 'hla_typing', filter_dict, "hla_string", HlaType, 'hla_typing_rule', False,
-                                  HlaLookup.fk_hla_typess)
-            query = create_filter(query, 'protein', filter_dict, "name", Protein, 'protein_rule', False,
-                                  PeptideRun.protein_proteins)
-            query = create_filter(query, 'length_1', filter_dict, 'length', PeptideRun, ">", False)
-            query = create_filter(query, 'length_2', filter_dict, 'length', PeptideRun, "<", False)
+            query = create_filter(query, 'sequence', filter_dict, "sequence", PeptideRun, 'sequence_rule', True, set=False)
+            query = create_filter(query, 'source', filter_dict, "name", Source, 'source_rule', True, set=False)
+            query = create_filter(query, 'run_name', filter_dict, "filename", MsRun, 'run_name_rule', True, set=False)
+            query = create_filter(query, 'organ', filter_dict, "organ", Source, 'organ_rule', False, set=False)
+            query = create_filter(query, 'histology', filter_dict, "histology", Source, 'histology_rule', False, set=False)
+            query = create_filter(query, 'dignity', filter_dict, "dignity", Source, 'dignity_rule', False, set=False)
+            query = create_filter(query, 'hla_typing', filter_dict, "hla_string", HlaType, 'hla_typing_rule', False, set=False,
+                                  fk=HlaLookup.fk_hla_typess)
+            query = create_filter(query, 'digits', filter_dict, 'digits', HlaType, None, False, set=False)
+
+            query = create_filter(query, 'protein', filter_dict, "name", Protein, 'protein_rule', False, set=False,
+                                  fk=PeptideRun.protein_proteins)
+            query = create_filter(query, 'length_1', filter_dict, 'length', PeptideRun, ">", False, set=False)
+            query = create_filter(query, 'length_2', filter_dict, 'length', PeptideRun, "<", False, set=False)
+            query = create_filter(query, 'antibody', filter_dict, "antibody_set", MsRun, 'antibody_rule', False, set=True)
 
             query = query.group_by(PeptideRun.peptide_run_id)
             your_json = json.dumps(query.all())
@@ -126,7 +143,8 @@ def peptide_query_result(request):
                                     func.max(PeptideRun.maxE).label("maxE"),
                                     func.min(PeptideRun.minQ).label("minQ"),
                                     func.max(PeptideRun.maxQ).label("maxQ"),
-                                    HlaLookup.hla_category,
+                                    func.group_concat(HlaType.hla_string.distinct().op('separator')(', ')).label(
+                                        'hla_typing'),
                                     func.group_concat(Protein.name.distinct().op('separator')(', ')).label("protein"),
                                     Source.histology, Source.name.label("source_name"))
             query = query.join(Source)
@@ -138,18 +156,20 @@ def peptide_query_result(request):
             query = query.join(Protein)
 
             # Sequence filter
-            query = create_filter(query, 'sequence', filter_dict, "sequence", PeptideRun, 'sequence_rule', True)
-            query = create_filter(query, 'source', filter_dict, "name", Source, 'source_rule', True)
-            query = create_filter(query, 'run_name', filter_dict, "filename", MsRun, 'run_name_rule', True)
-            query = create_filter(query, 'organ', filter_dict, "organ", Source, 'organ_rule', False)
-            query = create_filter(query, 'histology', filter_dict, "histology", Source, 'histology_rule', False)
-            query = create_filter(query, 'dignity', filter_dict, "dignity", Source, 'dignity_rule', False)
-            query = create_filter(query, 'hla_typing', filter_dict, "hla_string", HlaType, 'hla_typing_rule', False,
-                                  HlaLookup.fk_hla_typess)
-            query = create_filter(query, 'protein', filter_dict, "name", Protein, 'protein_rule', False,
-                                  PeptideRun.protein_proteins)
-            query = create_filter(query, 'length_1', filter_dict, 'length', PeptideRun, ">", False)
-            query = create_filter(query, 'length_2', filter_dict, 'length', PeptideRun, "<", False)
+            query = create_filter(query, 'sequence', filter_dict, "sequence", PeptideRun, 'sequence_rule', True, set=False)
+            query = create_filter(query, 'source', filter_dict, "name", Source, 'source_rule', True, set=False)
+            query = create_filter(query, 'run_name', filter_dict, "filename", MsRun, 'run_name_rule', True, set=False)
+            query = create_filter(query, 'organ', filter_dict, "organ", Source, 'organ_rule', False, set=False)
+            query = create_filter(query, 'histology', filter_dict, "histology", Source, 'histology_rule', False, set=False)
+            query = create_filter(query, 'dignity', filter_dict, "dignity", Source, 'dignity_rule', False, set=False)
+            query = create_filter(query, 'hla_typing', filter_dict, "hla_string", HlaType, 'hla_typing_rule', False, set=False,
+                                  fk=HlaLookup.fk_hla_typess)
+            query = create_filter(query, 'digits', filter_dict, 'digits', HlaType, None, False, set=False)
+            query = create_filter(query, 'protein', filter_dict, "name", Protein, 'protein_rule', False, set=False,
+                                  fk=PeptideRun.protein_proteins)
+            query = create_filter(query, 'length_1', filter_dict, 'length', PeptideRun, ">", False, set=False)
+            query = create_filter(query, 'length_2', filter_dict, 'length', PeptideRun, "<", False, set=False)
+            query = create_filter(query, 'antibody', filter_dict, "antibody_set", MsRun, 'antibody_rule', False, set=True)
 
             query = query.group_by(Source.source_id, PeptideRun.sequence)
 
@@ -168,7 +188,7 @@ def peptide_query_result(request):
                 func.min(SpectrumHit.q_value).label("minQ"),
                 func.max(SpectrumHit.q_value).label("maxQ"),
                 func.count(SpectrumHit.spectrum_hit_id.distinct()).label("PSM"),
-                HlaLookup.hla_category,
+                func.group_concat(HlaType.hla_string.distinct().op('separator')(', ')).label('hla_typing'),
                 func.group_concat(Protein.name.distinct().op('separator')(', ')).label("protein"),
                 Source.histology, Source.name.label("source_name"))
             query = query.join(Source)
@@ -180,18 +200,19 @@ def peptide_query_result(request):
             query = query.join(Protein)
 
             # Sequence filter
-            query = create_filter(query, 'sequence', filter_dict, "sequence", SpectrumHit, 'sequence_rule', True)
-            query = create_filter(query, 'source', filter_dict, "name", Source, 'source_rule', True)
-            query = create_filter(query, 'run_name', filter_dict, "filename", MsRun, 'run_name_rule', True)
-            query = create_filter(query, 'organ', filter_dict, "organ", Source, 'organ_rule', False)
-            query = create_filter(query, 'histology', filter_dict, "histology", Source, 'histology_rule', False)
-            query = create_filter(query, 'dignity', filter_dict, "dignity", Source, 'dignity_rule', False)
-            query = create_filter(query, 'hla_typing', filter_dict, "hla_string", HlaType, 'hla_typing_rule', False,
-                                  HlaLookup.fk_hla_typess)
-            query = create_filter(query, 'protein', filter_dict, "name", Protein, 'protein_rule', False,
-                                  SpectrumHit.protein_proteins)
-            query = create_filter(query, 'length_1', filter_dict, 'length', SpectrumHit, ">", False)
-            query = create_filter(query, 'length_2', filter_dict, 'length', SpectrumHit, "<", False)
+            query = create_filter(query, 'sequence', filter_dict, "sequence", SpectrumHit, 'sequence_rule', True, set=False)
+            query = create_filter(query, 'source', filter_dict, "name", Source, 'source_rule', True, set=False)
+            query = create_filter(query, 'run_name', filter_dict, "filename", MsRun, 'run_name_rule', True, set=False)
+            query = create_filter(query, 'organ', filter_dict, "organ", Source, 'organ_rule', False, set=False)
+            query = create_filter(query, 'histology', filter_dict, "histology", Source, 'histology_rule', False, set=False)
+            query = create_filter(query, 'dignity', filter_dict, "dignity", Source, 'dignity_rule', False, set=False)
+            query = create_filter(query, 'hla_typing', filter_dict, "hla_string", HlaType, 'hla_typing_rule', False, set=False,
+                                  fk=HlaLookup.fk_hla_typess)
+            query = create_filter(query, 'digits', filter_dict, 'digits', HlaType, None, False, set=False)
+            query = create_filter(query, 'protein', filter_dict, "name", Protein, 'protein_rule', False, set=False,
+                                  fk=SpectrumHit.protein_proteins)
+            query = create_filter(query, 'length_1', filter_dict, 'length', SpectrumHit, ">", False, set=False)
+            query = create_filter(query, 'length_2', filter_dict, 'length', SpectrumHit, "<", False, set=True)
 
             query = query.group_by(Source.source_id, SpectrumHit.sequence)
 

@@ -1,0 +1,75 @@
+
+<html metal:use-macro="load: ../base_layout.pt">
+<!DOCTYPE html>
+<html lang="${request.locale_name}">
+<head>
+</head>
+
+<body>
+<div class="main_wrapper">
+<div class="wrapper">
+    <h1 style="text-align: center" id="title"></h1>
+    <div style="float: right;">
+        <table class="info_table" id="sources" style="float: right" width="480px">
+            <thead><tr><td>Source</td></tr></thead>
+            <tbody>
+            <tr><td></td></tr>
+            </tbody>
+        </table>
+         </div>
+     <div style="float: left;">
+        <table class="info_table" id="proteins" style="float: right" width="480px">
+            <thead><tr><td>Proteins</td><td>Gene Name</td></tr></thead>
+            <tbody>
+            <tr><td></td><td></td></tr>
+            </tbody>
+        </table>
+         </div>
+    </div>
+    </div>
+<br>
+
+<script>
+
+
+$(document).ready(function() {
+    // Setting the title
+    document.getElementById("title").innerHTML = "${peptide}";
+});
+$(document).ready(function() {
+
+    $('#proteins').dataTable( {
+    "paging":   false,
+    "ordering": false,
+    "info":     false,
+    searching: false,
+        data: ${proteins},
+        columns: [
+            {data: "protein",
+                "render": function ( data, type, row ) {
+                return "<a class='nostylelink'  href= '/protein/"+data + "'>"+data + "</a>" ;
+            }},
+            {data: "gene_name"}
+        ]
+    } );
+    } );
+
+    $('#sources').dataTable( {
+    "paging":   false,
+    "ordering": false,
+    "info":     false,
+    searching: false,
+        data: ${sources},
+        columns: [
+            {"render": function ( data, type, row ) {
+                return "<a class='nostylelink'  href= '/source/"+data + "'>"+data + "</a>" ;
+            }}
+        ]
+    } );
+</script>
+
+
+
+</body>
+
+</html>

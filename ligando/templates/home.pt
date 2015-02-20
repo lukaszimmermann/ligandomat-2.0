@@ -41,13 +41,40 @@
 
         var data = [{label: 'Complete MS Runs', data:ms_run,color: "rgb("+180+","+160+","+105+")"},
                 {label: 'Orphan MS Runs', data:orphan_ms_run, color: "rgb("+165+","+30+","+55+")"}]
-        var options = {series: {stack: 0,
+        var options = {series: {
+                stack: 0,
 
-                 lines: {show: false, steps: false },
-                 bars: {show: true, barWidth: 0.5, align: 'center',fill :1}},
-                xaxis: {min: 0, max:3, show:false}}
+                 lines: {
+                     show: false,
+                     steps: false },
+                 bars: {
+                     show: true,
+                     barWidth: 0.5,
+                     align: 'center',
+                     fill :1,
+                     clickable:true}
+                },
+                xaxis: {
+                    min: 0,
+                    max:3,
+                    show:false
+                },
+                grid: {
+                    clickable: true,
+                    hover: true
+        }
+    }
         $.plot("#msrun_plot",data,options);
-    })
+    });
+    $("#msrun_plot").bind("plotclick", function (event, pos, item) {
+        if(item) {
+            if(item["seriesIndex"]==0){
+                window.location.href = "/runs";
+            }else{
+                window.location.href = "/orphan_runs";
+            }
+        }
+        });
 
 
     $(function () {
@@ -66,7 +93,7 @@
         }
         markup.push('</tbody>');
         table.innerHTML = markup.join("");
-    })
+    });
 
 
 </script>

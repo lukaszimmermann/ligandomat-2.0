@@ -1,5 +1,5 @@
 
-<html metal:use-macro="load: base_layout.pt">
+<html metal:use-macro="load: ../base_layout.pt">
 <!DOCTYPE html>
 <html lang="${request.locale_name}">
 <head>
@@ -63,7 +63,7 @@
     </div>
 <br>
 
-    <table id="example"  class="display" cellspacing="0" width="100%">
+    <table id="example"  class="info_table" cellspacing="0" width="100%">
         <thead>
         <tr>
         <th>MS Run</th>
@@ -87,12 +87,13 @@ $(document).ready(function() {
         allele_string = allele_string + "<a class='nostylelink'  href= '/hla/"+a + "'>"+a + "</a>, ";
     }
     document.getElementById("typing").innerHTML = allele_string.slice(0, -2);
-    document.getElementById("histology").innerHTML = ${statistic}[0]["histology"];
-    document.getElementById("organ").innerHTML = ${statistic}[0]["organ"];
+    document.getElementById("histology").innerHTML = "<a class='nostylelink'  href= '/histology/"+${statistic}[0]["histology"] + "'>"+${statistic}[0]["histology"]+ "</a>";
+    document.getElementById("organ").innerHTML =  "<a class='nostylelink'  href= '/organ/"+${statistic}[0]["organ"] + "'>"+${statistic}[0]["organ"]+ "</a>";
     document.getElementById("comment").innerHTML = ${statistic}[0]["comment"];
     document.getElementById("organism").innerHTML = ${statistic}[0]["organism"];
-    document.getElementById("dignity").innerHTML = ${statistic}[0]["dignity"];
-    document.getElementById("celltype").innerHTML = ${statistic}[0]["celltype"];
+    document.getElementById("dignity").innerHTML = "<a class='nostylelink'  href= '/dignity/"+${statistic}[0]["dignity"] + "'>"+${statistic}[0]["dignity"]+ "</a>";
+
+    document.getElementById("celltype").innerHTML = "<a class='nostylelink'  href= '/celltype/"+${statistic}[0]["celltype"] + "'>"+${statistic}[0]["celltype"]+ "</a>";
     document.getElementById("location").innerHTML = ${statistic}[0]["location"];
     // Write Yes or No instead 0 and 1
     if(${statistic}[0]["metastatis"]==0){
@@ -100,11 +101,7 @@ $(document).ready(function() {
     }else{
         document.getElementById("metastatis").innerHTML = "Yes"
     }
-    document.getElementById("person").innerHTML = "<a class='nostylelink'  href= '/person/"+${statistic}[0]["person"] + "'>"+${statistic}[0]["person"] + "</a>, ";
-
-
-
-
+    document.getElementById("person").innerHTML = "<a class='nostylelink'  href= '/person/"+${statistic}[0]["person"] + "'>"+${statistic}[0]["person"] + "</a>";
 });
 
 
@@ -112,7 +109,6 @@ $(document).ready(function() {
 
 $('#example').dataTable( {
     "paging":   false,
-    "ordering": false,
     "info":     false,
     searching: false,
     data: ${runs},

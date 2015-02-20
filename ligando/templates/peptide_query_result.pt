@@ -9,7 +9,7 @@
   <body>
   <div class="main_wrapper">
     <div style="margin-top:20pt">
-    <table id="example" auto class="display" cellspacing="0" width="80%"> <thead>
+    <table id="example" auto class="info_table" cellspacing="0" width="100%"> <thead>
             <tr tal:condition="grouping == 'run'">
                 <th>Sequence</th>
                 <th>RT [min]</th>
@@ -58,13 +58,16 @@
 
     <script>
 
-    //TODO: choose delimiter
+    //TODO: Link HLA Typing
     $(document).ready(function() {
     if ("${grouping}" == "run") {
         $('#example').dataTable( {
             data: ${project},
             columns: [
-                { data: "sequence" },
+                { data: "sequence" ,
+            "render": function ( data, type, row ) {
+                return "<a class='nostylelink'  href= '/peptide/"+data + "'>"+data + "</a>" ;
+            } },
                 { data: "minRT",
                 "render": function ( data, type, row ) {
                     return data +' - '+ row.maxRT+'';
@@ -82,7 +85,20 @@
                     return data +' - '+ row.maxQ+'';
                 }},
                 { data: "PSM"},
-                { data: "hla_category"},
+                { data: "hla_typing",
+                    // split HLA string and create single links
+                    "render": function ( data, type, row ) {
+                hla_split = data.split(", ");
+                return_string = "";
+                for (var hla =0; hla<hla_split.length; hla++){
+                    if(hla <hla_split.length-1) {
+                        return_string += "<a class='nostylelink'  href= '/hla/" + hla_split[hla] + "'>" + hla_split[hla] + "</a>, ";
+                    }else{
+                            return_string += "<a class='nostylelink'  href= '/hla/" + hla_split[hla] + "'>" + hla_split[hla] + "</a>";
+                    }
+                }
+                return return_string
+            }},
                 { data: "protein",
                     // split protein string and create single links
             "render": function ( data, type, row ) {
@@ -97,7 +113,10 @@
                 }
                 return return_string
             }},
-                { data: "histology"},
+                { data: "histology",
+            "render": function ( data, type, row ) {
+                return "<a class='nostylelink'  href= '/histology/"+data + "'>"+data + "</a>" ;
+            }},
                 { data: "name",
             "render": function ( data, type, row ) {
                 return "<a class='nostylelink'  href= '/source/"+data + "'>"+data + "</a>" ;
@@ -115,7 +134,10 @@
         $('#example').dataTable( {
             data: ${project},
             columns: [
-                { data: "sequence" },
+                { data: "sequence" ,
+            "render": function ( data, type, row ) {
+                return "<a class='nostylelink'  href= '/peptide/"+data + "'>"+data + "</a>" ;
+            } },
                 { data: "protein",
                     // split protein string and create single links
             "render": function ( data, type, row ) {
@@ -131,10 +153,33 @@
                 return return_string
             }},
                 { data: "name",
-            "render": function ( data, type, row ) {
-                return "<a class='nostylelink'  href= '/source/"+data + "'>"+data + "</a>" ;
+                    // split protein string and create single links
+                    "render": function ( data, type, row ) {
+                protein_split = data.split(", ");
+                return_string = "";
+                for (var protein =0; protein<protein_split.length; protein++){
+                    if(protein <protein_split.length-1) {
+                        return_string += "<a class='nostylelink'  href= '/protein/" + protein_split[protein] + "'>" + protein_split[protein] + "</a>, ";
+                    }else{
+                            return_string += "<a class='nostylelink'  href= '/protein/" + protein_split[protein] + "'>" + protein_split[protein] + "</a>";
+                    }
+                }
+                return return_string
             }},
-                { data: "hla_category"}
+                { data: "hla_typing",
+                    // split HLA string and create single links
+                    "render": function ( data, type, row ) {
+                hla_split = data.split(", ");
+                return_string = "";
+                for (var hla =0; hla<hla_split.length; hla++){
+                    if(hla <hla_split.length-1) {
+                        return_string += "<a class='nostylelink'  href= '/hla/" + hla_split[hla] + "'>" + hla_split[hla] + "</a>, ";
+                    }else{
+                            return_string += "<a class='nostylelink'  href= '/hla/" + hla_split[hla] + "'>" + hla_split[hla] + "</a>";
+                    }
+                }
+                return return_string
+            }}
             ],
             "sDom": 'T<"clear">lfrtip',
             oTableTools: {
@@ -147,7 +192,10 @@
         $('#example').dataTable( {
             data: ${project},
             columns: [
-                { data: "sequence" },
+                { data: "sequence" ,
+            "render": function ( data, type, row ) {
+                return "<a class='nostylelink'  href= '/peptide/"+data + "'>"+data + "</a>" ;
+            } },
                     { data: "minRT",
                 "render": function ( data, type, row ) {
                     return data +' - '+ row.maxRT+'';
@@ -164,7 +212,20 @@
                 "render": function ( data, type, row ) {
                     return data +' - '+ row.maxQ+'';
                 }},
-                { data: "hla_category"},
+                { data: "hla_typing",
+                    // split HLA string and create single links
+                    "render": function ( data, type, row ) {
+                hla_split = data.split(", ");
+                return_string = "";
+                for (var hla =0; hla<hla_split.length; hla++){
+                    if(hla <hla_split.length-1) {
+                        return_string += "<a class='nostylelink'  href= '/hla/" + hla_split[hla] + "'>" + hla_split[hla] + "</a>, ";
+                    }else{
+                            return_string += "<a class='nostylelink'  href= '/hla/" + hla_split[hla] + "'>" + hla_split[hla] + "</a>";
+                    }
+                }
+                return return_string
+            }},
                 { data: "protein",
                     // split protein string and create single links
             "render": function ( data, type, row ) {
@@ -179,7 +240,10 @@
                 }
                 return return_string
             }},
-                { data: "histology"},
+                { data: "histology",
+            "render": function ( data, type, row ) {
+                return "<a class='nostylelink'  href= '/histology/"+data + "'>"+data + "</a>" ;
+            }},
                 { data: "source_name",
             "render": function ( data, type, row ) {
                 return "<a class='nostylelink'  href= '/source/"+data + "'>"+data + "</a>" ;
@@ -198,7 +262,10 @@
         $('#example').dataTable( {
             data: ${project},
             columns: [
-                { data: "sequence" },
+                { data: "sequence" ,
+            "render": function ( data, type, row ) {
+                return "<a class='nostylelink'  href= '/peptide/"+data + "'>"+data + "</a>" ;
+            }},
                 { data: "minScore",
                 "render": function ( data, type, row ) {
                     return data +' - '+ row.maxScore+'';
@@ -212,12 +279,25 @@
                     return data +' - '+ row.maxQ+'';
                 }},
                 { data: "PSM"},
-                { data: "hla_category"},
+                { data: "hla_typing",
+                    // split HLA string and create single links
+                    "render": function ( data, type, row ) {
+                hla_split = data.split(", ");
+                return_string = "";
+                for (var hla =0; hla<hla_split.length; hla++){
+                    if(hla <hla_split.length-1) {
+                        return_string += "<a class='nostylelink'  href= '/hla/" + hla_split[hla] + "'>" + hla_split[hla] + "</a>, ";
+                    }else{
+                            return_string += "<a class='nostylelink'  href= '/hla/" + hla_split[hla] + "'>" + hla_split[hla] + "</a>";
+                    }
+                }
+                return return_string
+            }},
                 { data: "protein",
                     // split protein string and create single links
             "render": function ( data, type, row ) {
-                prot_split = data.split(", ")
-                return_string = ""
+                prot_split = data.split(", ");
+                return_string = "";
                 for (var prot =0; prot<prot_split.length; prot++){
                     if(prot <prot_split.length-1) {
                         return_string += "<a class='nostylelink'  href= '/protein/" + prot_split[prot] + "'>" + prot_split[prot] + "</a>, ";
@@ -227,7 +307,10 @@
                 }
                 return return_string
             }},
-                { data: "histology"},
+                { data: "histology",
+            "render": function ( data, type, row ) {
+                return "<a class='nostylelink'  href= '/histology/"+data + "'>"+data + "</a>" ;
+            }},
                 { data: "source_name",
             "render": function ( data, type, row ) {
                 return "<a class='nostylelink'  href= '/source/"+data + "'>"+data + "</a>" ;

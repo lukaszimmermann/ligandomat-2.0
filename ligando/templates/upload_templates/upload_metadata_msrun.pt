@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html metal:use-macro="load: base_layout.pt">
+<html metal:use-macro="load: ../base_layout.pt">
 <html lang="${request.locale_name}">
 <head>
 

@@ -1,0 +1,65 @@
+
+<html metal:use-macro="load: ../base_layout.pt">
+<!DOCTYPE html>
+<html lang="${request.locale_name}">
+<head>
+
+
+</head>
+
+<body>
+<div class="main_wrapper">
+    <h1 style="text-align: center">${person}</h1>
+    <table >
+            <tr>
+                <td>Sources:</td><td id="source_stat"> </td>
+            </tr>
+            <tr>
+                <td>MS Runs:</td><td id="ms_stat"> </td>
+            </tr>
+    </table>
+    <table id="example"  class="info_table" cellspacing="0" width="100%">
+        <thead>
+        <tr>
+        <th>Source</th>
+        <th>Histology</th>
+        </tr>
+        </thead>
+    </table>
+</div>
+
+<script>
+
+$(document).ready(function() {
+
+$('#example').dataTable( {
+    "paging":   false,
+    "info":     false,
+    searching: false,
+    data: ${sources},
+    columns: [
+        { data: "name",
+            "render": function ( data, type, row ) {
+                return "<a class='nostylelink'  href= '/source/"+data + "'>"+data + "</a>" ;
+            }},
+        { data: "histology",
+            "render": function ( data, type, row ) {
+                return "<a class='nostylelink' href= '/histology/"+data + "'>"+data + "</a>" ;
+            }}
+    ]
+} );
+} );
+
+$(document).ready(function() {
+    document.getElementById("source_stat").innerHTML = ${sources}.length;
+    document.getElementById("ms_stat").innerHTML = ${runs}.length;
+
+});
+
+</script>
+
+
+
+</body>
+
+</html>

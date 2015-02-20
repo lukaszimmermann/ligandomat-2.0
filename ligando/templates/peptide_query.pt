@@ -37,6 +37,9 @@
             <td>
                 <button id="length_button" type="button" onclick="show_hide('#length','#length_button', '#length')" class="nice_button">Length</button>
             </td>
+            <td>
+                <button id="antibody_button" type="button" onclick="show_hide('#antibody','#antibody_button')" class="nice_button">Antibody</button>
+            </td>
         </table>
 
     <form method="POST" action=peptide_query>
@@ -87,16 +90,28 @@
             <td><span class="standard_text">< Peptide length < </span></td>
             <td><input id="length_input_2" name="length_2" type="text"></td>
         </tr>
-
-
+            <!--? TODO: selectable anti bodys-->
+        <tr id="antibody" class="hidden">
+            <td><span class="standard_text">Antibody:</span></td>
+            <td><input id="antibody_input" name="antibody" type="text"></td>
+            <td><select name="antibody_rule" class="nice_dropdown_boolean"><option selected>AND</option><option>OR</option></select></td>
+        </tr>
         </table>
         <br>
-        <span class="standard_text">Grouping: </span> <select name="grouping" class="nice_dropdown">
+        <div style="width: 300px">
+        <span class="standard_text">Group Peptides by: </span> <select style="float: right" name="grouping" class="nice_dropdown">
         <option  selected value="run">Run</option>
         <option value="peptide">Peptide</option>
         <option value="source">Source without PSM</option>
         <option value="source_psm">Source with PSM (slow)</option>
-    </select> <br>
+    </select>
+        <br>
+        <span class="standard_text" title="Sources with 4-digit typing will also be part of the results if 2-digit is choosen.">HLA-Typing: </span> <select style="float: right" name="digits" class="nice_dropdown">
+        <option  selected value="2">2-digits</option>
+        <option value="4">4-digits</option>
+    </select>
+            </div>
+        <br>
         <input  type="submit" value="Submit" class="nice_button" style="width: 100px;margin-left: 10px"/>
 
     </form>

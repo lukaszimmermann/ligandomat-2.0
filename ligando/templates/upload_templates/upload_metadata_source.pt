@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html metal:use-macro="load: base_layout.pt">
+<html metal:use-macro="load: ../base_layout.pt">
 <html lang="${request.locale_name}">
 <head>
 
@@ -245,9 +245,21 @@ function checkInput() {
                     if (document.getElementById(cells[l] + "_" + i).innerHTML.indexOf(",") != -1) {
                         alert(", is not allowed in HLA-Typing");
                         return;
-                    } else if (document.getElementById(cells[l] + "_" + i).innerHTML.indexOf("HLA") != -1) {
+                    }
+                    if (document.getElementById(cells[l] + "_" + i).innerHTML.indexOf("HLA") != -1) {
                         alert("The 'HLA' prefix is not necessary in HLA-Typing. Please shorten your typings.");
                         return;
+                    }
+                    var hla_split = document.getElementById(cells[l] + "_" + i).innerHTML.split(";");
+                    for(var hla in hla_split){
+                        if(hla_split[hla].trim().indexOf("*") == -1){
+                            if(!confirm("Your HLA-Typing '" +hla_split[hla] + "' seems to missing a * or you try to upload Typing below 2-digits. This is not recommended!. \n Continue anyway?")){
+                                return;
+                            }
+                        }
+                        if(hla_split[hla].trim().indexOf(" ") != -1){
+                            alert("Your HLA-Typing contains incorrect whitespace. '" +hla_split[hla] + "'");
+                        }
                     }
                 }
             }

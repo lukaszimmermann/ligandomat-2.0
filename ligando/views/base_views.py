@@ -16,7 +16,7 @@ from ligando.models import (
 from ligando.views.view_helper import conn_err_msg, js_list_creator, js_list_creator_dataTables
 
 
-@view_config(route_name='source', renderer='../templates/source.pt', request_method="GET")
+@view_config(route_name='source', renderer='../templates/base_templates/source.pt', request_method="GET")
 def source_page(request):
     try:
         query = DBSession.query(func.count(SpectrumHit.spectrum_hit_id).label("count_hits"),
@@ -45,7 +45,7 @@ def source_page(request):
     return {"statistic": statistics, "runs": runs, "source": request.matchdict["source"]}
 
 
-@view_config(route_name='hla', renderer='../templates/hla.pt', request_method="GET")
+@view_config(route_name='hla', renderer='../templates/base_templates/hla.pt', request_method="GET")
 def hla_page(request):
     try:
         query = DBSession.query(Source.organ,
@@ -71,7 +71,7 @@ def hla_page(request):
     return {"sources": sources, "hla": request.matchdict["hla"], "statistic": statistic}
 
 
-@view_config(route_name='msrun', renderer='../templates/msrun.pt', request_method="GET")
+@view_config(route_name='msrun', renderer='../templates/base_templates/msrun.pt', request_method="GET")
 def msrun_page(request):
     try:
         query = DBSession.query(func.count(SpectrumHit.spectrum_hit_id).label("count_hits"),
@@ -98,7 +98,7 @@ def msrun_page(request):
         return Response(conn_err_msg, content_type='text/plain', status_int=500)
     return {"statistics": statistics, "msrun": request.matchdict["msrun"]}
 
-@view_config(route_name='protein', renderer='../templates/protein.pt', request_method="GET")
+@view_config(route_name='protein', renderer='../templates/base_templates/protein.pt', request_method="GET")
 def protein_page(request):
     try:
         query = DBSession.query(Protein.name,
@@ -119,8 +119,9 @@ def protein_page(request):
         sequence_end = list()
         for seq in sequences:
             pos = temp_statistics[0][3].find(seq[0])
-            sequence_start.append(pos)
-            sequence_end.append(pos+len(seq[0]))
+            if pos > -1:
+                sequence_start.append(pos)
+                sequence_end.append(pos+len(seq[0]))
         sequence_start = json.dumps(sequence_start)
         sequence_end = json.dumps(sequence_end)
         sequences = js_list_creator_dataTables(sequences)
@@ -131,7 +132,7 @@ def protein_page(request):
             "protein": request.matchdict["protein"],
             "sequence_start": sequence_start, "sequence_end": sequence_end, "sequences": sequences}
 
-@view_config(route_name='organ', renderer='../templates/organ.pt', request_method="GET")
+@view_config(route_name='organ', renderer='../templates/base_templates/organ.pt', request_method="GET")
 def organ_page(request):
     try:
         query = DBSession.query(Source.organ,
@@ -149,7 +150,7 @@ def organ_page(request):
     return {"sources": sources, "organ": request.matchdict["organ"], "statistic": statistic}
 
 
-@view_config(route_name='person', renderer='../templates/person.pt', request_method="GET")
+@view_config(route_name='person', renderer='../templates/base_templates/person.pt', request_method="GET")
 def person_page(request):
     try:
         query = DBSession.query(Source.histology, Source.name, Source.organ,
@@ -164,3 +165,77 @@ def person_page(request):
     except:
         return Response(conn_err_msg, content_type='text/plain', status_int=500)
     return {"sources": sources, "runs": runs, "person": request.matchdict["person"]}
+
+
+@view_config(route_name='peptide', renderer='../templates/base_templates/peptide.pt', request_method="GET")
+def peptide_page(request):
+     try:
+        query = DBSession.query(Protein.name.label("protein"),Protein.gene_name.label("gene_name"))
+        query = query.join(t_spectrum_protein_map)
+        query = query.join(SpectrumHit)
+        query = query.filter(SpectrumHit.sequence == request.matchdict["peptide"])
+        query = query.group_by(Protein.name)
+        proteins = json.dumps(query.all())
+
+        query = DBSession.query(Source.name)
+        query = query.join(SpectrumHit)
+        query = query.filter(SpectrumHit.sequence == request.matchdict["peptide"])
+        query = query.group_by(Source.name)
+        sources = js_list_creator_dataTables(query.all())
+
+
+     except:
+        return Response(conn_err_msg, content_type='text/plain', status_int=500)
+     return {"proteins": proteins, "sources": sources,
+            "peptide": request.matchdict["peptide"]}
+
+
+@view_config(route_name='histology', renderer='../templates/base_templates/histology.pt', request_method="GET")
+def histology_page(request):
+    try:
+        query = DBSession.query(Source.organ,
+                                Source.histology, Source.name)
+        query = query.filter(Source.histology == request.matchdict["histology"])
+        sources = json.dumps(query.all())
+
+        query = DBSession.query(func.count(SpectrumHit.sequence.distinct()).label("pep_count"))
+        query = query.join(Source)
+        query = query.filter(Source.histology == request.matchdict["histology"])
+        statistic = json.dumps(query.all())
+
+    except:
+        return Response(conn_err_msg, content_type='text/plain', status_int=500)
+    return {"sources": sources, "histology": request.matchdict["histology"], "statistic": statistic}
+
+@view_config(route_name='celltype', renderer='../templates/base_templates/celltype.pt', request_method="GET")
+def celltype_page(request):
+    try:
+        query = DBSession.query(Source.organ,
+                                Source.histology, Source.name)
+        query = query.filter(Source.celltype == request.matchdict["celltype"])
+        sources = json.dumps(query.all())
+
+        query = DBSession.query(func.count(SpectrumHit.sequence.distinct()).label("pep_count"))
+        query = query.join(Source)
+        query = query.filter(Source.celltype == request.matchdict["celltype"])
+        statistic = json.dumps(query.all())
+
+    except:
+        return Response(conn_err_msg, content_type='text/plain', status_int=500)
+    return {"sources": sources, "celltype": request.matchdict["celltype"], "statistic": statistic}
+
+@view_config(route_name='dignity', renderer='../templates/base_templates/dignity.pt', request_method="GET")
+def dignity_page(request):
+    try:
+        query = DBSession.query(Source.organ,
+                                Source.histology, Source.name)
+        query = query.filter(Source.dignity == request.matchdict["dignity"])
+        sources = json.dumps(query.all())
+
+        query = DBSession.query(func.count(SpectrumHit.sequence.distinct()).label("pep_count"))
+        query = query.join(Source)
+        query = query.filter(Source.dignity == request.matchdict["dignity"])
+        statistic = json.dumps(query.all())
+    except:
+        return Response(conn_err_msg, content_type='text/plain', status_int=500)
+    return {"sources": sources, "dignity": request.matchdict["dignity"], "statistic": statistic}

@@ -1,5 +1,5 @@
 
-<html metal:use-macro="load: base_layout.pt">
+<html metal:use-macro="load: ../base_layout.pt">
 <!DOCTYPE html>
 <html lang="${request.locale_name}">
 <head>
@@ -97,7 +97,7 @@
     </div>
 </div>
 <br>
-<object  width="100%" height="4000px" data="${request.static_url('ligando:static/qcML/samplefile_0_0_8.qcML.xml')}"></object>
+<object  width="100%" height="4000px" data="${request.static_url('ligando:static/qcML/samplefile_0_0_8.qcML.xml')}">No Run Quality Report available</object>
 
 <script>
     $(document).ready(
@@ -118,16 +118,17 @@ $(document).ready(function() {
         allele_string = allele_string + "<a class='nostylelink'  href= '/hla/"+a + "'>"+a + "</a>, ";
     }
     document.getElementById("typing").innerHTML = allele_string.slice(0, -2);
-    document.getElementById("histology").innerHTML = ${statistics}[0]["histology"];
-    document.getElementById("organ").innerHTML = ${statistics}[0]["organ"];
+    document.getElementById("histology").innerHTML = "<a class='nostylelink'  href= '/histology/"+${statistics}[0]["histology"] + "'>"+${statistics}[0]["histology"]+ "</a>";
+    document.getElementById("organ").innerHTML =  "<a class='nostylelink'  href= '/organ/"+${statistics}[0]["organ"] + "'>"+${statistics}[0]["organ"]+ "</a>";
     if(${statistics}[0]["prep_comment"] == ""){
         document.getElementById("comment").innerHTML = "-"
     }else{
         document.getElementById("comment").innerHTML = ${statistics}[0]["comment"];
     }
     document.getElementById("organism").innerHTML = ${statistics}[0]["organism"];
-    document.getElementById("dignity").innerHTML = ${statistics}[0]["dignity"];
-    document.getElementById("celltype").innerHTML = ${statistics}[0]["celltype"];
+    document.getElementById("dignity").innerHTML = "<a class='nostylelink'  href= '/dignity/"+${statistics}[0]["dignity"] + "'>"+${statistics}[0]["dignity"]+ "</a>";
+
+    document.getElementById("celltype").innerHTML = "<a class='nostylelink'  href= '/celltype/"+${statistics}[0]["celltype"] + "'>"+${statistics}[0]["celltype"]+ "</a>";
     if(${statistics}[0]["location"] == "NA"){
         document.getElementById("location").innerHTML = "-"
     }else{

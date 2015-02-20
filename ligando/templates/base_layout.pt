@@ -45,7 +45,7 @@
             onmouseover="mcancelclosetime()"
             onmouseout="mclosetime()">
         <a href="/peptide_query">Complete Database Search</a>
-        <a href="/multi_peptide">Multi Peptide Search</a>
+        <!--?<a style="text-decoration: line-through" href="/multi_peptide">Multi Peptide Search</a>-->
         </div>
 	</li>
     <li><a href="#"
@@ -56,6 +56,7 @@
             onmouseout="mclosetime()">
         <a href="/upload_metadata_source">Source Upload</a>
         <a href="/upload_metadata_ms_run">MS Run Upload</a>
+        <a href="/blacklist_msrun">Blacklist MS Run</a>
         </div>
     </li>
 </ul>

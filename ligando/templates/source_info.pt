@@ -10,7 +10,7 @@
   <div class="main_wrapper">
   <div style="margin-top:20pt">
 
-    <table id="example" class="display" cellspacing="0" width="100%"> <thead>
+    <table id="example" class="info_table" cellspacing="0" width="100%"> <thead>
             <tr>
                 <th>Name</th>
                 <th>Organ</th>

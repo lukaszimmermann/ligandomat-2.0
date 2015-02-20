@@ -37,6 +37,7 @@ class HlaType(Base):
 
     hla_types_id = Column(Integer, primary_key=True, unique=True)
     hla_string = Column(String(255), nullable=False)
+    digits = Column(Integer)
 
 
 class InternDatum(Base):

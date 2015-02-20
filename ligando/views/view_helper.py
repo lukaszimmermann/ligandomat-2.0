@@ -1,10 +1,20 @@
-from sqlalchemy import or_
+from sqlalchemy import or_, func
 
 __author__ = 'Linus Backert'
 
 from sqlalchemy.orm import aliased
 
+# Extracts the number of digits of the hla typing
+def hla_digits_extractor(hla):
+    try:
+        asterisk_split = hla.split("*")
+        digit_split = asterisk_split[1].split(":")
+        return len(digit_split) * 2
+    except:
+        return None
 
+
+# Create a json object from a list
 def js_list_creator(input):
     result_string = '['
     for i in input:
@@ -12,6 +22,8 @@ def js_list_creator(input):
     result_string += ']'
     return result_string
 
+
+# Create a json object from a list which is usable in DataTables
 def js_list_creator_dataTables(input):
     result_string = '['
     for i in input:
@@ -19,11 +31,29 @@ def js_list_creator_dataTables(input):
     result_string += ']'
     return result_string
 
-def create_filter(query, parameter, request, sql_object, sql_parent, rule, like, fk=None):
+
+# Filter function:
+# Parameter:
+# query = DBSession.query object
+#   parameter = the parameter in der request for which you want to filter
+#   request = a dict with filter parameter
+#   sqlobject = the sqlcollum you want to filter (as String!)
+#   sqlparent = the sql table which contains the table
+#   rule = the key for filter combination rule in the filter_dict
+#   like = use like?
+#   set = are you filter a set
+#   fk = foreign key which you have to join first (used for protein an hla only yet)
+def create_filter(query, parameter, request, sql_object, sql_parent, rule, like, set, fk=None):
     if len(request[parameter]) is not 0:
         split = request[parameter].split(';')
         if len(split) > 1:
-            if request[rule] == "AND":
+            if set:
+                if request[rule] == 'AND':
+                    for s in split:
+                        query = query.filter(func.find_in_set(s, getattr(sql_parent, sql_object)))
+                else:
+                    query = query.filter(or_(*[func.find_in_set(s, getattr(sql_parent, sql_object)) for s in split]))
+            elif request[rule] == "AND":
                 for s in range(0, len(split)):
                     if s == 0:
                         if like:
@@ -32,25 +62,20 @@ def create_filter(query, parameter, request, sql_object, sql_parent, rule, like,
                             query = query.filter(getattr(sql_parent, sql_object) == split[s])
                     else:
                         a_alias = aliased(sql_parent)
-                        query = query.join(a_alias, fk)
+                        if fk is not None:
+                            query = query.join(a_alias, fk)
                         if like:
                             query = query.filter(getattr(a_alias, sql_object).like(split[s]))
                         else:
                             query = query.filter(getattr(a_alias, sql_object) == split[s])
                             # TODO: add second search to result (e.g. second Protein)
             else:
-                # temp_code = "query = query.filter(or_("
-                # for s in split:
-                #     if like:
-                #         temp_code += "getattr(sql_parent, sql_object).like(split[s])," % s
-                #     else:
-                #         temp_code += "getattr(sql_parent,sql_object) == '%s'," % s
-                # temp_code = temp_code.strip(",")
-                # temp_code += "))"
-                # exec temp_code
                 query = query.filter(or_(*[(getattr(sql_parent, sql_object).like(split[s])) for s in split]))
         else:
-            if rule == ">" or rule == "<":
+            if set:
+                query = query.filter(func.find_in_set(split[0], getattr(sql_parent, sql_object)))
+
+            elif rule == ">" or rule == "<":
                 if rule == ">":
                     query = query.filter(getattr(sql_parent, sql_object) > split[0])
                 else:
@@ -60,6 +85,7 @@ def create_filter(query, parameter, request, sql_object, sql_parent, rule, like,
                     query = query.filter(getattr(sql_parent, sql_object).like(split[0]))
                 else:
                     query = query.filter(getattr(sql_parent, sql_object) == split[0])
+
     return query
 
 

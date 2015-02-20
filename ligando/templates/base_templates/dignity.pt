@@ -1,5 +1,5 @@
 
-<html metal:use-macro="load: base_layout.pt">
+<html metal:use-macro="load: ../base_layout.pt">
 <!DOCTYPE html>
 <html lang="${request.locale_name}">
 <head>
@@ -9,20 +9,16 @@
 
 <body>
 <div class="main_wrapper">
-    <h1 style="text-align: center">${person}</h1>
+    <h1 style="text-align: center">${dignity}</h1>
     <table >
             <tr>
                 <td>Sources:</td><td id="source_stat"> </td>
             </tr>
-            <tr>
-                <td>MS Runs:</td><td id="ms_stat"> </td>
-            </tr>
     </table>
-    <table id="example"  class="display" cellspacing="0" width="100%">
+    <table id="example"  class="info_table" cellspacing="0" width="100%">
         <thead>
         <tr>
         <th>Source</th>
-        <th>Histology</th>
         </tr>
         </thead>
     </table>
@@ -34,7 +30,6 @@ $(document).ready(function() {
 
 $('#example').dataTable( {
     "paging":   false,
-    "ordering": false,
     "info":     false,
     searching: false,
     data: ${sources},
@@ -42,10 +37,6 @@ $('#example').dataTable( {
         { data: "name",
             "render": function ( data, type, row ) {
                 return "<a class='nostylelink'  href= '/source/"+data + "'>"+data + "</a>" ;
-            }},
-        { data: "histology",
-            "render": function ( data, type, row ) {
-                return "<a class='nostylelink' href= '/histology/"+data + "'>"+data + "</a>" ;
             }}
     ]
 } );
@@ -53,7 +44,6 @@ $('#example').dataTable( {
 
 $(document).ready(function() {
     document.getElementById("source_stat").innerHTML = ${sources}.length;
-    document.getElementById("ms_stat").innerHTML = ${runs}.length;
 
 });
 

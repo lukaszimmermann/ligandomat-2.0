@@ -1,5 +1,5 @@
 
-<html metal:use-macro="load: base_layout.pt">
+<html metal:use-macro="load: ../base_layout.pt">
 <!DOCTYPE html>
 <html lang="${request.locale_name}">
 <head>
@@ -18,7 +18,7 @@
                 <td>Sources</td><td id="source_stat"> </td>
             </tr>
     </table>
-    <table id="example"  class="display" cellspacing="0" width="100%">
+    <table id="example"  class="info_table" cellspacing="0" width="100%">
         <thead>
         <tr>
         <th>Source</th>

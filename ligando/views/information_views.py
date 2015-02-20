@@ -33,10 +33,19 @@ def run_overview(request):
                                                func.cast(MsRun.ms_run_date, String).label("ms_run_date"),
                                                MsRun.antibody_set,
                                                MsRun.prep_comment, MsRun.used_share,
-                                               MsRun.sample_mass).filter(
-            Source.source_id == MsRun.source_source_id).all())
+                                               MsRun.sample_mass).group_by(MsRun.ms_run_id).all())
 
     except DBAPIError:
         return Response(conn_err_msg, content_type='text/plain', status_int=500)
     return {'project': your_json}
 
+@view_config(route_name='orphan_run_overview', renderer='../templates/orphan_run_info.pt')
+def orphan_run_overview(request):
+    try:
+        your_json = json.dumps(DBSession.query(MsRun.ms_run_id, MsRun.filename).filter(
+            MsRun.source_source_id != None).group_by(
+            MsRun.ms_run_id).all())
+
+    except DBAPIError:
+        return Response(conn_err_msg, content_type='text/plain', status_int=500)
+    return {'project': your_json}
