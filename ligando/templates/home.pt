@@ -30,17 +30,21 @@
 </div>
 </div>
 
+<!--?import the  Flot js file-->
 <script type="text/javascript" charset="utf8" src="${request.static_url('ligando:static/js/jquery.flot.js')}"></script>
 
 
 
 <script>
     $(function() {
+        // set the statistics
         var ms_run = [[1,${all_msrun_count}]];
         var orphan_ms_run = [[2,200]]; //${orphan_msrun_count}]];
 
+        // create data for the flot plot
         var data = [{label: 'Complete MS Runs', data:ms_run,color: "rgb("+180+","+160+","+105+")"},
                 {label: 'Orphan MS Runs', data:orphan_ms_run, color: "rgb("+165+","+30+","+55+")"}]
+        // flot options
         var options = {series: {
                 stack: 0,
 
@@ -63,9 +67,11 @@
                     clickable: true,
                     hover: true
         }
-    }
-        $.plot("#msrun_plot",data,options);
+    };
+    // plot the ms runs statistics
+    $.plot("#msrun_plot",data,options);
     });
+    // allows clickable bars in the plot
     $("#msrun_plot").bind("plotclick", function (event, pos, item) {
         if(item) {
             if(item["seriesIndex"]==0){
@@ -76,7 +82,7 @@
         }
         });
 
-
+    // create the orphan table
     $(function () {
         table = document.getElementById('orphan_table');
         var markup = ['<thead> <tr><th>Orphan Ms Runs</th></tr>  </thead><tbody>'];

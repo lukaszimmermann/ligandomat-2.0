@@ -121,6 +121,7 @@
 
 
         <script>
+        // Function to change the color of the filter buttons and show/hide the input field
         function show_hide(id, button_id, id2) {
             if($(id).is(":visible")){
                 $(button_id).css('background-color', 'rgb(180,160,105)');

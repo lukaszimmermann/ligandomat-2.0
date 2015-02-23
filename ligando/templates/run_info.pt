@@ -28,7 +28,7 @@
        <script>
 
     $(document).ready(function() {
-
+    // create dataTable
     $('#example').dataTable( {
         data: ${project},
         columns: [

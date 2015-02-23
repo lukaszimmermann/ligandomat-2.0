@@ -2,8 +2,9 @@
  * Created by Backert on 05/02/15.
  */
 
+// POST forward to a page with parameters
 function post(path, params, count, method) {
-    console.log(count)
+    // warn if too many peptides
     if(count >5000){
         if(!confirm("This query will probably take some time. Are you sure you want to get the whole list?")){
             return;
@@ -11,8 +12,6 @@ function post(path, params, count, method) {
     }
     method = method || "post"; // Set method to post by default if not specified.
 
-    // The rest of this code assumes you are not using a library.
-    // It can be made less wordy if you use one.
     var form = document.createElement("form");
     form.setAttribute("method", method);
     form.setAttribute("action", path);

@@ -9,6 +9,7 @@
   <body>
   <div class="main_wrapper">
     <div style="margin-top:20pt">
+    <!--? Result table, with different stylings for different groupings-->
     <table id="example" auto class="info_table" cellspacing="0" width="100%"> <thead>
             <tr tal:condition="grouping == 'run'">
                 <th>Sequence</th>
@@ -59,8 +60,9 @@
 
     <script>
 
-    //TODO: Link HLA Typing
+
     $(document).ready(function() {
+    // create dataTable for each type grouping, different collumns
     if ("${grouping}" == "run") {
         $('#example').dataTable( {
             data: ${project},

@@ -22,6 +22,7 @@
 <div class="main_wrapper">
 <div  class="title">Ligandome Database</div>
 <br>
+<!--? This is the main menu-->
 <div id="menu">
 <ul id="sddm">
     <li>

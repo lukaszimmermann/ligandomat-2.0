@@ -37,7 +37,7 @@ $(document).ready(function() {
     document.getElementById("title").innerHTML = "${peptide}";
 });
 $(document).ready(function() {
-
+// create dataTable
     $('#proteins').dataTable( {
     "paging":   false,
     "ordering": false,

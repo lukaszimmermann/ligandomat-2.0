@@ -24,7 +24,7 @@ class HlaLookup(Base):
 
     fk_hla_typess = relationship(u'HlaType', secondary='hla_map')
 
-
+# mapping table HLA map
 t_hla_map = Table(
     'hla_map', metadata,
     Column('fk_hla_types_id', ForeignKey(u'hla_types.hla_types_id'), nullable=False, index=True),
@@ -39,32 +39,6 @@ class HlaType(Base):
     hla_string = Column(String(255), nullable=False)
     digits = Column(Integer)
 
-
-class InternDatum(Base):
-    __tablename__ = 'intern_data'
-
-    id = Column(Integer, primary_key=True)
-    timestamp = Column(String(255))
-    seq = Column(String(15))
-    run = Column(String(255))
-    rest = Column(Text)
-    source_id = Column(Integer)
-    hla_typing = Column(String(255))
-    prep_id = Column(Integer)
-    mass_spec_id = Column(Integer)
-
-
-class LogFile(Base):
-    __tablename__ = 'log_file'
-
-    log_file_id = Column(Integer, primary_key=True)
-    tmp_name = Column(String(255), nullable=False)
-    action = Column(Enum(u'upload'), nullable=False, server_default=text("'upload'"))
-    users_users_id = Column(ForeignKey(u'users.id'), nullable=False, index=True)
-    successful = Column(BIT(1), nullable=False)
-    message = Column(Text)
-
-    users_users = relationship(u'User')
 
 
 class MsRun(Base):
@@ -87,7 +61,7 @@ class MsRun(Base):
 
     source_source = relationship(u'Source')
 
-
+# peptide protein map table
 t_peptide_protein_map = Table(
     'peptide_protein_map', metadata,
     Column('peptide_run_peptide_run_id', ForeignKey(u'peptide_run.peptide_run_id'), nullable=False, index=True),
@@ -121,6 +95,7 @@ class PeptideRun(Base):
     protein_proteins = relationship(u'Protein', secondary='peptide_protein_map')
 
 
+# peptide run spectrum hit map table
 t_peptide_run_spectrum_hit_map = Table(
     'peptide_run_spectrum_hit_map', metadata,
     Column('pm_sh_map_peptide_run_peptide_run_id', ForeignKey(u'peptide_run.peptide_run_id'), nullable=False, index=True),
@@ -199,7 +174,7 @@ class SpectrumHit(Base):
     source_source = relationship(u'Source')
     protein_proteins = relationship(u'Protein', secondary='spectrum_protein_map')
 
-
+# spectrum hit protein map table
 t_spectrum_protein_map = Table(
     'spectrum_protein_map', metadata,
     Column('spectrum_hit_spectrum_hit_id', ForeignKey(u'spectrum_hit.spectrum_hit_id'), nullable=False, index=True),
@@ -207,6 +182,34 @@ t_spectrum_protein_map = Table(
 
 )
 
+
+##################################
+# Intern data
+class InternDatum(Base):
+    __tablename__ = 'intern_data'
+
+    id = Column(Integer, primary_key=True)
+    timestamp = Column(String(255))
+    seq = Column(String(15))
+    run = Column(String(255))
+    rest = Column(Text)
+    source_id = Column(Integer)
+    hla_typing = Column(String(255))
+    prep_id = Column(Integer)
+    mass_spec_id = Column(Integer)
+
+
+class LogFile(Base):
+    __tablename__ = 'log_file'
+
+    log_file_id = Column(Integer, primary_key=True)
+    tmp_name = Column(String(255), nullable=False)
+    action = Column(Enum(u'upload'), nullable=False, server_default=text("'upload'"))
+    users_users_id = Column(ForeignKey(u'users.id'), nullable=False, index=True)
+    successful = Column(BIT(1), nullable=False)
+    message = Column(Text)
+
+    users_users = relationship(u'User')
 
 class User(Base):
     __tablename__ = 'users'
@@ -216,3 +219,5 @@ class User(Base):
     password = Column(String(255))
     in_group = Column(String(255))
     person_person_id = Column(Integer)
+
+##################################

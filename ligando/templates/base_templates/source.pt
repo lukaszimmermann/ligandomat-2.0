@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html lang="${request.locale_name}">
 <head>
-
+<!--?TODO: 2/4 digits typing forward-->
 
 </head>
 
@@ -106,7 +106,7 @@ $(document).ready(function() {
 
 
 $(document).ready(function() {
-
+// create dataTable
 $('#example').dataTable( {
     "paging":   false,
     "info":     false,

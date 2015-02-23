@@ -39,7 +39,6 @@ def source_page(request):
         query = DBSession.query(MsRun.ms_run_id, MsRun.filename).join(Source).filter(Source.name == request.matchdict["source"])
         runs = json.dumps(query.all())
 
-
     except:
         return Response(conn_err_msg, content_type='text/plain', status_int=500)
     return {"statistic": statistics, "runs": runs, "source": request.matchdict["source"]}

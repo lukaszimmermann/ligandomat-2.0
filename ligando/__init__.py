@@ -15,9 +15,11 @@ def main(global_config, **settings):
     Base.metadata.bind = engine
     config = Configurator(settings=settings)
     config.include('pyramid_chameleon')
+    # register static files in the static folder
     config.add_static_view('static', 'static', cache_max_age=3600)
+    # home
     config.add_route('home', '/')
-    #overview
+    # overview
     config.add_route('source_overview', '/sources')
     config.add_route('run_overview', '/runs')
     config.add_route('orphan_run_overview', '/orphan_runs')
@@ -25,7 +27,7 @@ def main(global_config, **settings):
     config.add_route('peptide_query', '/peptide_query')
     config.add_route('multi_peptide', '/multi_peptide')
     # upload page
-    config.add_route('upload_metadata', '/upload_metadata')
+    #config.add_route('upload_metadata', '/upload_metadata')
     config.add_route('upload_metadata_source', '/upload_metadata_source')
     config.add_route('upload_metadata_ms_run', '/upload_metadata_ms_run')
     config.add_route('blacklist_msrun', '/blacklist_msrun')
@@ -40,5 +42,7 @@ def main(global_config, **settings):
     config.add_route('histology', '/histology/{histology}')
     config.add_route('dignity', '/dignity/{dignity}')
     config.add_route('person', '/person/{person}')
+
+    # scan for views in whole project
     config.scan()
     return config.make_wsgi_app()

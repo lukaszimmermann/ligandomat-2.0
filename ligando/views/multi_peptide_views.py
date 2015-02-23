@@ -21,6 +21,7 @@ from ligando.models import (
 from ligando.views.view_helper import  conn_err_msg, create_filter
 
 
+# DOES NOT WORK YET!
 
 @view_config(route_name='multi_peptide', renderer='../templates/multi_peptide.pt', request_method="GET")
 def multi_peptide(request):

@@ -143,7 +143,7 @@ $(document).ready(function() {
     document.getElementById("sequence").innerHTML = complete_sequence;
 });
 $(document).ready(function() {
-
+// create dataTable
     $('#peptide_sequences').dataTable( {
     "paging":   false,
     "ordering": false,

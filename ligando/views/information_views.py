@@ -18,6 +18,7 @@ from ligando.views.view_helper import  conn_err_msg
 @view_config(route_name='source_overview', renderer='../templates/source_info.pt')
 def source_overview(request):
     try:
+        # query Sources
         your_json = json.dumps(
             DBSession.query(Source.name, Source.dignity, Source.celltype, Source.histology, Source.location,
                             Source.metastatis, Source.person, Source.organ, Source.organism).all())
@@ -29,6 +30,7 @@ def source_overview(request):
 @view_config(route_name='run_overview', renderer='../templates/run_info.pt')
 def run_overview(request):
     try:
+        # query MS runs. Important: run_date has to be castet to string, otherwise  json.dumps can not create json object
         your_json = json.dumps(DBSession.query(MsRun.ms_run_id, MsRun.filename, Source.name.label("name"), Source.organ, Source.dignity,
                                                func.cast(MsRun.ms_run_date, String).label("ms_run_date"),
                                                MsRun.antibody_set,
@@ -42,6 +44,7 @@ def run_overview(request):
 @view_config(route_name='orphan_run_overview', renderer='../templates/orphan_run_info.pt')
 def orphan_run_overview(request):
     try:
+        # get orphan runs
         your_json = json.dumps(DBSession.query(MsRun.ms_run_id, MsRun.filename).filter(
             MsRun.source_source_id != None).group_by(
             MsRun.ms_run_id).all())

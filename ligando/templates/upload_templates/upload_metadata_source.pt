@@ -70,6 +70,7 @@
 
 <script>
 //TODO: no tooltip for sources
+// dict for the different inputs, used to iterate of the different inputs
 var cells = ['source',
     'organ',
     'organism',
@@ -81,6 +82,7 @@ var cells = ['source',
     'typing',
     'person',
     'comment'];
+// cells with nice names
 var nice_names = {'source': 'Sourcename',
     'organ': 'Organ',
     'organism': 'Organism',
@@ -92,6 +94,7 @@ var nice_names = {'source': 'Sourcename',
     'typing': 'Typing',
     'person': 'Person',
     'comment': 'Comment'};
+// input which allows autocomplete
 var autocomplete_dict = {'source':${source_names},
     'organ':${organ},
     'organism':${organism},
@@ -102,6 +105,7 @@ var autocomplete_dict = {'source':${source_names},
     'celltype':${celltype},
     'person':${person}};
 
+// Create the input table
 $(function () {
     table = document.getElementById('source_table');
     var markup = ['<thead><tr><th>Sourcename</th><th>Organ</th><th>Organism</th><th>Histology</th><th>Dignity</th><th>Celltype</th><th>Location</th><th>Metastatis</th><th>Typing</th><th>Person</th><th>Comment</th><th>Options</th></tr></thead><tbody>'];
@@ -129,9 +133,9 @@ $(function () {
     }
     markup.push('</tbody>');
     table.innerHTML = markup.join("");
-})
+});
 
-
+// autocomplete
 $(function () {
     for (i = 0; i < cells.length; i++) {
 
@@ -150,7 +154,7 @@ $(function () {
     ;
 });
 
-
+// tooltips
 $(function () {
     $(document).tooltip();
 });
@@ -197,7 +201,7 @@ function copyRow(id) {
 }
 
 function recoverRow(id) {
-    for (i = 0; i < cells.length; i++) {
+    for (var i = 0; i < cells.length; i++) {
         document.getElementById(cells[i] + 'tags').value = document.getElementById(cells[i] + "_" + id).innerHTML;
     }
 }
@@ -226,7 +230,7 @@ function addTyping() {
         }
     }
 }
-
+// Function to check the input in the table. If past the "Commit" button appears
 function checkInput() {
     for (var i = 1; i < 11; i++) {
         if (document.getElementById("source_" + i).innerHTML != " ") {
@@ -265,6 +269,7 @@ function checkInput() {
             }
         }
     }
+    // create commit values dict and set these as value of the hidden commit_field
     var val = "[";
     for (var i = 1; i < 11; i++) {
         if (document.getElementById("source_" + i).innerHTML != " ") {
@@ -283,6 +288,7 @@ function checkInput() {
     $("#commit_button").show();
 }
 
+// create dataTable
 $(document).ready(function () {
     var oTable = $('#source_table').dataTable({
         "paging": false,

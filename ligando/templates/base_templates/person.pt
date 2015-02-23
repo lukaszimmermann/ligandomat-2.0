@@ -31,7 +31,7 @@
 <script>
 
 $(document).ready(function() {
-
+// create dataTable
 $('#example').dataTable( {
     "paging":   false,
     "info":     false,
@@ -49,7 +49,7 @@ $('#example').dataTable( {
     ]
 } );
 } );
-
+// statistics
 $(document).ready(function() {
     document.getElementById("source_stat").innerHTML = ${sources}.length;
     document.getElementById("ms_stat").innerHTML = ${runs}.length;

@@ -31,7 +31,7 @@
 <script>
 
 $(document).ready(function() {
-
+// create dataTable
 $('#example').dataTable( {
     "paging":   false,
     "ordering": false,
@@ -50,7 +50,7 @@ $('#example').dataTable( {
     ]
 } );
 } );
-
+// set statistics
 $(document).ready(function() {
     document.getElementById("pep_stat").innerHTML = "<a title='Show all Peptides'  class='nostylelink' href='javascript:post(\x22../peptide_query\x22, {organ: \x22${organ}\x22, grouping:\x22peptide\x22}," +${statistic}[0]["pep_count"]+ " )'> "+${statistic}[0]["pep_count"]+"</a>";
     document.getElementById("source_stat").innerHTML = ${sources}.length;

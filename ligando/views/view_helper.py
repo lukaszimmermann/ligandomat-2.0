@@ -44,51 +44,52 @@ def js_list_creator_dataTables(input):
 #   set = are you filter a set
 #   fk = foreign key which you have to join first (used for protein an hla only yet)
 def create_filter(query, parameter, request, sql_object, sql_parent, rule, like, set, fk=None):
-    if len(request[parameter]) is not 0:
-        split = request[parameter].split(';')
-        if len(split) > 1:
-            if set:
-                if request[rule] == 'AND':
-                    for s in split:
-                        query = query.filter(func.find_in_set(s, getattr(sql_parent, sql_object)))
-                else:
-                    query = query.filter(or_(*[func.find_in_set(s, getattr(sql_parent, sql_object)) for s in split]))
-            elif request[rule] == "AND":
-                for s in range(0, len(split)):
-                    if s == 0:
-                        if like:
-                            query = query.filter(getattr(sql_parent, sql_object).like(split[s]))
-                        else:
-                            query = query.filter(getattr(sql_parent, sql_object) == split[s])
+    if parameter in request:
+        if len(request[parameter]) is not 0:
+            split = request[parameter].split(';')
+            if len(split) > 1:
+                if set:
+                    if request[rule] == 'AND':
+                        for s in split:
+                            query = query.filter(func.find_in_set(s, getattr(sql_parent, sql_object)))
                     else:
-                        a_alias = aliased(sql_parent)
-                        if fk is not None:
-                            query = query.join(a_alias, fk)
-                        if like:
-                            query = query.filter(getattr(a_alias, sql_object).like(split[s]))
+                        query = query.filter(or_(*[func.find_in_set(s, getattr(sql_parent, sql_object)) for s in split]))
+                elif request[rule] == "AND":
+                    for s in range(0, len(split)):
+                        if s == 0:
+                            if like:
+                                query = query.filter(getattr(sql_parent, sql_object).like(split[s]))
+                            else:
+                                query = query.filter(getattr(sql_parent, sql_object) == split[s])
                         else:
-                            query = query.filter(getattr(a_alias, sql_object) == split[s])
-                            # TODO: add second search to result (e.g. second Protein)
+                            a_alias = aliased(sql_parent)
+                            if fk is not None:
+                                query = query.join(a_alias, fk)
+                            if like:
+                                query = query.filter(getattr(a_alias, sql_object).like(split[s]))
+                            else:
+                                query = query.filter(getattr(a_alias, sql_object) == split[s])
+                                # TODO: add second search to result (e.g. second Protein)
+                else:
+                    query = query.filter(or_(*[(getattr(sql_parent, sql_object).like(split[s])) for s in split]))
             else:
-                query = query.filter(or_(*[(getattr(sql_parent, sql_object).like(split[s])) for s in split]))
-        else:
-            if set:
-                query = query.filter(func.find_in_set(split[0], getattr(sql_parent, sql_object)))
+                if set:
+                    query = query.filter(func.find_in_set(split[0], getattr(sql_parent, sql_object)))
 
-            elif rule == ">" or rule == "<":
-                if rule == ">":
-                    query = query.filter(getattr(sql_parent, sql_object) > split[0])
+                elif rule == ">" or rule == "<":
+                    if rule == ">":
+                        query = query.filter(getattr(sql_parent, sql_object) > split[0])
+                    else:
+                        query = query.filter(getattr(sql_parent, sql_object) < split[0])
                 else:
-                    query = query.filter(getattr(sql_parent, sql_object) < split[0])
-            else:
-                if like:
-                    query = query.filter(getattr(sql_parent, sql_object).like(split[0]))
-                else:
-                    query = query.filter(getattr(sql_parent, sql_object) == split[0])
+                    if like:
+                        query = query.filter(getattr(sql_parent, sql_object).like(split[0]))
+                    else:
+                        query = query.filter(getattr(sql_parent, sql_object) == split[0])
 
     return query
 
-
+# Standard error message
 conn_err_msg = """\
 Pyramid is having a problem using your SQL database.  The problem
 might be caused by one of the following things:

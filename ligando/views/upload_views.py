@@ -15,10 +15,11 @@ from ligando.models import (
     t_hla_map)
 from ligando.views.view_helper import js_list_creator, conn_err_msg, hla_digits_extractor
 
-
+# Upload Source metadata GET!
 @view_config(route_name='upload_metadata_source', renderer='../templates/upload_templates/upload_metadata_source.pt', request_method="GET")
 def upload_metadata_source(request):
     try:
+        # query data for autocomplete
         result_dict = dict()
         allowed_elements = {"source_names": Source.name, "organ": Source.organ,
                             "organism": Source.organism, "histology": Source.histology, "dignity": Source.dignity,
@@ -34,19 +35,22 @@ def upload_metadata_source(request):
         return Response(conn_err_msg, content_type='text/plain', status_int=500)
     return result_dict
 
-
+# Upload Source metadata POST!
 @view_config(route_name='upload_metadata_source', renderer='../templates/upload_templates/base_layout.pt', request_method="POST")
 def upload_metadata_source_post(request):
     source_upload = ast.literal_eval(request.params["sources"])
+    # Check if source already in DB
     for source in source_upload:
         try:
             sources = DBSession.query(Source.source_id).filter(Source.name == source['source']).all()
         except DBAPIError:
             return Response(conn_err_msg, content_type='text/plain', status_int=500)
+        # if in DB abort whole upload
         if len(sources) > 0:
             return Response("The source " + source['source'] + " is already in the Database. Aborted whole upload!",
                             content_type='text/plain', status_int=500)
 
+    # upload each source
     for source in source_upload:
         if source['typing'] is not "":
             # ###############
@@ -138,15 +142,17 @@ def upload_metadata_source_post(request):
                             content_type='text/plain', status_int=500)
     return dict()
 
-
+# uplad MS run metadata GET
 @view_config(route_name='upload_metadata_ms_run', renderer='../templates/upload_templates/upload_metadata_msrun.pt', request_method="GET")
 def upload_metadata_ms_run(request):
     result_dict = dict()
+    # fill out the "filename" if forwarded for orphan run table on home
     if ("run" in request.params):
         result_dict["run"] = request.params["run"]
     else:
         result_dict["run"] = ""
     try:
+        # query data for autocomplete
         # TODO: Show only processed runs without metadata
         allowed_elements = {"used_share": MsRun.used_share, "source": Source.name,
                             "sample_mass": MsRun.sample_mass, "sample_volume": MsRun.sample_volume,
@@ -170,10 +176,11 @@ def upload_metadata_ms_run(request):
         return Response(conn_err_msg, content_type='text/plain', status_int=500)
     return result_dict
 
-
+# uplad MS run metadata POST
 @view_config(route_name='upload_metadata_ms_run', renderer='../templates/upload_templates/base_layout.pt', request_method="POST")
 def upload_metadata_ms_run_post(request):
     ms_run_upload = ast.literal_eval(request.params["ms_runs"])
+    # Check if  MS run is already in database with METADATA
     for ms_run in ms_run_upload:
         try:
             ms_runs = DBSession.query(MsRun.ms_run_id).filter(MsRun.filename == ms_run['filename']).filter(
@@ -181,16 +188,19 @@ def upload_metadata_ms_run_post(request):
         except DBAPIError:
             return Response(conn_err_msg, content_type='text/plain', status_int=500)
         if len(ms_runs) > 0:
+            # if in MS run with Metadata in DB, abort whole Upload
             return Response("The source " + ms_run['source'] + " is already in the Database. Aborted whole upload!",
                             content_type='text/plain', status_int=500)
-
+    # upload the each MS run
     for ms_run in ms_run_upload:
+        # check if the reported source is in DB
         try:
             source = DBSession.query(Source.source_id).filter(Source.name == ms_run["source"]).all()
         except DBAPIError:
             return Response(conn_err_msg, content_type='text/plain', status_int=500)
         if len(source) == 0:
-            return Response("The source " + ms_run['source'] + " is not known in the Database. Aborted whole upload!",
+            # abort whole upload if source is unknown
+            return Response("The source " + ms_run['source'] + " is not known in the Database. Aborted whole upload! Pleas provide the source metadata first!",
                             content_type='text/plain', status_int=500)
         else:
             source_id = source[0][0]
@@ -225,6 +235,7 @@ def upload_metadata_ms_run_post(request):
                 ms_run_update[0].prep_comment = ms_run['prep_comment']
             DBSession.flush()
         else:
+            # This should not happen, cause only metadata for ms runs which are in DB can be uploaded
             try:
                 ms_run_insert = MsRun(filename=ms_run['filename'],
                                       source_source_id=source_id,
@@ -249,14 +260,16 @@ def upload_metadata_ms_run_post(request):
 
     return dict()
 
+# blacklist ms run GET
 @view_config(route_name='blacklist_msrun', renderer='../templates/upload_templates/blacklist_msrun.pt', request_method="GET")
 def blacklist_ms_run(request):
     result_dict = dict()
-    if ("run" in request.params):
+    if "run" in request.params:
         result_dict["run"] = request.params["run"]
     else:
         result_dict["run"] = ""
     try:
+        # Query data for autocomplete
         # TODO: Show only processed runs without metadata
         allowed_elements = {"person": Source.person}
         for k, v in allowed_elements.iteritems():
@@ -274,3 +287,5 @@ def blacklist_ms_run(request):
     except:
         return Response(conn_err_msg, content_type='text/plain', status_int=500)
     return result_dict
+
+# TODO: # blacklist ms run POST
