@@ -53,6 +53,12 @@
                 <th>Histology</th>
                 <th>Source</th>
             </tr>
+            <tr tal:condition="grouping == 'protein'">
+                <th>Protein</th>
+                <th>Peptides</th>
+                <th>Source</th>
+                <th>Dignity</th>
+            </tr>
         </thead></table>
     </div>
 </div>
@@ -124,7 +130,10 @@
             "render": function ( data, type, row ) {
                 return "<a class='nostylelink'  href= '/source/"+data + "'>"+data + "</a>" ;
             }},
-                { data: "filename"}
+                { data: "filename",
+            "render": function ( data, type, row ) {
+                return "<a class='nostylelink'  href= '/msrun/"+row.ms_run_id + "'>"+data + "</a>" ;
+            }}
             ],
             "sDom": 'T<"clear">lfrtip',
             oTableTools: {
@@ -144,8 +153,8 @@
                 { data: "protein",
                     // split protein string and create single links
             "render": function ( data, type, row ) {
-                prot_split = data.split(",")
-                return_string = ""
+                var prot_split = data.split(",")
+                var return_string = ""
                 for (var prot =0; prot<prot_split.length; prot++){
                     if(prot <prot_split.length-1) {
                         return_string += "<a class='nostylelink'  href= '/protein/" + prot_split[prot] + "'>" + prot_split[prot] + "</a>, ";
@@ -156,24 +165,24 @@
                 return return_string
             }},
                 { data: "name",
-                    // split protein string and create single links
+                    // split source string and create single links
                     "render": function ( data, type, row ) {
-                protein_split = data.split(",");
-                return_string = "";
-                for (var protein =0; protein<protein_split.length; protein++){
-                    if(protein <protein_split.length-1) {
-                        return_string += "<a class='nostylelink'  href= '/protein/" + protein_split[protein] + "'>" + protein_split[protein] + "</a>, ";
+                var source_split = data.split(",");
+                var return_string = "";
+                for (var source =0; source<source_split.length; source++){
+                    if(source <source_split.length-1) {
+                        return_string += "<a class='nostylelink'  href= '/source/" + source_split[source] + "'>" + source_split[source] + "</a>, ";
                     }else{
-                            return_string += "<a class='nostylelink'  href= '/protein/" + protein_split[protein] + "'>" + protein_split[protein] + "</a>";
+                            return_string += "<a class='nostylelink'  href= '/source/" + source_split[source] + "'>" + source_split[source] + "</a>";
                     }
                 }
                 return return_string
             }},
                     { data: "dignity",
-                    // split protein string and create single links
+                    // split dignity string and create single links
             "render": function ( data, type, row ) {
-                dignity_split = data.split(",");
-                return_string = ""
+                var dignity_split = data.split(",");
+                var return_string = ""
                 for (var dignity =0; dignity<dignity_split.length; dignity++){
                     if(dignity <dignity_split.length-1) {
                         return_string += "<a class='nostylelink'  href= '/protein/" + dignity_split[dignity] + "'>" + dignity_split[dignity] + "</a>, ";
@@ -186,8 +195,8 @@
                 { data: "hla_typing",
                     // split HLA string and create single links
                     "render": function ( data, type, row ) {
-                hla_split = data.split(",");
-                return_string = "";
+                var hla_split = data.split(",");
+                var return_string = "";
                 for (var hla =0; hla<hla_split.length; hla++){
                     if(hla <hla_split.length-1) {
                         return_string += "<a class='nostylelink'  href= '/hla/" + hla_split[hla] + "'>" + hla_split[hla] + "</a>, ";
@@ -246,8 +255,8 @@
                 { data: "protein",
                     // split protein string and create single links
             "render": function ( data, type, row ) {
-                prot_split = data.split(",");
-                return_string = ""
+                var prot_split = data.split(",");
+                var return_string = ""
                 for (var prot =0; prot<prot_split.length; prot++){
                     if(prot <prot_split.length-1) {
                         return_string += "<a class='nostylelink'  href= '/protein/" + prot_split[prot] + "'>" + prot_split[prot] + "</a>, ";
@@ -299,8 +308,8 @@
                 { data: "hla_typing",
                     // split HLA string and create single links
                     "render": function ( data, type, row ) {
-                hla_split = data.split(",");
-                return_string = "";
+                var hla_split = data.split(",");
+                var return_string = "";
                 for (var hla =0; hla<hla_split.length; hla++){
                     if(hla <hla_split.length-1) {
                         return_string += "<a class='nostylelink'  href= '/hla/" + hla_split[hla] + "'>" + hla_split[hla] + "</a>, ";
@@ -313,8 +322,8 @@
                 { data: "protein",
                     // split protein string and create single links
             "render": function ( data, type, row ) {
-                prot_split = data.split(",");
-                return_string = "";
+                var prot_split = data.split(",");
+                var return_string = "";
                 for (var prot =0; prot<prot_split.length; prot++){
                     if(prot <prot_split.length-1) {
                         return_string += "<a class='nostylelink'  href= '/protein/" + prot_split[prot] + "'>" + prot_split[prot] + "</a>, ";
@@ -342,6 +351,66 @@
             }
         } );
     }
+    else if ("${grouping}" == "protein"){
+        $('#example').dataTable( {
+            data: ${project},
+            columns: [
+                { data: "protein" ,
+            "render": function ( data, type, row ) {
+                return "<a class='nostylelink'  href= '/protein/"+data + "'>"+data + "</a>" ;
+            } },
+                { data: "peptide",
+                    // split protein string and create single links
+            "render": function ( data, type, row ) {
+                var pep_split = data.split(",")
+                var return_string = ""
+                for (var pep =0; pep<pep_split.length; pep++){
+                    if(pep <pep_split.length-1) {
+                        return_string += "<a class='nostylelink'  href= '/peptide/" + pep_split[pep] + "'>" + pep_split[pep] + "</a>, ";
+                    }else{
+                            return_string += "<a class='nostylelink'  href= '/peptide/" + pep_split[pep] + "'>" + pep_split[pep] + "</a>";
+                    }
+                }
+                return return_string
+            }},
+                { data: "name",
+                    // split protein string and create single links
+                    "render": function ( data, type, row ) {
+                var source_split = data.split(",");
+                var return_string = "";
+                for (var source =0; source<source_split.length; source++){
+                    if(source <source_split.length-1) {
+                        return_string += "<a class='nostylelink'  href= '/protein/" + source_split[source] + "'>" + source_split[source] + "</a>, ";
+                    }else{
+                            return_string += "<a class='nostylelink'  href= '/protein/" + source_split[source] + "'>" + source_split[source] + "</a>";
+                    }
+                }
+                return return_string
+            }},
+                    { data: "dignity",
+                    // split protein string and create single links
+            "render": function ( data, type, row ) {
+                var dignity_split = data.split(",");
+                var return_string = "";
+                for (var dignity =0; dignity<dignity_split.length; dignity++){
+                    if(dignity <dignity_split.length-1) {
+                        return_string += "<a class='nostylelink'  href= '/protein/" + dignity_split[dignity] + "'>" + dignity_split[dignity] + "</a>, ";
+                    }else{
+                            return_string += "<a class='nostylelink'  href= '/protein/" + dignity_split[dignity] + "'>" + dignity_split[dignity] + "</a>";
+                    }
+                }
+                return return_string;
+            }}
+            ],
+            "sDom": 'T<"clear">lfrtip',
+            oTableTools: {
+                "sSwfPath": "${request.static_url('ligando:static/swf/copy_csv_xls_pdf.swf')}",
+                "aButtons":  ["csv"]
+            }
+        } );
+        }
+
+
     } );
     </script>
 

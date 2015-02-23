@@ -74,18 +74,30 @@
 
 <script>
 $(document).ready(function() {
-    // Setting the statistics
-    document.getElementById("pep_stat").innerHTML = "<a title='Show all Peptides'  class='nostylelink' href='javascript:post(\x22../peptide_query\x22, {source: \x22${source}\x22, grouping:\x22source\x22}," +${statistic}[0]["count_pep"]+ " )'> "+${statistic}[0]["count_pep"]+"</a>";
-    // TODO: create spectrum hit query
-    document.getElementById("spec_stat").innerHTML = ${statistic}[0]["count_hits"];
-    document.getElementById("prot_stat").innerHTML = ${statistic}[0]["count_prot"];
-    // extract alles and link them
+
+
+    // extract alleles and link them
+    var digits = 2;
     var alleles = ${statistic}[0]["hla_category"].split(",");
     var allele_string = "";
     for(var i=0; i<alleles.length; i++){
         var a = alleles[i].trim();
         allele_string = allele_string + "<a class='nostylelink'  href= '/hla/"+a + "'>"+a + "</a>, ";
+        // Get the number of digits in typing
+        digits = (a.split("*")[1].split(":")).length*2;
     }
+    // error check for digits
+    if(digits != 2 && digits != 4){
+        digits = 2;
+    }
+    // Setting the statistics
+    document.getElementById("pep_stat").innerHTML = "<a title='Show all Peptides'  class='nostylelink' href='javascript:post(\x22../peptide_query\x22, {source: \x22${source}\x22, grouping:\x22source\x22 , digits:\x22"+digits+ "\x22}," +${statistic}[0]["count_pep"]+ " )'> "+${statistic}[0]["count_pep"]+"</a>";
+    // TODO: create spectrum hit query
+    document.getElementById("spec_stat").innerHTML = ${statistic}[0]["count_hits"];
+    document.getElementById("prot_stat").innerHTML = ${statistic}[0]["count_prot"];
+
+
+
     document.getElementById("typing").innerHTML = allele_string.slice(0, -2);
     document.getElementById("histology").innerHTML = "<a class='nostylelink'  href= '/histology/"+${statistic}[0]["histology"] + "'>"+${statistic}[0]["histology"]+ "</a>";
     document.getElementById("organ").innerHTML =  "<a class='nostylelink'  href= '/organ/"+${statistic}[0]["organ"] + "'>"+${statistic}[0]["organ"]+ "</a>";

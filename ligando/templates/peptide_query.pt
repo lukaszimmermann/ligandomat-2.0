@@ -104,6 +104,7 @@
         <option value="peptide">Peptide</option>
         <option value="source">Source without PSM</option>
         <option value="source_psm">Source with PSM (slow)</option>
+        <option value="protein">Protein</option>
     </select>
         <br>
         <span class="standard_text" title="Sources with 4-digit typing will also be part of the results if 2-digit is choosen.">HLA-Typing: </span> <select style="float: right" name="digits" class="nice_dropdown">
@@ -119,14 +120,12 @@
 
 </div>
 
-
         <script>
         // Function to change the color of the filter buttons and show/hide the input field
         function show_hide(id, button_id, id2) {
             if($(id).is(":visible")){
                 $(button_id).css('background-color', 'rgb(180,160,105)');
                 $(button_id).css('-webkit-box-shadow', 'inset 0 -2px rgb(180,160,105)');
-                //-webkit-box-shadow: inset 0 -2px rgb(180,160,105);
                 $(button_id).css('box-shadow', 'inset 0 -2px rgb(180,160,105)');
 
                 $(button_id).css('text-shadow', 'rgb(180,160,105)');
@@ -134,11 +133,8 @@
             }else{
                 $(button_id).css('background-color', 'rgb(165, 30, 55)');
                 $(button_id).css('-webkit-box-shadow', 'inset 0 -2px rgb(165, 30, 55)');
-                //-webkit-box-shadow: inset 0 -2px rgb(180,160,105);
                 $(button_id).css('box-shadow', 'inset 0 -2px rgb(165, 30, 55)');
                 $(button_id).css('text-shadow', 'rgb(217, 205, 177)');
-                //box-shadow: inset 0 -2px rgb(180,160,105);
-                //$(button_id).css('color', 'rgb(50, 65 , 75)');
             }
             if(typeof id2 !== 'undefined'){
                 $(id+"_input_1").val("");

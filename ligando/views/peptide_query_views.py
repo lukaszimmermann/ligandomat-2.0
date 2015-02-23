@@ -32,7 +32,6 @@ def peptide_query(request):
 # peptide Query POST
 @view_config(route_name='peptide_query', renderer='../templates/peptide_query_result.pt', request_method="POST")
 def peptide_query_result(request):
-    # TODO: query forward from links. do not have all the params
     # Check if one of these parameters is set, if not forward to peptide_query page
     params_check_dict = ['sequence',
                          'source',
@@ -54,13 +53,12 @@ def peptide_query_result(request):
     if not input_check:
         raise HTTPFound(request.route_url("peptide_query"))
 
-
     # Group by  peptide
     if request.params['grouping'] == "peptide":
         try:
             query = DBSession.query(PeptideRun.sequence,
                                     func.group_concat(Protein.name.distinct().op('order by')(Protein.name)).label("protein"),
-                                    func.group_concat(Source.histology.distinct().op('order by')(Source.histology)).label("name"),
+                                    func.group_concat(Source.name.distinct().op('order by')(Source.name)).label("name"),
                                     func.group_concat(Source.dignity.distinct().op('order by')(Source.dignity)).label("dignity"),
                                     func.group_concat((HlaType.hla_string.distinct().op('order by')(HlaType.hla_string))).label('hla_typing'))
             query = query.join(Source)
@@ -102,7 +100,7 @@ def peptide_query_result(request):
                                     PeptideRun.minQ, PeptideRun.maxQ, PeptideRun.PSM,
                                     func.group_concat(HlaType.hla_string.distinct().op('order by')(HlaType.hla_string)).label('hla_typing'),
                                     func.group_concat(Protein.name.distinct().op('order by')(Protein.name)).label("protein"),
-                                    Source.histology, Source.name, MsRun.filename)
+                                    Source.histology, Source.name, MsRun.filename, MsRun.ms_run_id)
             query = query.join(Source)
             query = query.join(MsRun, PeptideRun.ms_run_ms_run_id == MsRun.ms_run_id)
             query = query.join(HlaLookup)
@@ -222,6 +220,54 @@ def peptide_query_result(request):
 
             your_json = json.dumps(query.all())
             grouping = "source_psm"
+        except DBAPIError:
+            return Response(conn_err_msg, content_type='text/plain', status_int=500)
+    # Group by protein
+    elif request.params['grouping'] == "protein":
+        # TODO: a whole protein query from kidney take 8 min...
+        try:
+            query = DBSession.query(func.group_concat(PeptideRun.sequence.distinct().op('order by')(PeptideRun.sequence)).label("peptide"),
+                                    Protein.name.label("protein"),
+                                    func.group_concat(
+                                        Source.name.distinct().op('order by')(Source.name)).label("name"),
+                                    func.group_concat(
+                                        Source.dignity.distinct().op('order by')(Source.dignity)).label("dignity")
+                                    )
+            query = query.join(Source)
+            query = query.join(MsRun, PeptideRun.ms_run_ms_run_id == MsRun.ms_run_id)
+            query = query.join(HlaLookup)
+            query = query.join(t_hla_map)
+            query = query.join(HlaType)
+            query = query.join(t_peptide_protein_map)
+            query = query.join(Protein)
+
+            # filter
+            query = create_filter(query, 'sequence', request.params, "sequence", PeptideRun, 'sequence_rule', True,
+                                  set=False)
+            query = create_filter(query, 'source', request.params, "name", Source, 'source_rule', True, set=False)
+            query = create_filter(query, 'run_name', request.params, "filename", MsRun, 'run_name_rule', True,
+                                  set=False)
+            query = create_filter(query, 'organ', request.params, "organ", Source, 'organ_rule', False, set=False)
+            query = create_filter(query, 'histology', request.params, "histology", Source, 'histology_rule', False,
+                                  set=False)
+            query = create_filter(query, 'dignity', request.params, "dignity", Source, 'dignity_rule', False,
+                                  set=False)
+            query = create_filter(query, 'hla_typing', request.params, "hla_string", HlaType, 'hla_typing_rule',
+                                  False, set=False,
+                                  fk=HlaLookup.fk_hla_typess)
+            query = create_filter(query, 'digits', request.params, 'digits', HlaType, None, False, set=False)
+            query = create_filter(query, 'protein', request.params, "name", Protein, 'protein_rule', False,
+                                  set=False,
+                                  fk=PeptideRun.protein_proteins)
+            query = create_filter(query, 'length_1', request.params, 'length', PeptideRun, ">", False, set=False)
+            query = create_filter(query, 'length_2', request.params, 'length', PeptideRun, "<", False, set=False)
+            query = create_filter(query, 'antibody', request.params, "antibody_set", MsRun, 'antibody_rule', False,
+                                  set=True)
+
+            query = query.group_by(Protein)
+
+            your_json = json.dumps(query.all())
+            grouping = "protein"
         except DBAPIError:
             return Response(conn_err_msg, content_type='text/plain', status_int=500)
 
