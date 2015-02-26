@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html metal:use-macro="load: base_layout.pt">
+<html lang="${request.locale_name}">
+<head>
+
+</head>
+
+<body>
+<div class="main_wrapper">
+<div id="statistic_wrapper" class="wrapper" >
+
+        <div id="jvenn-container" style="float: left; width: 480px" ></div>
+        <!--? This div is only created, if Runs are compared. To avoid long names-->
+        <div tal:condition="real_names != 0 " id="alias-container" style="float: right; width: 480px" ><span id="alias"></span></div>
+
+</div>
+</div>
+
+<!--?import the  jvenn file-->
+<script type="text/javascript" charset="utf8" src="${request.static_url('ligando:static/js/jvenn.min.js')}"></script>
+
+
+
+<script>
+
+    $(document).ready(function () {
+
+        // Write the lists of aliases if needed
+        // MS RUN case
+        if(document.getElementById("alias") != null){
+            var real_names = ${real_names};
+            for( var i = 1; i <7; i++) {
+                if(real_names[i] != "") {
+                    document.getElementById("alias").innerHTML = document.getElementById("alias").innerHTML + "MS Run" + i + " : <br>" + real_names[i] + "<br>";
+                }
+            }
+
+            var names = ${names};
+            var result = ${result};
+            var input_series = [];
+            for(var i = 1; i < 7; i++){
+                if(real_names[i] != ""){
+                input_series.push({
+                    name: names[i],
+                    data: result[i]
+                 });
+                }
+            }
+
+        }else{ // Source case
+            var names = ${names};
+            var result = ${result};
+            var input_series = [];
+            for(var i = 1; i < 7; i++){
+            if(names[i] != ""){
+                input_series.push({
+                    name: names[i],
+                    data: result[i]
+                 });
+                }
+            }
+        }
+
+        $("#jvenn-container").jvenn({
+            exporting: true,
+            displayStat: true,
+            shortNumber: false,
+             series:input_series
+        })
+        }
+    );
+
+
+</script>
+
+
+</body>
+</html>

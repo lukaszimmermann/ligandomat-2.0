@@ -84,7 +84,11 @@ $(document).ready(function() {
         var a = alleles[i].trim();
         allele_string = allele_string + "<a class='nostylelink'  href= '/hla/"+a + "'>"+a + "</a>, ";
         // Get the number of digits in typing
-        digits = (a.split("*")[1].split(":")).length*2;
+        try {
+            digits = (a.split("*")[1].split(":")).length * 2;
+        }catch(err) {
+            digits = 2;
+        }
     }
     // error check for digits
     if(digits != 2 && digits != 4){

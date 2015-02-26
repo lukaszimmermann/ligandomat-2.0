@@ -26,7 +26,8 @@ from ligando.views.view_helper import conn_err_msg, create_filter
 # peptide Query GET
 @view_config(route_name='peptide_query', renderer='../templates/peptide_query.pt', request_method="GET")
 def peptide_query(request):
-    # Nothing to do here
+    # Nothing to do here, this is of course wrong!
+    # TODO: add autocomplete queries
     return dict()
 
 # peptide Query POST

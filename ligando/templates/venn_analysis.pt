@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html metal:use-macro="load: base_layout.pt">
+<html lang="${request.locale_name}">
+<head>
+
+</head>
+
+<body>
+<div class="main_wrapper">
+<div id="statistic_wrapper" class="wrapper" >
+    <form method="POST" action=venn_analysis>
+        <button style="width: 100px;" id="ms_run_button" type="button" onclick="show_hide('#ms_run_input_div', '#ms_run_button','#source_input_div','#source_button')" class="nice_button">MS Runs</button>
+        <button style="width: 100px;" id="source_button" type="button" onclick="show_hide('#source_input_div', '#source_button','#ms_run_input_div','#ms_run_button')" class="nice_button">Sources</button>
+        <br>
+        <p id="start_text">Please select if you want a venn diagram for sources or MS runs</p>
+        <div id="ms_run_input_div">
+        1. MS Run: <input id="ms_run_input_1" name="ms_run_1" type="text"><br><br>
+        2. MS Run: <input id="ms_run_input_2" name="ms_run_2" type="text"><br><br>
+        3. MS Run: <input id="ms_run_input_3" name="ms_run_3" type="text"><br><br>
+        4. MS Run: <input id="ms_run_input_4" name="ms_run_4" type="text"><br><br>
+        5. MS Run: <input id="ms_run_input_5" name="ms_run_5" type="text"><br><br>
+        6. MS Run: <input id="ms_run_input_6" name="ms_run_6" type="text"><br>
+        </div>
+        <div class="hidden" id="source_input_div">
+        1. Source: <input id="source_input_1" name="source_1" type="text"><br><br>
+        2. Source: <input id="source_input_2" name="source_2" type="text"><br><br>
+        3. Source: <input id="source_input_3" name="source_3" type="text"><br><br>
+        4. Source: <input id="source_input_4" name="source_4" type="text"><br><br>
+        5. Source: <input id="source_input_5" name="source_5" type="text"><br><br>
+        6. Source: <input id="source_input_6" name="source_6" type="text"><br><br>
+        Antibody: <input title="Select an antibody. If empty all are selected." id="antibody_input" name="antibody" type="text"><br>
+        </div>
+        <br>
+        Create venn diagram based on: <select name="prot_pep" title="Select if you want to analyse the peptides or the proteins." class="nice_dropdown"><option selected>Peptide</option><option>Protein</option></select>
+        <br><br>
+        <input  type="submit" value="Submit" class="nice_button" style="width: 100px;"/>
+    </form>
+</div>
+</div>
+
+
+<script>
+    // set MS Runs button on clicked
+    $(function() {
+        $(ms_run_button).css('background-color', 'rgb(165, 30, 55)');
+        $(ms_run_button).css('-webkit-box-shadow', 'inset 0 -2px rgb(165, 30, 55)');
+        $(ms_run_button).css('box-shadow', 'inset 0 -2px rgb(165, 30, 55)');
+        $(ms_run_button).css('text-shadow', 'rgb(217, 205, 177)');
+    });
+
+// Function to change the color of the filter buttons and show/hide the input field
+        function show_hide(id, button_id, id2, other_button_id) {
+
+            if($(id).is(":visible")){
+                $(other_button_id).css('background-color', 'rgb(180,160,105)');
+                $(other_button_id).css('-webkit-box-shadow', 'inset 0 -2px rgb(180,160,105)');
+                $(other_button_id).css('box-shadow', 'inset 0 -2px rgb(180,160,105)');
+                $(other_button_id).css('text-shadow', 'rgb(180,160,105)');
+                return;
+            }else{
+                $(other_button_id).css('background-color', 'rgb(180,160,105)');
+                $(other_button_id).css('-webkit-box-shadow', 'inset 0 -2px rgb(180,160,105)');
+                $(other_button_id).css('box-shadow', 'inset 0 -2px rgb(180,160,105)');
+                $(other_button_id).css('text-shadow', 'rgb(180,160,105)');
+                $(button_id).css('background-color', 'rgb(165, 30, 55)');
+                $(button_id).css('-webkit-box-shadow', 'inset 0 -2px rgb(165, 30, 55)');
+                $(button_id).css('box-shadow', 'inset 0 -2px rgb(165, 30, 55)');
+                $(button_id).css('text-shadow', 'rgb(217, 205, 177)');
+                $(id2).toggle();
+                $(id).toggle();
+                // reset all values
+                for(var i=1; i<7; i++) {
+                    $("#ms_run_input_"+i).val("");
+                    $("#source_input_"+i).val("");
+                }
+            }
+        };
+
+// autocomplete
+$(function () {
+    for(var i=1; i<7; i++) {
+    $("#ms_run_input_"+i).autocomplete({
+                minLength: 0,
+                minChars: 0,
+                source: ${ms_runs}
+            }).focus(function () {
+                $(this).autocomplete("search", "");
+            });
+    $("#source_input_"+i).autocomplete({
+                minLength: 0,
+                minChars: 0,
+                source: ${sources}
+            }).focus(function () {
+                $(this).autocomplete("search", "");
+            });
+    }
+    $("#antibody_input").autocomplete({
+                minLength: 0,
+                minChars: 0,
+                source: ${antibody}
+            }).focus(function () {
+                $(this).autocomplete("search", "");
+            });
+
+});
+
+</script>
+
+
+</body>
+</html>

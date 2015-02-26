@@ -15,7 +15,7 @@ from ligando.views.view_helper import  conn_err_msg
 
 
 
-@view_config(route_name='source_overview', renderer='../templates/source_info.pt')
+@view_config(route_name='source_overview', renderer='../templates/info_templates/source_info.pt')
 def source_overview(request):
     try:
         # query Sources
@@ -27,7 +27,7 @@ def source_overview(request):
     return {'project': your_json}
 
 
-@view_config(route_name='run_overview', renderer='../templates/run_info.pt')
+@view_config(route_name='run_overview', renderer='../templates/info_templates/run_info.pt')
 def run_overview(request):
     try:
         # query MS runs. Important: run_date has to be castet to string, otherwise  json.dumps can not create json object
@@ -41,7 +41,7 @@ def run_overview(request):
         return Response(conn_err_msg, content_type='text/plain', status_int=500)
     return {'project': your_json}
 
-@view_config(route_name='orphan_run_overview', renderer='../templates/orphan_run_info.pt')
+@view_config(route_name='orphan_run_overview', renderer='../templates/info_templates/orphan_run_info.pt')
 def orphan_run_overview(request):
     try:
         # get orphan runs

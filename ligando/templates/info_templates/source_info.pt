@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<html metal:use-macro="load: base_layout.pt">
+<html metal:use-macro="load: ../base_layout.pt">
 <html lang="${request.locale_name}">
   <head>
 
@@ -9,7 +9,6 @@
   <body>
   <div class="main_wrapper">
   <div style="margin-top:20pt">
-
     <table id="example" class="info_table" cellspacing="0" width="100%"> <thead>
             <tr>
                 <th>Name</th>
@@ -26,13 +25,8 @@
     </div>
 </div>
 
-
-
-
     <script>
-
     $(document).ready(function() {
-
     // create dataTable
     $('#example').dataTable( {
         data: ${project},
@@ -67,8 +61,5 @@
     } );
     } );
     </script>
-
-
-
   </body>
 </html>

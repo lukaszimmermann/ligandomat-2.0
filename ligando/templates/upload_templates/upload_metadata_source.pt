@@ -154,10 +154,6 @@ $(function () {
     ;
 });
 
-// tooltips
-$(function () {
-    $(document).tooltip();
-});
 
 
 // HLA Typing menu
