@@ -4,6 +4,7 @@ __author__ = 'Linus Backert'
 
 from sqlalchemy.orm import aliased
 
+
 # Extracts the number of digits of the hla typing
 def hla_digits_extractor(hla):
     try:
@@ -35,8 +36,8 @@ def js_list_creator_dataTables(input):
 # Filter function:
 # Parameter:
 # query = DBSession.query object
-#   parameter = the parameter in der request for which you want to filter
-#   request = a dict with filter parameter
+# parameter = the parameter in der request for which you want to filter
+# request = a dict with filter parameter
 #   sqlobject = the sqlcollum you want to filter (as String!)
 #   sqlparent = the sql table which contains the table
 #   rule = the key for filter combination rule in the filter_dict
@@ -53,7 +54,8 @@ def create_filter(query, parameter, request, sql_object, sql_parent, rule, like,
                         for s in split:
                             query = query.filter(func.find_in_set(s, getattr(sql_parent, sql_object)))
                     else:
-                        query = query.filter(or_(*[func.find_in_set(s, getattr(sql_parent, sql_object)) for s in split]))
+                        query = query.filter(
+                            or_(*[func.find_in_set(s, getattr(sql_parent, sql_object)) for s in split]))
                 elif request[rule] == "AND":
                     for s in range(0, len(split)):
                         if s == 0:

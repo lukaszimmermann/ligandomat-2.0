@@ -20,7 +20,7 @@ from ligando.models import (
     t_peptide_protein_map,
     SpectrumHit,
     t_spectrum_protein_map)
-from ligando.views.view_helper import conn_err_msg, create_filter
+from ligando.views.view_helper import conn_err_msg, create_filter, js_list_creator
 
 
 # peptide Query GET
@@ -28,7 +28,31 @@ from ligando.views.view_helper import conn_err_msg, create_filter
 def peptide_query(request):
     # Nothing to do here, this is of course wrong!
     # TODO: add autocomplete queries
-    return dict()
+    # antibodys
+    query = DBSession.query(MsRun.antibody_set.distinct())
+    antibody = js_list_creator(query.all())
+    # dignity
+    query = DBSession.query(Source.dignity.distinct()).order_by(Source.dignity)
+    dignity = js_list_creator(query.all())
+    # organ
+    query = DBSession.query(Source.organ.distinct()).order_by(Source.organ)
+    organ = js_list_creator(query.all())
+    # histology
+    query = DBSession.query(Source.histology.distinct()).order_by(Source.histology)
+    histology = js_list_creator(query.all())
+    # celltype
+    query = DBSession.query(Source.celltype.distinct()).order_by(Source.celltype)
+    celltype = js_list_creator(query.all())
+    # celltype
+    query = DBSession.query(HlaType.hla_string.distinct()).order_by(HlaType.hla_string)
+    hla = js_list_creator(query.all())
+
+    # TODO: HLA dropdown
+
+
+    return {"antibody": antibody, "dignity": dignity, "organ": organ, "histology": histology, "celltype": celltype,
+            "hla": hla}
+
 
 # peptide Query POST
 @view_config(route_name='peptide_query', renderer='../templates/peptide_query_result.pt', request_method="POST")
@@ -43,7 +67,8 @@ def peptide_query_result(request):
                          'hla_typing',
                          'protein',
                          'length_1', 'length_2',
-                         'antibody']
+                         'antibody',
+                         'celltype']
     input_check = False
     for param in params_check_dict:
         if param in request.params:
@@ -58,10 +83,14 @@ def peptide_query_result(request):
     if request.params['grouping'] == "peptide":
         try:
             query = DBSession.query(PeptideRun.sequence,
-                                    func.group_concat(Protein.name.distinct().op('order by')(Protein.name)).label("protein"),
+                                    func.group_concat(Protein.name.distinct().op('order by')(Protein.name)).label(
+                                        "protein"),
                                     func.group_concat(Source.name.distinct().op('order by')(Source.name)).label("name"),
-                                    func.group_concat(Source.dignity.distinct().op('order by')(Source.dignity)).label("dignity"),
-                                    func.group_concat((HlaType.hla_string.distinct().op('order by')(HlaType.hla_string))).label('hla_typing'))
+                                    func.group_concat(Source.dignity.distinct().op('order by')(Source.dignity)).label(
+                                        "dignity"),
+                                    func.group_concat(
+                                        (HlaType.hla_string.distinct().op('order by')(HlaType.hla_string))).label(
+                                        'hla_typing'))
             query = query.join(Source)
             query = query.join(MsRun, PeptideRun.ms_run_ms_run_id == MsRun.ms_run_id)
             query = query.join(HlaLookup)
@@ -71,20 +100,27 @@ def peptide_query_result(request):
             query = query.join(Protein)
 
             # filter
-            query = create_filter(query, 'sequence', request.params, "sequence", PeptideRun, 'sequence_rule', True, set=False)
+            query = create_filter(query, 'sequence', request.params, "sequence", PeptideRun, 'sequence_rule', True,
+                                  set=False)
             query = create_filter(query, 'source', request.params, "name", Source, 'source_rule', True, set=False)
-            query = create_filter(query, 'run_name', request.params, "filename", MsRun, 'run_name_rule', True, set=False)
+            query = create_filter(query, 'run_name', request.params, "filename", MsRun, 'run_name_rule', True,
+                                  set=False)
             query = create_filter(query, 'organ', request.params, "organ", Source, 'organ_rule', False, set=False)
-            query = create_filter(query, 'histology', request.params, "histology", Source, 'histology_rule', False, set=False)
+            query = create_filter(query, 'histology', request.params, "histology", Source, 'histology_rule', False,
+                                  set=False)
             query = create_filter(query, 'dignity', request.params, "dignity", Source, 'dignity_rule', False, set=False)
-            query = create_filter(query, 'hla_typing', request.params, "hla_string", HlaType, 'hla_typing_rule', False, set=False,
+            query = create_filter(query, 'hla_typing', request.params, "hla_string", HlaType, 'hla_typing_rule', False,
+                                  set=False,
                                   fk=HlaLookup.fk_hla_typess)
             query = create_filter(query, 'digits', request.params, 'digits', HlaType, None, False, set=False)
             query = create_filter(query, 'protein', request.params, "name", Protein, 'protein_rule', False, set=False,
                                   fk=PeptideRun.protein_proteins)
             query = create_filter(query, 'length_1', request.params, 'length', PeptideRun, ">", False, set=False)
             query = create_filter(query, 'length_2', request.params, 'length', PeptideRun, "<", False, set=False)
-            query = create_filter(query, 'antibody', request.params, "antibody_set", MsRun, 'antibody_rule', False, set=True)
+            query = create_filter(query, 'antibody', request.params, "antibody_set", MsRun, 'antibody_rule', False,
+                                  set=True)
+            query = create_filter(query, 'celltype', request.params, "celltype", Source, 'celltype_rule', False,
+                                  set=False)
 
             query = query.group_by(PeptideRun.sequence)
 
@@ -99,8 +135,11 @@ def peptide_query_result(request):
                                     PeptideRun.sequence, PeptideRun.minRT, PeptideRun.maxRT,
                                     PeptideRun.minScore, PeptideRun.maxScore, PeptideRun.minE, PeptideRun.maxE,
                                     PeptideRun.minQ, PeptideRun.maxQ, PeptideRun.PSM,
-                                    func.group_concat(HlaType.hla_string.distinct().op('order by')(HlaType.hla_string)).label('hla_typing'),
-                                    func.group_concat(Protein.name.distinct().op('order by')(Protein.name)).label("protein"),
+                                    func.group_concat(
+                                        HlaType.hla_string.distinct().op('order by')(HlaType.hla_string)).label(
+                                        'hla_typing'),
+                                    func.group_concat(Protein.name.distinct().op('order by')(Protein.name)).label(
+                                        "protein"),
                                     Source.histology, Source.name, MsRun.filename, MsRun.ms_run_id)
             query = query.join(Source)
             query = query.join(MsRun, PeptideRun.ms_run_ms_run_id == MsRun.ms_run_id)
@@ -111,13 +150,17 @@ def peptide_query_result(request):
             query = query.join(Protein)
 
             # filter
-            query = create_filter(query, 'sequence', request.params, "sequence", PeptideRun, 'sequence_rule', True, set=False)
+            query = create_filter(query, 'sequence', request.params, "sequence", PeptideRun, 'sequence_rule', True,
+                                  set=False)
             query = create_filter(query, 'source', request.params, "name", Source, 'source_rule', True, set=False)
-            query = create_filter(query, 'run_name', request.params, "filename", MsRun, 'run_name_rule', True, set=False)
+            query = create_filter(query, 'run_name', request.params, "filename", MsRun, 'run_name_rule', True,
+                                  set=False)
             query = create_filter(query, 'organ', request.params, "organ", Source, 'organ_rule', False, set=False)
-            query = create_filter(query, 'histology', request.params, "histology", Source, 'histology_rule', False, set=False)
+            query = create_filter(query, 'histology', request.params, "histology", Source, 'histology_rule', False,
+                                  set=False)
             query = create_filter(query, 'dignity', request.params, "dignity", Source, 'dignity_rule', False, set=False)
-            query = create_filter(query, 'hla_typing', request.params, "hla_string", HlaType, 'hla_typing_rule', False, set=False,
+            query = create_filter(query, 'hla_typing', request.params, "hla_string", HlaType, 'hla_typing_rule', False,
+                                  set=False,
                                   fk=HlaLookup.fk_hla_typess)
             query = create_filter(query, 'digits', request.params, 'digits', HlaType, None, False, set=False)
 
@@ -125,7 +168,10 @@ def peptide_query_result(request):
                                   fk=PeptideRun.protein_proteins)
             query = create_filter(query, 'length_1', request.params, 'length', PeptideRun, ">", False, set=False)
             query = create_filter(query, 'length_2', request.params, 'length', PeptideRun, "<", False, set=False)
-            query = create_filter(query, 'antibody', request.params, "antibody_set", MsRun, 'antibody_rule', False, set=True)
+            query = create_filter(query, 'antibody', request.params, "antibody_set", MsRun, 'antibody_rule', False,
+                                  set=True)
+            query = create_filter(query, 'celltype', request.params, "celltype", Source, 'celltype_rule', False,
+                                  set=False)
 
             query = query.group_by(PeptideRun.peptide_run_id)
             your_json = json.dumps(query.all())
@@ -145,9 +191,11 @@ def peptide_query_result(request):
                                     func.max(PeptideRun.maxE).label("maxE"),
                                     func.min(PeptideRun.minQ).label("minQ"),
                                     func.max(PeptideRun.maxQ).label("maxQ"),
-                                    func.group_concat(HlaType.hla_string.distinct().op('order by')(HlaType.hla_string)).label(
+                                    func.group_concat(
+                                        HlaType.hla_string.distinct().op('order by')(HlaType.hla_string)).label(
                                         'hla_typing'),
-                                    func.group_concat(Protein.name.distinct().op('order by')(Protein.name)).label("protein"),
+                                    func.group_concat(Protein.name.distinct().op('order by')(Protein.name)).label(
+                                        "protein"),
                                     Source.histology, Source.name.label("source_name"))
             query = query.join(Source)
             query = query.join(MsRun, PeptideRun.ms_run_ms_run_id == MsRun.ms_run_id)
@@ -158,21 +206,27 @@ def peptide_query_result(request):
             query = query.join(Protein)
 
             # filter
-            query = create_filter(query, 'sequence', request.params, "sequence", PeptideRun, 'sequence_rule', True, set=False)
+            query = create_filter(query, 'sequence', request.params, "sequence", PeptideRun, 'sequence_rule', True,
+                                  set=False)
             query = create_filter(query, 'source', request.params, "name", Source, 'source_rule', True, set=False)
-            query = create_filter(query, 'run_name', request.params, "filename", MsRun, 'run_name_rule', True, set=False)
+            query = create_filter(query, 'run_name', request.params, "filename", MsRun, 'run_name_rule', True,
+                                  set=False)
             query = create_filter(query, 'organ', request.params, "organ", Source, 'organ_rule', False, set=False)
-            query = create_filter(query, 'histology', request.params, "histology", Source, 'histology_rule', False, set=False)
+            query = create_filter(query, 'histology', request.params, "histology", Source, 'histology_rule', False,
+                                  set=False)
             query = create_filter(query, 'dignity', request.params, "dignity", Source, 'dignity_rule', False, set=False)
-            query = create_filter(query, 'hla_typing', request.params, "hla_string", HlaType, 'hla_typing_rule', False, set=False,
+            query = create_filter(query, 'hla_typing', request.params, "hla_string", HlaType, 'hla_typing_rule', False,
+                                  set=False,
                                   fk=HlaLookup.fk_hla_typess)
             query = create_filter(query, 'digits', request.params, 'digits', HlaType, None, False, set=False)
             query = create_filter(query, 'protein', request.params, "name", Protein, 'protein_rule', False, set=False,
                                   fk=PeptideRun.protein_proteins)
             query = create_filter(query, 'length_1', request.params, 'length', PeptideRun, ">", False, set=False)
             query = create_filter(query, 'length_2', request.params, 'length', PeptideRun, "<", False, set=False)
-            query = create_filter(query, 'antibody', request.params, "antibody_set", MsRun, 'antibody_rule', False, set=True)
-
+            query = create_filter(query, 'antibody', request.params, "antibody_set", MsRun, 'antibody_rule', False,
+                                  set=True)
+            query = create_filter(query, 'celltype', request.params, "celltype", Source, 'celltype_rule', False,
+                                  set=False)
             query = query.group_by(Source.source_id, PeptideRun.sequence)
 
             your_json = json.dumps(query.all())
@@ -203,19 +257,25 @@ def peptide_query_result(request):
             query = query.join(Protein)
 
             # filter
-            query = create_filter(query, 'sequence', request.params, "sequence", SpectrumHit, 'sequence_rule', True, set=False)
+            query = create_filter(query, 'sequence', request.params, "sequence", SpectrumHit, 'sequence_rule', True,
+                                  set=False)
             query = create_filter(query, 'source', request.params, "name", Source, 'source_rule', True, set=False)
-            query = create_filter(query, 'run_name', request.params, "filename", MsRun, 'run_name_rule', True, set=False)
+            query = create_filter(query, 'run_name', request.params, "filename", MsRun, 'run_name_rule', True,
+                                  set=False)
             query = create_filter(query, 'organ', request.params, "organ", Source, 'organ_rule', False, set=False)
-            query = create_filter(query, 'histology', request.params, "histology", Source, 'histology_rule', False, set=False)
+            query = create_filter(query, 'histology', request.params, "histology", Source, 'histology_rule', False,
+                                  set=False)
             query = create_filter(query, 'dignity', request.params, "dignity", Source, 'dignity_rule', False, set=False)
-            query = create_filter(query, 'hla_typing', request.params, "hla_string", HlaType, 'hla_typing_rule', False, set=False,
+            query = create_filter(query, 'hla_typing', request.params, "hla_string", HlaType, 'hla_typing_rule', False,
+                                  set=False,
                                   fk=HlaLookup.fk_hla_typess)
             query = create_filter(query, 'digits', request.params, 'digits', HlaType, None, False, set=False)
             query = create_filter(query, 'protein', request.params, "name", Protein, 'protein_rule', False, set=False,
                                   fk=SpectrumHit.protein_proteins)
             query = create_filter(query, 'length_1', request.params, 'length', SpectrumHit, ">", False, set=False)
             query = create_filter(query, 'length_2', request.params, 'length', SpectrumHit, "<", False, set=True)
+            query = create_filter(query, 'celltype', request.params, "celltype", Source, 'celltype_rule', False,
+                                  set=False)
 
             query = query.group_by(Source.source_id, SpectrumHit.sequence)
 
@@ -227,13 +287,14 @@ def peptide_query_result(request):
     elif request.params['grouping'] == "protein":
         # TODO: a whole protein query from kidney take 8 min...
         try:
-            query = DBSession.query(func.group_concat(PeptideRun.sequence.distinct().op('order by')(PeptideRun.sequence)).label("peptide"),
-                                    Protein.name.label("protein"),
-                                    func.group_concat(
-                                        Source.name.distinct().op('order by')(Source.name)).label("name"),
-                                    func.group_concat(
-                                        Source.dignity.distinct().op('order by')(Source.dignity)).label("dignity")
-                                    )
+            query = DBSession.query(
+                func.group_concat(PeptideRun.sequence.distinct().op('order by')(PeptideRun.sequence)).label("peptide"),
+                Protein.name.label("protein"),
+                func.group_concat(
+                    Source.name.distinct().op('order by')(Source.name)).label("name"),
+                func.group_concat(
+                    Source.dignity.distinct().op('order by')(Source.dignity)).label("dignity")
+            )
             query = query.join(Source)
             query = query.join(MsRun, PeptideRun.ms_run_ms_run_id == MsRun.ms_run_id)
             query = query.join(HlaLookup)
@@ -264,6 +325,8 @@ def peptide_query_result(request):
             query = create_filter(query, 'length_2', request.params, 'length', PeptideRun, "<", False, set=False)
             query = create_filter(query, 'antibody', request.params, "antibody_set", MsRun, 'antibody_rule', False,
                                   set=True)
+            query = create_filter(query, 'celltype', request.params, "celltype", Source, 'celltype_rule', False,
+                                  set=False)
 
             query = query.group_by(Protein)
 

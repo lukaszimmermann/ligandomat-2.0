@@ -16,7 +16,8 @@ from ligando.models import (
 from ligando.views.view_helper import js_list_creator, conn_err_msg, hla_digits_extractor
 
 # Upload Source metadata GET!
-@view_config(route_name='upload_metadata_source', renderer='../templates/upload_templates/upload_metadata_source.pt', request_method="GET")
+@view_config(route_name='upload_metadata_source', renderer='../templates/upload_templates/upload_metadata_source.pt',
+             request_method="GET")
 def upload_metadata_source(request):
     try:
         # query data for autocomplete
@@ -35,8 +36,10 @@ def upload_metadata_source(request):
         return Response(conn_err_msg, content_type='text/plain', status_int=500)
     return result_dict
 
+
 # Upload Source metadata POST!
-@view_config(route_name='upload_metadata_source', renderer='../templates/upload_templates/base_layout.pt', request_method="POST")
+@view_config(route_name='upload_metadata_source', renderer='../templates/upload_templates/base_layout.pt',
+             request_method="POST")
 def upload_metadata_source_post(request):
     source_upload = ast.literal_eval(request.params["sources"])
     # Check if source already in DB
@@ -105,7 +108,7 @@ def upload_metadata_source_post(request):
                         hla_type = query = DBSession.query(HlaType).filter(HlaType.hla_string == sub_type).all()[0]
                     # ###############
                     # hla_map      #
-                    ################
+                    # ###############
 
                     try:
                         query = DBSession.query(t_hla_map).filter(HlaType.hla_types_id == hla_types_id).filter(
@@ -142,12 +145,14 @@ def upload_metadata_source_post(request):
                             content_type='text/plain', status_int=500)
     return dict()
 
+
 # uplad MS run metadata GET
-@view_config(route_name='upload_metadata_ms_run', renderer='../templates/upload_templates/upload_metadata_msrun.pt', request_method="GET")
+@view_config(route_name='upload_metadata_ms_run', renderer='../templates/upload_templates/upload_metadata_msrun.pt',
+             request_method="GET")
 def upload_metadata_ms_run(request):
     result_dict = dict()
     # fill out the "filename" if forwarded for orphan run table on home
-    if ("run" in request.params):
+    if "run" in request.params:
         result_dict["run"] = request.params["run"]
     else:
         result_dict["run"] = ""
@@ -176,8 +181,10 @@ def upload_metadata_ms_run(request):
         return Response(conn_err_msg, content_type='text/plain', status_int=500)
     return result_dict
 
+
 # uplad MS run metadata POST
-@view_config(route_name='upload_metadata_ms_run', renderer='../templates/upload_templates/base_layout.pt', request_method="POST")
+@view_config(route_name='upload_metadata_ms_run', renderer='../templates/upload_templates/base_layout.pt',
+             request_method="POST")
 def upload_metadata_ms_run_post(request):
     ms_run_upload = ast.literal_eval(request.params["ms_runs"])
     # Check if  MS run is already in database with METADATA
@@ -200,7 +207,8 @@ def upload_metadata_ms_run_post(request):
             return Response(conn_err_msg, content_type='text/plain', status_int=500)
         if len(source) == 0:
             # abort whole upload if source is unknown
-            return Response("The source " + ms_run['source'] + " is not known in the Database. Aborted whole upload! Pleas provide the source metadata first!",
+            return Response("The source " + ms_run[
+                'source'] + " is not known in the Database. Aborted whole upload! Pleas provide the source metadata first!",
                             content_type='text/plain', status_int=500)
         else:
             source_id = source[0][0]
@@ -210,28 +218,27 @@ def upload_metadata_ms_run_post(request):
             ms_run_update = DBSession.query(MsRun).filter(MsRun.filename == ms_run["filename"]).filter(
                 MsRun.source_source_id == None).all()
         except:
-            DBAPIError
             return Response(conn_err_msg + " \n MsRun insert failed", content_type='text/plain', status_int=500)
 
         if len(ms_run_update) > 0:
             ms_run_update[0].source_source_id = source_id
-            if (ms_run['date'] != "" ):
+            if ms_run['date'] != "":
                 ms_run_update[0].ms_run_date = ms_run['date']
-            if (ms_run['used_share'] != "" and ms_run['used_share'] != "None"):
+            if ms_run['used_share'] != "" and ms_run['used_share'] != "None":
                 ms_run_update[0].used_share = ms_run['used_share']
-            if ( ms_run['comment'] != ""):
+            if ms_run['comment'] != "":
                 ms_run_update[0].comment = ms_run['comment']
-            if (ms_run['sample_mass'] != "" and ms_run['sample_mass'] != "None"):
+            if ms_run['sample_mass'] != "" and ms_run['sample_mass'] != "None":
                 ms_run_update[0].sample_mass = ms_run['sample_mass']
-            if (ms_run['sample_volume'] != "" and ms_run['sample_volume'] != "None"):
+            if ms_run['sample_volume'] != "" and ms_run['sample_volume'] != "None":
                 ms_run_update[0].sample_volume = ms_run['sample_volume']
             ms_run_update[0].antibody_set = ms_run['antibody_set'].replace(" ", "")
-            if (ms_run['antibody_mass'] != "" and ms_run['antibody_mass'] != "None"):
+            if ms_run['antibody_mass'] != "" and ms_run['antibody_mass'] != "None":
                 ms_run_update[0].antibody_mass = ms_run['antibody_mass']
             ms_run_update[0].magna = ms_run['magna']
-            if (ms_run['prep_date'] != ""):
+            if ms_run['prep_date'] != "":
                 ms_run_update[0].prep_date = ms_run['prep_date']
-            if (ms_run['prep_comment'] != ""):
+            if ms_run['prep_comment'] != "":
                 ms_run_update[0].prep_comment = ms_run['prep_comment']
             DBSession.flush()
         else:
@@ -260,8 +267,10 @@ def upload_metadata_ms_run_post(request):
 
     return dict()
 
+
 # blacklist ms run GET
-@view_config(route_name='blacklist_msrun', renderer='../templates/upload_templates/blacklist_msrun.pt', request_method="GET")
+@view_config(route_name='blacklist_msrun', renderer='../templates/upload_templates/blacklist_msrun.pt',
+             request_method="GET")
 def blacklist_ms_run(request):
     result_dict = dict()
     if "run" in request.params:
@@ -288,4 +297,4 @@ def blacklist_ms_run(request):
         return Response(conn_err_msg, content_type='text/plain', status_int=500)
     return result_dict
 
-# TODO: # blacklist ms run POST
+    # TODO: # blacklist ms run POST

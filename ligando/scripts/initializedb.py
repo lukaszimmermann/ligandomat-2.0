@@ -7,7 +7,7 @@ from sqlalchemy import engine_from_config
 from pyramid.paster import (
     get_appsettings,
     setup_logging,
-    )
+)
 
 from pyramid.scripts.common import parse_vars
 
@@ -28,7 +28,7 @@ from ..models import (
     SpectrumHit,
     t_spectrum_protein_map,
     User,
-    )
+)
 
 
 def usage(argv):
@@ -48,6 +48,6 @@ def main(argv=sys.argv):
     engine = engine_from_config(settings, 'sqlalchemy.')
     DBSession.configure(bind=engine)
     Base.metadata.create_all(engine)
-    #with transaction.manager:
-    #    model = new_table_1(row1=1)
+    # with transaction.manager:
+    # model = new_table_1(row1=1)
     #    DBSession.add(model)

@@ -39,11 +39,17 @@
             "render": function ( data, type, row ) {
                 return "<a class='nostylelink'  href= '/organ/"+data + "'>"+data + "</a>" ;
             }},
-            { data: "dignity" },
-            { data: "celltype"},
-            { data: "histology",
+            { data: "dignity",
             "render": function ( data, type, row ) {
                 return "<a class='nostylelink'  href= '/dignity/"+data + "'>"+data + "</a>" ;
+            } },
+            { data: "celltype",
+            "render": function ( data, type, row ) {
+                return "<a class='nostylelink'  href= '/celltype/"+data + "'>"+data + "</a>" ;
+            }},
+            { data: "histology",
+            "render": function ( data, type, row ) {
+                return "<a class='nostylelink'  href= '/histology/"+data + "'>"+data + "</a>" ;
             }},
             { data: "location"},
             { data: "metastatis"},

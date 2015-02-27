@@ -1,6 +1,6 @@
 from sqlalchemy import (
     Column, Date, Enum, Float, ForeignKey, Integer, SmallInteger, String, Table, Text, text
-    )
+)
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.dialects.mysql.base import BIT
 
@@ -15,6 +15,7 @@ from zope.sqlalchemy import ZopeTransactionExtension
 DBSession = scoped_session(sessionmaker(extension=ZopeTransactionExtension()))
 Base = declarative_base()
 metadata = Base.metadata
+
 
 class HlaLookup(Base):
     __tablename__ = 'hla_lookup'
@@ -38,7 +39,6 @@ class HlaType(Base):
     hla_types_id = Column(Integer, primary_key=True, unique=True)
     hla_string = Column(String(255), nullable=False)
     digits = Column(Integer)
-
 
 
 class MsRun(Base):
@@ -98,8 +98,10 @@ class PeptideRun(Base):
 # peptide run spectrum hit map table
 t_peptide_run_spectrum_hit_map = Table(
     'peptide_run_spectrum_hit_map', metadata,
-    Column('pm_sh_map_peptide_run_peptide_run_id', ForeignKey(u'peptide_run.peptide_run_id'), nullable=False, index=True),
-    Column('pm_sh_map_spectrum_hit_spectrum_hit_id', ForeignKey(u'spectrum_hit.spectrum_hit_id'), nullable=False, index=True)
+    Column('pm_sh_map_peptide_run_peptide_run_id', ForeignKey(u'peptide_run.peptide_run_id'), nullable=False,
+           index=True),
+    Column('pm_sh_map_spectrum_hit_spectrum_hit_id', ForeignKey(u'spectrum_hit.spectrum_hit_id'), nullable=False,
+           index=True)
 )
 
 
@@ -135,9 +137,9 @@ class Source(Base):
     fk_hla_lookup = relationship(u'HlaLookup')
 
     def as_dict(self):
-        #return '{"dignity": "'+self.dignity+\
-        #       '", "name":"'+self.name+ \
-        #       '"}'
+        # return '{"dignity": "'+self.dignity+\
+        # '", "name":"'+self.name+ \
+        # '"}'
         return {c.name: getattr(self, c.name) for c in self.__table__.columns}
 
 
@@ -183,7 +185,7 @@ t_spectrum_protein_map = Table(
 )
 
 
-##################################
+# #################################
 # Intern data
 class InternDatum(Base):
     __tablename__ = 'intern_data'
@@ -211,6 +213,7 @@ class LogFile(Base):
 
     users_users = relationship(u'User')
 
+
 class User(Base):
     __tablename__ = 'users'
 
@@ -220,4 +223,4 @@ class User(Base):
     in_group = Column(String(255))
     person_person_id = Column(Integer)
 
-##################################
+    # #################################

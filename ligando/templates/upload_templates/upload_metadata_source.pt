@@ -107,7 +107,7 @@ var autocomplete_dict = {'source':${source_names},
 
 // Create the input table
 $(function () {
-    table = document.getElementById('source_table');
+    var table = document.getElementById('source_table');
     var markup = ['<thead><tr><th>Sourcename</th><th>Organ</th><th>Organism</th><th>Histology</th><th>Dignity</th><th>Celltype</th><th>Location</th><th>Metastatis</th><th>Typing</th><th>Person</th><th>Comment</th><th>Options</th></tr></thead><tbody>'];
 
 
@@ -137,10 +137,10 @@ $(function () {
 
 // autocomplete
 $(function () {
-    for (i = 0; i < cells.length; i++) {
+    for (var i = 0; i < cells.length; i++) {
 
         if (cells[i] == 'typing') {
-            continue;
+
         } else {
             $("#" + cells[i] + "tags").autocomplete({
                 minLength: 0,
@@ -151,7 +151,7 @@ $(function () {
             });
         }
     }
-    ;
+
 });
 
 
@@ -168,8 +168,7 @@ $(function () {
                 $('<option ></option>').val(text).html(text)
         );
     });
-    $("#typing_menu").append(_select.html());
-})
+});
 
 function findEmptyRow() {
     for (var i = 1; i < 11; i++) {
@@ -186,7 +185,7 @@ function editRow(id) {
 }
 
 function removeRow(id) {
-    for (i = 0; i < cells.length; i++) {
+    for (var i = 0; i < cells.length; i++) {
         document.getElementById(cells[i] + "_" + id).innerHTML = " ";
     }
     $('#source_table').dataTable().fnAdjustColumnSizing();
@@ -207,14 +206,14 @@ function addSource() {
     if (id == 0) {
         alert("no free row")
     } else {
-        for (i = 0; i < cells.length; i++) {
+        for (var i = 0; i < cells.length; i++) {
             document.getElementById(cells[i] + "_" + id).innerHTML = document.getElementById(cells[i] + 'tags').value;
         }
     }
     $('#source_table').dataTable().fnAdjustColumnSizing();
     $("#commit_button").hide();
 }
-;
+
 
 function addTyping() {
     var item = document.getElementById("typing_menu").value;
@@ -230,7 +229,7 @@ function addTyping() {
 function checkInput() {
     for (var i = 1; i < 11; i++) {
         if (document.getElementById("source_" + i).innerHTML != " ") {
-            for (l = 0; l < cells.length; l++) {
+            for (var l = 0; l < cells.length; l++) {
                 if (cells[l] != "typing" && cells[l] != "comment") {
                     if (document.getElementById(cells[l] + "_" + i).innerHTML == " ") {
                         alert(nice_names[cells[l]] + " in row " + i + " is not allowed to be empty!");
@@ -270,7 +269,7 @@ function checkInput() {
     for (var i = 1; i < 11; i++) {
         if (document.getElementById("source_" + i).innerHTML != " ") {
             var temp_dict = "{";
-            for (l = 0; l < cells.length; l++) {
+            for (var l = 0; l < cells.length; l++) {
                 temp_dict += "'" + cells[l] + "':'" + document.getElementById(cells[l] + "_" + i).innerHTML + "',";
             }
             temp_dict = temp_dict.replace(/,\s*$/, "");

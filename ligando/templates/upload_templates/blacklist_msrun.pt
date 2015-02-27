@@ -59,7 +59,7 @@
         'person':${person}};
 
     $(function () {
-        table = document.getElementById('ms_table');
+        var table = document.getElementById('ms_table');
         var markup = ['<thead><tr><th>Filename</th><th>Reason</th><th>Responsibel Person</th><th style="width:100px">Options</th></tr></thead><tbody>'];
 
 
@@ -81,10 +81,10 @@
 
     // automcomplete
     $(function () {
-        for (i = 0; i < cells.length; i++) {
+        for (var i = 0; i < cells.length; i++) {
 
             if (cells[i] == 'reason') {
-                continue;
+
             } else {
                 $("#" + cells[i] + "tags").autocomplete({
                     minLength: 0,
@@ -95,7 +95,7 @@
                 });
             }
         }
-        ;
+
     });
 
 
@@ -130,7 +130,7 @@
     }
 
     function removeRow(id) {
-        for (i = 0; i < cells.length; i++) {
+        for (var i = 0; i < cells.length; i++) {
             document.getElementById(cells[i] + "_" + id).innerHTML = "";
         }
         $('#ms_table').dataTable().fnAdjustColumnSizing();
@@ -141,7 +141,7 @@
     }
 
     function recoverRow(id) {
-        for (i = 0; i < cells.length; i++) {
+        for (var i = 0; i < cells.length; i++) {
             document.getElementById(cells[i] + 'tags').value = document.getElementById(cells[i] + "_" + id).innerHTML;
         }
     }
@@ -151,19 +151,19 @@
         if (id == 0) {
             alert("no free row")
         } else {
-            for (i = 0; i < cells.length; i++) {
+            for (var i = 0; i < cells.length; i++) {
                 document.getElementById(cells[i] + "_" + id).innerHTML = document.getElementById(cells[i] + 'tags').value;
             }
         }
         $('#ms_table').dataTable().fnAdjustColumnSizing();
         $("#commit_button").hide();
     }
-    ;
+
 
     function checkInput(){
         for(var i=1; i<11; i++){
             if(document.getElementById("filename_"+i).innerHTML != " ") {
-                for (l = 0; l < cells.length; l++) {
+                for (var l = 0; l < cells.length; l++) {
                     if(cells[l] == "filename" || cells[l] == "reason" || cells[l] == "person"){
                         if(document.getElementById(cells[l] + "_" + i).innerHTML == ""){
                             alert(nice_names[cells[l]] + " in row "+ i + " is not allowed to be empty!");
@@ -176,7 +176,7 @@
                         }
                     }if(cells[l] == "source" ){
                         if(($.inArray(document.getElementById(cells[l] + "_" + i).innerHTML, autocomplete_dict[cells[l]])) == -1) {
-                            alert("The " + nice_names[cells[l]] + " " + document.getElementById(cells[l] + "_" + i).innerHTML + " in row " + i + " is unknown. Please submit the source first.")
+                            alert("The " + nice_names[cells[l]] + " " + document.getElementById(cells[l] + "_" + i).innerHTML + " in row " + i + " is unknown. Please submit the source first.");
                             return;
                         }
                     }
@@ -187,7 +187,7 @@
         for(var i=1; i<11; i++){
             if(document.getElementById("filename_" + i).innerText != " ") {
                 var temp_dict = "{";
-                for (l = 0; l < cells.length; l++) {
+                for (var l = 0; l < cells.length; l++) {
                     temp_dict += "'" + cells[l] + "':'" + document.getElementById(cells[l] + "_" + i).innerHTML + "',";
                 }
                 temp_dict = temp_dict.replace(/,\s*$/, "");

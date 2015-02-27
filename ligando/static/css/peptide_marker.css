@@ -1,6 +1,6 @@
 .sI0 {
     border-bottom:1px solid #0000ff;
-    padding-bottom:0px;
+    padding-bottom:0;
     position:relative;
 }
 
@@ -22,7 +22,7 @@
 }
 .sI4 {
     border-bottom:1px dotted #00CC00;
-    padding-bottom:0px;
+    padding-bottom:0;
     position:relative;
 }
 

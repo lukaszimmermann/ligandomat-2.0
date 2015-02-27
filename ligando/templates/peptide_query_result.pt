@@ -10,7 +10,7 @@
   <div class="main_wrapper">
     <div style="margin-top:20pt">
     <!--? Result table, with different stylings for different groupings-->
-    <table id="example" auto class="info_table" cellspacing="0" width="100%"> <thead>
+    <table id="example" class="info_table" cellspacing="0" width="100%"> <thead>
             <tr tal:condition="grouping == 'run'">
                 <th>Sequence</th>
                 <th>RT [min]</th>
@@ -97,8 +97,8 @@
                 { data: "hla_typing",
                     // split HLA string and create single links
                     "render": function ( data, type, row ) {
-                hla_split = data.split(",");
-                return_string = "";
+                var hla_split = data.split(",");
+                var return_string = "";
                 for (var hla =0; hla<hla_split.length; hla++){
                     if(hla <hla_split.length-1) {
                         return_string += "<a class='nostylelink'  href= '/hla/" + hla_split[hla] + "'>" + hla_split[hla] + "</a>, ";
@@ -111,8 +111,8 @@
                 { data: "protein",
                     // split protein string and create single links
             "render": function ( data, type, row ) {
-                prot_split = data.split(",");
-                return_string = "";
+                var prot_split = data.split(",");
+                var return_string = "";
                 for (var prot =0; prot<prot_split.length; prot++){
                     if(prot <prot_split.length-1) {
                         return_string += "<a class='nostylelink'  href= '/protein/" + prot_split[prot] + "'>" + prot_split[prot] + "</a>, ";
@@ -153,8 +153,8 @@
                 { data: "protein",
                     // split protein string and create single links
             "render": function ( data, type, row ) {
-                var prot_split = data.split(",")
-                var return_string = ""
+                var prot_split = data.split(",");
+                var return_string = "";
                 for (var prot =0; prot<prot_split.length; prot++){
                     if(prot <prot_split.length-1) {
                         return_string += "<a class='nostylelink'  href= '/protein/" + prot_split[prot] + "'>" + prot_split[prot] + "</a>, ";
@@ -182,7 +182,7 @@
                     // split dignity string and create single links
             "render": function ( data, type, row ) {
                 var dignity_split = data.split(",");
-                var return_string = ""
+                var return_string = "";
                 for (var dignity =0; dignity<dignity_split.length; dignity++){
                     if(dignity <dignity_split.length-1) {
                         return_string += "<a class='nostylelink'  href= '/protein/" + dignity_split[dignity] + "'>" + dignity_split[dignity] + "</a>, ";
@@ -241,8 +241,8 @@
                 { data: "hla_typing",
                     // split HLA string and create single links
                     "render": function ( data, type, row ) {
-                hla_split = data.split(",");
-                return_string = "";
+                var hla_split = data.split(",");
+                var return_string = "";
                 for (var hla =0; hla<hla_split.length; hla++){
                     if(hla <hla_split.length-1) {
                         return_string += "<a class='nostylelink'  href= '/hla/" + hla_split[hla] + "'>" + hla_split[hla] + "</a>, ";
@@ -256,7 +256,7 @@
                     // split protein string and create single links
             "render": function ( data, type, row ) {
                 var prot_split = data.split(",");
-                var return_string = ""
+                var return_string = "";
                 for (var prot =0; prot<prot_split.length; prot++){
                     if(prot <prot_split.length-1) {
                         return_string += "<a class='nostylelink'  href= '/protein/" + prot_split[prot] + "'>" + prot_split[prot] + "</a>, ";
@@ -362,8 +362,8 @@
                 { data: "peptide",
                     // split protein string and create single links
             "render": function ( data, type, row ) {
-                var pep_split = data.split(",")
-                var return_string = ""
+                var pep_split = data.split(",");
+                var return_string = "";
                 for (var pep =0; pep<pep_split.length; pep++){
                     if(pep <pep_split.length-1) {
                         return_string += "<a class='nostylelink'  href= '/peptide/" + pep_split[pep] + "'>" + pep_split[pep] + "</a>, ";

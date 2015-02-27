@@ -144,10 +144,10 @@
 
     // autocomplete
     $(function () {
-        for (i = 0; i < cells.length; i++) {
+        for (var i = 0; i < cells.length; i++) {
 
             if (cells[i] == 'date' || cells[i] == 'comment' || cells[i] == 'prep_date' || cells[i] == 'prep_comment' ) {
-                continue;
+
             } else {
                 $("#" + cells[i] + "tags").autocomplete({
                     minLength: 0,
@@ -158,7 +158,7 @@
                 });
             }
         }
-        ;
+
     });
 
     // Tooltips
@@ -193,7 +193,7 @@
     }
 
     function removeRow(id) {
-        for (i = 0; i < cells.length; i++) {
+        for (var i = 0; i < cells.length; i++) {
             document.getElementById(cells[i] + "_" + id).innerHTML = "";
         }
         $('#ms_table').dataTable().fnAdjustColumnSizing();
@@ -204,7 +204,7 @@
     }
 
     function recoverRow(id) {
-        for (i = 0; i < cells.length; i++) {
+        for (var i = 0; i < cells.length; i++) {
             document.getElementById(cells[i] + 'tags').value = document.getElementById(cells[i] + "_" + id).innerHTML;
         }
     }
@@ -214,19 +214,19 @@
         if (id == 0) {
             alert("no free row")
         } else {
-            for (i = 0; i < cells.length; i++) {
+            for (var i = 0; i < cells.length; i++) {
                 document.getElementById(cells[i] + "_" + id).innerHTML = document.getElementById(cells[i] + 'tags').value;
             }
         }
         $('#ms_table').dataTable().fnAdjustColumnSizing();
         $("#commit_button").hide();
-    };
+    }
 
 // Function to check the input in the table. If past the "Commit" button appears
     function checkInput(){
         for(var i=1; i<11; i++){
             if(document.getElementById("filename_"+i).innerHTML != " ") {
-                for (l = 0; l < cells.length; l++) {
+                for (var l = 0; l < cells.length; l++) {
                     if (cells[l] == "antibody_set") {
                         if(document.getElementById(cells[l] + "_" + i).innerHTML.indexOf(";") != -1 ) {
                             alert("; is not allowed in Antibody set");
@@ -237,7 +237,7 @@
                             return;
                         }
                         var ab = document.getElementById(cells[l] + "_" + i).innerHTML.split(",");
-                        for (j = 0; j < ab.length; j++){
+                        for (var j = 0; j < ab.length; j++){
                             if($.inArray(ab[j].trim(), autocomplete_dict[cells[l]])==-1){
                                 alert(ab[j].trim());
                                 alert("The antibody "+ ab + " is unknown. If you really want to add a new antibody please contact the admin!");
@@ -255,7 +255,7 @@
                         }
                     }if(cells[l] == "source" ){
                         if(($.inArray(document.getElementById(cells[l] + "_" + i).innerHTML, autocomplete_dict[cells[l]])) == -1) {
-                            alert("The " + nice_names[cells[l]] + " " + document.getElementById(cells[l] + "_" + i).innerHTML + " in row " + i + " is unknown. Please submit the source first.")
+                            alert("The " + nice_names[cells[l]] + " " + document.getElementById(cells[l] + "_" + i).innerHTML + " in row " + i + " is unknown. Please submit the source first.");
                             return;
                         }
                     }
@@ -267,7 +267,7 @@
         for(var i=1; i<11; i++){
             if(document.getElementById("filename_" + i).innerText != " ") {
                 var temp_dict = "{";
-                for (l = 0; l < cells.length; l++) {
+                for (var l = 0; l < cells.length; l++) {
                     temp_dict += "'" + cells[l] + "':'" + document.getElementById(cells[l] + "_" + i).innerHTML + "',";
                 }
                 temp_dict = temp_dict.replace(/,\s*$/, "");

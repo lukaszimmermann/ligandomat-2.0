@@ -84,7 +84,7 @@
 
     // create the orphan table
     $(function () {
-        table = document.getElementById('orphan_table');
+        var table = document.getElementById('orphan_table');
         var markup = ['<thead> <tr><th>Orphan Ms Runs</th></tr>  </thead><tbody>'];
 
         for (var i = 0; i < 10; i++) {

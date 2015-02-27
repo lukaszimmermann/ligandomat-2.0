@@ -10,6 +10,7 @@
     <div id="peptide_query_wrapper" style="width: 80%" class="wrapper">
 
         <table>
+            <tr>
             <td>
                 <button id="sequence_button" type="button" onclick="show_hide('#sequence', '#sequence_button')" class="nice_button">Sequence</button>
             </td>
@@ -40,6 +41,10 @@
             <td>
                 <button id="antibody_button" type="button" onclick="show_hide('#antibody','#antibody_button')" class="nice_button">Antibody</button>
             </td>
+            <td>
+                <button id="celltype_button" type="button" onclick="show_hide('#celltype','#celltype_button')" class="nice_button">Celltype</button>
+            </td>
+            </tr>
         </table>
 
     <form method="POST" action=peptide_query>
@@ -77,24 +82,28 @@
          <tr id="hla_typing" class="hidden">
             <td><span class="standard_text">HLA Typing:</span></td>
             <td><input id="hla_typing_input" name="hla_typing" type="text"></td>
+             <td><select id="typing_menu" onchange="addTyping()"></select></td>
             <td><select name="hla_typing_rule" class="nice_dropdown_boolean"><option selected>AND</option><option>OR</option></select></td>
-        </tr>
+         </tr>
         <tr id="protein" class="hidden">
             <td><span class="standard_text">Protein:</span></td>
             <td><input id="protein_input" name="protein" type="text"></td>
             <td><select name="protein_rule" class="nice_dropdown_boolean"><option selected>AND</option><option>OR</option></select></td>
         </tr>
-
         <tr id="length" class="hidden">
             <td><input id="length_input_1" name="length_1" type="text"></td>
             <td><span class="standard_text">< Peptide length < </span></td>
             <td><input id="length_input_2" name="length_2" type="text"></td>
         </tr>
-            <!--? TODO: selectable anti bodys-->
         <tr id="antibody" class="hidden">
             <td><span class="standard_text">Antibody:</span></td>
             <td><input id="antibody_input" name="antibody" type="text"></td>
             <td><select name="antibody_rule" class="nice_dropdown_boolean"><option selected>AND</option><option>OR</option></select></td>
+        </tr>
+        <tr id="celltype" class="hidden">
+            <td><span class="standard_text">Celltype:</span></td>
+            <td><input id="celltype_input" name="celltype" type="text"></td>
+            <td><select name="celltype_rule" class="nice_dropdown_boolean"><option selected>AND</option><option>OR</option></select></td>
         </tr>
         </table>
         <br>
@@ -144,8 +153,69 @@
                 $(id+"_input").val("");
                 $(id).toggle();
             }
-        };
+        }
 
+    // dict for the different inputs, used to iterate of the different inputs
+    var cells = [
+        'antibody',
+        "dignity",
+        "organ",
+        "histology",
+        "celltype",
+        "hla"];
+        // input which allows autocomplete
+    var autocomplete_dict = {
+        'antibody':${antibody},
+        'dignity':${dignity},
+        'organ':${organ},
+        'histology':${histology},
+        'celltype':${celltype},
+        'hla':${hla}
+    };
+    // autocomplete
+    $(function () {
+        for (var i = 0; i < cells.length; i++) {
+            if (cells[i] == 'typing') {
+
+            }
+            else
+                {
+                    $("#" + cells[i] + "_input").autocomplete({
+                        minLength: 0,
+                        minChars: 0,
+                        source: autocomplete_dict[cells[i]]
+                    }).focus(function () {
+                        $(this).autocomplete("search", "");
+                    });
+                }
+            }
+        }
+    );
+
+        function addTyping() {
+    var item = document.getElementById("typing_menu").value;
+    if (item != "-") {
+        if (document.getElementById("hla_typing_input").value == "") {
+            document.getElementById("hla_typing_input").value = item
+        } else {
+            document.getElementById("hla_typing_input").value += ";" + item
+        }
+    }
+}
+
+    // HLA Typing menu
+$(function () {
+    var _select = $("#typing_menu");
+    _select.append($('<option ></option>').val('-').html('-'));
+    $.each(${hla}, function (val, text) {
+        if (text == "NULL") {
+            return;
+        }
+        _select.append(
+                $('<option ></option>').val(text).html(text)
+        );
+    });
+});
 
         </script>
 

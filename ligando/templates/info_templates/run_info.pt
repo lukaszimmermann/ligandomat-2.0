@@ -44,7 +44,10 @@
             "render": function ( data, type, row ) {
                 return "<a class='nostylelink'  href= '/organ/"+data + "'>"+data + "</a>" ;
             }},
-            { data: "dignity" },
+            { data: "dignity" ,
+            "render": function ( data, type, row ) {
+                return "<a class='nostylelink'  href= '/dignity/"+data + "'>"+data + "</a>" ;
+            }},
             { data: "ms_run_date"},
             { data: "antibody_set"},
             { data: "prep_comment" },

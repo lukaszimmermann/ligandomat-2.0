@@ -36,7 +36,8 @@ def source_page(request):
         query = query.filter(Source.name == request.matchdict["source"])
         statistics = json.dumps(query.all())
 
-        query = DBSession.query(MsRun.ms_run_id, MsRun.filename).join(Source).filter(Source.name == request.matchdict["source"])
+        query = DBSession.query(MsRun.ms_run_id, MsRun.filename).join(Source).filter(
+            Source.name == request.matchdict["source"])
         runs = json.dumps(query.all())
 
     except:
@@ -80,9 +81,11 @@ def msrun_page(request):
                                 Source.histology, Source.name, Source.organ,
                                 Source.comment, Source.dignity, Source.celltype, Source.location,
                                 Source.metastatis, Source.person, Source.organism, MsRun.filename,
-                                func.cast(MsRun.ms_run_date, String).label("ms_run_date"), MsRun.used_share,MsRun.comment.label("msrun_comment"),
+                                func.cast(MsRun.ms_run_date, String).label("ms_run_date"), MsRun.used_share,
+                                MsRun.comment.label("msrun_comment"),
                                 MsRun.sample_mass, MsRun.sample_volume, MsRun.antibody_set,
-                                MsRun.antibody_mass, MsRun.magna, func.cast(MsRun.prep_date, String).label("prep_date"), MsRun.prep_comment)
+                                MsRun.antibody_mass, MsRun.magna, func.cast(MsRun.prep_date, String).label("prep_date"),
+                                MsRun.prep_comment)
 
         query = query.join(MsRun, SpectrumHit.ms_run_ms_run_id == MsRun.ms_run_id)
         query = query.join(Source)
@@ -96,6 +99,7 @@ def msrun_page(request):
     except:
         return Response(conn_err_msg, content_type='text/plain', status_int=500)
     return {"statistics": statistics, "msrun": request.matchdict["msrun"]}
+
 
 @view_config(route_name='protein', renderer='../templates/base_templates/protein.pt', request_method="GET")
 def protein_page(request):
@@ -113,14 +117,14 @@ def protein_page(request):
         query = query.join(Protein)
         query = query.filter(Protein.name == request.matchdict["protein"])
         sequences = query.all()
-        #print sequences
+        # print sequences
         sequence_start = list()
         sequence_end = list()
         for seq in sequences:
             pos = temp_statistics[0][3].find(seq[0])
             if pos > -1:
                 sequence_start.append(pos)
-                sequence_end.append(pos+len(seq[0]))
+                sequence_end.append(pos + len(seq[0]))
         sequence_start = json.dumps(sequence_start)
         sequence_end = json.dumps(sequence_end)
         sequences = js_list_creator_dataTables(sequences)
@@ -130,6 +134,7 @@ def protein_page(request):
     return {"statistics": statistics,
             "protein": request.matchdict["protein"],
             "sequence_start": sequence_start, "sequence_end": sequence_end, "sequences": sequences}
+
 
 @view_config(route_name='organ', renderer='../templates/base_templates/organ.pt', request_method="GET")
 def organ_page(request):
@@ -158,7 +163,8 @@ def person_page(request):
         query = query.filter(Source.person == request.matchdict["person"])
         sources = json.dumps(query.all())
 
-        query = DBSession.query(MsRun.ms_run_id, MsRun.filename).join(Source).filter(Source.person == request.matchdict["person"])
+        query = DBSession.query(MsRun.ms_run_id, MsRun.filename).join(Source).filter(
+            Source.person == request.matchdict["person"])
         runs = json.dumps(query.all())
 
     except:
@@ -168,8 +174,8 @@ def person_page(request):
 
 @view_config(route_name='peptide', renderer='../templates/base_templates/peptide.pt', request_method="GET")
 def peptide_page(request):
-     try:
-        query = DBSession.query(Protein.name.label("protein"),Protein.gene_name.label("gene_name"))
+    try:
+        query = DBSession.query(Protein.name.label("protein"), Protein.gene_name.label("gene_name"))
         query = query.join(t_spectrum_protein_map)
         query = query.join(SpectrumHit)
         query = query.filter(SpectrumHit.sequence == request.matchdict["peptide"])
@@ -183,9 +189,9 @@ def peptide_page(request):
         sources = js_list_creator_dataTables(query.all())
 
 
-     except:
+    except:
         return Response(conn_err_msg, content_type='text/plain', status_int=500)
-     return {"proteins": proteins, "sources": sources,
+    return {"proteins": proteins, "sources": sources,
             "peptide": request.matchdict["peptide"]}
 
 
@@ -206,6 +212,7 @@ def histology_page(request):
         return Response(conn_err_msg, content_type='text/plain', status_int=500)
     return {"sources": sources, "histology": request.matchdict["histology"], "statistic": statistic}
 
+
 @view_config(route_name='celltype', renderer='../templates/base_templates/celltype.pt', request_method="GET")
 def celltype_page(request):
     try:
@@ -222,6 +229,7 @@ def celltype_page(request):
     except:
         return Response(conn_err_msg, content_type='text/plain', status_int=500)
     return {"sources": sources, "celltype": request.matchdict["celltype"], "statistic": statistic}
+
 
 @view_config(route_name='dignity', renderer='../templates/base_templates/dignity.pt', request_method="GET")
 def dignity_page(request):
