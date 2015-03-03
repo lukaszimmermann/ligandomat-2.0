@@ -8,25 +8,30 @@
 <body>
 <div class="main_wrapper">
 <div id="statistic_wrapper" class="wrapper" >
-    <table width="100%">
-    <tr>
-        <td width="350px">
+
+        <div id="search_div" style="text-align: center">
+            <form method="POST" action=search>
+                       <!--? this js magic shows a help text, which will disappear on focus-->
+                <input style="width: 500px" name="search_all" value="Search Database" onfocus="if (this.value=='Search Database') this.value='';" onblur="this.value = this.value==''?'Search Database':this.value;" >
+                <input  type="submit" value="Search" class="nice_button" style="width: 100px;margin-left: 10px"/>
+            </form>
+        </div>
+    <br><br>
+        <div  style="float:left; width: 330px">
         <h3>Database Statistics</h3>
         Sources: <a class='nostylelink'  href='/sources'>${sources_count}</a><br>
         Ms Runs: <a class='nostylelink'  href='/runs'>${all_msrun_count}</a><br>
         Orphan Ms Runs: ${orphan_msrun_count}
-        </td>
-        <td>
-        <div id="msrun_plot" style="width:300px;height:300px"></div>
-        </td>
-        <td>
-            <div class="homegrid">
+        </div>
+
+        <div id="msrun_plot" style="width:300px;height:330px; display: inline-block;"></div>
+
+
+            <div class="homegrid" style="float:right; width: 330px ">
         <table id="orphan_table">
         </table>
                 </div>
-        </td>
-    </tr>
-    </table>
+
 </div>
 </div>
 

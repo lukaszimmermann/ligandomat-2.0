@@ -16,6 +16,8 @@ def main(global_config, **settings):
     config.add_static_view('static', 'static', cache_max_age=3600)
     # home
     config.add_route('home', '/')
+    # home search
+    config.add_route('search', '/search')
     # overview
     config.add_route('source_overview', '/sources')
     config.add_route('run_overview', '/runs')
