@@ -17,14 +17,15 @@ def my_view(request):
         # query statistics for the main page
         result_dict = dict()
         result_dict["orphan_msrun_count"] = \
-            DBSession.query(func.count(distinct(MsRun.filename))).filter(MsRun.source_source_id is None).one()[0]
+            DBSession.query(func.count(distinct(MsRun.filename))).filter(MsRun.source_source_id == None).filter(MsRun.flag_trash == 0).one()[0]
         result_dict["all_msrun_count"] = DBSession.query(func.count(distinct(MsRun.filename))).one()[0]
-        result_dict["sources_count"] = DBSession.query(func.count(distinct(Source.name))).one()[0]
-        # TODO: activate the filter, if there are finally orphan runs
-        # result_dict["orphan_msrun"] = js_list_creator(
-        # DBSession.query(distinct(MsRun.filename)).filter(MsRun.source_source_id is None).all())
+        result_dict["sources_count"] = DBSession.query(func.count(distinct(Source.sample_id))).one()[0]
+        result_dict["trash_count"] = DBSession.query(func.count(distinct(MsRun.filename))).filter(MsRun.flag_trash == 1).one()[0]
+
+        # TODO: blacklisted runs do not count here
         result_dict["orphan_msrun"] = js_list_creator(
-            DBSession.query(distinct(MsRun.filename)).order_by(MsRun.filename.desc()).limit(10).all())
+        DBSession.query(distinct(MsRun.filename)).filter(MsRun.source_source_id == None).filter(MsRun.flag_trash == 0).order_by(MsRun.filename.desc()).limit(10).all())
+
 
         return result_dict
     except:

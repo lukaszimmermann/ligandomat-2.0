@@ -14,11 +14,9 @@ from pyramid.scripts.common import parse_vars
 from ..models import (
     DBSession,
     Base,
-    HlaLookup,
+
     t_hla_map,
     HlaType,
-    InternDatum,
-    LogFile,
     MsRun,
     t_peptide_protein_map,
     PeptideRun,
@@ -26,8 +24,7 @@ from ..models import (
     Protein,
     Source,
     SpectrumHit,
-    t_spectrum_protein_map,
-    User,
+    t_spectrum_protein_map
 )
 
 

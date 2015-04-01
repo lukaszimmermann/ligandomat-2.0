@@ -21,7 +21,7 @@
     <table id="example"  class="info_table" cellspacing="0" width="100%">
         <thead>
         <tr>
-        <th>Source</th>
+        <th>Patient_ID</th>
         <th>Histology</th>
         </tr>
         </thead>
@@ -39,7 +39,7 @@ $('#example').dataTable( {
     searching: false,
     data: ${sources},
     columns: [
-        { data: "name",
+        { data: "patient_id",
             "render": function ( data, type, row ) {
                 return "<a class='nostylelink'  href= '/source/"+data + "'>"+data + "</a>" ;
             }},

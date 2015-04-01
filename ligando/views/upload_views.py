@@ -11,7 +11,6 @@ from ligando.models import (
     Source,
     MsRun,
     HlaType,
-    HlaLookup,
     t_hla_map)
 from ligando.views.view_helper import js_list_creator, conn_err_msg, hla_digits_extractor
 

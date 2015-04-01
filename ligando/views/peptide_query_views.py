@@ -15,7 +15,6 @@ from ligando.models import (
     PeptideRun,
     Protein,
     HlaType,
-    HlaLookup,
     t_hla_map,
     t_peptide_protein_map,
     SpectrumHit,

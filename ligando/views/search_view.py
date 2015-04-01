@@ -9,7 +9,6 @@ from ligando.models import (
     MsRun,
     Protein,
     HlaType,
-    HlaLookup,
     t_hla_map,
     SpectrumHit,
     t_spectrum_protein_map)
@@ -26,8 +25,8 @@ def search_result(request):
         SpectrumHit.sequence == request.params["search_all"]).all())
 
     # Search source columns
-    result["source"] = json.dumps(DBSession.query(Source.name.distinct().label('source')).filter(
-        Source.name == request.params["search_all"]).all())
+    result["patient_id"] = json.dumps(DBSession.query(Source.patient_id.distinct().label('source')).filter(
+        Source.patient_id == request.params["search_all"]).all())
     result["dignity"] = json.dumps(DBSession.query(Source.dignity.distinct().label('dignity')).filter(
         Source.dignity == request.params["search_all"]).all())
     result["histology"] = json.dumps(DBSession.query(Source.histology.distinct().label('histology')).filter(
@@ -42,6 +41,9 @@ def search_result(request):
         Source.person == request.params["search_all"]).all())
     result["location"] = json.dumps(DBSession.query(Source.location.distinct().label('location')).filter(
         Source.location == request.params["search_all"]).all())
+
+    result["treatment"] = json.dumps(DBSession.query(Source.treatment.distinct().label('treatment')).filter(
+        Source.treatment == request.params["search_all"]).all())
 
     # Search HLA
     result["hla"] = json.dumps(DBSession.query(HlaType.hla_string.distinct().label('hla')).filter(

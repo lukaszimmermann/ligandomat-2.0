@@ -43,7 +43,7 @@ $('#example').dataTable( {
     searching: false,
     data: ${sources},
     columns: [
-        { data: "name",
+        { data: "patient_id",
             "render": function ( data, type, row ) {
                 return "<a class='nostylelink'  href= '/source/"+data + "'>"+data + "</a>" ;
             }},

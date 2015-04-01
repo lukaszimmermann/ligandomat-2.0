@@ -78,10 +78,18 @@ $(document).ready(function() {
 
     // extract alleles and link them
     var digits = 2;
-    var alleles = ${statistic}[0]["hla_category"].split(",");
+    var alleles = ${metadata}[0]["hla_typing"].split(",");
     var allele_string = "";
+    loop1:
     for(var i=0; i<alleles.length; i++){
         var a = alleles[i].trim();
+        for(var j=0; j<alleles.length; j++) {
+            var b = alleles[j].trim();
+            if(b.indexOf(a) > -1 && i!=j){
+                continue loop1;
+            }
+        }
+
         allele_string = allele_string + "<a class='nostylelink'  href= '/hla/"+a + "'>"+a + "</a>, ";
         // Get the number of digits in typing
         try {
@@ -103,21 +111,21 @@ $(document).ready(function() {
 
 
     document.getElementById("typing").innerHTML = allele_string.slice(0, -2);
-    document.getElementById("histology").innerHTML = "<a class='nostylelink'  href= '/histology/"+${statistic}[0]["histology"] + "'>"+${statistic}[0]["histology"]+ "</a>";
-    document.getElementById("organ").innerHTML =  "<a class='nostylelink'  href= '/organ/"+${statistic}[0]["organ"] + "'>"+${statistic}[0]["organ"]+ "</a>";
-    document.getElementById("comment").innerHTML = ${statistic}[0]["comment"];
-    document.getElementById("organism").innerHTML = ${statistic}[0]["organism"];
-    document.getElementById("dignity").innerHTML = "<a class='nostylelink'  href= '/dignity/"+${statistic}[0]["dignity"] + "'>"+${statistic}[0]["dignity"]+ "</a>";
+    document.getElementById("histology").innerHTML = "<a class='nostylelink'  href= '/histology/"+${metadata}[0]["histology"] + "'>"+${metadata}[0]["histology"]+ "</a>";
+    document.getElementById("organ").innerHTML =  "<a class='nostylelink'  href= '/organ/"+${metadata}[0]["organ"] + "'>"+${metadata}[0]["organ"]+ "</a>";
+    document.getElementById("comment").innerHTML = ${metadata}[0]["comment"];
+    document.getElementById("organism").innerHTML = ${metadata}[0]["organism"];
+    document.getElementById("dignity").innerHTML = "<a class='nostylelink'  href= '/dignity/"+${metadata}[0]["dignity"] + "'>"+${metadata}[0]["dignity"]+ "</a>";
 
-    document.getElementById("celltype").innerHTML = "<a class='nostylelink'  href= '/celltype/"+${statistic}[0]["celltype"] + "'>"+${statistic}[0]["celltype"]+ "</a>";
-    document.getElementById("location").innerHTML = ${statistic}[0]["location"];
+    document.getElementById("celltype").innerHTML = "<a class='nostylelink'  href= '/celltype/"+${metadata}[0]["celltype"] + "'>"+${metadata}[0]["celltype"]+ "</a>";
+    document.getElementById("location").innerHTML = ${metadata}[0]["location"];
     // Write Yes or No instead 0 and 1
-    if(${statistic}[0]["metastatis"]==0){
+    if(${metadata}[0]["metastatis"]==0){
         document.getElementById("metastatis").innerHTML = "No"
     }else{
         document.getElementById("metastatis").innerHTML = "Yes"
     }
-    document.getElementById("person").innerHTML = "<a class='nostylelink'  href= '/person/"+${statistic}[0]["person"] + "'>"+${statistic}[0]["person"] + "</a>";
+    document.getElementById("person").innerHTML = "<a class='nostylelink'  href= '/person/"+${metadata}[0]["person"] + "'>"+${metadata}[0]["person"] + "</a>";
 });
 
 

@@ -11,7 +11,8 @@
   <div style="margin-top:20pt">
     <table id="example" class="info_table" cellspacing="0" width="100%"> <thead>
             <tr>
-                <th>Name</th>
+                <th>Source ID</th>
+                <th>Patient ID</th>
                 <th>Organ</th>
                 <th>Dignity</th>
                 <th>Celltype</th>
@@ -19,7 +20,9 @@
                 <th>Location</th>
                 <th>Metastatis</th>
                 <th>Organism</th>
+                <th>Treatment</th>
                 <th>Person</th>
+                <th>Prep Date</th>
             </tr>
         </thead></table>
     </div>
@@ -31,7 +34,11 @@
     $('#example').dataTable( {
         data: ${project},
         columns: [
-            { data: "name" ,
+            { data: "source_id" ,
+            "render": function ( data, type, row ) {
+                return "<a class='nostylelink'  href= '/source_id/"+data + "'>"+data + "</a>" ;
+            }},
+            { data: "patient_id" ,
             "render": function ( data, type, row ) {
                 return "<a class='nostylelink'  href= '/source/"+data + "'>"+data + "</a>" ;
             }},
@@ -53,11 +60,18 @@
             }},
             { data: "location"},
             { data: "metastatis"},
-            { data: "organism"},
+            { data: "organism",
+                "render": function ( data, type, row ) {
+                return "<a class='nostylelink'  href= '/organism/"+data + "'>"+data + "</a>" ;
+            }},
+            { data: "treatment"},
             { data: "person",
             "render": function ( data, type, row ) {
                 return "<a class='nostylelink'  href= '/person/"+data + "'>"+data + "</a>" ;
-            }}
+            }
+            },
+                // TODO: Link to a prep_date page???
+            { data: "prep_date"}
         ],
         "sDom": 'T<"clear">lfrtip',
         oTableTools: {

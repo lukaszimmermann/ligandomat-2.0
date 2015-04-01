@@ -9,7 +9,6 @@ from ligando.models import (
     MsRun,
     Protein,
     HlaType,
-    HlaLookup,
     t_hla_map,
     SpectrumHit,
     t_spectrum_protein_map)
@@ -19,38 +18,48 @@ from ligando.views.view_helper import conn_err_msg, js_list_creator, js_list_cre
 @view_config(route_name='source', renderer='../templates/base_templates/source.pt', request_method="GET")
 def source_page(request):
     try:
+        # Catch if there are no peptides!!
         query = DBSession.query(func.count(SpectrumHit.spectrum_hit_id).label("count_hits"),
                                 func.count(SpectrumHit.sequence.distinct()).label("count_pep"),
-                                HlaLookup.hla_category,
-                                func.count(Protein.name.distinct()).label("count_prot"),
-                                Source.histology, Source.name, Source.organ,
-                                Source.comment, Source.dignity, Source.celltype, Source.location,
-                                Source.metastatis, Source.person, Source.organism)
+                                func.count(Protein.name.distinct()).label("count_prot")
+                                )
         query = query.join(Source)
-        query = query.join(MsRun, SpectrumHit.ms_run_ms_run_id == MsRun.ms_run_id)
-        query = query.join(HlaLookup)
-        query = query.join(t_hla_map)
-        query = query.join(HlaType)
         query = query.join(t_spectrum_protein_map)
         query = query.join(Protein)
-        query = query.filter(Source.name == request.matchdict["source"])
+        query = query.filter(Source.patient_id == request.matchdict["source"])
         statistics = json.dumps(query.all())
 
+        query = DBSession.query(Source.histology, Source.patient_id, Source.organ,
+                                Source.comment, Source.dignity, Source.celltype, Source.location,
+                                Source.metastatis, Source.person, Source.organism,
+                                func.group_concat(
+                                    (HlaType.hla_string.distinct().op('order by')(HlaType.hla_string))).label(
+                                    'hla_typing')
+                                )
+        query = query.join(t_hla_map)
+        query = query.join(HlaType)
+        query = query.filter(Source.patient_id == request.matchdict["source"])
+        query = query.group_by(Source.patient_id)
+        metadata = json.dumps(query.all())
+
+
+
+
+
         query = DBSession.query(MsRun.ms_run_id, MsRun.filename).join(Source).filter(
-            Source.name == request.matchdict["source"])
+            Source.patient_id == request.matchdict["source"])
         runs = json.dumps(query.all())
 
     except:
         return Response(conn_err_msg, content_type='text/plain', status_int=500)
-    return {"statistic": statistics, "runs": runs, "source": request.matchdict["source"]}
+    return {"statistic": statistics, "metadata" : metadata, "runs": runs, "source": request.matchdict["source"]}
 
 
 @view_config(route_name='hla', renderer='../templates/base_templates/hla.pt', request_method="GET")
 def hla_page(request):
     try:
         query = DBSession.query(Source.organ,
-                                Source.histology, Source.name)
-        query = query.join(HlaLookup)
+                                Source.histology, Source.patient_id)
         query = query.join(t_hla_map)
         query = query.join(HlaType)
         query = query.filter(HlaType.hla_string == request.matchdict["hla"])
@@ -60,7 +69,6 @@ def hla_page(request):
 
         query = DBSession.query(func.count(SpectrumHit.sequence.distinct()).label("pep_count"))
         query = query.join(Source)
-        query = query.join(HlaLookup)
         query = query.join(t_hla_map)
         query = query.join(HlaType)
         query = query.filter(HlaType.hla_string == request.matchdict["hla"])
@@ -76,29 +84,35 @@ def msrun_page(request):
     try:
         query = DBSession.query(func.count(SpectrumHit.spectrum_hit_id).label("count_hits"),
                                 func.count(SpectrumHit.sequence.distinct()).label("count_pep"),
-                                HlaLookup.hla_category,
-                                func.count(Protein.name.distinct()).label("count_prot"),
-                                Source.histology, Source.name, Source.organ,
-                                Source.comment, Source.dignity, Source.celltype, Source.location,
-                                Source.metastatis, Source.person, Source.organism, MsRun.filename,
-                                func.cast(MsRun.ms_run_date, String).label("ms_run_date"), MsRun.used_share,
-                                MsRun.comment.label("msrun_comment"),
-                                MsRun.sample_mass, MsRun.sample_volume, MsRun.antibody_set,
-                                MsRun.antibody_mass, MsRun.magna, func.cast(MsRun.prep_date, String).label("prep_date"),
-                                MsRun.prep_comment)
+                                func.count(Protein.name.distinct()).label("count_prot")
+                               )
 
         query = query.join(MsRun, SpectrumHit.ms_run_ms_run_id == MsRun.ms_run_id)
-        query = query.join(Source)
-        query = query.join(HlaLookup)
-        query = query.join(t_hla_map)
-        query = query.join(HlaType)
         query = query.join(t_spectrum_protein_map)
         query = query.join(Protein)
         query = query.filter(MsRun.ms_run_id == request.matchdict["msrun"])
         statistics = json.dumps(query.all())
+
+        query = DBSession.query(MsRun.filename,
+                                func.group_concat(
+                                    (HlaType.hla_string.distinct().op('order by')(HlaType.hla_string))).label(
+                                    'hla_typing'),
+                                Source.histology,Source.source_id, Source.patient_id, Source.organ,
+                                Source.comment, Source.dignity, Source.celltype, Source.location,
+                                Source.metastatis, Source.person, Source.organism,
+                                func.cast(MsRun.ms_run_date, String).label("ms_run_date"), MsRun.used_share,
+                                MsRun.comment.label("msrun_comment"),
+                                MsRun.sample_mass, MsRun.sample_volume, MsRun.antibody_set,
+                                MsRun.antibody_mass)
+        query = query.join(Source)
+        query = query.join(t_hla_map)
+        query = query.join(HlaType)
+        query = query.filter(MsRun.ms_run_id == request.matchdict["msrun"])
+        metadata = json.dumps(query.all())
+
     except:
         return Response(conn_err_msg, content_type='text/plain', status_int=500)
-    return {"statistics": statistics, "msrun": request.matchdict["msrun"]}
+    return {"statistics": statistics, "metadata": metadata, "msrun": request.matchdict["msrun"]}
 
 
 @view_config(route_name='protein', renderer='../templates/base_templates/protein.pt', request_method="GET")
@@ -140,7 +154,7 @@ def protein_page(request):
 def organ_page(request):
     try:
         query = DBSession.query(Source.organ,
-                                Source.histology, Source.name)
+                                Source.histology, Source.patient_id)
         query = query.filter(Source.organ == request.matchdict["organ"])
         sources = json.dumps(query.all())
 
@@ -157,7 +171,8 @@ def organ_page(request):
 @view_config(route_name='person', renderer='../templates/base_templates/person.pt', request_method="GET")
 def person_page(request):
     try:
-        query = DBSession.query(Source.histology, Source.name, Source.organ,
+        # TODO: update!
+        query = DBSession.query(Source.histology, Source.patient_id, Source.organ,
                                 Source.comment, Source.dignity, Source.celltype, Source.location,
                                 Source.metastatis, Source.person, Source.organism)
         query = query.filter(Source.person == request.matchdict["person"])
@@ -182,10 +197,10 @@ def peptide_page(request):
         query = query.group_by(Protein.name)
         proteins = json.dumps(query.all())
 
-        query = DBSession.query(Source.name)
+        query = DBSession.query(Source.patient_id)
         query = query.join(SpectrumHit)
         query = query.filter(SpectrumHit.sequence == request.matchdict["peptide"])
-        query = query.group_by(Source.name)
+        query = query.group_by(Source.patient_id)
         sources = js_list_creator_dataTables(query.all())
 
 
@@ -199,7 +214,7 @@ def peptide_page(request):
 def histology_page(request):
     try:
         query = DBSession.query(Source.organ,
-                                Source.histology, Source.name)
+                                Source.histology, Source.patient_id)
         query = query.filter(Source.histology == request.matchdict["histology"])
         sources = json.dumps(query.all())
 
@@ -217,7 +232,7 @@ def histology_page(request):
 def celltype_page(request):
     try:
         query = DBSession.query(Source.organ,
-                                Source.histology, Source.name)
+                                Source.histology, Source.patient_id)
         query = query.filter(Source.celltype == request.matchdict["celltype"])
         sources = json.dumps(query.all())
 
@@ -235,7 +250,7 @@ def celltype_page(request):
 def dignity_page(request):
     try:
         query = DBSession.query(Source.organ,
-                                Source.histology, Source.name)
+                                Source.histology, Source.patient_id)
         query = query.filter(Source.dignity == request.matchdict["dignity"])
         sources = json.dumps(query.all())
 

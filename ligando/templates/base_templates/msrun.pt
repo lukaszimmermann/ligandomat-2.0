@@ -50,18 +50,16 @@
             <tr>
                 <td>Antibody Mass: </td><td id="antibody_mass"> </td>
             </tr>
-            <tr class="alt">
-                <td>Magna: </td><td id="magna"> </td>
-            </tr>
-            <tr>
-                <td>Preparation Date: </td><td id="prep_date"> </td>
-            </tr >
-            <tr class="alt">
-                <td>Preparation Comment: </td><td id="prep_comment"> </td>
                 </table>
         <br>
         <h3>Source Information</h3>
         <table class="info_table" width="50%">
+            <tr>
+                <td width="50%">Source ID:</td><td id="source_id"></td>
+            </tr >
+            <tr class="alt">
+                <td width="50%">Patient ID:</td><td id="patient_id"></td>
+            </tr >
             <tr>
                 <td width="50%">Histology:</td><td id="histology"></td>
             </tr >
@@ -89,8 +87,6 @@
             <tr>
                 <td>Responsible Person:</td><td id="person"></td>
             </tr >
-            <tr class="alt">
-                <td>Comment: </td><td id="comment"> </td>
 
                 </table>
     </div>
@@ -104,14 +100,24 @@
         );
 $(document).ready(function() {
     // Setting the title
-    document.getElementById("title").innerHTML = ${statistics}[0]["filename"];
+    document.getElementById("title").innerHTML = ${metadata}[0]["filename"];
 
     // extract alleles and link them
     var digits = 2;
-    var alleles = ${statistics}[0]["hla_category"].split(",");
+    console.log(${metadata});
+    var alleles = ${metadata}[0]["hla_typing"].split(",");
+    console.log(alleles)
     var allele_string = "";
+    loop1:
     for(var i=0; i<alleles.length; i++){
         var a = alleles[i].trim();
+        for(var j=0; j<alleles.length; j++) {
+            var b = alleles[j].trim();
+            if(b.indexOf(a) > -1 && i!=j){
+                continue loop1;
+            }
+        }
+
         allele_string = allele_string + "<a class='nostylelink'  href= '/hla/"+a + "'>"+a + "</a>, ";
         // Get the number of digits in typing
         try {
@@ -119,10 +125,6 @@ $(document).ready(function() {
         }catch(err) {
             digits = 2;
         }
-    }
-    // error check for digits
-    if(digits != 2 && digits != 4){
-        digits = 2;
     }
     // Setting the statistics
     document.getElementById("pep_stat").innerHTML = "<a title='Show all Peptides'  class='nostylelink' href='javascript:post(\x22../peptide_query\x22, {run_name: document.getElementById(\x22title\x22).innerHTML, grouping:\x22run\x22, digits:\x22"+digits +"\x22}," +${statistics}[0]["count_pep"]+ " )'> "+${statistics}[0]["count_pep"]+"</a>";
@@ -132,74 +134,50 @@ $(document).ready(function() {
 
 
 
-    // extract alles and link them
-    var alleles = ${statistics}[0]["hla_category"].split(",");
-    var allele_string = "";
-    for(var i=0; i<alleles.length; i++){
-        var a = alleles[i].trim();
-        allele_string = allele_string + "<a class='nostylelink'  href= '/hla/"+a + "'>"+a + "</a>, ";
-    }
-    document.getElementById("typing").innerHTML = allele_string.slice(0, -2);
-    document.getElementById("histology").innerHTML = "<a class='nostylelink'  href= '/histology/"+${statistics}[0]["histology"] + "'>"+${statistics}[0]["histology"]+ "</a>";
-    document.getElementById("organ").innerHTML =  "<a class='nostylelink'  href= '/organ/"+${statistics}[0]["organ"] + "'>"+${statistics}[0]["organ"]+ "</a>";
-    if(${statistics}[0]["prep_comment"] == ""){
-        document.getElementById("comment").innerHTML = "-"
-    }else{
-        document.getElementById("comment").innerHTML = ${statistics}[0]["comment"];
-    }
-    document.getElementById("organism").innerHTML = ${statistics}[0]["organism"];
-    document.getElementById("dignity").innerHTML = "<a class='nostylelink'  href= '/dignity/"+${statistics}[0]["dignity"] + "'>"+${statistics}[0]["dignity"]+ "</a>";
 
-    document.getElementById("celltype").innerHTML = "<a class='nostylelink'  href= '/celltype/"+${statistics}[0]["celltype"] + "'>"+${statistics}[0]["celltype"]+ "</a>";
-    if(${statistics}[0]["location"] == "NA"){
+    document.getElementById("typing").innerHTML = allele_string.slice(0, -2);
+    document.getElementById("patient_id").innerHTML = "<a class='nostylelink'  href= '/source/"+${metadata}[0]["patient_id"] + "'>"+${metadata}[0]["patient_id"]+ "</a>";
+
+    document.getElementById("source_id").innerHTML = "<a class='nostylelink'  href= '/source_id/"+${metadata}[0]["source_id"] + "'>"+${metadata}[0]["source_id"]+ "</a>";
+    document.getElementById("histology").innerHTML = "<a class='nostylelink'  href= '/histology/"+${metadata}[0]["histology"] + "'>"+${metadata}[0]["histology"]+ "</a>";
+    document.getElementById("organ").innerHTML =  "<a class='nostylelink'  href= '/organ/"+${metadata}[0]["organ"] + "'>"+${metadata}[0]["organ"]+ "</a>";
+
+    document.getElementById("organism").innerHTML = ${metadata}[0]["organism"];
+    document.getElementById("dignity").innerHTML = "<a class='nostylelink'  href= '/dignity/"+${metadata}[0]["dignity"] + "'>"+${metadata}[0]["dignity"]+ "</a>";
+
+    document.getElementById("celltype").innerHTML = "<a class='nostylelink'  href= '/celltype/"+${metadata}[0]["celltype"] + "'>"+${metadata}[0]["celltype"]+ "</a>";
+    if(${metadata}[0]["location"] == "NA"){
         document.getElementById("location").innerHTML = "-"
     }else{
-        document.getElementById("location").innerHTML = ${statistics}[0]["location"];
+        document.getElementById("location").innerHTML = ${metadata}[0]["location"];
     }
     // Write Yes or No instead 0 and 1
-    if(${statistics}[0]["metastatis"]==0){
+    if(${metadata}[0]["metastatis"]==0){
         document.getElementById("metastatis").innerHTML = "No"
     }else{
         document.getElementById("metastatis").innerHTML = "Yes"
     }
-    document.getElementById("person").innerHTML = "<a class='nostylelink'  href= '/person/"+${statistics}[0]["person"] + "'>"+${statistics}[0]["person"] + "</a>, ";
+    document.getElementById("person").innerHTML = "<a class='nostylelink'  href= '/person/"+${metadata}[0]["person"] + "'>"+${metadata}[0]["person"] + "</a>, ";
 
-    document.getElementById("ms_run_date").innerHTML = ${statistics}[0]["ms_run_date"];
-    document.getElementById("used_share").innerHTML = ${statistics}[0]["used_share"];
-    if(${statistics}[0]["msrun_comment"] == "NULL"){
+    document.getElementById("ms_run_date").innerHTML = ${metadata}[0]["ms_run_date"];
+    document.getElementById("used_share").innerHTML = ${metadata}[0]["used_share"];
+    if(${metadata}[0]["msrun_comment"] == "NULL"){
         document.getElementById("msrun_comment").innerHTML = "-"
     }else{
-        document.getElementById("msrun_comment").innerHTML = ${statistics}[0]["msrun_comment"];
+        document.getElementById("msrun_comment").innerHTML = ${metadata}[0]["msrun_comment"];
     }
-    if(${statistics}[0]["sample_mass"] == ""){
+    if(${metadata}[0]["sample_mass"] == ""){
         document.getElementById("sample_mass").innerHTML = "-"
     }else{
-        document.getElementById("sample_mass").innerHTML = ${statistics}[0]["sample_mass"];
+        document.getElementById("sample_mass").innerHTML = ${metadata}[0]["sample_mass"];
     }
-    if(${statistics}[0]["sample_volume"] == ""){
+    if(${metadata}[0]["sample_volume"] == ""){
         document.getElementById("sample_volume").innerHTML = "-"
     }else{
-        document.getElementById("sample_volume").innerHTML = ${statistics}[0]["sample_volume"];
+        document.getElementById("sample_volume").innerHTML = ${metadata}[0]["sample_volume"];
     }
-    document.getElementById("antibody_set").innerHTML = ${statistics}[0]["antibody_set"];
-    document.getElementById("antibody_mass").innerHTML = ${statistics}[0]["antibody_mass"];
-    document.getElementById("magna").innerHTML = ${statistics}[0]["magna"];
-    if(${statistics}[0]["prep_comment"] == ""){
-        document.getElementById("prep_date").innerHTML = "-"
-    }else{
-        document.getElementById("prep_date").innerHTML = ${statistics}[0]["prep_date"];
-    }
-    if(${statistics}[0]["prep_comment"] == ""){
-        document.getElementById("prep_comment").innerHTML = "-"
-    }else{
-        document.getElementById("prep_comment").innerHTML = ${statistics}[0]["prep_comment"];
-    }
-
-
-
-
-
-
+    document.getElementById("antibody_set").innerHTML = ${metadata}[0]["antibody_set"];
+    document.getElementById("antibody_mass").innerHTML = ${metadata}[0]["antibody_mass"];
 
 });
 

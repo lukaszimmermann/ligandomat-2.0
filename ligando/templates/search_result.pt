@@ -15,7 +15,7 @@
     <table id="source"  class="info_table" cellspacing="0" >
         <thead>
         <tr>
-        <th>Source</th>
+        <th>Patient ID</th>
         </tr>
         </thead>
     </table>
@@ -128,9 +128,18 @@
         </tr>
         </thead>
     </table>
+        <br>
+        </div>
+     <div id="treatment_div" style="width: 300px; float:left; margin-left: 15px; margin-right: 15px;">
+    <table id="treatment"  class="info_table" cellspacing="0" >
+        <thead>
+        <tr>
+        <th>Treatment</th>
+        </tr>
+        </thead>
+    </table>
     </div>
 </div>
-
 <script>
     var tables = [
         'source',
@@ -144,9 +153,10 @@
         'hla',
         'msrun',
         'peptide',
-        'protein'];
+        'protein',
+        'treatment'];
 var autocomplete_dict = {
-        'source':${source},
+        'source':${patient_id},
         'organ':${organ},
         'organism':${organism},
         'histology':${histology},
@@ -157,7 +167,8 @@ var autocomplete_dict = {
         'hla':${hla},
         'msrun':${msrun},
         'peptide':${peptide},
-        'protein':${protein}};
+        'protein':${protein},
+        'treatment':${treatment}};
 
 
 $(document).ready(function() {

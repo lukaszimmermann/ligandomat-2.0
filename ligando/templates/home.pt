@@ -20,8 +20,9 @@
         <div  style="float:left; width: 330px">
         <h3>Database Statistics</h3>
         Sources: <a class='nostylelink'  href='/sources'>${sources_count}</a><br>
-        Ms Runs: <a class='nostylelink'  href='/runs'>${all_msrun_count}</a><br>
-        Orphan Ms Runs: ${orphan_msrun_count}
+        MS Runs: <a class='nostylelink' id="ms_run_statistics"  href='/runs'>${all_msrun_count}</a><br>
+        Orphan MS Runs: <a class='nostylelink'  href='/orphan_runs'>${orphan_msrun_count}</a><br>
+        Trashed MS Runs : ${trash_count}
         </div>
 
         <div id="msrun_plot" style="width:300px;height:330px; display: inline-block;"></div>
@@ -42,13 +43,16 @@
 
 <script>
     $(function() {
+        document.getElementById('ms_run_statistics').innerHTML=${all_msrun_count}-${orphan_msrun_count}-${trash_count};
         // set the statistics
-        var ms_run = [[1,${all_msrun_count}]];
-        var orphan_ms_run = [[2,200]]; //${orphan_msrun_count}]];
-
+        var ms_run = [[1,${all_msrun_count}-${orphan_msrun_count}-${trash_count}]];
+        var orphan_ms_run = [[2,${orphan_msrun_count}]];
+        var trash_runs = [[3, ${trash_count}]]
         // create data for the flot plot
         var data = [{label: 'Complete MS Runs', data:ms_run,color: "rgb("+180+","+160+","+105+")"},
-                {label: 'Orphan MS Runs', data:orphan_ms_run, color: "rgb("+165+","+30+","+55+")"}]
+                {label: 'Orphan MS Runs', data:orphan_ms_run, color: "rgb("+165+","+30+","+55+")"},
+                {label: 'Trashed MS Runs', data:trash_runs, color: "rgb("+123+","+125+","+132+")"}
+        ]
         // flot options
         var options = {series: {
                 stack: 0,
@@ -65,8 +69,11 @@
                 },
                 xaxis: {
                     min: 0,
-                    max:3,
+                    max:4,
                     show:false
+                },
+                yaxis:{
+                    max:(${trash_count}+2000)
                 },
                 grid: {
                     clickable: true,

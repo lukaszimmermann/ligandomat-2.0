@@ -17,11 +17,11 @@
                 <th>Dignity</th>
                 <th>Date</th>
                 <th>Antibody</th>
-                <th>Preperation Comment</th>
                 <th>Used Share</th>
                 <th>Sample Mass</th>
             </tr>
-        </thead></table>
+        </thead>
+    </table>
 
     </div>
 </div>
@@ -29,6 +29,7 @@
 
     $(document).ready(function() {
     // create dataTable
+    console.log(${project})
     $('#example').dataTable( {
         data: ${project},
         columns: [
@@ -36,7 +37,7 @@
             "render": function ( data, type, row ) {
                 return "<a class='nostylelink'  href= '/msrun/"+row["ms_run_id"] + "'>"+data + "</a>" ;
             }},
-            { data: "name" ,
+            { data: "patient_id" ,
             "render": function ( data, type, row ) {
                 return "<a class='nostylelink'  href= '/source/"+data + "'>"+data + "</a>" ;
             }},
@@ -50,9 +51,9 @@
             }},
             { data: "ms_run_date"},
             { data: "antibody_set"},
-            { data: "prep_comment" },
             { data: "used_share"},
-            { data: "sample_mass"}
+            { data: "sample_mass"},
+
         ],
         "sDom": 'T<"clear">lfrtip',
         oTableTools: {

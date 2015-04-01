@@ -17,19 +17,11 @@ Base = declarative_base()
 metadata = Base.metadata
 
 
-class HlaLookup(Base):
-    __tablename__ = 'hla_lookup'
-
-    hla_lookup_id = Column(Integer, primary_key=True, unique=True)
-    hla_category = Column(String(510), nullable=False)
-
-    fk_hla_typess = relationship(u'HlaType', secondary='hla_map')
-
 # mapping table HLA map
 t_hla_map = Table(
     'hla_map', metadata,
     Column('fk_hla_types_id', ForeignKey(u'hla_types.hla_types_id'), nullable=False, index=True),
-    Column('fk_hla_map_hla_lookup_id', ForeignKey(u'hla_lookup.hla_lookup_id'), nullable=False, index=True)
+    Column('fk_source_id', ForeignKey(u'source.source_id'), nullable=False, index=True)
 )
 
 
@@ -56,9 +48,16 @@ class MsRun(Base):
     antibody_mass = Column(Float(asdecimal=True))
     magna = Column(Integer, nullable=False, server_default=text("'0'"))
     sample_volume = Column(Float(asdecimal=True))
+    replication = Column(String(15)) # TODO: set correct size
     prep_date = Column(Date)
     prep_comment = Column(Text(collation=u'latin1_german1_ci'))
-
+    flag_mzml_sph130927 = Column(Integer(),nullable=False)
+    flag_masc_sph130927 = Column(Integer(),nullable=False)
+    flag_xtan_sph130927 = Column(Integer(),nullable=False)
+    flag_omss_sph130927 = Column(Integer(),nullable=False)
+    flag_fefi = Column(Integer(),nullable=False)
+    flag_trash = Column(Integer(), nullable=False)
+    trash_reason = Column(String(200))
     source_source = relationship(u'Source')
 
 # peptide protein map table
@@ -122,7 +121,7 @@ class Source(Base):
     __tablename__ = 'source'
 
     source_id = Column(Integer, primary_key=True)
-    name = Column(String(50, u'latin1_german1_ci'), nullable=False, unique=True)
+    sample_id = Column(String(200, u'latin1_german1_ci'), nullable=False, unique=True)
     comment = Column(String(45, u'latin1_german1_ci'))
     organ = Column(String(45, u'latin1_german1_ci'))
     organism = Column(String(45, u'latin1_german1_ci'))
@@ -130,17 +129,13 @@ class Source(Base):
     dignity = Column(String(45, u'latin1_german1_ci'))
     celltype = Column(String(45, u'latin1_german1_ci'))
     person = Column(String(90, u'latin1_german1_ci'))
-    fk_hla_lookup_id = Column(ForeignKey(u'hla_lookup.hla_lookup_id'), nullable=False, index=True)
     location = Column(String(45, u'latin1_german1_ci'))
     metastatis = Column(Integer, server_default=text("'0'"))
+    patient_id = Column(String(45, u'latin1_german1_ci'), nullable=False)
+    treatment = Column(String(45, u'latin1_german1_ci'))
+    prep_date = Column(Date, nullable=False)
 
-    fk_hla_lookup = relationship(u'HlaLookup')
 
-    def as_dict(self):
-        # return '{"dignity": "'+self.dignity+\
-        # '", "name":"'+self.name+ \
-        # '"}'
-        return {c.name: getattr(self, c.name) for c in self.__table__.columns}
 
 
 class SpectrumHit(Base):
@@ -169,12 +164,18 @@ class SpectrumHit(Base):
     delta_score = Column(Float(asdecimal=True))
     delta_cn = Column(Float(asdecimal=True))
     source_source_id = Column(ForeignKey(u'source.source_id'), nullable=False, index=True)
-    modifications = Column(String(2, u'latin1_german1_ci'))
+    modifications = Column(String(60, u'latin1_german1_ci'))
     sequence = Column(String(60, u'latin1_german1_ci'), index=True)
+    flag_traffic_light = Column(Integer(),nullable=False)
+    length = Column(Integer)
+    intern_ms_id = Column(Integer)
+
 
     ms_run_ms_run = relationship(u'MsRun')
     source_source = relationship(u'Source')
     protein_proteins = relationship(u'Protein', secondary='spectrum_protein_map')
+    fk_processing = relationship(u'Processing')
+
 
 # spectrum hit protein map table
 t_spectrum_protein_map = Table(
@@ -185,42 +186,43 @@ t_spectrum_protein_map = Table(
 )
 
 
+
 # #################################
-# Intern data
-class InternDatum(Base):
-    __tablename__ = 'intern_data'
-
-    id = Column(Integer, primary_key=True)
-    timestamp = Column(String(255))
-    seq = Column(String(15))
-    run = Column(String(255))
-    rest = Column(Text)
-    source_id = Column(Integer)
-    hla_typing = Column(String(255))
-    prep_id = Column(Integer)
-    mass_spec_id = Column(Integer)
-
-
-class LogFile(Base):
-    __tablename__ = 'log_file'
-
-    log_file_id = Column(Integer, primary_key=True)
-    tmp_name = Column(String(255), nullable=False)
-    action = Column(Enum(u'upload'), nullable=False, server_default=text("'upload'"))
-    users_users_id = Column(ForeignKey(u'users.id'), nullable=False, index=True)
-    successful = Column(BIT(1), nullable=False)
-    message = Column(Text)
-
-    users_users = relationship(u'User')
-
-
-class User(Base):
-    __tablename__ = 'users'
-
-    id = Column(Integer, primary_key=True)
-    username = Column(String(255))
-    password = Column(String(255))
-    in_group = Column(String(255))
-    person_person_id = Column(Integer)
-
-    # #################################
+# # Intern data
+# class InternDatum(Base):
+#     __tablename__ = 'intern_data'
+#
+#     id = Column(Integer, primary_key=True)
+#     timestamp = Column(String(255))
+#     seq = Column(String(15))
+#     run = Column(String(255))
+#     rest = Column(Text)
+#     source_id = Column(Integer)
+#     hla_typing = Column(String(255))
+#     prep_id = Column(Integer)
+#     mass_spec_id = Column(Integer)
+#
+#
+# class LogFile(Base):
+#     __tablename__ = 'log_file'
+#
+#     log_file_id = Column(Integer, primary_key=True)
+#     tmp_name = Column(String(255), nullable=False)
+#     action = Column(Enum(u'upload'), nullable=False, server_default=text("'upload'"))
+#     users_users_id = Column(ForeignKey(u'users.id'), nullable=False, index=True)
+#     successful = Column(BIT(1), nullable=False)
+#     message = Column(Text)
+#
+#     users_users = relationship(u'User')
+#
+#
+# class User(Base):
+#     __tablename__ = 'users'
+#
+#     id = Column(Integer, primary_key=True)
+#     username = Column(String(255))
+#     password = Column(String(255))
+#     in_group = Column(String(255))
+#     person_person_id = Column(Integer)
+#
+#     # #################################
