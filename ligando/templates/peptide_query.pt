@@ -7,7 +7,7 @@
 
     <body>
     <div class="main_wrapper">
-    <div id="peptide_query_wrapper" style="width: 80%" class="wrapper">
+    <div id="peptide_query_wrapper" style="width: 100%" class="wrapper">
 
         <table>
             <tr>
@@ -15,7 +15,10 @@
                 <button id="sequence_button" type="button" onclick="show_hide('#sequence', '#sequence_button')" class="nice_button">Sequence</button>
             </td>
             <td>
-                <button id="source_button" type="button" onclick="show_hide('#source','#source_button')" class="nice_button">Source</button>
+                <button id="source_id_button" type="button" onclick="show_hide('#source_id','#source_id_button')" class="nice_button"><nobr>Source ID</nobr></button>
+            </td>
+            <td>
+                <button id="patient_id_button" type="button" onclick="show_hide('#patient_id','#patient_id_button')" class="nice_button"><nobr>Patient ID</nobr></button>
             </td>
             <td>
                 <button id="run_name_button" type="button" onclick="show_hide('#run_name','#run_name_button')" class="nice_button">MsRun</button>
@@ -44,6 +47,9 @@
             <td>
                 <button id="celltype_button" type="button" onclick="show_hide('#celltype','#celltype_button')" class="nice_button">Celltype</button>
             </td>
+            <td>
+                <button id="treatment_button" type="button" onclick="show_hide('#treatment','#treatment_button')" class="nice_button">Treatment</button>
+            </td>
             </tr>
         </table>
 
@@ -54,10 +60,15 @@
             <td><input id="sequence_input" name="sequence" type="text"></td>
             <td><select name="sequence_rule" class="nice_dropdown_boolean"><option selected>AND</option><option>OR</option></select></td>
         </tr>
-        <tr id="source" class="hidden">
-            <td><span class="standard_text">Source name:</span></td>
-            <td><input id="source_input" name="source" type="text"></td>
-            <td><select name="source_rule" class="nice_dropdown_boolean"><option selected>AND</option><option>OR</option></select></td>
+        <tr id="source_id" class="hidden">
+            <td><span class="standard_text">Source ID:</span></td>
+            <td><input id="source_id_input" name="source_id" type="text"></td>
+            <td><select name="source_id_rule" class="nice_dropdown_boolean"><option selected>AND</option><option>OR</option></select></td>
+        </tr>
+        <tr id="patient_id" class="hidden">
+            <td><span class="standard_text">Patient ID:</span></td>
+            <td><input id="patient_id_input" name="patient_id" type="text"></td>
+            <td><select name="patient_id_rule" class="nice_dropdown_boolean"><option selected>AND</option><option>OR</option></select></td>
         </tr>
         <tr id="run_name" class="hidden">
             <td><span class="standard_text">MS Run:</span></td>
@@ -104,6 +115,11 @@
             <td><span class="standard_text">Celltype:</span></td>
             <td><input id="celltype_input" name="celltype" type="text"></td>
             <td><select name="celltype_rule" class="nice_dropdown_boolean"><option selected>AND</option><option>OR</option></select></td>
+        </tr>
+        <tr id="treatment" class="hidden">
+            <td><span class="standard_text">Treatment:</span></td>
+            <td><input id="treatment_input" name="treatment" type="text"></td>
+            <td><select name="treatment_rule" class="nice_dropdown_boolean"><option selected>AND</option><option>OR</option></select></td>
         </tr>
         </table>
         <br>
@@ -157,26 +173,30 @@
 
     // dict for the different inputs, used to iterate of the different inputs
     var cells = [
+        'patient_id',
         'antibody',
         "dignity",
         "organ",
         "histology",
         "celltype",
+        "treatment",
         "hla"];
         // input which allows autocomplete
     var autocomplete_dict = {
+        'patient_id':${patient_id},
         'antibody':${antibody},
         'dignity':${dignity},
         'organ':${organ},
         'histology':${histology},
         'celltype':${celltype},
+        'treatment':${treatment},
         'hla':${hla}
     };
     // autocomplete
     $(function () {
         for (var i = 0; i < cells.length; i++) {
             if (cells[i] == 'typing') {
-
+                continue;
             }
             else
                 {

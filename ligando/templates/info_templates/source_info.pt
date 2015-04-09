@@ -64,7 +64,10 @@
                 "render": function ( data, type, row ) {
                 return "<a class='nostylelink'  href= '/organism/"+data + "'>"+data + "</a>" ;
             }},
-            { data: "treatment"},
+            { data: "treatment",
+                "render": function ( data, type, row ) {
+                return "<a class='nostylelink'  href= '/treatment/"+data + "'>"+data + "</a>" ;
+            }},
             { data: "person",
             "render": function ( data, type, row ) {
                 return "<a class='nostylelink'  href= '/person/"+data + "'>"+data + "</a>" ;

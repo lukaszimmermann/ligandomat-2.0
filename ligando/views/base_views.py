@@ -22,29 +22,51 @@ def source_page(request):
         query = DBSession.query(func.count(SpectrumHit.spectrum_hit_id).label("count_hits"),
                                 func.count(SpectrumHit.sequence.distinct()).label("count_pep"),
                                 func.count(Protein.name.distinct()).label("count_prot")
-                                )
+        )
         query = query.join(Source)
         query = query.join(t_spectrum_protein_map)
         query = query.join(Protein)
         query = query.filter(Source.patient_id == request.matchdict["source"])
         statistics = json.dumps(query.all())
 
-        query = DBSession.query(Source.histology, Source.patient_id, Source.organ,
-                                Source.comment, Source.dignity, Source.celltype, Source.location,
-                                Source.metastatis, Source.person, Source.organism,
+        query = DBSession.query(Source.patient_id,
+                                func.group_concat(Source.histology.distinct().op('order by')(Source.histology)).label(
+                                    'histology'),
+                                func.group_concat(Source.source_id.distinct().op('order by')(Source.source_id)).label(
+                                    'source_id'),
+                                func.group_concat(Source.organ.distinct().op('order by')(Source.organ)).label(
+                                    'organ'), func.group_concat(
+                (Source.comment.distinct().op('order by')(Source.comment))).label(
+                'comment'), func.group_concat(
+                (Source.dignity.distinct().op('order by')(Source.dignity))).label(
+                'dignity'),
+                                func.group_concat(
+                                    (Source.celltype.distinct().op('order by')(Source.celltype))).label(
+                                    'celltype')
+                                , func.group_concat(
+                (Source.location.distinct().op('order by')(Source.location))).label(
+                'location')
+                                , func.group_concat(
+                (Source.metastatis.distinct().op('order by')(Source.metastatis))).label(
+                'metastatis'),
+                                func.group_concat(
+                                    (Source.person.distinct().op('order by')(Source.person))).label(
+                                    'person'),
+                                func.group_concat(
+                                    (Source.organism.distinct().op('order by')(Source.organism))).label(
+                                    'organism'),
                                 func.group_concat(
                                     (HlaType.hla_string.distinct().op('order by')(HlaType.hla_string))).label(
-                                    'hla_typing')
-                                )
+                                    'hla_typing'),
+                                func.group_concat(
+                                    (Source.treatment.distinct().op('order by')(Source.treatment))).label(
+                                    'treatment')
+        )
         query = query.join(t_hla_map)
         query = query.join(HlaType)
         query = query.filter(Source.patient_id == request.matchdict["source"])
         query = query.group_by(Source.patient_id)
         metadata = json.dumps(query.all())
-
-
-
-
 
         query = DBSession.query(MsRun.ms_run_id, MsRun.filename).join(Source).filter(
             Source.patient_id == request.matchdict["source"])
@@ -52,7 +74,73 @@ def source_page(request):
 
     except:
         return Response(conn_err_msg, content_type='text/plain', status_int=500)
-    return {"statistic": statistics, "metadata" : metadata, "runs": runs, "source": request.matchdict["source"]}
+    return {"statistic": statistics, "metadata": metadata, "runs": runs, "source": request.matchdict["source"]}
+
+
+@view_config(route_name='source_id', renderer='../templates/base_templates/source_id.pt', request_method="GET")
+def source_id_page(request):
+    try:
+        # Catch if there are no peptides!!
+        query = DBSession.query(func.count(SpectrumHit.spectrum_hit_id).label("count_hits"),
+                                func.count(SpectrumHit.sequence.distinct()).label("count_pep"),
+                                func.count(Protein.name.distinct()).label("count_prot")
+        )
+        query = query.join(Source)
+        query = query.join(t_spectrum_protein_map)
+        query = query.join(Protein)
+        query = query.filter(Source.source_id == request.matchdict["source_id"])
+        statistics = json.dumps(query.all())
+
+        query = DBSession.query(Source.source_id, func.group_concat(
+            (Source.histology.distinct().op('order by')(Source.histology))).label(
+            'histology')
+                                , func.group_concat(
+                (Source.patient_id.distinct().op('order by')(Source.patient_id))).label(
+                'patient_id')
+                                , func.group_concat(
+                (Source.organ.distinct().op('order by')(Source.organ))).label(
+                'organ')
+                                , func.group_concat(
+                (Source.comment.distinct().op('order by')(Source.comment))).label(
+                'comment')
+                                , func.group_concat(
+                (Source.dignity.distinct().op('order by')(Source.dignity))).label(
+                'dignity')
+                                ,
+                                func.group_concat(
+                                    (Source.celltype.distinct().op('order by')(Source.celltype))).label(
+                                    'celltype')
+                                , func.group_concat(
+                (Source.location.distinct().op('order by')(Source.location))).label(
+                'location')
+                                , func.group_concat(
+                (Source.metastatis.distinct().op('order by')(Source.metastatis))).label(
+                'metastatis')
+                                ,
+                                func.group_concat(
+                                    (Source.person.distinct().op('order by')(Source.person))).label(
+                                    'person')
+                                , func.group_concat(
+                (Source.organism.distinct().op('order by')(Source.organism))).label(
+                'organism')
+                                ,
+                                func.group_concat(
+                                    (HlaType.hla_string.distinct().op('order by')(HlaType.hla_string))).label(
+                                    'hla_typing')
+        )
+        query = query.join(t_hla_map)
+        query = query.join(HlaType)
+        query = query.filter(Source.patient_id == request.matchdict["source"])
+        query = query.group_by(Source.source_id)
+        metadata = json.dumps(query.all())
+
+        query = DBSession.query(MsRun.ms_run_id, MsRun.filename).join(Source).filter(
+            Source.patient_id == request.matchdict["source"])
+        runs = json.dumps(query.all())
+
+    except:
+        return Response(conn_err_msg, content_type='text/plain', status_int=500)
+    return {"statistic": statistics, "metadata": metadata, "runs": runs, "source": request.matchdict["source"]}
 
 
 @view_config(route_name='hla', renderer='../templates/base_templates/hla.pt', request_method="GET")
@@ -85,7 +173,7 @@ def msrun_page(request):
         query = DBSession.query(func.count(SpectrumHit.spectrum_hit_id).label("count_hits"),
                                 func.count(SpectrumHit.sequence.distinct()).label("count_pep"),
                                 func.count(Protein.name.distinct()).label("count_prot")
-                               )
+        )
 
         query = query.join(MsRun, SpectrumHit.ms_run_ms_run_id == MsRun.ms_run_id)
         query = query.join(t_spectrum_protein_map)
@@ -97,7 +185,7 @@ def msrun_page(request):
                                 func.group_concat(
                                     (HlaType.hla_string.distinct().op('order by')(HlaType.hla_string))).label(
                                     'hla_typing'),
-                                Source.histology,Source.source_id, Source.patient_id, Source.organ,
+                                Source.histology, Source.source_id, Source.patient_id, Source.organ,
                                 Source.comment, Source.dignity, Source.celltype, Source.location,
                                 Source.metastatis, Source.person, Source.organism,
                                 func.cast(MsRun.ms_run_date, String).label("ms_run_date"), MsRun.used_share,
@@ -261,3 +349,20 @@ def dignity_page(request):
     except:
         return Response(conn_err_msg, content_type='text/plain', status_int=500)
     return {"sources": sources, "dignity": request.matchdict["dignity"], "statistic": statistic}
+
+
+@view_config(route_name='treatment', renderer='../templates/base_templates/treatment.pt', request_method="GET")
+def treatment_page(request):
+    try:
+        query = DBSession.query(Source.organ, Source.source_id,
+                                Source.treatment, Source.patient_id)
+        query = query.filter(Source.treatment == request.matchdict["treatment"])
+        sources = json.dumps(query.all())
+
+        query = DBSession.query(func.count(SpectrumHit.sequence.distinct()).label("pep_count"))
+        query = query.join(Source)
+        query = query.filter(Source.treatment == request.matchdict["treatment"])
+        statistic = json.dumps(query.all())
+    except:
+        return Response(conn_err_msg, content_type='text/plain', status_int=500)
+    return {"sources": sources, "treatment": request.matchdict["treatment"], "statistic": statistic}

@@ -21,13 +21,15 @@
                 <th>HLA Typing</th>
                 <th>Protein</th>
                 <th>Histology</th>
-                <th>Source</th>
+                <th>Source ID</th>
+                <th>Patient ID</th>
                 <th>MS Run</th>
             </tr>
             <tr tal:condition="grouping == 'peptide'">
                 <th>Sequence</th>
                 <th>Protein</th>
-                <th>Source</th>
+                <th>Source ID</th>
+                <th>Patient ID</th>
                 <th>Dignity</th>
                 <th>HLA Typing</th>
             </tr>
@@ -40,7 +42,8 @@
                 <th>HLA Typing</th>
                 <th>Protein</th>
                 <th>Histology</th>
-                <th>Source</th>
+                <th>Source ID</th>
+                <th>Patient ID</th>
             </tr>
             <tr tal:condition="grouping == 'source_psm'">
                 <th>Sequence</th>
@@ -51,12 +54,14 @@
                 <th>HLA Typing</th>
                 <th>Protein</th>
                 <th>Histology</th>
-                <th>Source</th>
+                <th>Source ID</th>
+                <th>Patient ID</th>
             </tr>
             <tr tal:condition="grouping == 'protein'">
                 <th>Protein</th>
                 <th>Peptides</th>
-                <th>Source</th>
+                <th>Source ID</th>
+                <th>Patient ID</th>
                 <th>Dignity</th>
             </tr>
         </thead></table>
@@ -68,6 +73,9 @@
 
 
     $(document).ready(function() {
+    console.log(${project})
+
+
     // create dataTable for each type grouping, different collumns
     if ("${grouping}" == "run") {
         $('#example').dataTable( {
@@ -126,9 +134,34 @@
             "render": function ( data, type, row ) {
                 return "<a class='nostylelink'  href= '/histology/"+data + "'>"+data + "</a>" ;
             }},
-                { data: "name",
-            "render": function ( data, type, row ) {
-                return "<a class='nostylelink'  href= '/source/"+data + "'>"+data + "</a>" ;
+
+                { data: "source_id",
+                    // split source string and create single links
+                    "render": function ( data, type, row ) {
+                var source_split = String(data).split(",");
+                var return_string = "";
+                for (var source =0; source<source_split.length; source++){
+                    if(source <source_split.length-1) {
+                        return_string += "<a class='nostylelink'  href= '/source_id/" + source_split[source] + "'>" + source_split[source] + "</a>, ";
+                    }else{
+                            return_string += "<a class='nostylelink'  href= '/source_id/" + source_split[source] + "'>" + source_split[source] + "</a>";
+                    }
+                }
+                return return_string
+            }},
+                    { data: "patient_id",
+                    // split source string and create single links
+                    "render": function ( data, type, row ) {
+                var source_split = data.split(",");
+                var return_string = "";
+                for (var source =0; source<source_split.length; source++){
+                    if(source <source_split.length-1) {
+                        return_string += "<a class='nostylelink'  href= '/source/" + source_split[source] + "'>" + source_split[source] + "</a>, ";
+                    }else{
+                            return_string += "<a class='nostylelink'  href= '/source/" + source_split[source] + "'>" + source_split[source] + "</a>";
+                    }
+                }
+                return return_string
             }},
                 { data: "filename",
             "render": function ( data, type, row ) {
@@ -164,7 +197,22 @@
                 }
                 return return_string
             }},
-                { data: "name",
+
+                { data: "source_id",
+                    // split source string and create single links
+                    "render": function ( data, type, row ) {
+                var source_split = String(data).split(",");
+                var return_string = "";
+                for (var source =0; source<source_split.length; source++){
+                    if(source <source_split.length-1) {
+                        return_string += "<a class='nostylelink'  href= '/source_id/" + source_split[source] + "'>" + source_split[source] + "</a>, ";
+                    }else{
+                            return_string += "<a class='nostylelink'  href= '/source_id/" + source_split[source] + "'>" + source_split[source] + "</a>";
+                    }
+                }
+                return return_string
+            }},
+                    { data: "patient_id",
                     // split source string and create single links
                     "render": function ( data, type, row ) {
                 var source_split = data.split(",");
@@ -270,9 +318,34 @@
             "render": function ( data, type, row ) {
                 return "<a class='nostylelink'  href= '/histology/"+data + "'>"+data + "</a>" ;
             }},
-                { data: "source_name",
-            "render": function ( data, type, row ) {
-                return "<a class='nostylelink'  href= '/source/"+data + "'>"+data + "</a>" ;
+
+                { data: "source_id",
+                    // split source string and create single links
+                    "render": function ( data, type, row ) {
+                var source_split = String(data).split(",");
+                var return_string = "";
+                for (var source =0; source<source_split.length; source++){
+                    if(source <source_split.length-1) {
+                        return_string += "<a class='nostylelink'  href= '/source_id/" + source_split[source] + "'>" + source_split[source] + "</a>, ";
+                    }else{
+                            return_string += "<a class='nostylelink'  href= '/source_id/" + source_split[source] + "'>" + source_split[source] + "</a>";
+                    }
+                }
+                return return_string
+            }},
+                    { data: "patient_id",
+                    // split source string and create single links
+                    "render": function ( data, type, row ) {
+                var source_split = data.split(",");
+                var return_string = "";
+                for (var source =0; source<source_split.length; source++){
+                    if(source <source_split.length-1) {
+                        return_string += "<a class='nostylelink'  href= '/source/" + source_split[source] + "'>" + source_split[source] + "</a>, ";
+                    }else{
+                            return_string += "<a class='nostylelink'  href= '/source/" + source_split[source] + "'>" + source_split[source] + "</a>";
+                    }
+                }
+                return return_string
             }}
             ],
             "sDom": 'T<"clear">lfrtip',
@@ -337,9 +410,34 @@
             "render": function ( data, type, row ) {
                 return "<a class='nostylelink'  href= '/histology/"+data + "'>"+data + "</a>" ;
             }},
-                { data: "source_name",
-            "render": function ( data, type, row ) {
-                return "<a class='nostylelink'  href= '/source/"+data + "'>"+data + "</a>" ;
+
+                { data: "source_id",
+                    // split source string and create single links
+                    "render": function ( data, type, row ) {
+                var source_split = String(data).split(",");
+                var return_string = "";
+                for (var source =0; source<source_split.length; source++){
+                    if(source <source_split.length-1) {
+                        return_string += "<a class='nostylelink'  href= '/source_id/" + source_split[source] + "'>" + source_split[source] + "</a>, ";
+                    }else{
+                            return_string += "<a class='nostylelink'  href= '/source_id/" + source_split[source] + "'>" + source_split[source] + "</a>";
+                    }
+                }
+                return return_string
+            }},
+                    { data: "patient_id",
+                    // split source string and create single links
+                    "render": function ( data, type, row ) {
+                var source_split = data.split(",");
+                var return_string = "";
+                for (var source =0; source<source_split.length; source++){
+                    if(source <source_split.length-1) {
+                        return_string += "<a class='nostylelink'  href= '/source/" + source_split[source] + "'>" + source_split[source] + "</a>, ";
+                    }else{
+                            return_string += "<a class='nostylelink'  href= '/source/" + source_split[source] + "'>" + source_split[source] + "</a>";
+                    }
+                }
+                return return_string
             }}
             ],
             "sDom": 'T<"clear">lfrtip',
@@ -373,16 +471,30 @@
                 }
                 return return_string
             }},
-                { data: "name",
-                    // split protein string and create single links
+                { data: "source_id",
+                    // split source string and create single links
+                    "render": function ( data, type, row ) {
+                var source_split = String(data).split(",");
+                var return_string = "";
+                for (var source =0; source<source_split.length; source++){
+                    if(source <source_split.length-1) {
+                        return_string += "<a class='nostylelink'  href= '/source_id/" + source_split[source] + "'>" + source_split[source] + "</a>, ";
+                    }else{
+                            return_string += "<a class='nostylelink'  href= '/source_id/" + source_split[source] + "'>" + source_split[source] + "</a>";
+                    }
+                }
+                return return_string
+            }},
+                    { data: "patient_id",
+                    // split source string and create single links
                     "render": function ( data, type, row ) {
                 var source_split = data.split(",");
                 var return_string = "";
                 for (var source =0; source<source_split.length; source++){
                     if(source <source_split.length-1) {
-                        return_string += "<a class='nostylelink'  href= '/protein/" + source_split[source] + "'>" + source_split[source] + "</a>, ";
+                        return_string += "<a class='nostylelink'  href= '/source/" + source_split[source] + "'>" + source_split[source] + "</a>, ";
                     }else{
-                            return_string += "<a class='nostylelink'  href= '/protein/" + source_split[source] + "'>" + source_split[source] + "</a>";
+                            return_string += "<a class='nostylelink'  href= '/source/" + source_split[source] + "'>" + source_split[source] + "</a>";
                     }
                 }
                 return return_string

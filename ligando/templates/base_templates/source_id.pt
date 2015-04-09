@@ -55,9 +55,6 @@
                 <td>Responsible Person:</td><td id="person"></td>
             </tr>
             <tr class="alt">
-                <td>Treatment:</td><td id="treatment"></td>
-            </tr>
-            <tr>
                 <td>Comment: </td><td id="comment"> </td>
             </tr>
                 </table>
@@ -76,8 +73,6 @@
 </div>
 
 <script>
-
-
 $(document).ready(function() {
 
 
@@ -112,26 +107,25 @@ $(document).ready(function() {
     // TODO: create spectrum hit query
     document.getElementById("spec_stat").innerHTML = ${statistic}[0]["count_hits"];
     document.getElementById("prot_stat").innerHTML = ${statistic}[0]["count_prot"];
+
+
+
     document.getElementById("typing").innerHTML = allele_string.slice(0, -2);
-    document.getElementById("histology").innerHTML = get_separate_links("histology",${metadata}[0]["histology"]);
-    document.getElementById("organ").innerHTML = get_separate_links("organ",${metadata}[0]["organ"]);
+    document.getElementById("histology").innerHTML = "<a class='nostylelink'  href= '/histology/"+${metadata}[0]["histology"] + "'>"+${metadata}[0]["histology"]+ "</a>";
+    document.getElementById("organ").innerHTML =  "<a class='nostylelink'  href= '/organ/"+${metadata}[0]["organ"] + "'>"+${metadata}[0]["organ"]+ "</a>";
     document.getElementById("comment").innerHTML = ${metadata}[0]["comment"];
-    document.getElementById("organism").innerHTML = get_separate_links("organism", ${metadata}[0]["organism"]);
-    document.getElementById("dignity").innerHTML = get_separate_links("dignity",${metadata}[0]["dignity"]);
-    // Celltype
-    document.getElementById("celltype").innerHTML = get_separate_links("celltype",${metadata}[0]["celltype"]);
-     // Location
-    document.getElementById("location").innerHTML = get_separate_links("location", ${metadata}[0]["location"]);
+    document.getElementById("organism").innerHTML = ${metadata}[0]["organism"];
+    document.getElementById("dignity").innerHTML = "<a class='nostylelink'  href= '/dignity/"+${metadata}[0]["dignity"] + "'>"+${metadata}[0]["dignity"]+ "</a>";
+
+    document.getElementById("celltype").innerHTML = "<a class='nostylelink'  href= '/celltype/"+${metadata}[0]["celltype"] + "'>"+${metadata}[0]["celltype"]+ "</a>";
+    document.getElementById("location").innerHTML = ${metadata}[0]["location"];
     // Write Yes or No instead 0 and 1
     if(${metadata}[0]["metastatis"]==0){
         document.getElementById("metastatis").innerHTML = "No"
     }else{
         document.getElementById("metastatis").innerHTML = "Yes"
     }
-    // Person
-    document.getElementById("person").innerHTML = get_separate_links("person", ${metadata}[0]["person"]);
-    // Treatment
-    document.getElementById("treatment").innerHTML = get_separate_links("treatment", ${metadata}[0]["treatment"]);
+    document.getElementById("person").innerHTML = "<a class='nostylelink'  href= '/person/"+${metadata}[0]["person"] + "'>"+${metadata}[0]["person"] + "</a>";
 });
 
 

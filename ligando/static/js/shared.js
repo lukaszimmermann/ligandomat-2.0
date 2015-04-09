@@ -30,3 +30,14 @@ function post(path, params, count, method) {
     document.body.appendChild(form);
     form.submit();
 }
+
+// return separated links
+function get_separate_links(path_link, input){
+    var link = input.split(',');
+    var link_string = "";
+    for(var i = 0; i< link.length; i++){
+        var t = link[i].trim();
+        link_string += "<a class='nostylelink'  href= '/"+ path_link+ "/"+t + "'>"+t + "</a>, ";
+    }
+    return link_string.slice(0,-2);
+}

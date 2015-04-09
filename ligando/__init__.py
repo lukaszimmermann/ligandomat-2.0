@@ -33,6 +33,7 @@ def main(global_config, **settings):
     # base pages
     config.add_route('peptide', '/peptide/{peptide}')
     config.add_route('source', '/source/{source}')
+    config.add_route('source_id', '/source_id/{source_id}')
     config.add_route('hla', '/hla/{hla}')
     config.add_route('msrun', '/msrun/{msrun}')
     config.add_route('protein', '/protein/{protein}')
@@ -40,6 +41,7 @@ def main(global_config, **settings):
     config.add_route('celltype', '/celltype/{celltype}')
     config.add_route('histology', '/histology/{histology}')
     config.add_route('dignity', '/dignity/{dignity}')
+    config.add_route('treatment', '/treatment/{treatment}')
     config.add_route('person', '/person/{person}')
     # Database analysis
     config.add_route('venn_analysis', '/venn_analysis')

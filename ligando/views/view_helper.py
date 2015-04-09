@@ -19,7 +19,7 @@ def hla_digits_extractor(hla):
 def js_list_creator(input):
     result_string = '['
     for i in input:
-        result_string += '"' + str(i[0]) + '",'
+        result_string += '"' + unicode(i[0]) + '",'
     result_string += ']'
     return result_string
 
@@ -28,7 +28,7 @@ def js_list_creator(input):
 def js_list_creator_dataTables(input):
     result_string = '['
     for i in input:
-        result_string += '["' + str(i[0]) + '"],'
+        result_string += '["' + unicode(i[0]) + '"],'
     result_string += ']'
     return result_string
 
