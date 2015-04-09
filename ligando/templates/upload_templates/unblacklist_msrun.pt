@@ -14,8 +14,6 @@
         <tr>
             <td><label for="filenametags">Filename: </label></td>
             <td><input type="text" title="The filename of the MS run" id="filenametags"></td>
-            <td><label for="trash_reasontags">Reason for exclude: </label></td>
-            <td><input title="The reason for exclude:" id="trash_reasontags"></td>
             <td><label for="persontags">Person who is responsible: </label></td>
             <td><input title="Your name. No ä, ü, ö." id="persontags"></td>
         </tr>
@@ -32,7 +30,7 @@
         </table>
 
         <button id="check_button" class="nice_button" onclick="checkInput()">Check Ms Runs</button>
-        <form id="submit" method="POST" action=blacklist_msrun>
+        <form id="submit" method="POST" action=unblacklist_msrun>
             <input type='text' id='commit_field' hidden name="ms_runs">
             <input type="submit" id="commit_button" class="nice_button" hidden value="Commit Ms Run">
         </form>
@@ -49,19 +47,16 @@
 <script>
 
     var cells = ['filename',
-        'trash_reason',
         'person'];
     var nice_names = {'filename':'Filename',
-        'trash_reason': 'Reason',
         'person':'Person'};
     var autocomplete_dict = {
         'filename':${filename},
-        'person':${person},
-        'trash_reason': ${trash_reason}};
+        'person':${person}};
 
     $(function () {
         var table = document.getElementById('ms_table');
-        var markup = ['<thead><tr><th>Filename</th><th>Reason</th><th>Responsible Person</th><th style="width:100px">Options</th></tr></thead><tbody>'];
+        var markup = ['<thead><tr><th>Filename</th><th>Responsible Person</th><th style="width:100px">Options</th></tr></thead><tbody>'];
 
 
         for (var i = 1; i <= 11; i++) {
@@ -71,7 +66,6 @@
                 markup.push('<tr id="row' + i + '" >');
             }
             markup.push('<td id="filename_' + i + '"> </td>' +
-                    '<td id="trash_reason_' + i + '"></td>' +
                     '<td id="person_' + i + '"></td>' +
                     '<td>' +
                     '<button type="button" title="Edit" onclick="editRow(' + i + ')"> <img height="12px" src="${request.static_url('ligando:static/images/Pencil-icon.png')}"> </button> <button type="button" title="Copy"  onclick="copyRow(' + i + ')"> <img height="12px" src="${request.static_url('ligando:static/images/copy-icon.png')}"> </button><button type="button" title="Remove" onclick="removeRow(' + i + ')"> <img height="12px" src="${request.static_url('ligando:static/images/Remove-icon.png')}"> </button> </td></tr>')
@@ -159,7 +153,7 @@
         for(var i=1; i<11; i++){
             if(document.getElementById("filename_"+i).innerHTML != " ") {
                 for (var l = 0; l < cells.length; l++) {
-                    if(cells[l] == "filename" || cells[l] == "trash_reason" || cells[l] == "person"){
+                    if(cells[l] == "filename" || cells[l] == "person"){
                         if(document.getElementById(cells[l] + "_" + i).innerHTML == ""){
                             alert(nice_names[cells[l]] + " in row "+ i + " is not allowed to be empty!");
                             return;
@@ -168,8 +162,7 @@
                             if(($.inArray(document.getElementById(cells[l] + "_" + i).innerHTML, autocomplete_dict[cells[l]])) == -1) {
                                 alert("The " + nice_names[cells[l]] + " " + document.getElementById(cells[l] + "_" + i).innerHTML + " in row " + i + " is unknown. Only known runs are allowed!")
                                 return;
-
-                        }
+                            }
                         }
                         if(($.inArray(document.getElementById(cells[l] + "_" + i).innerHTML, autocomplete_dict[cells[l]])) == -1) {
                             if (!confirm("The " + nice_names[cells[l]] + " " + document.getElementById(cells[l] + "_" + i).innerHTML + " in row " + i + " is unknown. Is it really correct? (No typos?)")) {

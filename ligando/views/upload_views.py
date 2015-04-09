@@ -1,3 +1,6 @@
+from time import strftime, gmtime
+from sqlalchemy import update
+
 __author__ = 'Linus Backert'
 
 import ast
@@ -5,14 +8,14 @@ import ast
 from pyramid.response import Response
 from pyramid.view import view_config
 from sqlalchemy.exc import DBAPIError
-
+import transaction
 from ligando.models import (
     DBSession,
     Source,
     MsRun,
     HlaType,
     t_hla_map)
-from ligando.views.view_helper import js_list_creator, conn_err_msg, hla_digits_extractor
+from ligando.views.view_helper import js_list_creator, conn_err_msg, hla_digits_extractor, log_writer
 
 # Upload Source metadata GET!
 @view_config(route_name='upload_metadata_source', renderer='../templates/upload_templates/upload_metadata_source.pt',
@@ -277,23 +280,111 @@ def blacklist_ms_run(request):
     else:
         result_dict["run"] = ""
     try:
-        # Query data for autocomplete
-        # TODO: Show only processed runs without metadata
-        allowed_elements = {"person": Source.person}
-        for k, v in allowed_elements.iteritems():
-            query = DBSession.query(v)
-            query = query.group_by(v)
-            query_result = js_list_creator(query.all())
-            result_dict[k] = query_result
 
-        allowed_elements = {"filename": MsRun.filename}
-        for k, v in allowed_elements.iteritems():
-            query = DBSession.query(v)
-            query = query.group_by(v)
-            query_result = js_list_creator(query.all())
-            result_dict[k] = query_result
+        # Query Data for autocomplete
+
+        # Person
+        query = DBSession.query(Source.person.distinct())
+        person = js_list_creator(query.all())
+        result_dict["person"] = person
+
+        # MS Runs
+        query = DBSession.query(MsRun.filename.distinct())
+        query = query.filter(MsRun.flag_trash == 0)
+        filename = js_list_creator(query.all())
+        result_dict["filename"] = filename
+
+        # Reason
+        query = DBSession.query(MsRun.trash_reason.distinct())
+        trash_reason = js_list_creator(query.all())
+        result_dict["trash_reason"] = trash_reason
+
     except:
         return Response(conn_err_msg, content_type='text/plain', status_int=500)
     return result_dict
 
-    # TODO: # blacklist ms run POST
+
+# blacklist ms run POST
+@view_config(route_name='blacklist_msrun', renderer='../templates/upload_templates/blacklist_msrun.pt',
+             request_method="POST")
+def blacklist_ms_run_post(request):
+    try:
+        blacklist = ast.literal_eval(request.params["ms_runs"])
+
+        for row in blacklist:
+            if row['filename'] != " ":
+                log_writer("blacklist",
+                           strftime("%Y.%m.%d %H:%M:%S", gmtime()) + "\t" +
+                           row['filename'] + "\t" +
+                           row['person'] + "\t" +
+                           row['trash_reason'] +
+                           "\n")
+
+                DBSession.query(MsRun).filter(MsRun.filename == row['filename']).update(
+                    {"flag_trash": 1,
+                     'trash_reason': row['trash_reason'],
+                     'ms_run_date': None,
+                     'used_share': None,
+                     'comment': None,
+                     'sample_mass': None,
+                     'antibody_set': '',
+                     'antibody_mass': None,
+                     'sample_volume': None
+                    })
+
+                transaction.commit()
+    except:
+        return Response(conn_err_msg, content_type='text/plain', status_int=500)
+    return dict()
+
+
+# unblacklist ms run GET
+@view_config(route_name='unblacklist_msrun', renderer='../templates/upload_templates/unblacklist_msrun.pt',
+             request_method="GET")
+def unblacklist_ms_run(request):
+    result_dict = dict()
+    if "run" in request.params:
+        result_dict["run"] = request.params["run"]
+    else:
+        result_dict["run"] = ""
+    try:
+
+        # Query Data for autocomplete
+
+        # Person
+        query = DBSession.query(Source.person.distinct())
+        person = js_list_creator(query.all())
+        result_dict["person"] = person
+
+        # MS Runs
+        query = DBSession.query(MsRun.filename.distinct())
+        query = query.filter(MsRun.flag_trash == 1)
+        filename = js_list_creator(query.all())
+        result_dict["filename"] = filename
+
+    except:
+        return Response(conn_err_msg, content_type='text/plain', status_int=500)
+    return result_dict
+
+
+# unblacklist ms run POST
+@view_config(route_name='unblacklist_msrun', renderer='../templates/upload_templates/unblacklist_msrun.pt',
+             request_method="POST")
+def unblacklist_ms_run_post(request):
+    try:
+        unblacklist = ast.literal_eval(request.params["ms_runs"])
+
+        for row in unblacklist:
+            if row['filename'] != " ":
+                log_writer("unblacklist", strftime("%Y.%m.%d %H:%M:%S", gmtime())+"\t"+row['filename']+"\t"+row['person']+ "\n")
+
+                DBSession.query(MsRun).filter(MsRun.filename == row['filename']).update({"flag_trash": 0, 'trash_reason' : None})
+
+
+                transaction.commit()
+
+
+    except:
+         return Response(conn_err_msg, content_type='text/plain', status_int=500)
+    return dict()
+

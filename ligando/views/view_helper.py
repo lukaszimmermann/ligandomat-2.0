@@ -4,6 +4,17 @@ __author__ = 'Linus Backert'
 
 from sqlalchemy.orm import aliased
 
+# writes to log files
+def log_writer(logfile, message):
+    logs = {'source_metadata': 'source_metadata_log.txt',
+            'ms_run_metadata': 'ms_run_metadata_log.txt',
+            "blacklist": "blacklist_log.txt",
+            "unblacklist": "unblacklist_log.txt",
+    }
+    with open("logs/"+logs[logfile], "a") as log:
+        log.write(message)
+    log.close()
+
 
 # Extracts the number of digits of the hla typing
 def hla_digits_extractor(hla):

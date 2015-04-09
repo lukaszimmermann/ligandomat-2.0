@@ -41,17 +41,14 @@ class MsRun(Base):
     ms_run_date = Column(Date)
     used_share = Column(Float(asdecimal=True))
     comment = Column(Text(collation=u'latin1_german1_ci'))
-    source_source_id = Column(ForeignKey(u'source.source_id'), index=True)
+    source_source_id = Column(ForeignKey(u'source.source_id'), index=True, nullable=True)
     method_file = Column(String(255, u'latin1_german1_ci'))
     sample_mass = Column(Float(asdecimal=True))
     antibody_set = Column(String(7, u'latin1_german1_ci'), nullable=False)
     antibody_mass = Column(Float(asdecimal=True))
-    magna = Column(Integer, nullable=False, server_default=text("'0'"))
     sample_volume = Column(Float(asdecimal=True))
-    replication = Column(String(15)) # TODO: set correct size
-    prep_date = Column(Date)
-    prep_comment = Column(Text(collation=u'latin1_german1_ci'))
-    flag_mzml_sph130927 = Column(Integer(),nullable=False)
+    replicate = Column(String(15))
+    flag_mzml = Column(Integer(),nullable=False)
     flag_masc_sph130927 = Column(Integer(),nullable=False)
     flag_xtan_sph130927 = Column(Integer(),nullable=False)
     flag_omss_sph130927 = Column(Integer(),nullable=False)
@@ -168,13 +165,14 @@ class SpectrumHit(Base):
     sequence = Column(String(60, u'latin1_german1_ci'), index=True)
     flag_traffic_light = Column(Integer(),nullable=False)
     length = Column(Integer)
-    intern_ms_id = Column(Integer)
+    # i have no idea where this comes from
+    #intern_ms_id = Column(Integer)
 
 
     ms_run_ms_run = relationship(u'MsRun')
     source_source = relationship(u'Source')
     protein_proteins = relationship(u'Protein', secondary='spectrum_protein_map')
-    fk_processing = relationship(u'Processing')
+    #fk_processing = relationship(u'Processing')
 
 
 # spectrum hit protein map table

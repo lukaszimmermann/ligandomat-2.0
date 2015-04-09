@@ -30,6 +30,7 @@ def main(global_config, **settings):
     config.add_route('upload_metadata_source', '/upload_metadata_source')
     config.add_route('upload_metadata_ms_run', '/upload_metadata_ms_run')
     config.add_route('blacklist_msrun', '/blacklist_msrun')
+    config.add_route('unblacklist_msrun', '/unblacklist_msrun')
     # base pages
     config.add_route('peptide', '/peptide/{peptide}')
     config.add_route('source', '/source/{source}')

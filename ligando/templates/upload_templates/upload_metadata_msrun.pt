@@ -194,7 +194,7 @@
 
     function removeRow(id) {
         for (var i = 0; i < cells.length; i++) {
-            document.getElementById(cells[i] + "_" + id).innerHTML = "";
+            document.getElementById(cells[i] + "_" + id).innerHTML = " ";
         }
         $('#ms_table').dataTable().fnAdjustColumnSizing();
     }
