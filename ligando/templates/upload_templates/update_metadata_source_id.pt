@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html metal:use-macro="load: ../base_layout.pt">
+<html lang="${request.locale_name}">
+<head>
+
+
+
+
+</head>
+
+<body>
+<div class="main_wrapper">
+    <div id="statistic_wrapper" class="wrapper" >
+    <div class="updategrid">
+<div style="float:left; width: 480px">
+<table id="source_update">
+</table>
+         <button id="check_button" class="nice_button" onclick="checkInput()">Check Input</button>
+        <form id="submit" method="POST" action=update_metadata_source>
+            <input type='text' id='commit_field' hidden name="sources">
+            <input type="submit" id="commit_button" class="nice_button" hidden value="Update Sources">
+        </form>
+    </div>
+<div style="float: right; width: 480px; text-align: left">
+    Please fill out the fields, which need to be updated. Empty fields will be ignored and instead the old data will be used.
+</div>
+        </div>
+        </div>
+</div>
+
+<!--?TODO: HLA picker-->
+
+<script>
+
+var cells = ['patient_id',
+    'organ',
+    'organism',
+    'histology',
+    'dignity',
+    'location',
+    'metastatis',
+    'celltype',
+    'typing',
+    'person',
+    'comment',
+    'treatment'];
+// cells with nice names
+var nice_names = {'patient_id': 'Patient ID',
+    'organ': 'Organ',
+    'organism': 'Organism',
+    'histology': 'Histology',
+    'dignity': 'Dignity',
+    'location': 'Location',
+    'metastatis': 'Metastatis',
+    'celltype': 'Celltype',
+    'typing': 'Typing',
+    'person': 'Person',
+    'comment': 'Comment',
+    'treatment': 'Treatment'};
+
+var autocomplete_dict = {'patient_id':${patient_id},
+    'organ':${organ},
+    'organism':${organism},
+    'histology':${histology},
+    'dignity':${dignity},
+    'location':${location},
+    'metastatis':${metastatis},
+    'celltype':${celltype},
+    'person':${person},
+    'comment':${comment},
+    'treatment': ${treatment}};
+
+
+// Create the input table
+$(function () {
+    var table = document.getElementById('source_update');
+    var markup = ['<thead><th> </th><th>Current</th><th>New</th></thead> <tbody>'];
+    markup.push('<tr><td>Source ID</td><td id="source_id"></td><td style="width:100%" id="source_ids"></td></tr>')
+    for(var i =0; i < cells.length; i++){
+        if (i % 2 != 0) {
+                markup.push('<tr >');
+            } else {
+                markup.push('<tr class="alt">');
+           }
+        markup.push('<td>'+nice_names[cells[i]]+'</td><td> <div id="'+cells[i]+'"></div></td><td ><input style="width:100%" id="'+cells[i]+'s" > </td></tr>')
+    }
+
+    markup.push('<tr class="alt"><td>Preperation Date</td><td> <div id="prep_date"></div></td><td ><input style="width:100%" id="prep_dates" > </td></tr>')
+    markup.push('</tbody>');
+    table.innerHTML = markup.join("");
+});
+
+
+$(function(){
+            //console.log(${source}['celltype']);
+    for (var key in ${source}[0]) {
+      document.getElementById(key).innerHTML = ${source}[0][key];
+    }
+    document.getElementById("source_id").innerHTML =${id};
+    document.getElementById("source_ids").innerHTML =${id};
+    document.getElementById("prep_date").innerHTML =${source}[0]["prep_date"];
+
+    var typing = "";
+    for (var i in ${hla}) {
+        var to_print = true;
+        for (var j in ${hla}) {
+            if(${hla}[j]["hla_string"].search(${hla}[i]["hla_string"]) != -1 && i!=j){
+                to_print = false;
+            }
+        }
+        if(to_print){
+            typing = typing +"; " + ${hla}[i]["hla_string"];
+        }
+    }
+    document.getElementById("typing").innerHTML = typing.substr(1);
+
+    }
+);
+
+
+// autocomplete
+$(function () {
+    for (var i = 0; i < cells.length; i++) {
+
+        if (cells[i] == 'typing') {
+
+        } else {
+            $("#" + cells[i] + "s").autocomplete({
+                minLength: 0,
+                minChars: 0,
+                source: autocomplete_dict[cells[i]]
+            }).focus(function () {
+                $(this).autocomplete("search", "");
+            });
+        }
+    }
+
+});
+
+
+// Function to check the input in the table. If past the "Commit" button appears
+function checkInput() {
+    for (var l = 0; l < cells.length; l++) {
+        if(document.getElementById(cells[l] + "s").value != "") {
+            if (cells[l] != "typing") {
+                if (($.inArray(document.getElementById(cells[l] + "s").value, autocomplete_dict[cells[l]])) == -1) {
+                    if (!confirm("The " + nice_names[cells[l]] + " "
+                            + document.getElementById(cells[l] + "s").value + " is unknown. Is it really correct? (No typos?)")) {
+                        return;
+                    }
+                }
+            } else {
+                if (document.getElementById(cells[l] + "s").value.indexOf(",") != -1) {
+                    alert(", is not allowed in HLA-Typing");
+                    return;
+                }
+                if (document.getElementById(cells[l] + "s").value.indexOf("HLA") != -1) {
+                    alert("The 'HLA' prefix is not necessary in HLA-Typing. Please shorten your typings.");
+                    return;
+                }
+                var hla_split = document.getElementById(cells[l] + "s").value.split(";");
+                for (var hla in hla_split) {
+                    if (hla_split[hla].trim().indexOf("*") == -1) {
+                        if (!confirm("Your HLA-Typing '" + hla_split[hla] + "' seems to missing a * or you try to upload Typing below 2-digits. This is not recommended!. \n Continue anyway?")) {
+                            return;
+                        }
+                    }
+                    if (hla_split[hla].trim().indexOf(" ") != -1) {
+                        alert("Your HLA-Typing contains incorrect whitespace. '" + hla_split[hla] + "'");
+                    }
+                }
+            }
+        }
+
+    }
+    // create commit values dict and set these as value of the hidden commit_field
+    var val = "{";
+    for (var l = 0; l < cells.length; l++) {
+        val += "'" + cells[l] + "':'" + document.getElementById(cells[l] + "s").value + "',";
+    }
+    val += "'source_id':'" + ${id} + "',";
+    console.log(document.getElementById("prep_dates").value);
+    val += "'prep_date':'" +document.getElementById("prep_dates").value + "'";
+    val += "}";
+
+    document.getElementById("commit_field").value = val;
+    $("#commit_button").show();
+}
+
+// Datepicker
+    $(function() {
+        $( "#prep_dates" ).datepicker({
+                    dateFormat: "yy-mm-dd"
+                }
+        );
+    });
+
+
+
+</script>
+
+
+</body>
+</html>

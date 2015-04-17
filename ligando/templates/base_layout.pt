@@ -60,6 +60,8 @@
         <a href="/upload_metadata_ms_run">MS Run Upload</a>
         <a href="/blacklist_msrun">Blacklist MS Run</a>
         <a href="/unblacklist_msrun">Recover blacklisted MS Run</a>
+        <a href="/update_metadata_source">Source Update</a>
+        <a href="/update_metadata_ms_run">MS Run Update</a>
         </div>
     </li>
 </ul>

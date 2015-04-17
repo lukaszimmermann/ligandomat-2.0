@@ -1,5 +1,8 @@
 from time import strftime, gmtime
-from sqlalchemy import update
+from pyramid.httpexceptions import HTTPFound
+from pyramid.renderers import render
+from sqlalchemy import update, func, String
+import simplejson as json
 
 __author__ = 'Linus Backert'
 
@@ -14,7 +17,7 @@ from ligando.models import (
     Source,
     MsRun,
     HlaType,
-    t_hla_map)
+    t_hla_map, SpectrumHit, PeptideRun)
 from ligando.views.view_helper import js_list_creator, conn_err_msg, hla_digits_extractor, log_writer
 
 # Upload Source metadata GET!
@@ -24,10 +27,11 @@ def upload_metadata_source(request):
     try:
         # query data for autocomplete
         result_dict = dict()
-        allowed_elements = {"source_names": Source.name, "organ": Source.organ,
+        allowed_elements = {"patient_id": Source.patient_id, "organ": Source.organ,
                             "organism": Source.organism, "histology": Source.histology, "dignity": Source.dignity,
                             "celltype": Source.celltype, "location": Source.location, "metastatis": Source.metastatis,
-                            "person": Source.person, "typing": HlaType.hla_string}
+                            "treatment": Source.treatment, "person": Source.person, "typing": HlaType.hla_string,
+                            'comment' : Source.comment}
 
         for k, v in allowed_elements.iteritems():
             query = DBSession.query(v)
@@ -38,7 +42,6 @@ def upload_metadata_source(request):
         return Response(conn_err_msg, content_type='text/plain', status_int=500)
     return result_dict
 
-
 # Upload Source metadata POST!
 @view_config(route_name='upload_metadata_source', renderer='../templates/upload_templates/base_layout.pt',
              request_method="POST")
@@ -47,41 +50,55 @@ def upload_metadata_source_post(request):
     # Check if source already in DB
     for source in source_upload:
         try:
-            sources = DBSession.query(Source.source_id).filter(Source.name == source['source']).all()
+            query = DBSession.query(Source.source_id) \
+                .filter(Source.patient_id == source['patient_id']) \
+                .filter(Source.organ == source['organ']) \
+                .filter(Source.organism == source['organism']) \
+                .filter(Source.histology == source['histology']) \
+                .filter(Source.dignity == source['dignity']) \
+                .filter(Source.location == source['location']) \
+                .filter(Source.treatment == source['treatment']) \
+                .filter(Source.metastatis == source['metastatis']) \
+                .filter(Source.celltype == source['celltype']) \
+                .filter(Source.comment == source['comment']) \
+                .filter(Source.person == source['person']) \
+                .filter(Source.prep_date == source['prep_date'])
+
+            test_source = query.all()
         except DBAPIError:
             return Response(conn_err_msg, content_type='text/plain', status_int=500)
         # if in DB abort whole upload
-        if len(sources) > 0:
-            return Response("The source " + source['source'] + " is already in the Database. Aborted whole upload!",
+        if len(test_source) > 0:
+            log_writer("source_metadata_complete", source)
+            log_writer("source_metadata_complete","The source is already in the Database. Aborted whole upload!")
+            return Response("The source is already in the Database. Aborted whole upload!",
                             content_type='text/plain', status_int=500)
 
     # upload each source
     for source in source_upload:
+
+        # ####################################################
+        # Source:                                           #
+        # ####################################################
+
+        try:
+            sample_id = source["patient_id"]+"_"+ source["organ"]+"_"+source['dignity']+"_"+ source['histology']+"_"+\
+                        source['celltype'] +"_"+ source['location'] +"_"+ source['treatment'] +"_"+ source['prep_date']
+
+            source_insert = Source(patient_id=source['patient_id'], organ=source['organ'], organism=source['organism'],
+                                   histology=source['histology'], dignity=source['dignity'],
+                                   location=source['location'], treatment=source['treatment'],
+                                   metastatis=source['metastatis'], celltype=source['celltype'],
+                                   comment=source['comment'], prep_date= source['prep_date'],
+                                   person=source['person'], sample_id=sample_id)
+            #DBSession.add(source_insert)
+            #DBSession.flush()
+            #source_id = source_insert.source_id
+        except DBAPIError:
+            return Response(conn_err_msg + "\n Insert into Source failed!",
+                            content_type='text/plain', status_int=500)
+
         if source['typing'] is not "":
-            # ###############
-            # hla_lookup   #
-            # ###############
-            try:
-                query = DBSession.query(HlaLookup.hla_lookup_id)
-                query = query.filter(HlaLookup.hla_category == source['typing'])
-                hla_lookup_ids = query.all()
-
-            except DBAPIError:
-                return Response(conn_err_msg, content_type='text/plain', status_int=500)
-            if len(hla_lookup_ids) == 0:
-                try:
-                    # stmt = DBSession.insert(HlaLookup.insert).values(hla_category=source['typing'])
-                    hla_lookup = HlaLookup(hla_category=source['typing'])
-                    DBSession.add(hla_lookup)
-                    DBSession.flush()
-                    hla_lookup_id = hla_lookup.hla_lookup_id
-                except DBAPIError:
-                    return Response(conn_err_msg + "\n HLA-Category insert failed", content_type='text/plain',
-                                    status_int=500)
-            else:
-                hla_lookup_id = hla_lookup_ids[0][0]
-                hla_lookup = DBSession.query(HlaLookup).filter(HlaLookup.hla_category == source['typing']).all()[0]
-
             # ###############
             # hla_types    #
             # ###############
@@ -113,38 +130,28 @@ def upload_metadata_source_post(request):
                     # ###############
 
                     try:
-                        query = DBSession.query(t_hla_map).filter(HlaType.hla_types_id == hla_types_id).filter(
-                            HlaLookup.hla_lookup_id == hla_lookup_id)
-                        hla_map_ids = query.all()
-                    except DBAPIError:
-                        return Response(conn_err_msg, content_type='text/plain', status_int=500)
+                        source_insert.append(hla_type)
 
-                    if len(hla_map_ids) == 0:
-                        try:
-                            hla_lookup.fk_hla_typess.append(hla_type)
-                            DBSession.add(hla_lookup)
-                            DBSession.flush()
-                            DBSession.flush()
-                        except DBAPIError:
-                            return Response(conn_err_msg + "\n Insert into Hla-Map failed!",
-                                            content_type='text/plain', status_int=500)
+                    except DBAPIError:
+                        return Response(conn_err_msg + "\n Insert into Hla-Map failed!",
+                                        content_type='text/plain', status_int=500)
+
+            try:
+                log_writer("source_metadata", source)
+                log_writer("source_metadata_complete", source)
+                DBSession.add(source_insert)
+                DBSession.flush()
+            except DBAPIError:
+                return Response(conn_err_msg + "\n Insert into Source failed!",
+                                content_type='text/plain', status_int=500)
+
         else:
-            hla_lookup_id = "NULL"
-        # ####################################################
-        # Source:                                           #
-        # ####################################################
-        try:
-            source_insert = Source(name=source['source'], organ=source['organ'], organism=source['organism'],
-                                   histology=source['histology'], dignity=source['dignity'],
-                                   location=source['location'],
-                                   metastatis=source['metastatis'], celltype=source['celltype'],
-                                   comment=source['comment'],
-                                   fk_hla_lookup_id=hla_lookup_id, person=source['person'])
+            log_writer("source_metadata", source)
+            log_writer("source_metadata_complete", source)
             DBSession.add(source_insert)
             DBSession.flush()
-        except DBAPIError:
-            return Response(conn_err_msg + "\n Insert into Source failed!",
-                            content_type='text/plain', status_int=500)
+            hla_lookup_id = "NULL"
+
     return dict()
 
 
@@ -159,12 +166,10 @@ def upload_metadata_ms_run(request):
     else:
         result_dict["run"] = ""
     try:
-        # query data for autocomplete
-        # TODO: Show only processed runs without metadata
-        allowed_elements = {"used_share": MsRun.used_share, "source": Source.name,
+    # query data for autocomplete
+        allowed_elements = {"used_share": MsRun.used_share, "source_id": Source.source_id,
                             "sample_mass": MsRun.sample_mass, "sample_volume": MsRun.sample_volume,
-                            "antibody_set": MsRun.antibody_set, "antibody_mass": MsRun.antibody_mass,
-                            "magna": MsRun.magna}
+                            "antibody_set": MsRun.antibody_set, "antibody_mass": MsRun.antibody_mass}
 
         for k, v in allowed_elements.iteritems():
             query = DBSession.query(v)
@@ -176,6 +181,7 @@ def upload_metadata_ms_run(request):
         for k, v in allowed_elements.iteritems():
             query = DBSession.query(v)
             query = query.filter(MsRun.source_source_id == None)
+            query = query.filter(MsRun.flag_trash == 0)
             query = query.group_by(v)
             query_result = js_list_creator(query.all())
             result_dict[k] = query_result
@@ -184,7 +190,7 @@ def upload_metadata_ms_run(request):
     return result_dict
 
 
-# uplad MS run metadata POST
+# upload MS run metadata POST
 @view_config(route_name='upload_metadata_ms_run', renderer='../templates/upload_templates/base_layout.pt',
              request_method="POST")
 def upload_metadata_ms_run_post(request):
@@ -202,18 +208,7 @@ def upload_metadata_ms_run_post(request):
                             content_type='text/plain', status_int=500)
     # upload the each MS run
     for ms_run in ms_run_upload:
-        # check if the reported source is in DB
-        try:
-            source = DBSession.query(Source.source_id).filter(Source.name == ms_run["source"]).all()
-        except DBAPIError:
-            return Response(conn_err_msg, content_type='text/plain', status_int=500)
-        if len(source) == 0:
-            # abort whole upload if source is unknown
-            return Response("The source " + ms_run[
-                'source'] + " is not known in the Database. Aborted whole upload! Pleas provide the source metadata first!",
-                            content_type='text/plain', status_int=500)
-        else:
-            source_id = source[0][0]
+        source_id = ms_run["source_id"]
 
         # update if already in DB (without metadata included)
         try:
@@ -237,35 +232,35 @@ def upload_metadata_ms_run_post(request):
             ms_run_update[0].antibody_set = ms_run['antibody_set'].replace(" ", "")
             if ms_run['antibody_mass'] != "" and ms_run['antibody_mass'] != "None":
                 ms_run_update[0].antibody_mass = ms_run['antibody_mass']
-            ms_run_update[0].magna = ms_run['magna']
-            if ms_run['prep_date'] != "":
-                ms_run_update[0].prep_date = ms_run['prep_date']
-            if ms_run['prep_comment'] != "":
-                ms_run_update[0].prep_comment = ms_run['prep_comment']
-            DBSession.flush()
-        else:
-            # This should not happen, cause only metadata for ms runs which are in DB can be uploaded
+
+            # Updating all crossreferences for the source_id
             try:
-                ms_run_insert = MsRun(filename=ms_run['filename'],
-                                      source_source_id=source_id,
-                                      ms_run_date=ms_run['date'] if ms_run['date'] != "" else None,
-                                      used_share=ms_run['used_share'] if ms_run['used_share'] != "" and ms_run[
-                                                                                                            'used_share'] != "None" else None,
-                                      comment=ms_run['comment'] if ms_run['comment'] != "" else None,
-                                      sample_mass=ms_run['sample_mass'] if ms_run['sample_mass'] != "" and ms_run[
-                                                                                                               'sample_mass'] != "None" else None,
-                                      sample_volume=ms_run['sample_volume'] if ms_run['sample_volume'] != "" and ms_run[
-                                                                                                                     'sample_volume'] != "None" else None,
-                                      antibody_set=ms_run['antibody_set'].replace(" ", ""),
-                                      antibody_mass=ms_run['antibody_mass'] if ms_run['antibody_mass'] != "" and ms_run[
-                                                                                                                     'antibody_mass'] != "None" else None,
-                                      magna=ms_run['magna'],
-                                      prep_date=ms_run['prep_date'] if ms_run['prep_date'] != "" else None,
-                                      prep_comment=ms_run['prep_comment'] if ms_run['prep_comment'] != "" else None)
-                DBSession.add(ms_run_insert)
-                DBSession.flush()
-            except DBAPIError:
-                return Response(conn_err_msg + " \n MsRun insert failed", content_type='text/plain', status_int=500)
+                spectrum_hits = DBSession.query(SpectrumHit) \
+                    .filter(SpectrumHit.ms_run_ms_run_id == ms_run_update[0].ms_run_id).update(
+                    {'source_source_id': ms_run['source_source_id']})
+            except:
+                log_writer("ms_run_upload_complete", "SpectrumHit update failed!")
+                DBSession.rollback()
+                return Response("SpectrumHit update failed!",
+                                content_type='text/plain', status_int=500)
+            try:
+                peptide_runs = DBSession.query(PeptideRun) \
+                    .filter(PeptideRun.ms_run_ms_run_id == ms_run_update[0].ms_run_id).update(
+                    {'source_source_id': ms_run['source_source_id']})
+
+            except:
+                log_writer("ms_run_update_complete", "Peptide Run update failed!")
+                DBSession.rollback()
+                return Response("Peptide Run update failed!",
+                                content_type='text/plain', status_int=500)
+            transaction.commit()
+            DBSession.flush()
+            log_writer("ms_run_metadata_complete", ms_run)
+            log_writer("ms_run_metadata", ms_run)
+        else:
+            log_writer("ms_run_metadata_complete"," MsRun insert failed! Only already registered MS Runs can be uploaded.")
+            DBSession.rollback()
+            return Response(conn_err_msg + " \n MsRun insert failed! Only already registered MS Runs can be uploaded.", content_type='text/plain', status_int=500)
 
     return dict()
 
@@ -282,7 +277,6 @@ def blacklist_ms_run(request):
     try:
 
         # Query Data for autocomplete
-
         # Person
         query = DBSession.query(Source.person.distinct())
         person = js_list_creator(query.all())
@@ -317,8 +311,8 @@ def blacklist_ms_run_post(request):
                            strftime("%Y.%m.%d %H:%M:%S", gmtime()) + "\t" +
                            row['filename'] + "\t" +
                            row['person'] + "\t" +
-                           row['trash_reason'] +
-                           "\n")
+                           row['trash_reason']
+                           )
 
                 DBSession.query(MsRun).filter(MsRun.filename == row['filename']).update(
                     {"flag_trash": 1,
@@ -376,15 +370,273 @@ def unblacklist_ms_run_post(request):
 
         for row in unblacklist:
             if row['filename'] != " ":
-                log_writer("unblacklist", strftime("%Y.%m.%d %H:%M:%S", gmtime())+"\t"+row['filename']+"\t"+row['person']+ "\n")
-
+                log_writer("unblacklist", strftime("%Y.%m.%d %H:%M:%S", gmtime())+"\t"+row['filename']+"\t"+row['person'])
                 DBSession.query(MsRun).filter(MsRun.filename == row['filename']).update({"flag_trash": 0, 'trash_reason' : None})
-
-
                 transaction.commit()
 
 
     except:
          return Response(conn_err_msg, content_type='text/plain', status_int=500)
     return dict()
+
+
+# Update Source metadata GET!
+@view_config(route_name='update_metadata_source', renderer='../templates/upload_templates/update_metadata_source_id.pt',
+             request_method="GET")
+def update_metadata_source(request):
+    if "id" in request.params:
+        result_dict = dict()
+        result_dict["id"] = request.params['id']
+        query = DBSession.query(Source.patient_id, Source.organ,
+                                Source.organism, Source.histology,
+                                Source.dignity,Source.celltype,
+                                Source.location, Source.metastatis,
+                                Source.treatment,Source.person,
+                                func.cast(Source.prep_date, String).label("prep_date")
+        ).filter(Source.source_id==request.params["id"])
+
+        source = json.dumps(query.all())
+        result_dict['source'] = source
+        query = DBSession.query(Source.source_id, HlaType.hla_string).join(t_hla_map).join(HlaType).filter(Source.source_id==request.params["id"])
+        hla = json.dumps(query.all())
+        result_dict['hla'] = hla
+
+
+        # getting autocomplete items
+        allowed_elements = {"patient_id": Source.patient_id, "organ": Source.organ,
+                            "organism": Source.organism, "histology": Source.histology,
+                            "dignity": Source.dignity, "celltype": Source.celltype,
+                            "location": Source.location, "metastatis": Source.metastatis,
+                            "treatment": Source.treatment, "person": Source.person,
+                            "comment" : Source.comment, "typing": HlaType.hla_string}
+        for k, v in allowed_elements.iteritems():
+            query = DBSession.query(v)
+            query = query.group_by(v)
+            query_result = js_list_creator(query.all())
+            result_dict[k] = query_result
+        #result_dict['original'] = source
+
+        return result_dict
+
+    else:
+        try:
+            # query data for autocomplete
+            result_dict = dict()
+            allowed_elements = {"source_id": Source.source_id}
+
+            for k, v in allowed_elements.iteritems():
+                query = DBSession.query(v)
+                query = query.group_by(v)
+                query_result = js_list_creator(query.all())
+                result_dict[k] = query_result
+            # setting a different renderer
+            result = render('../templates/upload_templates/update_metadata_source.pt',
+                            result_dict,
+                            request=request)
+            response = Response(result)
+            return response
+        except:
+            return Response(conn_err_msg, content_type='text/plain', status_int=500)
+
+
+
+# Update Source metadata POST!
+@view_config(route_name='update_metadata_source', renderer='../templates/upload_templates/update_metadata_source_id.pt',
+             request_method="POST")
+def update_metadata_source_post(request):
+    source = ast.literal_eval(request.params["sources"])
+    try:
+        log_writer("source_update_complete", source)
+        source_update = DBSession.query(Source).join(t_hla_map).join(HlaType).filter(Source.source_id == source["source_id"]).all()
+    except:
+        log_writer("source_update_complete", " Source update failed!")
+        return Response(conn_err_msg + " \n Source update failed", content_type='text/plain', status_int=500)
+    if len(source_update)>0:
+        if source['patient_id'] != "":
+            source_update[0].patient_id = source['patient_id']
+        if source['organ'] != "":
+            source_update[0].organ = source['organ']
+        if source['organism'] != "":
+            source_update[0].orgnaism = source['organism']
+        if source['comment'] != "":
+            source_update[0].comment = source['comment']
+        if source['histology'] != "":
+            source_update[0].histology = source['histology']
+        if source['dignity'] != "":
+            source_update[0].dignity = source['dignity']
+        if source['celltype'] != "":
+            source_update[0].celltype = source['celltype']
+        if source['person'] != "":
+            source_update[0].person = source['person']
+        if source['location'] != "":
+            source_update[0].location = source['location']
+        if source['metastatis'] != "":
+            source_update[0].metastatis = source['metastatis']
+        if source['treatment'] != "":
+            source_update[0].treatment = source['treatment']
+        if source['prep_date'] != "":
+            source_update[0].prep_date = source['prep_date']
+        source_update[0].sample_id = source_update[0].patient_id + "_" + source_update[0].organ + "_" + source_update[0].dignity\
+                    + "_" + source_update[0].histology + "_" + \
+                    source_update[0].celltype + "_" + source_update[0].location + "_" + source_update[0].treatment\
+                    + "_" + source_update[0].prep_date
+
+
+        if source['typing'] != "":
+            # remove all mappings
+            source_update[0].hlatypes[:] = []
+            # create all hla links
+            hla_split = source['typing'].split(";")
+            for hla_typing in hla_split:
+                hla_typing_split = hla_typing.strip().split(":")
+                for i in range(0, len(hla_typing_split)):
+                    sub_type = ":".join(hla_typing_split[0:i + 1])
+                    try:
+                        query = DBSession.query(HlaType.hla_types_id).filter(HlaType.hla_string == sub_type)
+                        hla_types_id = query.all()
+                    except DBAPIError:
+                        return Response(conn_err_msg, content_type='text/plain', status_int=500)
+                    # unknown hla_lookup
+                    if len(hla_types_id) == 0:
+                        try:
+                            hla_type = HlaType(hla_string=sub_type, digits=hla_digits_extractor(sub_type))
+                            DBSession.add(hla_type)
+                            DBSession.flush()
+                            hla_types_id = hla_type.hla_types_id
+                        except DBAPIError:
+                            return Response(conn_err_msg + "\n Insert into Hla-Types failed!",
+                                            content_type='text/plain', status_int=500)
+                    else:
+                        hla_types_id = hla_types_id[0]
+                        hla_type = query = DBSession.query(HlaType).filter(HlaType.hla_string == sub_type).all()[0]
+                    try:
+                        # add the hla type
+                        source_update[0].hlatypes.append(hla_type)
+
+                    except DBAPIError:
+                        return Response(conn_err_msg + "\n Insert into Hla-Map failed!",
+                                        content_type='text/plain', status_int=500)
+
+    try:
+        transaction.commit()
+        DBSession.flush()
+        log_writer("source_update", source)
+    except:
+        log_writer("source_update_complete", " Source update failed!")
+        DBSession.rollback()
+        return Response("Source update failed!",
+                        content_type='text/plain', status_int=500)
+    return HTTPFound(location="/update_metadata_source?id=%s" % source["source_id"])
+
+
+
+# Update MS run metadata GET!
+@view_config(route_name='update_metadata_ms_run', renderer='../templates/upload_templates/update_metadata_msrun_id.pt',
+             request_method="GET")
+def update_metadata_msrun(request):
+    if "filename" in request.params:
+        result_dict = dict()
+        result_dict["filename"] = request.params['filename']
+        query = DBSession.query(MsRun.filename, MsRun.used_share,
+                                MsRun.comment, MsRun.source_source_id,
+                                MsRun.sample_mass, MsRun.sample_volume,
+                                MsRun.antibody_set, MsRun.antibody_mass,
+                                func.cast(MsRun.ms_run_date, String).label("ms_run_date")
+        ).filter(MsRun.filename==request.params["filename"])
+
+        ms_run = json.dumps(query.all())
+        result_dict['ms_run'] = ms_run
+
+        # getting autocomplete items
+        allowed_elements = {"used_share":MsRun.used_share, "comment":MsRun.comment,
+                            "sample_mass":MsRun.sample_mass, "antibody_set":MsRun.antibody_set,
+                            "antibody_mass":MsRun.antibody_mass,"sample_volume":MsRun.sample_volume, 'source_source_id': Source.source_id }
+        for k, v in allowed_elements.iteritems():
+            query = DBSession.query(v)
+            query = query.group_by(v)
+            query_result = js_list_creator(query.all())
+            result_dict[k] = query_result
+        #result_dict['original'] = source
+
+        return result_dict
+
+    else:
+        try:
+            # query data for autocomplete
+            result_dict = dict()
+            result_dict["filename"] = js_list_creator(DBSession.query(MsRun.filename).filter(MsRun.flag_trash==0).group_by(MsRun.filename).all())
+
+            # setting a different renderer
+            result = render('../templates/upload_templates/update_metadata_msrun.pt',
+                            result_dict,
+                            request=request)
+            response = Response(result)
+            return response
+        except:
+            return Response(conn_err_msg, content_type='text/plain', status_int=500)
+
+
+
+# Update MS run metadata POST!
+@view_config(route_name='update_metadata_ms_run', renderer='../templates/upload_templates/update_metadata_msrun_id.pt',
+             request_method="POST")
+def update_metadata_msrun_post(request):
+    ms_run = ast.literal_eval(request.params["ms_runs"])
+    # update if already in DB (without metadata included)
+    try:
+        log_writer("ms_run_update_complete", ms_run)
+        ms_run_update = DBSession.query(MsRun).filter(MsRun.filename == ms_run["filename"]).all()
+    except:
+        log_writer("ms_run_update_complete", " MS Run update failed!")
+        return Response(conn_err_msg + " \n MsRun insert failed", content_type='text/plain', status_int=500)
+    if len(ms_run_update)>0:
+        if ms_run['ms_run_date'] != "":
+            ms_run_update[0].ms_run_date = ms_run['ms_run_date']
+        if ms_run['used_share'] != "":
+            ms_run_update[0].used_share = ms_run['used_share']
+        if ms_run['comment'] != "":
+            ms_run_update[0].comment = ms_run['comment']
+        if ms_run['sample_mass'] != "":
+            ms_run_update[0].sample_mass = ms_run['sample_mass']
+        if ms_run['antibody_set'] != "":
+            ms_run_update[0].antibody_set = ms_run['antibody_set']
+        if ms_run['antibody_mass'] != "":
+            ms_run_update[0].antibody_mass = ms_run['antibody_mass']
+        if ms_run['sample_volume'] != "":
+            ms_run_update[0].sample_volume = ms_run['sample_volume']
+
+        if ms_run['source_source_id'] != "":
+            # TODO: update peptide_run and spectrum_hit if source changed
+            try:
+                spectrum_hits = DBSession.query(SpectrumHit)\
+                    .filter(SpectrumHit.source_source_id == ms_run_update[0].source_source_id).update({'source_source_id': ms_run['source_source_id']})
+            except:
+                log_writer("ms_run_update_complete", "SpectrumHit update failed!")
+                DBSession.rollback()
+                return Response("SpectrumHit update failed!",
+                                content_type='text/plain', status_int=500)
+            try:
+                peptide_runs = DBSession.query(PeptideRun) \
+                    .filter(PeptideRun.source_source_id == ms_run_update[0].source_source_id).update({'source_source_id': ms_run['source_source_id']})
+
+            except:
+                log_writer("ms_run_update_complete", "Peptide Run update failed!")
+                DBSession.rollback()
+                return Response("Peptide Run update failed!",
+                                content_type='text/plain', status_int=500)
+
+            ms_run_update[0].source_source_id = ms_run['source_source_id']
+
+    try:
+        transaction.commit()
+        DBSession.flush()
+        log_writer("ms_run_update", ms_run)
+    except:
+        log_writer("ms_run_update_complete", " MS Run update failed!")
+        DBSession.rollback()
+        return Response("MS Run update failed!",
+                        content_type='text/plain', status_int=500)
+    return HTTPFound(location="/update_metadata_ms_run?filename=%s" % ms_run["filename"])
+
+
 

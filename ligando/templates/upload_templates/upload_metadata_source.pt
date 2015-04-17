@@ -14,8 +14,8 @@
 <div id="metadata_wrapper" class="wrapper">
     <table>
         <tr>
-            <td><label for="sourcetags">Sourcename: </label></td>
-            <td><input type="text" title="The name of the source e.g. AML1" id="sourcetags"></td>
+            <td><label for="patient_idtags">Patient ID: </label></td>
+            <td><input type="text" title="The patient ID of the source e.g. AML1" id="patient_idtags"></td>
             <td><label for="organtags">Organ: </label></td>
             <td><input title=" e.g. kidney, liver" id="organtags"></td>
             <td><label for="organismtags">Organism: </label></td>
@@ -35,18 +35,25 @@
 
             <td><label for="metastatistags">Metastatis: </label></td>
             <td><input value="0" title="0 = no, 1 = metastatis" id="metastatistags"></td>
-            <td><label for="persontags">Person: </label></td>
-            <td><input title="Your name. Umlaute like ä = ae, ü = ue, ö = oe" id="persontags"></td>
+            <td><label for="treatmenttags">Treatment: </label></td>
+            <td><input title="Treatment. Umlaute like ä = ae, ü = ue, ö = oe" id="treatmenttags"></td>
+
         </tr>
         <tr>
+            <td><label for="persontags">Person: </label></td>
+            <td><input title="Your name. Umlaute like ä = ae, ü = ue, ö = oe" id="persontags"></td>
             <td><label for="commenttags">Comment: </label></td>
             <td><input title="Comment. Umlaute like ä = ae, ü = ue, ö = oe" id="commenttags"></td>
+            <td><label for="prep_datetags">Preparation Date: </label></td>
+            <td><input id="prep_datetags"></td>
+        </tr>
+        <tr>
             <td>HLA-Typing:</td>
             <td><input id="typingtags" title="Write or select HLA-Typing. Seperate with ; "></td>
             <td><select id="typing_menu" onchange="addTyping()"></select></td>
         </tr>
 
-
+<!--?TODO: Prep date!!!-->
     </table>
     <div class="datagrid">
         <button onclick="addSource()" class="nice_button">Add Source to list</button>
@@ -69,9 +76,9 @@
 
 
 <script>
-//TODO: no tooltip for sources
+// TODO: check that sources are not the same
 // dict for the different inputs, used to iterate of the different inputs
-var cells = ['source',
+var cells = ['patient_id',
     'organ',
     'organism',
     'histology',
@@ -81,9 +88,11 @@ var cells = ['source',
     'celltype',
     'typing',
     'person',
-    'comment'];
+    'comment',
+    'treatment',
+'prep_date'];
 // cells with nice names
-var nice_names = {'source': 'Sourcename',
+var nice_names = {'patient_id': 'Patient Id',
     'organ': 'Organ',
     'organism': 'Organism',
     'histology': 'Histology',
@@ -93,9 +102,11 @@ var nice_names = {'source': 'Sourcename',
     'celltype': 'Celltype',
     'typing': 'Typing',
     'person': 'Person',
-    'comment': 'Comment'};
+    'comment': 'Comment',
+    'treatment': 'Treatment',
+    'prep_date': "Prep Date"};
 // input which allows autocomplete
-var autocomplete_dict = {'source':${source_names},
+var autocomplete_dict = {'patient_id':${patient_id},
     'organ':${organ},
     'organism':${organism},
     'histology':${histology},
@@ -103,12 +114,14 @@ var autocomplete_dict = {'source':${source_names},
     'location':${location},
     'metastatis':${metastatis},
     'celltype':${celltype},
-    'person':${person}};
+    'person':${person},
+    'comment':${comment},
+    'treatment': ${treatment}};
 
 // Create the input table
 $(function () {
     var table = document.getElementById('source_table');
-    var markup = ['<thead><tr><th>Sourcename</th><th>Organ</th><th>Organism</th><th>Histology</th><th>Dignity</th><th>Celltype</th><th>Location</th><th>Metastatis</th><th>Typing</th><th>Person</th><th>Comment</th><th>Options</th></tr></thead><tbody>'];
+    var markup = ['<thead><tr><th>Patient ID</th><th>Organ</th><th>Organism</th><th>Histology</th><th>Dignity</th><th>Celltype</th><th>Location</th><th>Metastatis</th><th>Treatment</th><th>Typing</th><th>Person</th><th>Comment</th><th>Prep Date</th><th>Options</th></tr></thead><tbody>'];
 
 
     for (var i = 1; i <= 11; i++) {
@@ -117,7 +130,7 @@ $(function () {
         } else {
             markup.push('<tr id="row' + i + '" >');
         }
-        markup.push('<td id="source_' + i + '"> </td>' +
+        markup.push('<td id="patient_id_' + i + '"> </td>' +
                 '<td id="organ_' + i + '"></td>' +
                 '<td id="organism_' + i + '"></td>' +
                 '<td id="histology_' + i + '"></td>' +
@@ -125,9 +138,11 @@ $(function () {
                 '<td id="celltype_' + i + '"></td>' +
                 '<td id="location_' + i + '"></td>' +
                 '<td id="metastatis_' + i + '"></td>' +
+                '<td id="treatment_' + i + '"></td>' +
                 '<td id="typing_' + i + '"></td>' +
                 '<td id="person_' + i + '"></td>' +
                 '<td id="comment_' + i + '"></td>' +
+                '<td id="prep_date_' + i + '"></td>' +
                 '<td>' +
                 '<button type="button" title="Edit" onclick="editRow(' + i + ')"> <img height="12px" src="${request.static_url('ligando:static/images/Pencil-icon.png')}"> </button> <button type="button" title="Copy"  onclick="copyRow(' + i + ')"> <img height="12px" src="${request.static_url('ligando:static/images/copy-icon.png')}"> </button><button type="button" title="Remove" onclick="removeRow(' + i + ')"> <img height="12px" src="${request.static_url('ligando:static/images/Remove-icon.png')}"> </button> </td></tr>')
     }
@@ -139,7 +154,7 @@ $(function () {
 $(function () {
     for (var i = 0; i < cells.length; i++) {
 
-        if (cells[i] == 'typing') {
+        if (cells[i] == 'typing'|| cells[i] == 'prep_date') {
 
         } else {
             $("#" + cells[i] + "tags").autocomplete({
@@ -172,7 +187,7 @@ $(function () {
 
 function findEmptyRow() {
     for (var i = 1; i < 11; i++) {
-        if (document.getElementById("source_" + i).innerHTML == " ") {
+        if (document.getElementById("patient_id_" + i).innerHTML == " ") {
             return i;
         }
     }
@@ -228,16 +243,18 @@ function addTyping() {
 // Function to check the input in the table. If past the "Commit" button appears
 function checkInput() {
     for (var i = 1; i < 11; i++) {
-        if (document.getElementById("source_" + i).innerHTML != " ") {
+        if (document.getElementById("patient_id_" + i).innerHTML != " ") {
             for (var l = 0; l < cells.length; l++) {
                 if (cells[l] != "typing" && cells[l] != "comment") {
                     if (document.getElementById(cells[l] + "_" + i).innerHTML == " ") {
                         alert(nice_names[cells[l]] + " in row " + i + " is not allowed to be empty!");
                         return;
                     }
-                    if (($.inArray(document.getElementById(cells[l] + "_" + i).innerHTML, autocomplete_dict[cells[l]])) == -1) {
-                        if (!confirm("The " + nice_names[cells[l]] + " " + document.getElementById(cells[l] + "_" + i).innerHTML + " in row " + i + " is unknown. Is it really correct? (No typos?)")) {
-                            return;
+                    if (cells[l] != "prep_date" ) {
+                        if (($.inArray(document.getElementById(cells[l] + "_" + i).innerHTML, autocomplete_dict[cells[l]])) == -1) {
+                            if (!confirm("The " + nice_names[cells[l]] + " " + document.getElementById(cells[l] + "_" + i).innerHTML + " in row " + i + " is unknown. Is it really correct? (No typos?)")) {
+                                return;
+                            }
                         }
                     }
                 } else if (cells[l] == "typing") {
@@ -267,7 +284,7 @@ function checkInput() {
     // create commit values dict and set these as value of the hidden commit_field
     var val = "[";
     for (var i = 1; i < 11; i++) {
-        if (document.getElementById("source_" + i).innerHTML != " ") {
+        if (document.getElementById("patient_id_" + i).innerHTML != " ") {
             var temp_dict = "{";
             for (var l = 0; l < cells.length; l++) {
                 temp_dict += "'" + cells[l] + "':'" + document.getElementById(cells[l] + "_" + i).innerHTML + "',";
@@ -296,6 +313,14 @@ $(document).ready(function () {
         oTable.fnAdjustColumnSizing();
     });
 });
+
+  // Datepicker
+    $(function() {
+        $( "#prep_datetags" ).datepicker({
+            dateFormat: "yy-mm-dd"
+        });
+    });
+
 
 </script>
 

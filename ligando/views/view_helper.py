@@ -7,12 +7,18 @@ from sqlalchemy.orm import aliased
 # writes to log files
 def log_writer(logfile, message):
     logs = {'source_metadata': 'source_metadata_log.txt',
+            'source_metadata_complete': 'source_metadata_log_complete.txt',
+            'source_update': 'source_update_log.txt',
+            'source_update_complete': 'source_update_log_complete.txt',
             'ms_run_metadata': 'ms_run_metadata_log.txt',
+            'ms_run_metadata_complete': 'ms_run_metadata_complete_log.txt',
+            'ms_run_update': 'ms_run_update_log.txt',
+            'ms_run_update_complete': 'ms_run_update_log_complete.txt',
             "blacklist": "blacklist_log.txt",
             "unblacklist": "unblacklist_log.txt",
     }
     with open("logs/"+logs[logfile], "a") as log:
-        log.write(message)
+        log.write(str(message)+'\n')
     log.close()
 
 

@@ -130,17 +130,17 @@ def source_id_page(request):
         )
         query = query.join(t_hla_map)
         query = query.join(HlaType)
-        query = query.filter(Source.patient_id == request.matchdict["source"])
+        query = query.filter(Source.source_id == request.matchdict["source_id"])
         query = query.group_by(Source.source_id)
         metadata = json.dumps(query.all())
 
         query = DBSession.query(MsRun.ms_run_id, MsRun.filename).join(Source).filter(
-            Source.patient_id == request.matchdict["source"])
+            Source.patient_id == request.matchdict["source_id"])
         runs = json.dumps(query.all())
 
     except:
         return Response(conn_err_msg, content_type='text/plain', status_int=500)
-    return {"statistic": statistics, "metadata": metadata, "runs": runs, "source": request.matchdict["source"]}
+    return {"statistic": statistics, "metadata": metadata, "runs": runs, "source": request.matchdict["source_id"]}
 
 
 @view_config(route_name='hla', renderer='../templates/base_templates/hla.pt', request_method="GET")
@@ -259,11 +259,11 @@ def organ_page(request):
 @view_config(route_name='person', renderer='../templates/base_templates/person.pt', request_method="GET")
 def person_page(request):
     try:
-        # TODO: update!
-        query = DBSession.query(Source.histology, Source.patient_id, Source.organ,
+        query = DBSession.query(Source.histology, Source.source_id, Source.patient_id, Source.organ,
                                 Source.comment, Source.dignity, Source.celltype, Source.location,
                                 Source.metastatis, Source.person, Source.organism)
         query = query.filter(Source.person == request.matchdict["person"])
+        query = query.group_by(Source.source_id)
         sources = json.dumps(query.all())
 
         query = DBSession.query(MsRun.ms_run_id, MsRun.filename).join(Source).filter(

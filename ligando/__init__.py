@@ -24,11 +24,14 @@ def main(global_config, **settings):
     config.add_route('orphan_run_overview', '/orphan_runs')
     # DB query
     config.add_route('peptide_query', '/peptide_query')
+    # TODO: finish implementation
     config.add_route('multi_peptide', '/multi_peptide')
     # upload page
     #config.add_route('upload_metadata', '/upload_metadata')
     config.add_route('upload_metadata_source', '/upload_metadata_source')
+    config.add_route('update_metadata_source', '/update_metadata_source')
     config.add_route('upload_metadata_ms_run', '/upload_metadata_ms_run')
+    config.add_route('update_metadata_ms_run', '/update_metadata_ms_run')
     config.add_route('blacklist_msrun', '/blacklist_msrun')
     config.add_route('unblacklist_msrun', '/unblacklist_msrun')
     # base pages

@@ -117,10 +117,10 @@ def peptide_query_result(request):
             query = create_filter(query, 'histology', request.params, "histology", Source, 'histology_rule', False,
                                   set=False)
             query = create_filter(query, 'dignity', request.params, "dignity", Source, 'dignity_rule', False, set=False)
-            query = create_filter(query, 'hla_typing', request.params, "hla_string", HlaType, 'hla_typing_rule', False,
+            query = create_filter(query, 'hla_typing', request.params, "hla_string", HlaTypes, 'hla_typing_rule', False,
                                   set=False) # TODO: check if it works withou fk,
                                   #fk=HlaLookup.fk_hla_typess)
-            query = create_filter(query, 'digits', request.params, 'digits', HlaType, None, False, set=False)
+            query = create_filter(query, 'digits', request.params, 'digits', HlaTypes, None, False, set=False)
             query = create_filter(query, 'protein', request.params, "name", Protein, 'protein_rule', False, set=False,
                                   fk=PeptideRun.protein_proteins)
             query = create_filter(query, 'length_1', request.params, 'length', PeptideRun, ">", False, set=False)
