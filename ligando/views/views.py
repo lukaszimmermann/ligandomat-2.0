@@ -1,6 +1,7 @@
 from pyramid.response import Response
 from pyramid.view import view_config
 from sqlalchemy import func, distinct
+import simplejson as json
 
 from ligando.models import (
     DBSession,
@@ -23,9 +24,20 @@ def my_view(request):
         result_dict["trash_count"] = DBSession.query(func.count(distinct(MsRun.filename))).filter(MsRun.flag_trash == 1).one()[0]
 
 
-        result_dict["orphan_msrun"] = js_list_creator(
-        DBSession.query(distinct(MsRun.filename)).filter(MsRun.source_source_id == None).filter(MsRun.flag_trash == 0).order_by(MsRun.filename.desc()).limit(10).all())
+        result_dict["orphan_msrun"] = json.dumps(
+        DBSession.query(distinct(MsRun.filename).label("orphan_ms_run")).filter(MsRun.source_source_id == None).filter(MsRun.flag_trash == 0).order_by(MsRun.filename.desc()).limit(10).all())
 
+        #SELECT (organ), count(organ) from Source group by organ
+        sources = DBSession.query(Source.organ, func.count(Source.organ)).group_by(Source.organ).order_by(func.count(Source.organ).desc()).all()
+        merged_sources = dict()
+        source_acc = 0
+        for i in range(0,len(sources)):
+            if i < 6:
+                merged_sources[sources[i][0]] = sources[i][1]
+            else:
+                source_acc += sources[i][1]
+        merged_sources["others"] = source_acc
+        result_dict["sources"] = json.dumps(merged_sources)
 
         return result_dict
     except:

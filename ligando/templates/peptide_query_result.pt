@@ -17,7 +17,7 @@
                 <th>Score</th>
                 <th>E-value</th>
                 <th>Q-value</th>
-                <th>#PSM</th>
+                <!--?<th>#PSM</th>-->
                 <th>HLA Typing</th>
                 <th>Protein</th>
                 <th>Histology</th>
@@ -101,7 +101,7 @@
                 "render": function ( data, type, row ) {
                     return data +' - '+ row.maxQ+'';
                 }},
-                { data: "PSM"},
+//                { data: "PSM"},
                 { data: "hla_typing",
                     // split HLA string and create single links
                     "render": function ( data, type, row ) {

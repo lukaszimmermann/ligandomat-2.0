@@ -57,82 +57,83 @@
         <table>
         <tr id="sequence"  class="hidden">
             <td><span class="standard_text">Sequence:</span></td>
-            <td><input id="sequence_input" name="sequence" type="text"></td>
+            <td><input id="sequence_input" class="nice_input" name="sequence" type="text"></td>
             <td><select name="sequence_rule" class="nice_dropdown_boolean"><option selected>AND</option><option>OR</option></select></td>
         </tr>
         <tr id="source_id" class="hidden">
             <td><span class="standard_text">Source ID:</span></td>
-            <td><input id="source_id_input" name="source_id" type="text"></td>
+            <td><input id="source_id_input" class="nice_input" name="source_id" type="text"></td>
             <td><select name="source_id_rule" class="nice_dropdown_boolean"><option selected>AND</option><option>OR</option></select></td>
         </tr>
         <tr id="patient_id" class="hidden">
             <td><span class="standard_text">Patient ID:</span></td>
-            <td><input id="patient_id_input" name="patient_id" type="text"></td>
+            <td><input id="patient_id_input" class="nice_input" name="patient_id" type="text"></td>
             <td><select name="patient_id_rule" class="nice_dropdown_boolean"><option selected>AND</option><option>OR</option></select></td>
         </tr>
         <tr id="run_name" class="hidden">
             <td><span class="standard_text">MS Run:</span></td>
-            <td><input id="run_name_input" name="run_name" type="text"></td>
+            <td><input id="run_name_input" class="nice_input" name="run_name" type="text"></td>
             <td><select name="run_name_rule" class="nice_dropdown_boolean"><option selected>AND</option><option>OR</option></select></td>
         </tr>
         <tr id="organ" class="hidden">
             <td><span class="standard_text">Organ:</span></td>
-            <td><input id="organ_input" name="organ" type="text"></td>
+            <td><input id="organ_input" class="nice_input" name="organ" type="text"></td>
             <td><select name="organ_rule" class="nice_dropdown_boolean"><option selected>AND</option><option>OR</option></select></td>
         </tr>
         <tr id="histology" class="hidden">
             <td><span class="standard_text">Histology:</span></td>
-            <td><input id="histology_input" name="histology" type="text"></td>
+            <td><input id="histology_input" class="nice_input" name="histology" type="text"></td>
             <td><select name="histology_rule" class="nice_dropdown_boolean"><option selected>AND</option><option>OR</option></select></td>
         </tr>
         <tr id="dignity" class="hidden">
             <td><span class="standard_text">Dignity:</span></td>
-            <td><input id="dignity_input" name="dignity" type="text"></td>
+            <td><input id="dignity_input" class="nice_input" name="dignity" type="text"></td>
             <td><select name="dignity_rule" class="nice_dropdown_boolean"><option selected>AND</option><option>OR</option></select></td>
         </tr>
          <tr id="hla_typing" class="hidden">
             <td><span class="standard_text">HLA Typing:</span></td>
-            <td><input id="hla_typing_input" name="hla_typing" type="text"></td>
-             <td><select id="typing_menu" onchange="addTyping()"></select></td>
+            <td><input id="hla_typing_input" class="nice_input" name="hla_typing" type="text"></td>
+             <td><select id="typing_menu" class="nice_select_menu" onchange="addTyping()"></select></td>
             <td><select name="hla_typing_rule" class="nice_dropdown_boolean"><option selected>AND</option><option>OR</option></select></td>
          </tr>
         <tr id="protein" class="hidden">
             <td><span class="standard_text">Protein:</span></td>
-            <td><input id="protein_input" name="protein" type="text"></td>
+            <td><input id="protein_input" class="nice_input" name="protein" type="text"></td>
             <td><select name="protein_rule" class="nice_dropdown_boolean"><option selected>AND</option><option>OR</option></select></td>
         </tr>
         <tr id="length" class="hidden">
-            <td><input id="length_input_1" name="length_1" type="text"></td>
+            <td><input id="length_input_1" class="nice_input" name="length_1" type="text"></td>
             <td><span class="standard_text">< Peptide length < </span></td>
-            <td><input id="length_input_2" name="length_2" type="text"></td>
+            <td><input id="length_input_2" class="nice_input" name="length_2" type="text"></td>
         </tr>
         <tr id="antibody" class="hidden">
             <td><span class="standard_text">Antibody:</span></td>
-            <td><input id="antibody_input" name="antibody" type="text"></td>
+            <td><input id="antibody_input" class="nice_input" name="antibody" type="text"></td>
             <td><select name="antibody_rule" class="nice_dropdown_boolean"><option selected>AND</option><option>OR</option></select></td>
         </tr>
         <tr id="celltype" class="hidden">
             <td><span class="standard_text">Celltype:</span></td>
-            <td><input id="celltype_input" name="celltype" type="text"></td>
+            <td><input id="celltype_input" class="nice_input"  name="celltype" type="text"></td>
             <td><select name="celltype_rule" class="nice_dropdown_boolean"><option selected>AND</option><option>OR</option></select></td>
         </tr>
         <tr id="treatment" class="hidden">
             <td><span class="standard_text">Treatment:</span></td>
-            <td><input id="treatment_input" name="treatment" type="text"></td>
+            <td><input id="treatment_input" class="nice_input" name="treatment" type="text"></td>
             <td><select name="treatment_rule" class="nice_dropdown_boolean"><option selected>AND</option><option>OR</option></select></td>
         </tr>
         </table>
         <br>
-        <div style="width: 300px">
-        <span class="standard_text">Group Peptides by: </span> <select style="float: right" name="grouping" class="nice_dropdown">
+        <div >
+        <span class="standard_text">Group Peptides by: </span> <select name="grouping" class="nice_dropdown">
         <option  selected value="run">Run</option>
         <option value="peptide">Peptide</option>
-        <option value="source">Source without PSM</option>
-        <option value="source_psm">Source with PSM (slow)</option>
+        <option value="source">Source</option>
+        <!--?<option value="source">Source without PSM</option>-->
+        <!--?<option value="source_psm">Source with PSM (slow)</option>-->
         <option value="protein">Protein</option>
     </select>
         <br>
-        <span class="standard_text" title="Sources with 4-digit typing will also be part of the results if 2-digit is choosen.">HLA-Typing: </span> <select style="float: right" name="digits" class="nice_dropdown">
+        <span class="standard_text" title="Sources with 4-digit typing will also be part of the results if 2-digit is choosen.">HLA-Typing: </span><select  name="digits" class="nice_dropdown">
         <option  selected value="2">2-digits</option>
         <option value="4">4-digits</option>
     </select>

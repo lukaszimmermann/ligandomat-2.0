@@ -217,7 +217,10 @@ def protein_page(request):
         query = DBSession.query(SpectrumHit.sequence.distinct())
         query = query.join(t_spectrum_protein_map)
         query = query.join(Protein)
+        query = query.join(MsRun)
         query = query.filter(Protein.name == request.matchdict["protein"])
+        query = query.filter(SpectrumHit.source_source_id != None)
+        query = query.filter(MsRun.flag_trash ==0)
         sequences = query.all()
         # print sequences
         sequence_start = list()
@@ -287,6 +290,8 @@ def peptide_page(request):
 
         query = DBSession.query(Source.patient_id)
         query = query.join(SpectrumHit)
+        query = query.join(MsRun)
+        query = query.filter(MsRun.flag_trash ==0)
         query = query.filter(SpectrumHit.sequence == request.matchdict["peptide"])
         query = query.group_by(Source.patient_id)
         sources = js_list_creator_dataTables(query.all())

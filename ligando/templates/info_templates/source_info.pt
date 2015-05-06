@@ -33,6 +33,7 @@
     // create dataTable
     $('#example').dataTable( {
         data: ${project},
+
         columns: [
             { data: "source_id" ,
             "render": function ( data, type, row ) {

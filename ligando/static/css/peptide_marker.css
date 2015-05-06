@@ -2,38 +2,45 @@
     border-bottom:1px solid #0000ff;
     padding-bottom:0;
     position:relative;
+    font-family: monospace, monospace !important;
 }
 
 .sI1 {
     border-bottom:1px solid #0000ff;
     padding-bottom:2px;
     position:relative;
+    font-family: monospace, monospace !important;
 }
 
 .sI2 {
     border-bottom:1px solid #0000ff;
     padding-bottom:4px;
     position:relative;
+    font-family: monospace, monospace !important;
 }
 .sI3 {
     border-bottom:1px solid #0000ff;
     padding-bottom:6px;
     position:relative;
+    font-family: monospace, monospace !important;
 }
 .sI4 {
     border-bottom:1px dotted #00CC00;
     padding-bottom:0;
     position:relative;
+    font-family: monospace, monospace !important;
 }
 
 .sI5 {
     border-bottom:1px dotted #00CC00;
     padding-bottom:2px;
     position:relative;
+    font-family: monospace, monospace !important;
 }
 
 .sI6 {
     border-bottom:1px dotted #00CC00;
     padding-bottom:6px;
     position:relative;
+    font-family: monospace, monospace !important;
 }

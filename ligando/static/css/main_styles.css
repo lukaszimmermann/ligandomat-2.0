@@ -1,4 +1,7 @@
-
+*{font-family:FF zwo;}
+body{
+/*background-color: rgb(244, 244, 244);*/
+}
 .nostylelink {
     text-decoration:solid;
     color:black;
@@ -14,11 +17,10 @@
     width: 1200px;
     margin-left: auto;
     align-content: center;
-    font: Arial;
 }
 
 .info_table{
-    font: normal 14px Arial;
+    font: normal 14px;
     overflow: hidden;
     border: 0 solid rgb(232, 225, 208);
     -webkit-border-radius: 3px;
@@ -26,6 +28,8 @@
     border-radius: 3px;
     background-color: rgb(232, 225, 208);
     color: black;
+}
+.info_table thead{
 }
 .info_table tbody .alt td {
     background: white;
@@ -60,6 +64,33 @@ table.info_table tr.even { background-color: rgb(240, 235, 224); }
     font-size: 50px;
     font-weight: bold;
 }
+.title_wrapper {
+     display: inline-block;
+}
+
+.logo {
+    align-content: center;
+    position: relative;
+    top: 50%;
+    transform: translateY(50%);
+    width: 200px;
+    float: left
+}
+.nice_dropdown {
+    font-size: 16px;
+}
+.nice_dropdown_boolean{
+    font-size: 16px;
+}
+.nice_select_menu{
+    font-size: 16px;
+}
+.nice_input{
+    font-size: 16px;
+}
+input{
+    font-size: 16px;
+}
 
 .nice_button {
     position: relative;
@@ -68,7 +99,7 @@ table.info_table tr.even { background-color: rgb(240, 235, 224); }
     height: 25px;
     /*padding: 5px;*/
     /*padding-bottom: 5px;*/
-    font-size: 16px;
+    font-size: 18px;
     color: black;
     text-align: center;
     margin: 1pt;
@@ -85,57 +116,14 @@ button.nice_button:active {
     outline: none;
 }
 
-/* home table style*/
-.homegrid table {
-    border-collapse: collapse;
-    text-align: left;
-}
 
 
 .homegrid {
     width: 300pt;
-    font: normal 12px Arial;
-    background: #fff;
     overflow: hidden;
-    border: 0 solid rgb(180, 160, 105);
-    -webkit-border-radius: 3px;
-    /*-moz-border-radius: 3px;*/
-    border-radius: 3px;
+    text-align: left;
 }
 
-
-.homegrid table td, .homegrid table th {
-    padding: 1px 3px;
-}
-
-.homegrid table thead th {
-     background-color: rgb(195, 178, 133);
-    color: black;
-}
-
-.homegrid table thead th:first-child {
-
-}
-
-.homegrid table tbody td {
-    color: black;
-    border-left: 1px solid #E1EEF4;
-    font-size: 12px;
-    font-weight: normal;
-}
-
-.homegrid table tbody .alt td {
-    background: rgb(232, 225, 208);
-    color: black;
-}
-
-.homegrid table tbody td:first-child {
-    border-left: none;
-}
-
-.homegrid table tbody tr:last-child td {
-    border-bottom: none;
-}
 
 /* upload table style */
 .datagrid table {
@@ -146,7 +134,7 @@ button.nice_button:active {
 
 .datagrid {
     width: 100%;
-    font: normal 11px Arial;
+    font: normal 11px;
     background: #fff;
     overflow: hidden;
     border: 0 solid rgb(180, 160, 105);
@@ -267,3 +255,67 @@ button.nice_button:active {
 .updategrid table tbody tr:last-child td {
     border-bottom: none;
 }
+
+.orphan_table{
+    font-size: 14px;
+    overflow: hidden;
+    border: 0 solid rgb(232, 225, 208);
+    -webkit-border-radius: 3px;
+    /*-moz-border-radius: 3px;*/
+    border-radius: 3px;
+    background-color: rgb(232, 225, 208);
+    color: black;
+}
+.orphan_table tbody .alt td {
+    background: white;
+    color: black;
+}
+
+table.orphan_table tr.odd { background-color: white; }
+table.orphan_table tr.even { background-color: rgb(240, 235, 224); }
+
+
+.protein_sequence{
+    font: 14px;
+    overflow: hidden;
+    border: 0 solid rgb(232, 225, 208);
+    -webkit-border-radius: 3px;
+    /*-moz-border-radius: 3px;*/
+    border-radius: 3px;
+    background-color: rgb(232, 225, 208);
+    color: black;
+    font-family: monospace, monospace !important;
+    white-space: pre-wrap !important;
+    word-wrap: break-word !important;
+    text-align: left !important
+    /*background: white;*/
+}
+
+.protein_sequence tbody .alt td {
+
+    background: white;
+    color: black;
+
+    font-family: monospace, monospace !important;
+    white-space: pre-wrap !important;
+    word-wrap: break-word !important;
+    text-align: left !important
+}
+
+
+
+.protein_sequence p {
+    font-family: monospace, monospace !important;
+    white-space: pre-wrap !important;
+    word-wrap: break-word !important;
+    text-align: left !important
+    margin-bottom: 0px;
+    margin-top: 0px;
+    /*background: white;*/
+    color: black;
+}
+
+
+
+/*table.protein_sequence tr.odd { background-color: white; }*/
+/*table.protein_sequence tr.even { background-color: rgb(240, 235, 224); }*/

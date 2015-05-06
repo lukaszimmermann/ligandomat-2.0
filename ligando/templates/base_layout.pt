@@ -20,7 +20,9 @@
 
 <body>
 <div class="main_wrapper">
-<div  class="title">Ligandome Database</div>
+<div class="logo"><a href="http://www.uni-tuebingen.de"><img width="200px" src="../static/images/UT_WBMW_Rot_RGB_01.png"></a></div>
+    <div class="title_wrapper">
+<div  class="title" >HLA Ligand Atlas</div>
 <br>
 <!--? This is the main menu-->
 <div id="main_menu">
@@ -69,6 +71,7 @@
 <div style="clear:both"></div>
 
 <hr style="width: 800px" size="3" color="black" >
+        </div>
 </div>
 <!-- Placed at the end of the document so the pages load faster -->
 <script src="${request.static_url('ligando:static/js/jquery-1.10.2.min.js')}"></script>

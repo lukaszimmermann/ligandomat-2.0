@@ -41,12 +41,12 @@
 
     </table>
 
-    <div class="datagrid">
+    <div >
         <button onclick="addSource()" class="nice_button">Add Ms run to list</button>
         <br>
 
 
-        <table id="ms_table" width="100%">
+        <table id="ms_table" class="info_table" width="100%">
             <!-- The table is created dynamically with js -->
         </table>
 
@@ -103,7 +103,7 @@
 
         for (var i = 1; i <= 11; i++) {
             if (i % 2 == 0) {
-                markup.push('<tr id="row' + i + '" class="alt">');
+                markup.push('<tr id="row' + i + '" >');
             } else {
                 markup.push('<tr id="row' + i + '" >');
             }

@@ -21,8 +21,8 @@ def search_result(request):
     result = dict()
     # Search SpectrumHit Sequence
     # TODO: Vllt lieber peptide_run benutzen?
-    result["peptide"] = json.dumps(DBSession.query(SpectrumHit.sequence.distinct().label('peptide')).filter(
-        SpectrumHit.sequence == request.params["search_all"]).all())
+    result["peptide"] = json.dumps(DBSession.query(SpectrumHit.sequence.distinct().label('peptide')).join(MsRun).filter(
+        SpectrumHit.sequence == request.params["search_all"]).filter(MsRun.flag_trash==0).filter(SpectrumHit.source_source_id != None).all())
 
     # Search source columns
     result["patient_id"] = json.dumps(DBSession.query(Source.patient_id.distinct().label('source')).filter(
@@ -50,7 +50,7 @@ def search_result(request):
         HlaType.hla_string == request.params["search_all"]).all())
     # Search MS_run
     result["msrun"] = json.dumps(DBSession.query(MsRun.filename.distinct().label('msrun')).filter(
-        MsRun.filename == request.params["search_all"]).all())
+        MsRun.filename == request.params["search_all"]).filter(MsRun.flag_trash ==0).all())
     # Search Protein
     result["protein"] = json.dumps(DBSession.query(Protein.name.distinct().label('protein')).filter(
         Protein.name == request.params["search_all"]).all())

@@ -28,8 +28,7 @@
         <br>
         <h3>Sequence:</h3>
         <div style="float: left;">
-        <table class="info_table" width="500px" style=" font-family: monospace,monospace;white-space: pre-wrap;
-word-wrap: break-word;  text-align: left">
+        <table class="protein_sequence" width="600px">
             <tr class="alt">
                 <td id="sequence"></td>
             </tr>

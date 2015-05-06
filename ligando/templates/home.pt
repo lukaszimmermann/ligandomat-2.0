@@ -12,24 +12,32 @@
         <div id="search_div" style="text-align: center">
             <form method="POST" action=search>
                        <!--? this js magic shows a help text, which will disappear on focus-->
-                <input style="width: 500px" name="search_all" value="Search Database" onfocus="if (this.value=='Search Database') this.value='';" onblur="this.value = this.value==''?'Search Database':this.value;" >
+                <input style="width: 500px; font-size: 16px;" name="search_all" value="Search Database" onfocus="if (this.value=='Search Database') this.value='';" onblur="this.value = this.value==''?'Search Database':this.value;" >
                 <input  type="submit" value="Search" class="nice_button" style="width: 100px;margin-left: 10px"/>
             </form>
         </div>
     <br><br>
-        <div  style="float:left; width: 330px">
+        <div  style=" width: 330px">
         <h3>Database Statistics</h3>
         Sources: <a class='nostylelink'  href='/sources'>${sources_count}</a><br>
         MS Runs: <a class='nostylelink' id="ms_run_statistics"  href='/runs'>${all_msrun_count}</a><br>
         Orphan MS Runs: <a class='nostylelink'  href='/orphan_runs'>${orphan_msrun_count}</a><br>
         Trashed MS Runs : ${trash_count}
         </div>
+        <br>
+        <div id="msrun_plot" style="width:400px;height:440px; float:left "></div>
+        <div id="source_chart" style="width:400px;height:440px; float:right "></div>
 
-        <div id="msrun_plot" style="width:300px;height:330px; display: inline-block;"></div>
 
 
-            <div class="homegrid" style="float:right; width: 330px ">
-        <table id="orphan_table">
+
+        <div class="homegrid" style="float:left; width: 100%; margin-top: 20px">
+        <table id="orphan_table" class="orphan_table">
+            <thead>
+        <tr>
+        <th>Orphan MS Runs</th>
+        </tr>
+        </thead>
         </table>
                 </div>
 
@@ -38,7 +46,7 @@
 
 <!--?import the  Flot js file-->
 <script type="text/javascript" charset="utf8" src="${request.static_url('ligando:static/js/jquery.flot.js')}"></script>
-
+<script type="text/javascript" charset="utf8" src="${request.static_url('ligando:static/js/jquery.flot.pie.js')}"></script>
 
 
 <script>
@@ -47,12 +55,12 @@
         // set the statistics
         var ms_run = [[1,${all_msrun_count}-${orphan_msrun_count}-${trash_count}]];
         var orphan_ms_run = [[2,${orphan_msrun_count}]];
-        var trash_runs = [[3, ${trash_count}]]
+        //var trash_runs = [[3, ${trash_count}]]
         // create data for the flot plot
-        var data = [{label: 'Complete MS Runs', data:ms_run,color: "rgb("+180+","+160+","+105+")"},
-                {label: 'Orphan MS Runs', data:orphan_ms_run, color: "rgb("+165+","+30+","+55+")"},
-                {label: 'Trashed MS Runs', data:trash_runs, color: "rgb("+123+","+125+","+132+")"}
-        ]
+        var data = [{label: 'Complete MS Runs', data:ms_run,color: "rgb("+138+","+174+","+93+")"},
+                {label: 'Orphan MS Runs', data:orphan_ms_run, color: "rgb("+205+","+97+","+73+")"}//,
+                //{label: 'Trashed MS Runs', data:trash_runs, color: "rgb("+123+","+125+","+132+")"}
+        ];
         // flot options
         var options = {series: {
                 stack: 0,
@@ -69,11 +77,11 @@
                 },
                 xaxis: {
                     min: 0,
-                    max:4,
+                    max:3,
                     show:false
                 },
                 yaxis:{
-                    max:(${trash_count}+2000)
+                    max:(${all_msrun_count}-${orphan_msrun_count}-${trash_count}+2000)
                 },
                 grid: {
                     clickable: true,
@@ -94,25 +102,61 @@
         }
         });
 
-    // create the orphan table
-    $(function () {
-        var table = document.getElementById('orphan_table');
-        var markup = ['<thead> <tr><th>Orphan Ms Runs</th></tr>  </thead><tbody>'];
+    $(document).ready(function() {
+    // create dataTable
+    $('#orphan_table').dataTable( {
+        data: ${orphan_msrun},
+                "paging":   false,
+    "info":     false,
+    searching: false,
+    columns: [
+            { data: "orphan_ms_run" ,
+            "render": function ( data, type, row ) {
+                return '<a class="nostylelink" href="/upload_metadata_ms_run?run='+ data + '">'+data+ '</a>' ;
+            }}]
+    }
+    )
+    }
+    );
 
-        for (var i = 0; i < 10; i++) {
-            if (i % 2 != 0) {
-                markup.push('<tr class="alt">');
-            } else {
-                markup.push('<tr >');
-            }
-            markup.push('<td>')
-            var run = ${orphan_msrun}[i]
-            markup.push('<a class="nostylelink" href="/upload_metadata_ms_run?run='+ run + '">'+run+ '</a></td></tr>')
+
+    $(document).ready(function() {
+        function labelFormatter(label, series) {
+            return "<div style='font-size:18px;'>" + label + "<br/>" +Math.round(series.percent) + "%</div>";
         }
-        markup.push('</tbody>');
-        table.innerHTML = markup.join("");
-    });
 
+        // {label: 'Complete MS Runs', data:ms_run,color: "rgb("+138+","+174+","+93+")"},
+        var data = [];
+        for(i in ${sources}){
+            if(i != "others"){
+                data.push({label: i, data:${sources}[i],"url":"/organ/"+i});
+            }else{
+                data.push({label: i, data:${sources}[i],"url":"/"});
+            }
+        }
+
+        $.plot('#source_chart', data, {
+            series: {
+                pie: {
+                    show: true,
+                label:{
+                    show: true,
+                    formatter: labelFormatter
+                },
+                    innerRadius: 0.4
+            }},
+            grid:  {
+                clickable:true
+            },
+            legend: {
+                show: false
+            }
+        });
+        $('#source_chart').bind("plotclick", function(event,pos,obj) {
+        window.location.href = (data[obj.seriesIndex].url);
+        });
+
+    });
 
 </script>
 

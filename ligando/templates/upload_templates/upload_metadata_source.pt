@@ -50,17 +50,17 @@
         <tr>
             <td>HLA-Typing:</td>
             <td><input id="typingtags" title="Write or select HLA-Typing. Seperate with ; "></td>
-            <td><select id="typing_menu" onchange="addTyping()"></select></td>
+            <td><select id="typing_menu" class="nice_select_menu" onchange="addTyping()"></select></td>
         </tr>
 
 <!--?TODO: Prep date!!!-->
     </table>
-    <div class="datagrid">
-        <button onclick="addSource()" class="nice_button">Add Source to list</button>
+    <div >
+        <button  onclick="addSource()" class="nice_button">Add Source to list</button>
         <br>
 
 
-        <table id="source_table">
+        <table id="source_table"  class="info_table">
             <!-- The table is created dynamically with js -->
         </table>
 
@@ -126,7 +126,7 @@ $(function () {
 
     for (var i = 1; i <= 11; i++) {
         if (i % 2 == 0) {
-            markup.push('<tr id="row' + i + '" class="alt">');
+            markup.push('<tr id="row' + i + '" >');
         } else {
             markup.push('<tr id="row' + i + '" >');
         }
