@@ -17,7 +17,7 @@
             </form>
         </div>
     <br><br>
-        <div  style=" width: 330px">
+        <div  style=" width: 330px;  ">
         <h3>Database Statistics</h3>
         Sources: <a class='nostylelink'  href='/sources'>${sources_count}</a><br>
         MS Runs: <a class='nostylelink' id="ms_run_statistics"  href='/runs'>${all_msrun_count}</a><br>
@@ -26,10 +26,7 @@
         </div>
         <br>
         <div id="msrun_plot" style="width:400px;height:440px; float:left "></div>
-        <div id="source_chart" style="width:400px;height:440px; float:right "></div>
-
-
-
+        <div id="source_chart" style="width:400px;height:440px; float:right ">Organs:</div>
 
         <div class="homegrid" style="float:left; width: 100%; margin-top: 20px">
         <table id="orphan_table" class="orphan_table">

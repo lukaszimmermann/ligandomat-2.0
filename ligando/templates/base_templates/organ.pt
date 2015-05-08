@@ -15,14 +15,16 @@
                 <td>Peptides: </td><td id="pep_stat"> </td>
             </tr>
             <tr>
-                <td>Sources</td><td id="source_stat"> </td>
+                <td>Sources:</td><td id="source_stat"> </td>
             </tr>
     </table>
     <table id="example"  class="info_table" cellspacing="0" width="100%">
         <thead>
         <tr>
-        <th>Patient_ID</th>
+        <th>Source ID</th>
+        <th>Patient ID</th>
         <th>Histology</th>
+        <th>Dignity</th>
         </tr>
         </thead>
     </table>
@@ -39,6 +41,10 @@ $('#example').dataTable( {
     searching: false,
     data: ${sources},
     columns: [
+        { data: "source_id",
+            "render": function ( data, type, row ) {
+                return "<a class='nostylelink'  href= '/source_id/"+data + "'>"+data + "</a>" ;
+            }},
         { data: "patient_id",
             "render": function ( data, type, row ) {
                 return "<a class='nostylelink'  href= '/source/"+data + "'>"+data + "</a>" ;
@@ -46,6 +52,10 @@ $('#example').dataTable( {
         { data: "histology",
             "render": function ( data, type, row ) {
                 return "<a class='nostylelink' href= '/histology/"+data + "'>"+data + "</a>" ;
+            }},
+        { data: "dignity",
+            "render": function ( data, type, row ) {
+                return "<a class='nostylelink' href= '/dignity/"+data + "'>"+data + "</a>" ;
             }}
     ]
 } );

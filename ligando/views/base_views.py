@@ -146,7 +146,7 @@ def source_id_page(request):
 @view_config(route_name='hla', renderer='../templates/base_templates/hla.pt', request_method="GET")
 def hla_page(request):
     try:
-        query = DBSession.query(Source.organ,
+        query = DBSession.query(Source.organ,Source.source_id, Source.dignity,
                                 Source.histology, Source.patient_id)
         query = query.join(t_hla_map)
         query = query.join(HlaType)
@@ -187,7 +187,7 @@ def msrun_page(request):
                                     'hla_typing'),
                                 Source.histology, Source.source_id, Source.patient_id, Source.organ,
                                 Source.comment, Source.dignity, Source.celltype, Source.location,
-                                Source.metastatis, Source.person, Source.organism,
+                                Source.metastatis, Source.person, Source.organism, Source.treatment, Source.comment.label("comment"),
                                 func.cast(MsRun.ms_run_date, String).label("ms_run_date"), MsRun.used_share,
                                 MsRun.comment.label("msrun_comment"),
                                 MsRun.sample_mass, MsRun.sample_volume, MsRun.antibody_set,
@@ -244,8 +244,8 @@ def protein_page(request):
 @view_config(route_name='organ', renderer='../templates/base_templates/organ.pt', request_method="GET")
 def organ_page(request):
     try:
-        query = DBSession.query(Source.organ,
-                                Source.histology, Source.patient_id)
+        query = DBSession.query(Source.source_id, Source.organ,
+                                Source.histology, Source.patient_id, Source.dignity)
         query = query.filter(Source.organ == request.matchdict["organ"])
         sources = json.dumps(query.all())
 
@@ -306,8 +306,8 @@ def peptide_page(request):
 @view_config(route_name='histology', renderer='../templates/base_templates/histology.pt', request_method="GET")
 def histology_page(request):
     try:
-        query = DBSession.query(Source.organ,
-                                Source.histology, Source.patient_id)
+        query = DBSession.query(Source.source_id,Source.organ,
+                                Source.dignity, Source.patient_id)
         query = query.filter(Source.histology == request.matchdict["histology"])
         sources = json.dumps(query.all())
 
@@ -324,7 +324,7 @@ def histology_page(request):
 @view_config(route_name='celltype', renderer='../templates/base_templates/celltype.pt', request_method="GET")
 def celltype_page(request):
     try:
-        query = DBSession.query(Source.organ,
+        query = DBSession.query(Source.source_id, Source.organ, Source.dignity,
                                 Source.histology, Source.patient_id)
         query = query.filter(Source.celltype == request.matchdict["celltype"])
         sources = json.dumps(query.all())
@@ -342,8 +342,8 @@ def celltype_page(request):
 @view_config(route_name='dignity', renderer='../templates/base_templates/dignity.pt', request_method="GET")
 def dignity_page(request):
     try:
-        query = DBSession.query(Source.organ,
-                                Source.histology, Source.patient_id)
+        query = DBSession.query(Source.source_id, Source.organ,
+                                Source.histology, Source.patient_id,)
         query = query.filter(Source.dignity == request.matchdict["dignity"])
         sources = json.dumps(query.all())
 
@@ -354,6 +354,23 @@ def dignity_page(request):
     except:
         return Response(conn_err_msg, content_type='text/plain', status_int=500)
     return {"sources": sources, "dignity": request.matchdict["dignity"], "statistic": statistic}
+
+
+@view_config(route_name='location', renderer='../templates/base_templates/location.pt', request_method="GET")
+def location_page(request):
+    try:
+        query = DBSession.query(Source.source_id, Source.organ,
+                                Source.histology, Source.patient_id,Source.dignity)
+        query = query.filter(Source.location == request.matchdict["location"])
+        sources = json.dumps(query.all())
+
+        query = DBSession.query(func.count(SpectrumHit.sequence.distinct()).label("pep_count"))
+        query = query.join(Source)
+        query = query.filter(Source.location == request.matchdict["location"])
+        statistic = json.dumps(query.all())
+    except:
+        return Response(conn_err_msg, content_type='text/plain', status_int=500)
+    return {"sources": sources, "location": request.matchdict["location"], "statistic": statistic}
 
 
 @view_config(route_name='treatment', renderer='../templates/base_templates/treatment.pt', request_method="GET")

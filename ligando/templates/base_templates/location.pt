@@ -9,7 +9,7 @@
 
 <body>
 <div class="main_wrapper">
-    <h1 style="text-align: center">${dignity}</h1>
+    <h1 style="text-align: center">${location}</h1>
     <table >
             <tr>
                 <td>Sources:</td><td id="source_stat"> </td>
@@ -22,6 +22,7 @@
         <th>Patient ID</th>
         <th>Organ</th>
         <th>Histology</th>
+        <th>Dignity</th>
         </tr>
         </thead>
     </table>
@@ -36,7 +37,8 @@ $('#example').dataTable( {
     "info":     false,
     searching: false,
     data: ${sources},
-    columns: [{ data: "source_id",
+    columns: [
+            { data: "source_id",
             "render": function ( data, type, row ) {
                 return "<a class='nostylelink'  href= '/source_id/"+data + "'>"+data + "</a>" ;
             }},
@@ -48,9 +50,13 @@ $('#example').dataTable( {
             "render": function ( data, type, row ) {
                 return "<a class='nostylelink'  href= '/organ/"+data + "'>"+data + "</a>" ;
             }},
-        { data: "histology",
+            { data: "histology",
             "render": function ( data, type, row ) {
                 return "<a class='nostylelink'  href= '/histology/"+data + "'>"+data + "</a>" ;
+            }},
+            { data: "dignity",
+            "render": function ( data, type, row ) {
+                return "<a class='nostylelink'  href= '/dignity/"+data + "'>"+data + "</a>" ;
             }}
     ]
 } );

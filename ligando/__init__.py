@@ -47,6 +47,7 @@ def main(global_config, **settings):
     config.add_route('dignity', '/dignity/{dignity}')
     config.add_route('treatment', '/treatment/{treatment}')
     config.add_route('person', '/person/{person}')
+    config.add_route('location', '/location/{location}')
     # Database analysis
     config.add_route('venn_analysis', '/venn_analysis')
 

@@ -21,12 +21,15 @@
     </table>
     </div>
     <div style="float: right; width: 640px"><img id="seqlogo" src="" onerror='this.style.display = "none"'></div>
-    <table id="example"  class="display" cellspacing="0" width="1000px">
+
+    <table id="example"  class="info_table" cellspacing="0" width="1000px">
         <thead>
         <tr>
-        <th>Source</th>
+        <th>Source Id</th>
+        <th>Patient ID</th>
         <th>Organ</th>
         <th>Histology</th>
+        <th>Dignity</th>
         </tr>
         </thead>
     </table>
@@ -43,6 +46,10 @@ $('#example').dataTable( {
     searching: false,
     data: ${sources},
     columns: [
+        { data: "source_id",
+            "render": function ( data, type, row ) {
+                return "<a class='nostylelink'  href= '/source/"+data + "'>"+data + "</a>" ;
+            }},
         { data: "patient_id",
             "render": function ( data, type, row ) {
                 return "<a class='nostylelink'  href= '/source/"+data + "'>"+data + "</a>" ;
@@ -52,6 +59,10 @@ $('#example').dataTable( {
                 return "<a class='nostylelink' href= '/organ/"+data + "'>"+data + "</a>" ;
             }},
         { data: "histology",
+            "render": function ( data, type, row ) {
+                return "<a class='nostylelink' href= '/histology/"+data + "'>"+data + "</a>" ;
+            }},
+            { data: "dignity",
             "render": function ( data, type, row ) {
                 return "<a class='nostylelink' href= '/histology/"+data + "'>"+data + "</a>" ;
             }}

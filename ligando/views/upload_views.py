@@ -69,8 +69,8 @@ def upload_metadata_source_post(request):
             return Response(conn_err_msg, content_type='text/plain', status_int=500)
         # if in DB abort whole upload
         if len(test_source) > 0:
-            log_writer("source_metadata_complete", source)
-            log_writer("source_metadata_complete","The source is already in the Database. Aborted whole upload!")
+            log_writer("source_metadata_complete", strftime("%Y.%m.%d %H:%M:%S", gmtime()) + "\t" +source)
+            log_writer("source_metadata_complete",strftime("%Y.%m.%d %H:%M:%S", gmtime()) + "\t" +"The source is already in the Database. Aborted whole upload!")
             return Response("The source is already in the Database. Aborted whole upload!",
                             content_type='text/plain', status_int=500)
 
@@ -137,8 +137,8 @@ def upload_metadata_source_post(request):
                                         content_type='text/plain', status_int=500)
 
             try:
-                log_writer("source_metadata", source)
-                log_writer("source_metadata_complete", source)
+                log_writer("source_metadata", strftime("%Y.%m.%d %H:%M:%S", gmtime()) + "\t" +source)
+                log_writer("source_metadata_complete", strftime("%Y.%m.%d %H:%M:%S", gmtime()) + "\t" +source)
                 DBSession.add(source_insert)
                 DBSession.flush()
             except DBAPIError:
@@ -146,8 +146,8 @@ def upload_metadata_source_post(request):
                                 content_type='text/plain', status_int=500)
 
         else:
-            log_writer("source_metadata", source)
-            log_writer("source_metadata_complete", source)
+            log_writer("source_metadata", strftime("%Y.%m.%d %H:%M:%S", gmtime()) + "\t" +source)
+            log_writer("source_metadata_complete", strftime("%Y.%m.%d %H:%M:%S", gmtime()) + "\t" +source)
             DBSession.add(source_insert)
             DBSession.flush()
             hla_lookup_id = "NULL"
@@ -239,7 +239,7 @@ def upload_metadata_ms_run_post(request):
                     .filter(SpectrumHit.ms_run_ms_run_id == ms_run_update[0].ms_run_id).update(
                     {'source_source_id': ms_run['source_source_id']})
             except:
-                log_writer("ms_run_upload_complete", "SpectrumHit update failed!")
+                log_writer("ms_run_upload_complete", strftime("%Y.%m.%d %H:%M:%S", gmtime()) + "\t" +"SpectrumHit update failed!")
                 DBSession.rollback()
                 return Response("SpectrumHit update failed!",
                                 content_type='text/plain', status_int=500)
@@ -255,10 +255,10 @@ def upload_metadata_ms_run_post(request):
                                 content_type='text/plain', status_int=500)
             transaction.commit()
             DBSession.flush()
-            log_writer("ms_run_metadata_complete", ms_run)
-            log_writer("ms_run_metadata", ms_run)
+            log_writer("ms_run_metadata_complete", strftime("%Y.%m.%d %H:%M:%S", gmtime()) + "\t" +ms_run)
+            log_writer("ms_run_metadata", strftime("%Y.%m.%d %H:%M:%S", gmtime()) + "\t" +ms_run)
         else:
-            log_writer("ms_run_metadata_complete"," MsRun insert failed! Only already registered MS Runs can be uploaded.")
+            log_writer("ms_run_metadata_complete",strftime("%Y.%m.%d %H:%M:%S", gmtime()) + "\t" +"MsRun insert failed! Only already registered MS Runs can be uploaded.")
             DBSession.rollback()
             return Response(conn_err_msg + " \n MsRun insert failed! Only already registered MS Runs can be uploaded.", content_type='text/plain', status_int=500)
 
@@ -446,10 +446,10 @@ def update_metadata_source(request):
 def update_metadata_source_post(request):
     source = ast.literal_eval(request.params["sources"])
     try:
-        log_writer("source_update_complete", source)
+        log_writer("source_update_complete", strftime("%Y.%m.%d %H:%M:%S", gmtime()) + "\t" +source)
         source_update = DBSession.query(Source).join(t_hla_map).join(HlaType).filter(Source.source_id == source["source_id"]).all()
     except:
-        log_writer("source_update_complete", " Source update failed!")
+        log_writer("source_update_complete", strftime("%Y.%m.%d %H:%M:%S", gmtime()) + "\t" +" Source update failed!")
         return Response(conn_err_msg + " \n Source update failed", content_type='text/plain', status_int=500)
     if len(source_update)>0:
         if source['patient_id'] != "":
@@ -520,9 +520,9 @@ def update_metadata_source_post(request):
     try:
         transaction.commit()
         DBSession.flush()
-        log_writer("source_update", source)
+        log_writer("source_update", strftime("%Y.%m.%d %H:%M:%S", gmtime()) + "\t" +source)
     except:
-        log_writer("source_update_complete", " Source update failed!")
+        log_writer("source_update_complete",strftime("%Y.%m.%d %H:%M:%S", gmtime()) + "\t" + "Source update failed!")
         DBSession.rollback()
         return Response("Source update failed!",
                         content_type='text/plain', status_int=500)
@@ -584,10 +584,10 @@ def update_metadata_msrun_post(request):
     ms_run = ast.literal_eval(request.params["ms_runs"])
     # update if already in DB (without metadata included)
     try:
-        log_writer("ms_run_update_complete", ms_run)
+        log_writer("ms_run_update_complete", strftime("%Y.%m.%d %H:%M:%S", gmtime()) + "\t" +ms_run)
         ms_run_update = DBSession.query(MsRun).filter(MsRun.filename == ms_run["filename"]).all()
     except:
-        log_writer("ms_run_update_complete", " MS Run update failed!")
+        log_writer("ms_run_update_complete", strftime("%Y.%m.%d %H:%M:%S", gmtime()) + "\t" +"MS Run update failed!")
         return Response(conn_err_msg + " \n MsRun insert failed", content_type='text/plain', status_int=500)
     if len(ms_run_update)>0:
         if ms_run['ms_run_date'] != "":
@@ -611,7 +611,7 @@ def update_metadata_msrun_post(request):
                 spectrum_hits = DBSession.query(SpectrumHit)\
                     .filter(SpectrumHit.source_source_id == ms_run_update[0].source_source_id).update({'source_source_id': ms_run['source_source_id']})
             except:
-                log_writer("ms_run_update_complete", "SpectrumHit update failed!")
+                log_writer("ms_run_update_complete", strftime("%Y.%m.%d %H:%M:%S", gmtime()) + "\t" +"SpectrumHit update failed!")
                 DBSession.rollback()
                 return Response("SpectrumHit update failed!",
                                 content_type='text/plain', status_int=500)
@@ -620,7 +620,7 @@ def update_metadata_msrun_post(request):
                     .filter(PeptideRun.source_source_id == ms_run_update[0].source_source_id).update({'source_source_id': ms_run['source_source_id']})
 
             except:
-                log_writer("ms_run_update_complete", "Peptide Run update failed!")
+                log_writer("ms_run_update_complete", strftime("%Y.%m.%d %H:%M:%S", gmtime()) + "\t" +"Peptide Run update failed!")
                 DBSession.rollback()
                 return Response("Peptide Run update failed!",
                                 content_type='text/plain', status_int=500)
@@ -630,9 +630,9 @@ def update_metadata_msrun_post(request):
     try:
         transaction.commit()
         DBSession.flush()
-        log_writer("ms_run_update", ms_run)
+        log_writer("ms_run_update", strftime("%Y.%m.%d %H:%M:%S", gmtime()) + "\t" +ms_run)
     except:
-        log_writer("ms_run_update_complete", " MS Run update failed!")
+        log_writer("ms_run_update_complete", strftime("%Y.%m.%d %H:%M:%S", gmtime()) + "\t" +"MS Run update failed!")
         DBSession.rollback()
         return Response("MS Run update failed!",
                         content_type='text/plain', status_int=500)
