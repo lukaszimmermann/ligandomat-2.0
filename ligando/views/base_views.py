@@ -135,7 +135,7 @@ def source_id_page(request):
         metadata = json.dumps(query.all())
 
         query = DBSession.query(MsRun.ms_run_id, MsRun.filename).join(Source).filter(
-            Source.patient_id == request.matchdict["source_id"])
+            Source.source_id == request.matchdict["source_id"])
         runs = json.dumps(query.all())
 
     except:

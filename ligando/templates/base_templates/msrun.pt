@@ -111,8 +111,8 @@ $(document).ready(function() {
 
     // Set qcML report
     var filename = '"/static/qcML/'+document.getElementById("title").innerHTML.split(".")[0]+'.xml';
-    document.getElementById("qcML").data = filename;
-//    document.getElementById("qcML").data = '/static/qcML/searchparam_draft.qcML.xml';
+//    document.getElementById("qcML").data = filename;
+    document.getElementById("qcML").data = '/static/qcML/searchparam_draft.qcML.xml';
 
 
     // extract alleles and link them
