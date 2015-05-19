@@ -119,7 +119,7 @@ $(document).ready(function() {
     var digits = 2;
     console.log(${metadata});
     var alleles = ${metadata}[0]["hla_typing"].split(",");
-    console.log(alleles)
+    console.log(alleles);
     var allele_string = "";
     loop1:
     for(var i=0; i<alleles.length; i++){
