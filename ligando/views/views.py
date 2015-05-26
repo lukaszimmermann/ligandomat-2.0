@@ -43,3 +43,7 @@ def my_view(request):
     except:
         return Response(conn_err_msg, content_type='text/plain', status_int=500)
 
+# test view
+@view_config(route_name='test_view', renderer='../templates/test_template.pt')
+def test_view(request):
+    return dict()

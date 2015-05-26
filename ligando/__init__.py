@@ -51,6 +51,10 @@ def main(global_config, **settings):
     # Database analysis
     config.add_route('venn_analysis', '/venn_analysis')
 
+
+
+    # test view TODO: remove before publishing
+    config.add_route('test_view', '/test_view')
     # scan for views in whole project
     config.scan()
     return config.make_wsgi_app()
