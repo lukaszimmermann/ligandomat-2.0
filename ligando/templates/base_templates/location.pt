@@ -1,6 +1,4 @@
-
 <html metal:use-macro="load: ../base_layout.pt">
-<!DOCTYPE html>
 <html lang="${request.locale_name}">
 <head>
 
@@ -8,69 +6,74 @@
 </head>
 
 <body>
-<div class="main_wrapper">
-    <h1 style="text-align: center">${location}</h1>
-    <table >
+<metal:block fill-slot="content">
+    <div class="main_wrapper">
+        <h1 style="text-align: center">${location}</h1>
+        <table>
             <tr>
-                <td>Sources:</td><td id="source_stat"> </td>
+                <td>Sources:</td>
+                <td id="source_stat"></td>
             </tr>
-    </table>
-    <table id="example"  class="info_table" cellspacing="0" width="100%">
-        <thead>
-        <tr>
-        <th>Source ID</th>
-        <th>Patient ID</th>
-        <th>Organ</th>
-        <th>Histology</th>
-        <th>Dignity</th>
-        </tr>
-        </thead>
-    </table>
-</div>
+        </table>
+        <table id="example" class="info_table" cellspacing="0" width="100%">
+            <thead>
+            <tr>
+                <th>Source ID</th>
+                <th>Patient ID</th>
+                <th>Organ</th>
+                <th>Histology</th>
+                <th>Dignity</th>
+            </tr>
+            </thead>
+        </table>
+    </div>
 
-<script>
+    <script>
 
-$(document).ready(function() {
+        $(document).ready(function () {
 // create dataTable
-$('#example').dataTable( {
-    "paging":   false,
-    "info":     false,
-    searching: false,
-    data: ${sources},
-    columns: [
-            { data: "source_id",
-            "render": function ( data, type, row ) {
-                return "<a class='nostylelink'  href= '/source_id/"+data + "'>"+data + "</a>" ;
-            }},
-        { data: "patient_id",
-            "render": function ( data, type, row ) {
-                return "<a class='nostylelink'  href= '/source/"+data + "'>"+data + "</a>" ;
-            }},
-        { data: "organ",
-            "render": function ( data, type, row ) {
-                return "<a class='nostylelink'  href= '/organ/"+data + "'>"+data + "</a>" ;
-            }},
-            { data: "histology",
-            "render": function ( data, type, row ) {
-                return "<a class='nostylelink'  href= '/histology/"+data + "'>"+data + "</a>" ;
-            }},
-            { data: "dignity",
-            "render": function ( data, type, row ) {
-                return "<a class='nostylelink'  href= '/dignity/"+data + "'>"+data + "</a>" ;
-            }}
-    ]
-} );
-} );
-// set statistics
-$(document).ready(function() {
-    document.getElementById("source_stat").innerHTML = ${sources}.length;
+            $('#example').dataTable({
+                "paging": false,
+                "info": false,
+                searching: false,
+                data: ${sources},
+                columns: [
+                    { data: "source_id",
+                        "render": function (data, type, row) {
+                            return "<a class='nostylelink'  href= '/source_id/" + data + "'>" + data + "</a>";
+                        }},
+                    { data: "patient_id",
+                        "render": function (data, type, row) {
+                            return "<a class='nostylelink'  href= '/source/" + data + "'>" + data + "</a>";
+                        }},
+                    { data: "organ",
+                        "render": function (data, type, row) {
+                            return "<a class='nostylelink'  href= '/organ/" + data + "'>" + data + "</a>";
+                        }},
+                    { data: "histology",
+                        "render": function (data, type, row) {
+                            return "<a class='nostylelink'  href= '/histology/" + data + "'>" + data + "</a>";
+                        }},
+                    { data: "dignity",
+                        "render": function (data, type, row) {
+                            return "<a class='nostylelink'  href= '/dignity/" + data + "'>" + data + "</a>";
+                        }}
+                ]
+            });
+        });
+        // set statistics
+        $(document).ready(function () {
+            document.getElementById("source_stat").innerHTML = ${sources}.
+            length;
 
-});
+        });
 
-</script>
+    </script>
 
 
+</metal:block>
 
 </body>
 
+</html>
 </html>

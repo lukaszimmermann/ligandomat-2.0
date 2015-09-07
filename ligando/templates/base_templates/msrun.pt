@@ -1,6 +1,4 @@
-
 <html metal:use-macro="load: ../base_layout.pt">
-<!DOCTYPE html>
 <html lang="${request.locale_name}">
 <head>
 
@@ -9,199 +7,225 @@
 
 <body>
 
+<metal:block fill-slot="content">
 
 <div class="main_wrapper">
-<div class="wrapper">
-    <h1 style="text-align: center" id="title"></h1>
-    <div style="align-content: center;margin-left: auto; margin-right: auto;">
+    <div class="wrapper">
+        <h1 style="text-align: center" id="title"></h1>
+
+        <div style="align-content: center;margin-left: auto; margin-right: auto;">
             <h3>Basic Statistics</h3>
             <table class="info_table" width="25%">
-            <tr>
-                <td width="50%">Peptides: </td><td id="pep_stat"> </td>
-            </tr>
-            <tr class="alt">
-                <td>Spectra: </td><td id="spec_stat"> </td>
-            </tr>
-            <tr>
-                <td>Proteins: </td><td id="prot_stat"> </td>
-            </tr>
+                <tr>
+                    <td width="50%">Peptides:</td>
+                    <td id="pep_stat"></td>
+                </tr>
+                <tr class="alt">
+                    <td>Spectra:</td>
+                    <td id="spec_stat"></td>
+                </tr>
+                <tr>
+                    <td>Proteins:</td>
+                    <td id="prot_stat"></td>
+                </tr>
             </table>
-        <br>
-        <h3>Run Information</h3>
-        <table class="info_table" width="50%">
-            <tr>
-                <td width="50%">MS Run Date: </td><td id="ms_run_date"> </td>
-            </tr >
-            <tr class="alt">
-                <td>Used Share: </td><td id="used_share"> </td>
-            </tr>
-            <tr>
-                <td>MS Run Comment: </td><td id="msrun_comment"> </td>
-            </tr>
-            <tr class="alt">
-                <td>Sample Mass: </td><td id="sample_mass"> </td>
-            </tr>
-            <tr>
-                <td>Sample Volume: </td><td id="sample_volume"> </td>
-            </tr>
-            <tr class="alt">
-                <td>Antibody Set: </td><td id="antibody_set"> </td>
-            </tr>
-            <tr>
-                <td>Antibody Mass: </td><td id="antibody_mass"> </td>
-            </tr>
-                </table>
-        <br>
-        <h3>Source Information</h3>
-        <table class="info_table" width="50%">
-            <tr>
-                <td width="50%">Source ID:</td><td id="source_id"></td>
-            </tr >
-            <tr class="alt">
-                <td width="50%">Patient ID:</td><td id="patient_id"></td>
-            </tr >
-            <tr>
-                <td width="50%">Histology:</td><td id="histology"></td>
-            </tr >
-            <tr class="alt">
-                <td>Dignity:</td><td id="dignity"></td>
-            </tr>
-            <tr>
-                <td>Organ:</td><td id="organ"></td>
-            </tr>
-            <tr class="alt">
-                <td>Organism:</td><td id="organism"></td>
-            </tr>
-            <tr>
-                <td>Celltype:</td><td id="celltype"></td>
-            </tr>
-            <tr class="alt">
-                <td>Location:</td><td id="location"></td>
-            </tr>
-            <tr>
-                <td>Metastatis:</td><td id="metastatis"></td>
-            </tr>
-            <tr class="alt">
-                <td>HLA-Typing: </td><td id="typing"> </td>
-            </tr>
-            <tr>
-                <td>Responsible Person:</td><td id="person"></td>
-            </tr >
-            <tr class="alt">
-                <td>Treatment:</td><td id="treatment"></td>
-            </tr >
-            <tr>
-                <td>Comment: </td><td id="comment"> </td>
-            </tr>
+            <br>
 
-                </table>
-    </div>
+            <h3>Run Information</h3>
+            <table class="info_table" width="50%">
+                <tr>
+                    <td width="50%">MS Run Date:</td>
+                    <td id="ms_run_date"></td>
+                </tr>
+                <tr class="alt">
+                    <td>Used Share:</td>
+                    <td id="used_share"></td>
+                </tr>
+                <tr>
+                    <td>MS Run Comment:</td>
+                    <td id="msrun_comment"></td>
+                </tr>
+                <tr class="alt">
+                    <td>Sample Mass:</td>
+                    <td id="sample_mass"></td>
+                </tr>
+                <tr>
+                    <td>Sample Volume:</td>
+                    <td id="sample_volume"></td>
+                </tr>
+                <tr class="alt">
+                    <td>Antibody Set:</td>
+                    <td id="antibody_set"></td>
+                </tr>
+                <tr>
+                    <td>Antibody Mass:</td>
+                    <td id="antibody_mass"></td>
+                </tr>
+            </table>
+            <br>
+
+            <h3>Source Information</h3>
+            <table class="info_table" width="50%">
+                <tr>
+                    <td width="50%">Source ID:</td>
+                    <td id="source_id"></td>
+                </tr>
+                <tr class="alt">
+                    <td width="50%">Patient ID:</td>
+                    <td id="patient_id"></td>
+                </tr>
+                <tr>
+                    <td width="50%">Histology:</td>
+                    <td id="histology"></td>
+                </tr>
+                <tr class="alt">
+                    <td>Dignity:</td>
+                    <td id="dignity"></td>
+                </tr>
+                <tr>
+                    <td>Organ:</td>
+                    <td id="organ"></td>
+                </tr>
+                <tr class="alt">
+                    <td>Organism:</td>
+                    <td id="organism"></td>
+                </tr>
+                <tr>
+                    <td>Celltype:</td>
+                    <td id="celltype"></td>
+                </tr>
+                <tr class="alt">
+                    <td>Location:</td>
+                    <td id="location"></td>
+                </tr>
+                <tr>
+                    <td>Metastatis:</td>
+                    <td id="metastatis"></td>
+                </tr>
+                <tr class="alt">
+                    <td>HLA-Typing:</td>
+                    <td id="typing"></td>
+                </tr>
+                <tr>
+                    <td>Responsible Person:</td>
+                    <td id="person"></td>
+                </tr>
+                <tr class="alt">
+                    <td>Treatment:</td>
+                    <td id="treatment"></td>
+                </tr>
+                <tr>
+                    <td>Comment:</td>
+                    <td id="comment"></td>
+                </tr>
+
+            </table>
+        </div>
     </div>
 </div>
 <br>
-<object id="qcML" width="100%" height="4000px" >No Run Quality Report available</object>
+<object id="qcML" width="100%" height="4000px">No Run Quality Report available</object>
 <!--?<object  width="100%" height="4000px" data="${request.static_url('ligando:static/qcML/searchparam_draft.qcML.xml')}">No Run Quality Report available</object>-->
 
 <script>
     $(document).ready(
-        );
-$(document).ready(function() {
-    // Setting the title
-    document.getElementById("title").innerHTML = ${metadata}[0]["filename"];
+    );
+    $(document).ready(function () {
+        // Setting the title
+        document.getElementById("title").innerHTML = ${metadata}[0]["filename"];
 
-    // Set qcML report
-    var filename = '"/static/qcML/'+document.getElementById("title").innerHTML.split(".")[0]+'.xml';
+        // Set qcML report
+        var filename = '"/static/qcML/' + document.getElementById("title").innerHTML.split(".")[0] + '.xml';
 //    document.getElementById("qcML").data = filename;
-    document.getElementById("qcML").data = '/static/qcML/searchparam_draft.qcML.xml';
+        document.getElementById("qcML").data = '/static/qcML/searchparam_draft.qcML.xml';
 
 
-    // extract alleles and link them
-    var digits = 2;
-    console.log(${metadata});
-    var alleles = ${metadata}[0]["hla_typing"].split(",");
-    console.log(alleles);
-    var allele_string = "";
-    loop1:
-    for(var i=0; i<alleles.length; i++){
-        var a = alleles[i].trim();
-        for(var j=0; j<alleles.length; j++) {
-            var b = alleles[j].trim();
-            if(b.indexOf(a) > -1 && i!=j){
-                continue loop1;
-            }
+        // extract alleles and link them
+        var digits = 2;
+        console.log(${metadata});
+        var alleles = ${metadata}[0]["hla_typing"].split(",");
+        console.log(alleles);
+        var allele_string = "";
+        loop1:
+                for (var i = 0; i < alleles.length; i++) {
+                    var a = alleles[i].trim();
+                    for (var j = 0; j < alleles.length; j++) {
+                        var b = alleles[j].trim();
+                        if (b.indexOf(a) > -1 && i != j) {
+                            continue loop1;
+                        }
+                    }
+
+                    allele_string = allele_string + "<a class='nostylelink'  href= '/hla/" + a + "'>" + a + "</a>, ";
+                    // Get the number of digits in typing
+                    try {
+                        digits = (a.split("*")[1].split(":")).length * 2;
+                    } catch (err) {
+                        digits = 2;
+                    }
+                }
+        // Setting the statistics
+        document.getElementById("pep_stat").innerHTML = "<a title='Show all Peptides'  class='nostylelink' href='javascript:post(\x22../peptide_query\x22, {run_name: document.getElementById(\x22title\x22).innerHTML, grouping:\x22run\x22, digits:\x22" + digits + "\x22}," + ${statistics}[0]["count_pep"] + " )'> " + ${statistics}[0]["count_pep"] + "</a>";
+        // TODO: create spectrum hit query
+        document.getElementById("spec_stat").innerHTML = ${statistics}[0]["count_hits"];
+        document.getElementById("prot_stat").innerHTML = ${statistics}[0]["count_prot"];
+
+
+        document.getElementById("typing").innerHTML = allele_string.slice(0, -2);
+        document.getElementById("patient_id").innerHTML = "<a class='nostylelink'  href= '/source/" + ${metadata}[0]["patient_id"] + "'>" + ${metadata}[0]["patient_id"] + "</a>";
+
+        document.getElementById("source_id").innerHTML = "<a class='nostylelink'  href= '/source_id/" + ${metadata}[0]["source_id"] + "'>" + ${metadata}[0]["source_id"] + "</a>";
+        document.getElementById("histology").innerHTML = "<a class='nostylelink'  href= '/histology/" + ${metadata}[0]["histology"] + "'>" + ${metadata}[0]["histology"] + "</a>";
+        document.getElementById("organ").innerHTML = "<a class='nostylelink'  href= '/organ/" + ${metadata}[0]["organ"] + "'>" + ${metadata}[0]["organ"] + "</a>";
+
+        document.getElementById("organism").innerHTML = ${metadata}[0]["organism"];
+        document.getElementById("dignity").innerHTML = "<a class='nostylelink'  href= '/dignity/" + ${metadata}[0]["dignity"] + "'>" + ${metadata}[0]["dignity"] + "</a>";
+
+        document.getElementById("celltype").innerHTML = "<a class='nostylelink'  href= '/celltype/" + ${metadata}[0]["celltype"] + "'>" + ${metadata}[0]["celltype"] + "</a>";
+        if (${metadata}[0]["location"] == "NA") {
+            document.getElementById("location").innerHTML = "-"
+        } else {
+            document.getElementById("location").innerHTML = get_separate_links("location", ${metadata}[0]["location"]);
         }
-
-        allele_string = allele_string + "<a class='nostylelink'  href= '/hla/"+a + "'>"+a + "</a>, ";
-        // Get the number of digits in typing
-        try {
-            digits = (a.split("*")[1].split(":")).length * 2;
-        }catch(err) {
-            digits = 2;
+        // Write Yes or No instead 0 and 1
+        if (${metadata}[0]["metastatis"] == 0) {
+            document.getElementById("metastatis").innerHTML = "No"
+        } else {
+            document.getElementById("metastatis").innerHTML = "Yes"
         }
-    }
-    // Setting the statistics
-    document.getElementById("pep_stat").innerHTML = "<a title='Show all Peptides'  class='nostylelink' href='javascript:post(\x22../peptide_query\x22, {run_name: document.getElementById(\x22title\x22).innerHTML, grouping:\x22run\x22, digits:\x22"+digits +"\x22}," +${statistics}[0]["count_pep"]+ " )'> "+${statistics}[0]["count_pep"]+"</a>";
-    // TODO: create spectrum hit query
-    document.getElementById("spec_stat").innerHTML = ${statistics}[0]["count_hits"];
-    document.getElementById("prot_stat").innerHTML = ${statistics}[0]["count_prot"];
+        document.getElementById("person").innerHTML = "<a class='nostylelink'  href= '/person/" + ${metadata}[0]["person"] + "'>" + ${metadata}[0]["person"] + "</a>, ";
+        document.getElementById("comment").innerHTML = ${metadata}[0]["comment"];
+        // Treatment
+        document.getElementById("treatment").innerHTML = get_separate_links("treatment", ${metadata}[0]["treatment"]);
 
+        document.getElementById("ms_run_date").innerHTML = ${metadata}[0]["ms_run_date"];
+        document.getElementById("used_share").innerHTML = ${metadata}[0]["used_share"];
+        if (${metadata}[0]["msrun_comment"] == "NULL") {
+            document.getElementById("msrun_comment").innerHTML = "-"
+        } else {
+            document.getElementById("msrun_comment").innerHTML = ${metadata}[0]["msrun_comment"];
+        }
+        if (${metadata}[0]["sample_mass"] == "") {
+            document.getElementById("sample_mass").innerHTML = "-"
+        } else {
+            document.getElementById("sample_mass").innerHTML = ${metadata}[0]["sample_mass"];
+        }
+        if (${metadata}[0]["sample_volume"] == "") {
+            document.getElementById("sample_volume").innerHTML = "-"
+        } else {
+            document.getElementById("sample_volume").innerHTML = ${metadata}[0]["sample_volume"];
+        }
+        document.getElementById("antibody_set").innerHTML = ${metadata}[0]["antibody_set"];
+        document.getElementById("antibody_mass").innerHTML = ${metadata}[0]["antibody_mass"];
 
-
-    document.getElementById("typing").innerHTML = allele_string.slice(0, -2);
-    document.getElementById("patient_id").innerHTML = "<a class='nostylelink'  href= '/source/"+${metadata}[0]["patient_id"] + "'>"+${metadata}[0]["patient_id"]+ "</a>";
-
-    document.getElementById("source_id").innerHTML = "<a class='nostylelink'  href= '/source_id/"+${metadata}[0]["source_id"] + "'>"+${metadata}[0]["source_id"]+ "</a>";
-    document.getElementById("histology").innerHTML = "<a class='nostylelink'  href= '/histology/"+${metadata}[0]["histology"] + "'>"+${metadata}[0]["histology"]+ "</a>";
-    document.getElementById("organ").innerHTML =  "<a class='nostylelink'  href= '/organ/"+${metadata}[0]["organ"] + "'>"+${metadata}[0]["organ"]+ "</a>";
-
-    document.getElementById("organism").innerHTML = ${metadata}[0]["organism"];
-    document.getElementById("dignity").innerHTML = "<a class='nostylelink'  href= '/dignity/"+${metadata}[0]["dignity"] + "'>"+${metadata}[0]["dignity"]+ "</a>";
-
-    document.getElementById("celltype").innerHTML = "<a class='nostylelink'  href= '/celltype/"+${metadata}[0]["celltype"] + "'>"+${metadata}[0]["celltype"]+ "</a>";
-    if(${metadata}[0]["location"] == "NA"){
-        document.getElementById("location").innerHTML = "-"
-    }else{
-        document.getElementById("location").innerHTML = get_separate_links("location", ${metadata}[0]["location"]);
-    }
-    // Write Yes or No instead 0 and 1
-    if(${metadata}[0]["metastatis"]==0){
-        document.getElementById("metastatis").innerHTML = "No"
-    }else{
-        document.getElementById("metastatis").innerHTML = "Yes"
-    }
-    document.getElementById("person").innerHTML = "<a class='nostylelink'  href= '/person/"+${metadata}[0]["person"] + "'>"+${metadata}[0]["person"] + "</a>, ";
-    document.getElementById("comment").innerHTML = ${metadata}[0]["comment"];
-    // Treatment
-    document.getElementById("treatment").innerHTML = get_separate_links("treatment", ${metadata}[0]["treatment"]);
-
-    document.getElementById("ms_run_date").innerHTML = ${metadata}[0]["ms_run_date"];
-    document.getElementById("used_share").innerHTML = ${metadata}[0]["used_share"];
-    if(${metadata}[0]["msrun_comment"] == "NULL"){
-        document.getElementById("msrun_comment").innerHTML = "-"
-    }else{
-        document.getElementById("msrun_comment").innerHTML = ${metadata}[0]["msrun_comment"];
-    }
-    if(${metadata}[0]["sample_mass"] == ""){
-        document.getElementById("sample_mass").innerHTML = "-"
-    }else{
-        document.getElementById("sample_mass").innerHTML = ${metadata}[0]["sample_mass"];
-    }
-    if(${metadata}[0]["sample_volume"] == ""){
-        document.getElementById("sample_volume").innerHTML = "-"
-    }else{
-        document.getElementById("sample_volume").innerHTML = ${metadata}[0]["sample_volume"];
-    }
-    document.getElementById("antibody_set").innerHTML = ${metadata}[0]["antibody_set"];
-    document.getElementById("antibody_mass").innerHTML = ${metadata}[0]["antibody_mass"];
-
-});
-
+    });
 
 
 </script>
 
-
+</metal:block>
 
 </body>
 
+</html>
 </html>

@@ -75,6 +75,13 @@
                         <li>
                             <a href="/">HLA Atlas</a>
                         </li>
+                        <li>
+                            <ul>
+                                <li>
+                                    <a href="/">About</a>
+                                </li>
+                            </ul>
+                        </li>
                     </ul>
                 </div>
                 <div style="clear:both"></div>

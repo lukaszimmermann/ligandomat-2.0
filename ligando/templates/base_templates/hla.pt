@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html metal:use-macro="load: ../base_layout.pt">
 <html lang="${request.locale_name}">
 <head>
@@ -8,79 +7,83 @@
 
 <body>
 <metal:block fill-slot="content">
-<div class="main_wrapper">
-    <h1 style="text-align: center">${hla}</h1>
-    <div style="float: left;  width: 200px">
-    <table >
+    <div class="main_wrapper">
+        <h1 style="text-align: center">${hla}</h1>
+
+        <div style="float: left;  width: 200px">
+            <table>
+                <tr>
+                    <td>Peptides:</td>
+                    <td id="pep_stat"></td>
+                </tr>
+                <tr>
+                    <td>Sources</td>
+                    <td id="source_stat"></td>
+                </tr>
+            </table>
+        </div>
+        <div style="float: right; width: 640px"><img id="seqlogo" src="" onerror='this.style.display = "none"'></div>
+
+        <table id="example" class="info_table" cellspacing="0" width="1000px">
+            <thead>
             <tr>
-                <td>Peptides: </td><td id="pep_stat"> </td>
+                <th>Source Id</th>
+                <th>Patient ID</th>
+                <th>Organ</th>
+                <th>Histology</th>
+                <th>Dignity</th>
             </tr>
-            <tr>
-                <td>Sources</td><td id="source_stat"> </td>
-            </tr>
-    </table>
+            </thead>
+        </table>
     </div>
-    <div style="float: right; width: 640px"><img id="seqlogo" src="" onerror='this.style.display = "none"'></div>
 
-    <table id="example"  class="info_table" cellspacing="0" width="1000px">
-        <thead>
-        <tr>
-        <th>Source Id</th>
-        <th>Patient ID</th>
-        <th>Organ</th>
-        <th>Histology</th>
-        <th>Dignity</th>
-        </tr>
-        </thead>
-    </table>
-</div>
+    <script>
 
-<script>
-
-$(document).ready(function() {
+        $(document).ready(function () {
 // create dataTable
-$('#example').dataTable( {
-    "paging":   false,
-    "ordering": false,
-    "info":     false,
-    searching: false,
-    data: ${sources},
-    columns: [
-        { data: "source_id",
-            "render": function ( data, type, row ) {
-                return "<a class='nostylelink'  href= '/source/"+data + "'>"+data + "</a>" ;
-            }},
-        { data: "patient_id",
-            "render": function ( data, type, row ) {
-                return "<a class='nostylelink'  href= '/source/"+data + "'>"+data + "</a>" ;
-            }},
-        { data: "organ",
-            "render": function ( data, type, row ) {
-                return "<a class='nostylelink' href= '/organ/"+data + "'>"+data + "</a>" ;
-            }},
-        { data: "histology",
-            "render": function ( data, type, row ) {
-                return "<a class='nostylelink' href= '/histology/"+data + "'>"+data + "</a>" ;
-            }},
-            { data: "dignity",
-            "render": function ( data, type, row ) {
-                return "<a class='nostylelink' href= '/histology/"+data + "'>"+data + "</a>" ;
-            }}
-    ]
-} );
-} );
+            $('#example').dataTable({
+                "paging": false,
+                "ordering": false,
+                "info": false,
+                searching: false,
+                data: ${sources},
+                columns: [
+                    { data: "source_id",
+                        "render": function (data, type, row) {
+                            return "<a class='nostylelink'  href= '/source/" + data + "'>" + data + "</a>";
+                        }},
+                    { data: "patient_id",
+                        "render": function (data, type, row) {
+                            return "<a class='nostylelink'  href= '/source/" + data + "'>" + data + "</a>";
+                        }},
+                    { data: "organ",
+                        "render": function (data, type, row) {
+                            return "<a class='nostylelink' href= '/organ/" + data + "'>" + data + "</a>";
+                        }},
+                    { data: "histology",
+                        "render": function (data, type, row) {
+                            return "<a class='nostylelink' href= '/histology/" + data + "'>" + data + "</a>";
+                        }},
+                    { data: "dignity",
+                        "render": function (data, type, row) {
+                            return "<a class='nostylelink' href= '/histology/" + data + "'>" + data + "</a>";
+                        }}
+                ]
+            });
+        });
 
-$(document).ready(function() {
-    // set statistics
-    document.getElementById("pep_stat").innerHTML = "<a title='Show all Peptides'  class='nostylelink' href='javascript:post(\x22../peptide_query\x22, {hla_typing: \x22${hla}\x22, grouping:\x22peptide\x22}," +${statistic}[0]["pep_count"]+ " )'> "+${statistic}[0]["pep_count"]+"</a>";
-    document.getElementById("source_stat").innerHTML = ${sources}.length;
+        $(document).ready(function () {
+            // set statistics
+            document.getElementById("pep_stat").innerHTML = "<a title='Show all Peptides'  class='nostylelink' href='javascript:post(\x22../peptide_query\x22, {hla_typing: \x22${hla}\x22, grouping:\x22peptide\x22}," + ${statistic}[0]["pep_count"] + " )'> " + ${statistic}[0]["pep_count"] + "</a>";
+            document.getElementById("source_stat").innerHTML = ${sources}.
+            length;
 
-    // set the corresponding seqlogo
-    document.getElementById("seqlogo").src ="${request.static_url("ligando:static/seqlogo/" +hla.replace(":", "") + ".png")}";
+            // set the corresponding seqlogo
+            document.getElementById("seqlogo").src = "${request.static_url("ligando:static/seqlogo/" +hla.replace(":", "") + ".png")}";
 
-});
+        });
 
-</script>
+    </script>
 
 
 </metal:block>
