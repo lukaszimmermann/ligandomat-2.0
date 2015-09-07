@@ -1,6 +1,10 @@
 *{font-family:FF zwo;}
-body{
+html body{
 /*background-color: rgb(244, 244, 244);*/
+    margin:0;
+    padding:0;
+    height: 100%;
+    /*background-image: url("/static/images/body_bg.png");*/
 }
 .nostylelink {
     text-decoration:solid;
@@ -11,6 +15,51 @@ body{
 
     color:rgb(165, 30, 55);
 }
+.boxed{
+    background: white;
+	border: 1px solid #DDD;
+	border-radius: 5px;
+	box-shadow: 0 0 5px #DDD inset;
+	color: #666;
+    outline: none;
+}
+
+#content_div {
+    background-color: white;
+    min-height: 100%;
+
+
+    padding-bottom: 20px;
+}
+#header {
+    height: 100px;
+		padding-top:10px;
+    background-color: white;
+	}
+#footer {
+    /*position:absolute;*/
+    /*bottom: 20px;*/
+    height: 30px;
+    /*height: auto;*/
+    background-color: white;
+}
+
+#main_container {
+    background-color: white;
+    min-height:90vh;
+    display:flex;
+    /*// Direction of the items, can be row or column*/
+    flex-direction: column;
+    /*height: 100%;*/
+    width: 1200px;
+    margin: 0 auto;
+    /*min-height:100%;*/
+   /*position:relative;*/
+}
+main {
+    flex:1;
+}
+
 .main_wrapper {
     margin-right: auto;
     overflow:auto;
@@ -19,9 +68,23 @@ body{
     align-content: center;
 }
 
+.tissue_table{
+    font: normal 14px;
+    border: 1px solid black;
+    table-layout: fixed;
+    width: 800px;
+}
+
+.tissue_table tbody td {
+    background:lightgrey;
+}
+
+
 .info_table{
     font: normal 14px;
-    overflow: hidden;
+    width: 500px ;
+    text-align: left;
+    /*overflow: hidden;*/
     border: 0 solid rgb(232, 225, 208);
     -webkit-border-radius: 3px;
     /*-moz-border-radius: 3px;*/
@@ -38,6 +101,9 @@ body{
 
 table.info_table tr.odd { background-color: white; }
 table.info_table tr.even { background-color: rgb(240, 235, 224); }
+
+
+
 
 .wrapper {
     margin-top: 20pt;
@@ -57,22 +123,29 @@ table.info_table tr.even { background-color: rgb(240, 235, 224); }
     font-size: 18px;
 }
 
+/*.footer {*/
+    /*clear:left;*/
+    /*margin-top:1em;*/
+    /*background:#efefef;*/
+    /*text-align:center;*/
+    /*padding:10px;*/
+/*}*/
+
 .title {
     align-content: center;
     text-align: center;
     color: rgb(165, 30, 55);
-    font-size: 50px;
+    font-size: 28px;
     font-weight: bold;
+    float:left;
 }
 .title_wrapper {
-     display: inline-block;
+     /*display: inline-block;*/
 }
 
 .logo {
     align-content: center;
     position: relative;
-    top: 50%;
-    transform: translateY(50%);
     width: 200px;
     float: left
 }

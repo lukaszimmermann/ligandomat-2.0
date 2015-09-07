@@ -6,157 +6,44 @@
 </head>
 
 <body>
-<div class="main_wrapper">
-<div id="statistic_wrapper" class="wrapper" >
+<metal:block fill-slot="content">
+<div  class="main_wrapper">
 
-        <div id="search_div" style="text-align: center">
-            <form method="POST" action=search>
-                       <!--? this js magic shows a help text, which will disappear on focus-->
-                <input style="width: 500px; font-size: 16px;" name="search_all" value="Search Database" onfocus="if (this.value=='Search Database') this.value='';" onblur="this.value = this.value==''?'Search Database':this.value;" >
-                <input  type="submit" value="Search" class="nice_button" style="width: 100px;margin-left: 10px"/>
-            </form>
-        </div>
-    <br><br>
-        <div  style=" width: 330px;  ">
-        <h3>Database Statistics</h3>
-        Sources: <a class='nostylelink'  href='/sources'>${sources_count}</a><br>
-        MS Runs: <a class='nostylelink' id="ms_run_statistics"  href='/runs'>${all_msrun_count}</a><br>
-        Orphan MS Runs: <a class='nostylelink'  href='/orphan_runs'>${orphan_msrun_count}</a><br>
-        Trashed MS Runs : ${trash_count}
-        </div>
-        <br>
-        <div id="msrun_plot" style="width:400px;height:440px; float:left "></div>
-        <div id="source_chart" style="width:400px;height:440px; float:right ">Organs:</div>
 
-        <div class="homegrid" style="float:left; width: 100%; margin-top: 20px">
-        <table id="orphan_table" class="orphan_table">
-            <thead>
-        <tr>
-        <th>Orphan MS Runs</th>
-        </tr>
-        </thead>
-        </table>
-                </div>
+<div  id="statistic_wrapper" class="wrapper" >
+     <div class="boxed" style="width:500px;height: 400px;float:left;display: flex;align-items: center;">
+     <img width="400px" style="display: block; margin-left: auto;
+    margin-right: auto;"  src="../static/images/Adult_male_diagram_template.svg.png">
+     </div>
+    <div class="boxed" style=" float: right;position:relative;max-width: 500px; height: 400px;"><span > Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet
+    </span></div>
+    <br>
+        <div id="slider1_container"  style="clear:both; position: relative; width: 1000px; height: 200px;">
+    <div u="slides" style="cursor: move; position: absolute;margin-top: 20px; margin-bottom: 20px; left:300px;width: 600px; height: 160px;">
+        <div><img u="image" src="../static/images/UT_WBMW_Rot_RGB_01.png" /></div>
+        <div><img u="image" src="../static/images/ETK.png" /></div>
+        <div><img u="image" src="../static/images/optitype.png" /></div>
+    </div>
+
+</div>
+
+
+
+
 
 </div>
 </div>
-
-<!--?import the  Flot js file-->
-<script type="text/javascript" charset="utf8" src="${request.static_url('ligando:static/js/jquery.flot.js')}"></script>
-<script type="text/javascript" charset="utf8" src="${request.static_url('ligando:static/js/jquery.flot.pie.js')}"></script>
-
-
 <script>
-    $(function() {
-        document.getElementById('ms_run_statistics').innerHTML=${all_msrun_count}-${orphan_msrun_count}-${trash_count};
-        // set the statistics
-        var ms_run = [[1,${all_msrun_count}-${orphan_msrun_count}-${trash_count}]];
-        var orphan_ms_run = [[2,${orphan_msrun_count}]];
-        //var trash_runs = [[3, ${trash_count}]]
-        // create data for the flot plot
-        var data = [{label: 'Complete MS Runs', data:ms_run,color: "rgb("+138+","+174+","+93+")"},
-                {label: 'Orphan MS Runs', data:orphan_ms_run, color: "rgb("+205+","+97+","+73+")"}//,
-                //{label: 'Trashed MS Runs', data:trash_runs, color: "rgb("+123+","+125+","+132+")"}
-        ];
-        // flot options
-        var options = {series: {
-                stack: 0,
 
-                 lines: {
-                     show: false,
-                     steps: false },
-                 bars: {
-                     show: true,
-                     barWidth: 0.5,
-                     align: 'center',
-                     fill :1,
-                     clickable:true}
-                },
-                xaxis: {
-                    min: 0,
-                    max:3,
-                    show:false
-                },
-                yaxis:{
-                    max:(${all_msrun_count}-${orphan_msrun_count}-${trash_count}+2000)
-                },
-                grid: {
-                    clickable: true,
-                    hover: true
-        }
-    };
-    // plot the ms runs statistics
-    $.plot("#msrun_plot",data,options);
+
+        jQuery(document).ready(function ($) {
+        var options = { $AutoPlay: true };
+        var jssor_slider1 = new $JssorSlider$('slider1_container', options);
     });
-    // allows clickable bars in the plot
-    $("#msrun_plot").bind("plotclick", function (event, pos, item) {
-        if(item) {
-            if(item["seriesIndex"]==0){
-                window.location.href = "/runs";
-            }else{
-                window.location.href = "/orphan_runs";
-            }
-        }
-        });
+    </script>
 
-    $(document).ready(function() {
-    // create dataTable
-    $('#orphan_table').dataTable( {
-        data: ${orphan_msrun},
-                "paging":   false,
-    "info":     false,
-    searching: false,
-    columns: [
-            { data: "orphan_ms_run" ,
-            "render": function ( data, type, row ) {
-                return '<a class="nostylelink" href="/upload_metadata_ms_run?run='+ data + '">'+data+ '</a>' ;
-            }}]
-    }
-    )
-    }
-    );
-
-
-    $(document).ready(function() {
-        function labelFormatter(label, series) {
-            return "<div style='font-size:18px;'>" + label + "<br/>" +Math.round(series.percent) + "%</div>";
-        }
-
-        // {label: 'Complete MS Runs', data:ms_run,color: "rgb("+138+","+174+","+93+")"},
-        var data = [];
-        for(i in ${sources}){
-            if(i != "others"){
-                data.push({label: i, data:${sources}[i],"url":"/organ/"+i});
-            }else{
-                data.push({label: i, data:${sources}[i],"url":"/"});
-            }
-        }
-
-        $.plot('#source_chart', data, {
-            series: {
-                pie: {
-                    show: true,
-                label:{
-                    show: true,
-                    formatter: labelFormatter
-                },
-                    innerRadius: 0.4
-            }},
-            grid:  {
-                clickable:true
-            },
-            legend: {
-                show: false
-            }
-        });
-        $('#source_chart').bind("plotclick", function(event,pos,obj) {
-        window.location.href = (data[obj.seriesIndex].url);
-        });
-
-    });
-
-</script>
-
+</metal:block>
 
 </body>
+</html>
 </html>

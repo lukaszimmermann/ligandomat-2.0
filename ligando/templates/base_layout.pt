@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="${request.locale_name}">
 <head>
+
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-
+<div metal:define-slot="head">
     <title>HLA Ligand Atlas</title>
 
     <link rel="stylesheet" type="text/css" href="${request.static_url('ligando:static/css/main_styles.css')}">
@@ -13,82 +14,90 @@
     <link rel="stylesheet" type="text/css" href="${request.static_url('ligando:static/css/jquery-ui.min.css')}">
     <!-- DataTables CSS -->
     <link rel="stylesheet" type="text/css" href="${request.static_url('ligando:static/css/dataTables.tableTools.css')}">
+    <!--? jQuery-->
+    <script src="${request.static_url('ligando:static/js/jquery-1.10.2.min.js')}"></script>
 
+    <!-- DataTables -->
+    <script src="${request.static_url('ligando:static/js/jquery.dataTables.min.js')}"></script>
+    <script src="${request.static_url('ligando:static/js/dataTables.tableTools.js')}"></script>
 
+    <script src="${request.static_url('ligando:static/js/jquery-ui.min.js')}"></script>
+    <script src="${request.static_url('ligando:static/js/menu.js')}"></script>
+    <script src="${request.static_url('ligando:static/js/shared.js')}"></script>
+    <script type="text/javascript" charset="utf8"
+            src="${request.static_url('ligando:static/js/jquery.flot.js')}"></script>
+    <script type="text/javascript" charset="utf8"
+            src="${request.static_url('ligando:static/js/jquery.flot.pie.js')}"></script>
 
+    <script type="text/javascript" charset="utf8"
+            src="${request.static_url('ligando:static/js/jssor.slider.mini.js')}"></script>
+
+    <script>
+        // tooltips
+        $(function () {
+            $(document).tooltip();
+        });
+    </script>
+
+</div>
 </head>
 
 <body>
-<div class="main_wrapper">
-<div class="logo"><a href="http://www.uni-tuebingen.de"><img width="200px" src="../static/images/UT_WBMW_Rot_RGB_01.png"></a></div>
-    <div class="title_wrapper">
-<div  class="title" >HLA Ligand Atlas</div>
-<br>
-<!--? This is the main menu-->
-<div id="main_menu">
-<ul id="sddm">
-    <li>
-        <a href="/">Home</a>
-    </li>
-    <li>
-        <a
-        onmouseover="mopen('m1')"
-        onmouseout="mclosetime()">Information</a>
-        <div id="m1"
-            onmouseover="mcancelclosetime()"
-            onmouseout="mclosetime()">
-        <a href="/sources">Source Information</a>
-        <a href="/runs">MS Run Information</a>
-        </div>
-    </li>
-    <li><a href="#"
-        onmouseover="mopen('m3')"
-        onmouseout="mclosetime()">Search Database</a>
-        <div id="m3"
-            onmouseover="mcancelclosetime()"
-            onmouseout="mclosetime()">
-        <a href="/peptide_query">Complete Database Search</a>
-        <a href="/venn_analysis">Venn Analysis</a>
-        <!--?<a style="text-decoration: line-through" href="/multi_peptide">Multi Peptide Search</a>-->
-        </div>
-	</li>
-    <li><a href="#"
-        onmouseover="mopen('m2')"
-        onmouseout="mclosetime()">Upload Metadata</a>
-        <div id="m2"
-            onmouseover="mcancelclosetime()"
-            onmouseout="mclosetime()">
-        <a href="/upload_metadata_source">Source Upload</a>
-        <a href="/upload_metadata_ms_run">MS Run Upload</a>
-        <a href="/blacklist_msrun">Blacklist MS Run</a>
-        <a href="/unblacklist_msrun">Recover blacklisted MS Run</a>
-        <a href="/update_metadata_source">Source Update</a>
-        <a href="/update_metadata_ms_run">MS Run Update</a>
-        </div>
-    </li>
-</ul>
-    </div>
-<div style="clear:both"></div>
 
-<hr style="width: 800px" size="3" color="black" >
+
+<div id="main_container">
+    <header id="header">
+        <div class="main_wrapper">
+            <!--?<div class="logo"><a href="http://www.uni-tuebingen.de"><img width="200px" src="../static/images/UT_WBMW_Rot_RGB_01.png"></a></div>-->
+            <div class="title_wrapper">
+                <div class="title"><a style="color: inherit;text-decoration:none;" href="/">HLA Ligand Atlas</a></div>
+                <div id="search_div" style="text-align: center; float:right">
+                    <form method="POST" action="/search">
+                        <!--? this js magic shows a help text, which will disappear on focus-->
+                        <input style="width: 300px; font-size: 16px;" name="search_all" value="Search Database"
+                               onfocus="if (this.value=='Search Database') this.value='';"
+                               onblur="this.value = this.value==''?'Search Database':this.value;">
+                        <input type="submit" value="Search" class="nice_button" style="width: 80px;margin-left: 10px"/>
+                    </form>
+                    <p style="text-align: left">e.g. Peptide, Protein</p>
+                </div>
+                <br>
+                <br>
+                <!--? This is the main menu-->
+                <div id="main_menu">
+                    <ul id="sddm">
+                        <li>
+                            <a href="/">Home</a>
+                        </li>
+                        <li>
+                            <a href="/">Tissue Atlas</a>
+                        </li>
+                        <li>
+                            <a href="/">HLA Atlas</a>
+                        </li>
+                    </ul>
+                </div>
+                <div style="clear:both"></div>
+
+                <hr style="width: 1200px" size="3" color="black">
+            </div>
         </div>
+    </header>
+
+    <main>
+        <div id="content_div" metal:define-slot="content"></div>
+    </main>
+
+    <footer id="footer">
+        <hr style="width: 1200px" size="3" color="black">
+        <div class="logo"><a href="http://www.uni-tuebingen.de"><img width="150px"
+                                                                     src="../static/images/UT_WBMW_Rot_RGB_01.png"></a>
+        </div>
+
+    </footer>
 </div>
 <!-- Placed at the end of the document so the pages load faster -->
-<script src="${request.static_url('ligando:static/js/jquery-1.10.2.min.js')}"></script>
 
-<!-- DataTables -->
-<script src="${request.static_url('ligando:static/js/jquery.dataTables.min.js')}"></script>
-<script src="${request.static_url('ligando:static/js/dataTables.tableTools.js')}"></script>
-
-<script src="${request.static_url('ligando:static/js/jquery-ui.min.js')}"></script>
-<script src="${request.static_url('ligando:static/js/menu.js')}"></script>
-<script src="${request.static_url('ligando:static/js/shared.js')}"></script>
-<script>
-// tooltips
-$(function () {
-    $(document).tooltip();
-});
-</script>
 
 </body>
 </html>

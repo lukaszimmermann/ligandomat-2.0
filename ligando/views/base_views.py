@@ -2,6 +2,8 @@ from pyramid.response import Response
 from pyramid.view import view_config
 from sqlalchemy import func, distinct, String
 import simplejson as json
+from sqlalchemy import or_, func
+
 
 from ligando.models import (
     DBSession,
@@ -281,12 +283,25 @@ def person_page(request):
 @view_config(route_name='peptide', renderer='../templates/base_templates/peptide.pt', request_method="GET")
 def peptide_page(request):
     try:
-        query = DBSession.query(Protein.name.label("protein"), Protein.gene_name.label("gene_name"))
+        query = DBSession.query(Protein.name.label("protein"), Protein.gene_name.label("gene_name"), Protein.sequence)
         query = query.join(t_spectrum_protein_map)
         query = query.join(SpectrumHit)
         query = query.filter(SpectrumHit.sequence == request.matchdict["peptide"])
         query = query.group_by(Protein.name)
         proteins = json.dumps(query.all())
+
+        # TODO: No trash run filtering, cause there will be no trash runs in the final DB
+        # TODO: Makes no sense yet, cause for each run each peptide is only reported once!
+        query = DBSession.query(func.count(SpectrumHit.spectrum_hit_id))
+        query = query.filter(SpectrumHit.sequence == request.matchdict["peptide"])
+        psms = query.all()[0][0]
+
+        # TODO: No trash run filtering, cause there will be no trash runs in the final DB
+        query = DBSession.query(func.count(SpectrumHit.ms_run_ms_run_id))
+        query = query.filter(SpectrumHit.sequence == request.matchdict["peptide"])
+        #query = query.group_by(SpectrumHit.sequence)
+        #test = query.all()
+        ms_run_count = query.all()[0][0]
 
         query = DBSession.query(Source.patient_id)
         query = query.join(SpectrumHit)
@@ -296,11 +311,98 @@ def peptide_page(request):
         query = query.group_by(Source.patient_id)
         sources = js_list_creator_dataTables(query.all())
 
+        #TODO: maybe sent one big query instead of many small ones
+        query = DBSession.query(HlaType.hla_string.label("hla_class1_A"))
+        query = query.join(t_hla_map)
+        query = query.join(Source)
+        query = query.join(SpectrumHit)
+        query = query.filter(MsRun.flag_trash == 0)
+        query = query.filter(SpectrumHit.sequence == request.matchdict["peptide"])
+        query = query.filter(HlaType.digits == 4)
+        query = query.filter(HlaType.hla_string.like("A%"))
+        query = query.group_by(HlaType.hla_string)
+        hla_class1_A = js_list_creator_dataTables(query.all())
+
+        query = DBSession.query(HlaType.hla_string.label("hla_class1_B"))
+        query = query.join(t_hla_map)
+        query = query.join(Source)
+        query = query.join(SpectrumHit)
+        query = query.filter(MsRun.flag_trash == 0)
+        query = query.filter(SpectrumHit.sequence == request.matchdict["peptide"])
+        query = query.filter(HlaType.digits == 4)
+        query = query.filter(
+             HlaType.hla_string.like("B%"))
+        query = query.group_by(HlaType.hla_string)
+        hla_class1_B = js_list_creator_dataTables(query.all())
+
+        query = DBSession.query(HlaType.hla_string.label("hla_class1_C"))
+        query = query.join(t_hla_map)
+        query = query.join(Source)
+        query = query.join(SpectrumHit)
+        query = query.filter(MsRun.flag_trash == 0)
+        query = query.filter(SpectrumHit.sequence == request.matchdict["peptide"])
+        query = query.filter(HlaType.digits == 4)
+        query = query.filter(
+            HlaType.hla_string.like("C%"))
+        query = query.group_by(HlaType.hla_string)
+        hla_class1_C = js_list_creator_dataTables(query.all())
+
+        # TODO: there are probably more than these class 2 alleles
+        query = DBSession.query(HlaType.hla_string.label("hla_class2_DPB"))
+        query = query.join(t_hla_map)
+        query = query.join(Source)
+        query = query.join(SpectrumHit)
+        query = query.filter(MsRun.flag_trash == 0)
+        query = query.filter(SpectrumHit.sequence == request.matchdict["peptide"])
+        query = query.filter(HlaType.digits == 4)
+        query = query.filter(
+            or_(HlaType.hla_string.like("DPB%")))
+        query = query.group_by(HlaType.hla_string)
+        hla_class2_DPB = js_list_creator_dataTables(query.all())
+
+        query = DBSession.query(HlaType.hla_string.label("hla_class2_DQA"))
+        query = query.join(t_hla_map)
+        query = query.join(Source)
+        query = query.join(SpectrumHit)
+        query = query.filter(MsRun.flag_trash == 0)
+        query = query.filter(SpectrumHit.sequence == request.matchdict["peptide"])
+        query = query.filter(HlaType.digits == 4)
+        query = query.filter(
+            or_(HlaType.hla_string.like("DQA%")))
+        query = query.group_by(HlaType.hla_string)
+        hla_class2_DQA = js_list_creator_dataTables(query.all())
+
+        query = DBSession.query(HlaType.hla_string.label("hla_class2_DQB"))
+        query = query.join(t_hla_map)
+        query = query.join(Source)
+        query = query.join(SpectrumHit)
+        query = query.filter(MsRun.flag_trash == 0)
+        query = query.filter(SpectrumHit.sequence == request.matchdict["peptide"])
+        query = query.filter(HlaType.digits == 4)
+        query = query.filter(
+            or_(HlaType.hla_string.like("DQB%")))
+        query = query.group_by(HlaType.hla_string)
+        hla_class2_DQB = js_list_creator_dataTables(query.all())
+
+        query = DBSession.query(HlaType.hla_string.label("hla_class2_DRB"))
+        query = query.join(t_hla_map)
+        query = query.join(Source)
+        query = query.join(SpectrumHit)
+        query = query.filter(MsRun.flag_trash == 0)
+        query = query.filter(SpectrumHit.sequence == request.matchdict["peptide"])
+        query = query.filter(HlaType.digits == 4)
+        query = query.filter(
+            or_(HlaType.hla_string.like("DRB%")))
+        query = query.group_by(HlaType.hla_string)
+        hla_class2_DRB = js_list_creator_dataTables(query.all())
 
     except:
         return Response(conn_err_msg, content_type='text/plain', status_int=500)
     return {"proteins": proteins, "sources": sources,
-            "peptide": request.matchdict["peptide"]}
+            "peptide": request.matchdict["peptide"],
+            "hla_class1_A": hla_class1_A, "hla_class1_B": hla_class1_B, "hla_class1_C": hla_class1_C,
+            "hla_class2_DPB": hla_class2_DPB, "hla_class2_DQA": hla_class2_DQA, "hla_class2_DQB": hla_class2_DQB,
+            "hla_class2_DRB": hla_class2_DRB, "psms": psms, "ms_run_count": ms_run_count}
 
 
 @view_config(route_name='histology', renderer='../templates/base_templates/histology.pt', request_method="GET")

@@ -1,6 +1,5 @@
-
-<html metal:use-macro="load: ../base_layout.pt">
 <!DOCTYPE html>
+<html metal:use-macro="load: ../base_layout.pt">
 <html lang="${request.locale_name}">
 <head>
 
@@ -8,6 +7,7 @@
 </head>
 
 <body>
+<metal:block fill-slot="content">
 <div class="main_wrapper">
     <h1 style="text-align: center">${hla}</h1>
     <div style="float: left;  width: 200px">
@@ -83,7 +83,8 @@ $(document).ready(function() {
 </script>
 
 
-
+</metal:block>
 </body>
 
+</html>
 </html>

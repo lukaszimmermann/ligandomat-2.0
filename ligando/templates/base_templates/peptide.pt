@@ -6,25 +6,130 @@
 </head>
 
 <body>
+<metal:block fill-slot="content">
 <div class="main_wrapper">
+
 <div class="wrapper">
-    <h1 style="text-align: center" id="title"></h1>
-    <div style="float: right;">
-        <table class="info_table" id="sources" style="float: right" width="480px">
-            <thead><tr><td>Source</td></tr></thead>
+    <h1 style="text-align: left" id="title"></h1>
+    <!--?<table><tr><td>MW:</td><td>100</td><td>pI</td><td>-2</td></tr></table>-->
+    <p style="font-size: 18px;font-weight: bold">Tissues</p>
+    <table class="tissue_table">
+        <tr><td id="t1">t1</td><td >t2</td><td id="t3">t3</td><td id="t4">t4</td><td >t5</td><td id="t6">t6</td><td>t7</td></tr>
+    </table>
+
+    <br>
+    <div id="left_collumn" style="float:left; width: 700px; border-right: solid thin black; ">
+
+        <p style="font-size: 18px;font-weight: bold">Source Antigen</p>
+    <div style="float: left;">
+    <table class="info_table" id="proteins" style="float: right" width="480px">
+        <thead><tr><td>Proteins</td><td>Gene Name</td><td>Uniprot</td><td>Position</td></tr></thead>
+        <tbody>
+        <tr><td></td><td></td></tr>
+        </tbody>
+    </table>
+     </div>
+
+    <div style="clear: both"></div>
+        <br>
+    <p style="font-size: 18px;font-weight: bold">HLA</p>
+    <p style="font-size: 18px;font-weight: bold">Class 1</p>
+    <div style="float: left;">
+        <table class="info_table" id="hla_class1_A" style="width:150px; margin-bottom: 20px; float: left">
+            <thead><tr><td>HLA-A</td></tr></thead>
             <tbody>
             <tr><td></td></tr>
             </tbody>
         </table>
          </div>
-     <div style="float: left;">
-        <table class="info_table" id="proteins" style="float: right" width="480px">
-            <thead><tr><td>Proteins</td><td>Gene Name</td></tr></thead>
+        <div style="float: left;">
+        <table class="info_table" id="hla_class1_B" style="width:150px; margin-bottom: 20px; float: left">
+            <thead><tr><td>HLA-B</td></tr></thead>
             <tbody>
-            <tr><td></td><td></td></tr>
+            <tr><td></td></tr>
             </tbody>
         </table>
          </div>
+        <div style="float: left;">
+        <table class="info_table" id="hla_class1_C" style="width:150px; margin-bottom: 20px; float: left">
+            <thead><tr><td>HLA-C</td></tr></thead>
+            <tbody>
+            <tr><td></td></tr>
+            </tbody>
+        </table>
+         </div>
+
+    <p style="clear:both;font-size: 18px;font-weight: bold">Class 2</p>
+
+
+
+
+        <div style="clear:both;float: left;">
+        <table class="info_table" id="hla_class2_DPB" style="width:150px; margin-bottom: 20px;float: left">
+            <thead><tr><td>HLA-DPB</td></tr></thead>
+            <tbody>
+            <tr><td></td></tr>
+            </tbody>
+        </table>
+         </div>
+
+        <div style="float: left;">
+        <table class="info_table" id="hla_class2_DQA" style="width:150px; margin-bottom: 20px;float: left">
+            <thead><tr><td>HLA-DQA</td></tr></thead>
+            <tbody>
+            <tr><td></td></tr>
+            </tbody>
+        </table>
+         </div>
+        <div style="float: left;">
+        <table class="info_table" id="hla_class2_DQB" style="width:150px; margin-bottom: 20px;float: left">
+            <thead><tr><td>HLA-DQB</td></tr></thead>
+            <tbody>
+            <tr><td></td></tr>
+            </tbody>
+        </table>
+         </div>
+        <div style="float: left;">
+        <table class="info_table" id="hla_class2_DRB" style="width:150px; margin-bottom: 20px;float: left">
+            <thead><tr><td>HLA-DRB</td></tr></thead>
+            <tbody>
+            <tr><td></td></tr>
+            </tbody>
+        </table>
+         </div>
+
+</div>
+
+    <div id="right_collumn" style="float: left; margin-left: 20px">
+        <p style="font-size: 18px;font-weight: bold">Link out</p>
+        <table class="info_table" style="width: 300px" id="linkouts">
+            <thead><td>Database</td><td>Link</td></thead>
+            <tbody>
+        <tr><td>Syfpeithi:</td><td><a href="http://www.syfpeithi.de/">${peptide}</a></td></tr>
+        <tr><td>IEDB:</td><td><a href="http://www.iedb.org/epitope/58560">${peptide}</a></td></tr>
+        <tr><td>PubMed:</td><td><a href="http://www.ncbi.nlm.nih.gov/pubmed/?term=">${peptide}</a></td></tr>
+            </tbody>
+        </table>
+        <br>
+
+
+        <p style="font-size: 18px;font-weight: bold">Experimental Evidence (Summary)</p>
+        <table class="info_table" style="width: 300px" id="exp_ev">
+            <thead><td>Experimental evidence</td><td>Score</td></thead>
+            <tbody>
+        <tr><td>PSMs:</td><td>${psms}</td></tr>
+        <tr><td>Number of MS Runs:</td><td>${ms_run_count}</td></tr>
+            </tbody>
+        </table>
+    </div>
+
+
+
+
+
+
+
+
     </div>
     </div>
 <br>
@@ -38,6 +143,144 @@ $(document).ready(function() {
 });
 $(document).ready(function() {
 // create dataTable
+    //"pageLength": 50
+    var class1_length = Math.max(${hla_class1_A}.length, ${hla_class1_B}.length, ${hla_class1_C}.length);
+    //console.log(class1_length);
+    var tab = $('#hla_class1_A').DataTable( {
+    "paging":   false,
+    "ordering": false,
+    "info":     false,
+    "defaultContent": 'No entries to show',
+    "searching": false,
+        data: ${hla_class1_A},
+        columns: [
+            {"render": function ( data, type, row ) {
+                return "<a class='nostylelink'  href= '/hla/"+data + "'>"+data + "</a>" ;
+            }}
+        ]
+    } );
+    for(i=1;i<=class1_length-${hla_class1_A}.length;i++) {
+        tab.row.add(["-"]).draw();
+    }
+
+     var tab = $('#hla_class1_B').DataTable( {
+    "paging":   false,
+    "ordering": false,
+    "info":     false,
+    searching: false,
+        data: ${hla_class1_B},
+        columns: [
+            {"render": function ( data, type, row ) {
+                return "<a class='nostylelink'  href= '/hla/"+data + "'>"+data + "</a>" ;
+            }}
+        ]
+    } );
+
+    for(i=1;i<=class1_length-${hla_class1_B}.length;i++) {
+        tab.row.add(["-"]).draw();
+    }
+
+    var tab =  $('#hla_class1_C').DataTable( {
+    "paging":   false,
+    "ordering": false,
+    "info":     false,
+    searching: false,
+        data: ${hla_class1_C},
+        columns: [
+            {"render": function ( data, type, row ) {
+                return "<a class='nostylelink'  href= '/hla/"+data + "'>"+data + "</a>" ;
+            }}
+        ]
+    } );
+
+    for(i=1;i<=class1_length-${hla_class1_C}.length;i++) {
+        tab.row.add(["-"]).draw();
+    }
+
+
+    var class2_length = Math.max(${hla_class2_DPB}.length, ${hla_class2_DQA}.length, ${hla_class2_DQB}.length, ${hla_class2_DRB}.length);
+
+
+    var tab = $('#hla_class2_DPB').DataTable( {
+    "paging":   false,
+    "ordering": false,
+    "info":     false,
+    searching: false,
+        data: ${hla_class2_DPB},
+        columns: [
+            {"render": function ( data, type, row ) {
+                return "<a class='nostylelink'  href= '/hla/"+data + "'>"+data + "</a>" ;
+            }}
+        ]
+    } );
+    for(i=1;i<=class2_length-${hla_class2_DPB}.length;i++) {
+        tab.row.add(["-"]).draw();
+    }
+
+    var tab = $('#hla_class2_DQA').DataTable( {
+    "paging":   false,
+    "ordering": false,
+    "info":     false,
+    searching: false,
+        data: ${hla_class2_DQA},
+        columns: [
+            {"render": function ( data, type, row ) {
+                return "<a class='nostylelink'  href= '/hla/"+data + "'>"+data + "</a>" ;
+            }}
+        ]
+    } );
+    for(i=1;i<=class2_length-${hla_class2_DQA}.length;i++) {
+        tab.row.add(["-"]).draw();
+    }
+
+    var tab = $('#hla_class2_DQB').DataTable( {
+    "paging":   false,
+    "ordering": false,
+    "info":     false,
+    searching: false,
+        data: ${hla_class2_DQB},
+        columns: [
+            {"render": function ( data, type, row ) {
+                return "<a class='nostylelink'  href= '/hla/"+data + "'>"+data + "</a>" ;
+            }}
+        ]
+    } );
+    for(i=1;i<=class2_length-${hla_class2_DQB}.length;i++) {
+        tab.row.add(["-"]).draw();
+    }
+
+    var tab = $('#hla_class2_DRB').DataTable( {
+    "paging":   false,
+    "ordering": false,
+    "info":     false,
+    searching: false,
+        data: ${hla_class2_DRB},
+        columns: [
+            {"render": function ( data, type, row ) {
+                return "<a class='nostylelink'  href= '/hla/"+data + "'>"+data + "</a>" ;
+            }}
+        ]
+    } );
+    for(i=1;i<=class2_length-${hla_class2_DRB}.length;i++) {
+        tab.row.add(["-"]).draw();
+    }
+
+
+    $('#linkouts').DataTable( {
+    "paging":   false,
+    "ordering": false,
+    "info":     false,
+    searching: false
+    } );
+
+    $('#exp_ev').DataTable( {
+    "paging":   false,
+    "ordering": false,
+    "info":     false,
+    searching: false
+    } );
+
+
     $('#proteins').dataTable( {
     "paging":   false,
     "ordering": false,
@@ -49,27 +292,33 @@ $(document).ready(function() {
                 "render": function ( data, type, row ) {
                 return "<a class='nostylelink'  href= '/protein/"+data + "'>"+data + "</a>" ;
             }},
-            {data: "gene_name"}
+            {data: "gene_name"},
+                {data: "protein",
+                "render": function ( data, type, row ) {
+                return "<a class='nostylelink'  href= 'http://www.uniprot.org/uniprot/"+data+ "'>"+"Link" + "</a>" ;
+            }},
+                {data: "sequence",
+                "render": function ( data, type, row ) {
+                    var n = data.indexOf("${peptide}");
+                    // TODO: does not work if the peptide is twice in the same protein
+                    return (n+1) + " - " +(n+"${peptide}".length);
+            }
+                }
+
         ]
     } );
     } );
 
-    $('#sources').dataTable( {
-    "paging":   false,
-    "ordering": false,
-    "info":     false,
-    searching: false,
-        data: ${sources},
-        columns: [
-            {"render": function ( data, type, row ) {
-                return "<a class='nostylelink'  href= '/source/"+data + "'>"+data + "</a>" ;
-            }}
-        ]
-    } );
+
+    $("#t1").eq(0).css("background-color","rgb(180, 160, 105)");
+    $("#t3").eq(0).css("background-color","rgb(180, 160, 105)");
+    $("#t4").eq(0).css("background-color","rgb(180, 160, 105)");
+    $("#t6").eq(0).css("background-color","rgb(180, 160, 105)");
 </script>
 
-
+</metal:block>
 
 </body>
 
+</html>
 </html>

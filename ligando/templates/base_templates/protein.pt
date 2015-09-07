@@ -7,6 +7,7 @@
 </head>
 
 <body>
+<metal:block fill-slot="content">
 <div class="main_wrapper">
 <div class="wrapper">
     <h1 style="text-align: center" id="title"></h1>
@@ -159,7 +160,10 @@ $(document).ready(function() {
 </script>
 
 
+</metal:block>
 
 </body>
+
+</html>
 
 </html>
