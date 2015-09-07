@@ -51,7 +51,12 @@ def main(global_config, **settings):
     # Database analysis
     config.add_route('venn_analysis', '/venn_analysis')
 
-
+    # About Pages
+    config.add_route('faq', '/faq')
+    config.add_route('info', '/info')
+    config.add_route('contact', '/contact')
+    # News Page
+    config.add_route('news', '/news')
 
     # test view TODO: remove before publishing
     config.add_route('test_view', '/test_view')

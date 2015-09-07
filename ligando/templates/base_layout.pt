@@ -51,15 +51,16 @@
             <!--?<div class="logo"><a href="http://www.uni-tuebingen.de"><img width="200px" src="../static/images/UT_WBMW_Rot_RGB_01.png"></a></div>-->
             <div class="title_wrapper">
                 <div class="title"><a style="color: inherit;text-decoration:none;" href="/">HLA Ligand Atlas</a></div>
-                <div id="search_div" style="text-align: center; float:right">
+                <div id="search_div" style="text-align: center; float:right; margin-top: 40px; margin-right: 5px">
                     <form method="POST" action="/search">
                         <!--? this js magic shows a help text, which will disappear on focus-->
                         <input style="width: 300px; font-size: 16px;" name="search_all" value="Search Database"
                                onfocus="if (this.value=='Search Database') this.value='';"
                                onblur="this.value = this.value==''?'Search Database':this.value;">
+                        <!--? TODO: button could change color on hover-->
                         <input type="submit" value="Search" class="nice_button" style="width: 80px;margin-left: 10px"/>
                     </form>
-                    <p style="text-align: left">e.g. Peptide, Protein</p>
+                    <!--?<p style="text-align: left">e.g. Peptide, Protein</p>-->
                 </div>
                 <br>
                 <br>
@@ -67,7 +68,16 @@
                 <div id="main_menu">
                     <ul id="sddm">
                         <li>
-                            <a href="/">Home</a>
+
+                            <a href="/"
+                               onmouseover="mopen('m1')"
+                               onmouseout="mclosetime()">Home</a>
+
+                            <div id="m1"
+                                 onmouseover="mcancelclosetime()"
+                                 onmouseout="mclosetime()">
+                                <a href="/news">News</a>
+                            </div>
                         </li>
                         <li>
                             <a href="/">Tissue Atlas</a>
@@ -75,12 +85,20 @@
                         <li>
                             <a href="/">HLA Atlas</a>
                         </li>
+
                         <li>
-                            <ul>
-                                <li>
-                                    <a href="/">About</a>
-                                </li>
-                            </ul>
+                            <a
+                                    onmouseover="mopen('m2')"
+                                    onmouseout="mclosetime()">About</a>
+
+                            <div id="m2"
+                                 onmouseover="mcancelclosetime()"
+                                 onmouseout="mclosetime()">
+                                <a href="/faq">FAQ</a>
+                                <a href="/info">Information</a>
+                                <a href="/contact">Contact</a>
+                                <a href="http://www.uni-tuebingen.de/impressum.html">Imprint</a>
+                            </div>
                         </li>
                     </ul>
                 </div>

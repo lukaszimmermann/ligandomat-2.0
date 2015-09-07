@@ -47,3 +47,27 @@ def my_view(request):
 @view_config(route_name='test_view', renderer='../templates/test_template.pt')
 def test_view(request):
     return dict()
+
+
+# faq view
+@view_config(route_name='faq', renderer='../templates/faq.pt')
+def faq(request):
+    return dict()
+
+
+# information view
+@view_config(route_name='info', renderer='../templates/info.pt')
+def info(request):
+    return dict()
+
+
+# contact view
+@view_config(route_name='contact', renderer='../templates/contact.pt')
+def contact(request):
+    return dict()
+
+
+# contact view
+@view_config(route_name='news', renderer='../templates/news.pt')
+def news(request):
+    return dict()

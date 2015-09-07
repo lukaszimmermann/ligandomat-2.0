@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html metal:use-macro="load: base_layout.pt">
+<html lang="${request.locale_name}">
+<head>
+
+</head>
+
+<body>
+<metal:block fill-slot="content">
+    <div class="main_wrapper">
+        <!--? TODO: fill with content-->
+
+        Frequently Asked Questions (FAQ):
+        <br>
+        1. None:
+
+
+    </div>
+
+
+</metal:block>
+
+</body>
+</html>
+</html>
