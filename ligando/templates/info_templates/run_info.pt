@@ -31,7 +31,7 @@
 
         $(document).ready(function () {
             // create dataTable
-            console.log(${project})
+            console.log(${project});
             $('#example').dataTable({
                 data: ${project},
                 columns: [
@@ -54,7 +54,7 @@
                     { data: "ms_run_date"},
                     { data: "antibody_set"},
                     { data: "used_share"},
-                    { data: "sample_mass"},
+                    { data: "sample_mass"}
 
                 ],
                 "sDom": 'T<"clear">lfrtip',

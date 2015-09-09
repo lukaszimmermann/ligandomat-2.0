@@ -4,40 +4,39 @@
 <head>
 
 
-
 </head>
 
 <body>
 <div class="main_wrapper">
-<div id="metadata_wrapper" class="wrapper">
-    <table >
-        <tr>
-            <td><label for="filenametags">Filename: </label></td>
-            <td><input type="text" title="The filename of the MS run" id="filenametags"></td>
-            <td><label for="trash_reasontags">Reason for exclude: </label></td>
-            <td><input title="The reason for exclude:" id="trash_reasontags"></td>
-            <td><label for="persontags">Person who is responsible: </label></td>
-            <td><input title="Your name. No ä, ü, ö." id="persontags"></td>
-        </tr>
-    </table>
-    <br>
-
-    <div class="datagrid">
-        <button onclick="addSource()" class="nice_button">Add Ms run to list</button>
+    <div id="metadata_wrapper" class="wrapper">
+        <table>
+            <tr>
+                <td><label for="filenametags">Filename: </label></td>
+                <td><input type="text" title="The filename of the MS run" id="filenametags"></td>
+                <td><label for="trash_reasontags">Reason for exclude: </label></td>
+                <td><input title="The reason for exclude:" id="trash_reasontags"></td>
+                <td><label for="persontags">Person who is responsible: </label></td>
+                <td><input title="Your name. No ä, ü, ö." id="persontags"></td>
+            </tr>
+        </table>
         <br>
 
+        <div class="datagrid">
+            <button onclick="addSource()" class="nice_button">Add Ms run to list</button>
+            <br>
 
-        <table id="ms_table" width="100%">
-            <!-- The table is created dynamically with js -->
-        </table>
 
-        <button id="check_button" class="nice_button" onclick="checkInput()">Check Ms Runs</button>
-        <form id="submit" method="POST" action=blacklist_msrun>
-            <input type='text' id='commit_field' hidden name="ms_runs">
-            <input type="submit" id="commit_button" class="nice_button" hidden value="Commit Ms Run">
-        </form>
+            <table id="ms_table" width="100%">
+                <!-- The table is created dynamically with js -->
+            </table>
+
+            <button id="check_button" class="nice_button" onclick="checkInput()">Check Ms Runs</button>
+            <form id="submit" method="POST" action=blacklist_msrun>
+                <input type='text' id='commit_field' hidden name="ms_runs">
+                <input type="submit" id="commit_button" class="nice_button" hidden value="Commit Ms Run">
+            </form>
+        </div>
     </div>
-</div>
 </div>
 
 <!-- Bootstrap core JavaScript
@@ -45,15 +44,14 @@
 <!-- Placed at the end of the document so the pages load faster -->
 
 
-
 <script>
 
     var cells = ['filename',
         'trash_reason',
         'person'];
-    var nice_names = {'filename':'Filename',
+    var nice_names = {'filename': 'Filename',
         'trash_reason': 'Reason',
-        'person':'Person'};
+        'person': 'Person'};
     var autocomplete_dict = {
         'filename':${filename},
         'person':${person},
@@ -98,16 +96,15 @@
         $(document).tooltip();
     });
 
-    $(function() {
-        $( "#datetags" ).datepicker({
+    $(function () {
+        $("#datetags").datepicker({
                     dateFormat: "yy-mm-dd"
                 }
         );
-        $( "#prep_datetags" ).datepicker({
+        $("#prep_datetags").datepicker({
             dateFormat: "yy-mm-dd"
         });
     });
-
 
 
     function findEmptyRow() {
@@ -155,23 +152,23 @@
     }
 
 
-    function checkInput(){
-        for(var i=1; i<11; i++){
-            if(document.getElementById("filename_"+i).innerHTML != " ") {
+    function checkInput() {
+        for (var i = 1; i < 11; i++) {
+            if (document.getElementById("filename_" + i).innerHTML != " ") {
                 for (var l = 0; l < cells.length; l++) {
-                    if(cells[l] == "filename" || cells[l] == "trash_reason" || cells[l] == "person"){
-                        if(document.getElementById(cells[l] + "_" + i).innerHTML == ""){
-                            alert(nice_names[cells[l]] + " in row "+ i + " is not allowed to be empty!");
+                    if (cells[l] == "filename" || cells[l] == "trash_reason" || cells[l] == "person") {
+                        if (document.getElementById(cells[l] + "_" + i).innerHTML == "") {
+                            alert(nice_names[cells[l]] + " in row " + i + " is not allowed to be empty!");
                             return;
                         }
-                        if(cells[l] == "filename" ){
-                            if(($.inArray(document.getElementById(cells[l] + "_" + i).innerHTML, autocomplete_dict[cells[l]])) == -1) {
-                                alert("The " + nice_names[cells[l]] + " " + document.getElementById(cells[l] + "_" + i).innerHTML + " in row " + i + " is unknown. Only known runs are allowed!")
+                        if (cells[l] == "filename") {
+                            if (($.inArray(document.getElementById(cells[l] + "_" + i).innerHTML, autocomplete_dict[cells[l]])) == -1) {
+                                alert("The " + nice_names[cells[l]] + " " + document.getElementById(cells[l] + "_" + i).innerHTML + " in row " + i + " is unknown. Only known runs are allowed!");
                                 return;
 
+                            }
                         }
-                        }
-                        if(($.inArray(document.getElementById(cells[l] + "_" + i).innerHTML, autocomplete_dict[cells[l]])) == -1) {
+                        if (($.inArray(document.getElementById(cells[l] + "_" + i).innerHTML, autocomplete_dict[cells[l]])) == -1) {
                             if (!confirm("The " + nice_names[cells[l]] + " " + document.getElementById(cells[l] + "_" + i).innerHTML + " in row " + i + " is unknown. Is it really correct? (No typos?)")) {
                                 return;
                             }
@@ -181,8 +178,8 @@
             }
         }
         var val = "[";
-        for(var i=1; i<11; i++){
-            if(document.getElementById("filename_" + i).innerText != " ") {
+        for (var i = 1; i < 11; i++) {
+            if (document.getElementById("filename_" + i).innerText != " ") {
                 var temp_dict = "{";
                 for (var l = 0; l < cells.length; l++) {
                     temp_dict += "'" + cells[l] + "':'" + document.getElementById(cells[l] + "_" + i).innerHTML + "',";
@@ -199,22 +196,22 @@
     }
 
 
-    $(document).ready(function() {
+    $(document).ready(function () {
         var oTable = $('#ms_table').dataTable({
-            "paging":false,
-            "ordering":false,
-            "info":false,
-            "bFilter":false,
+            "paging": false,
+            "ordering": false,
+            "info": false,
+            "bFilter": false,
             "scrollX": true
         });
         $(window).bind('resize', function () {
             oTable.fnAdjustColumnSizing();
-  } );
-    } );
+        });
+    });
 
-    $(document).ready(function() {
-        if("${run}" != ""){
-            document.getElementById('filenametags').value = "${run}" ;
+    $(document).ready(function () {
+        if ("${run}" != "") {
+            document.getElementById('filenametags').value = "${run}";
         }
     });
 

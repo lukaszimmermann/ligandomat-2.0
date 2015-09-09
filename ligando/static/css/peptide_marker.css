@@ -25,22 +25,92 @@
     font-family: monospace, monospace !important;
 }
 .sI4 {
-    border-bottom:1px dotted #00CC00;
-    padding-bottom:0;
+    border-bottom: 1px solid #0000ff;
+    padding-bottom: 8px;
     position:relative;
     font-family: monospace, monospace !important;
 }
 
 .sI5 {
-    border-bottom:1px dotted #00CC00;
-    padding-bottom:2px;
+    border-bottom: 1px solid #0000ff;
+    padding-bottom: 10px;
     position:relative;
     font-family: monospace, monospace !important;
 }
 
 .sI6 {
-    border-bottom:1px dotted #00CC00;
-    padding-bottom:6px;
+    border-bottom: 1px solid #0000ff;
+    padding-bottom: 12px;
     position:relative;
+    font-family: monospace, monospace !important;
+}
+
+.sI7 {
+    border-bottom: 1px solid #0000ff;
+    padding-bottom: 14px;
+    position: relative;
+    font-family: monospace, monospace !important;
+}
+
+.sI8 {
+    border-bottom: 1px solid #0000ff;
+    padding-bottom: 16px;
+    position: relative;
+    font-family: monospace, monospace !important;
+}
+
+.sI9 {
+    border-bottom: 1px solid #0000ff;
+    padding-bottom: 18px;
+    position: relative;
+    font-family: monospace, monospace !important;
+}
+
+.sI10 {
+    border-bottom: 1px solid #0000ff;
+    padding-bottom: 20px;
+    position: relative;
+    font-family: monospace, monospace !important;
+}
+
+.sI11 {
+    border-bottom: 1px solid #0000ff;
+    padding-bottom: 22px;
+    position: relative;
+    font-family: monospace, monospace !important;
+}
+
+.sI12 {
+    border-bottom: 1px solid #0000ff;
+    padding-bottom: 24px;
+    position: relative;
+    font-family: monospace, monospace !important;
+}
+
+.sI13 {
+    border-bottom: 1px solid #0000ff;
+    padding-bottom: 26px;
+    position: relative;
+    font-family: monospace, monospace !important;
+}
+
+.sI14 {
+    border-bottom: 1px solid #0000ff;
+    padding-bottom: 28px;
+    position: relative;
+    font-family: monospace, monospace !important;
+}
+
+.sI15 {
+    border-bottom: 1px solid #0000ff;
+    padding-bottom: 30px;
+    position: relative;
+    font-family: monospace, monospace !important;
+}
+
+.sI16 {
+    border-bottom: 1px solid #0000ff;
+    padding-bottom: 32px;
+    position: relative;
     font-family: monospace, monospace !important;
 }
