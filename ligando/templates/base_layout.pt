@@ -18,6 +18,9 @@
     <!--? jQuery-->
     <script src="${request.static_url('ligando:static/js/jquery-1.10.2.min.js')}"></script>
 
+    <!--? circle_menu-->
+    <script src="${request.static_url('ligando:static/js/jQuery.circleMenu.js')}"></script>
+
     <!-- DataTables -->
     <script src="${request.static_url('ligando:static/js/jquery.dataTables.min.js')}"></script>
     <script src="${request.static_url('ligando:static/js/dataTables.tableTools.js')}"></script>
@@ -81,10 +84,19 @@
                             </div>
                         </li>
                         <li>
-                            <a href="/">Tissue Atlas</a>
+                            <a href="/">Tissue Browser</a>
                         </li>
                         <li>
-                            <a href="/">HLA Atlas</a>
+                            <a
+                                    onmouseover="mopen('m3')"
+                                    onmouseout="mclosetime()">HLA Browser</a>
+
+                            <div id="m3"
+                                 onmouseover="mcancelclosetime()"
+                                 onmouseout="mclosetime()">
+                                <a href="/hla_atlas">Class I</a>
+                                <a href="/hla_atlas_classII">Class II</a>
+                            </div>
                         </li>
 
                         <li>

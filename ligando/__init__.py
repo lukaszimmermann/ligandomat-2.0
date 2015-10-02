@@ -57,6 +57,9 @@ def main(global_config, **settings):
     config.add_route('contact', '/contact')
     # News Page
     config.add_route('news', '/news')
+    # HLA atlas
+    config.add_route('hla_atlas', '/hla_atlas')
+    config.add_route('hla_atlas_classII', '/hla_atlas_classII')
 
     # test view TODO: remove before publishing
     config.add_route('test_view', '/test_view')

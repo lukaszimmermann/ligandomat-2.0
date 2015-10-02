@@ -10,6 +10,34 @@ html body {
     /*background-image: url("/static/images/body_bg.png");*/
 }
 
+.circles {
+    width: 390px;
+    height: 400px;
+    float: left;
+    position: relative;
+}
+
+.sub_circle {
+    text-decoration: solid;
+    color: black;
+    font-size: 16px;
+    /*text-shadow: rgb(217, 205, 177);*/
+
+    background: rgb(180, 160, 105);
+    -webkit-box-shadow: inset 0 -2px rgb(180, 160, 105);
+    box-shadow: inset 0 -2px rgb(180, 160, 105);
+}
+
+.circles ul {
+    margin: 0;
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    margin-right: -50%;
+    transform: translate(-50%, -50%)
+}
+
+
 .nostylelink {
     text-decoration: solid;
     color: black;

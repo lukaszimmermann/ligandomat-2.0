@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html metal:use-macro="load: base_layout.pt">
+<html lang="${request.locale_name}">
+<head>
+
+</head>
+
+<body>
+<metal:block fill-slot="content">
+    <div class="main_wrapper">
+        <div id="circle_menus">
+            # DPA1 DPB1 DQA1 DQB1 DRB1 DRB3 DRB4 DRB5 DRB6
+
+            <div class="circles" id="class1_DPA1_div">
+                <ul id="class1_DPA1">
+                    <li class="sub_circle"><a class="nostylelink" href="#">DPA1</a></li>
+                </ul>
+            </div>
+            <div class="circles" id="class1_DPB1_div">
+                <ul id="class1_DPB1">
+                    <li class="sub_circle"><a class="nostylelink" href="#">DPB1</a></li>
+                </ul>
+            </div>
+            <div class="circles" id="class1_DQA1_div">
+                <ul id="class1_DQA1">
+                    <li class="sub_circle"><a class="nostylelink" href="#">DQA1</a></li>
+                </ul>
+            </div>
+            <div class="circles" id="class1_DQB1_div">
+                <ul id="class1_DQB1">
+                    <li class="sub_circle"><a class="nostylelink" href="#">DQB1</a></li>
+                </ul>
+            </div>
+            <div class="circles" id="class1_DRB1_div">
+                <ul id="class1_DRB1">
+                    <li class="sub_circle"><a class="nostylelink" href="#">DRB1</a></li>
+                </ul>
+            </div>
+            <div class="circles" id="class1_DRB3_div">
+                <ul id="class1_DRB3">
+                    <li class="sub_circle"><a class="nostylelink" href="#">DRB3</a></li>
+                </ul>
+            </div>
+            <div class="circles" id="class1_DRB4_div">
+                <ul id="class1_DRB4">
+                    <li class="sub_circle"><a class="nostylelink" href="#">DRB4</a></li>
+                </ul>
+            </div>
+            <div class="circles" id="class1_DRB5_div">
+                <ul id="class1_DRB5">
+                    <li class="sub_circle"><a class="nostylelink" href="#">DRB5</a></li>
+                </ul>
+            </div>
+            <div class="circles" id="class1_DRB6_div">
+                <ul id="class1_DRB6">
+                    <li class="sub_circle"><a class="nostylelink" href="#">DRB6</a></li>
+                </ul>
+            </div>
+
+
+            <!--? <div class="circles" id="class1_DR_div" >
+             <ul id="class1_DR"  >
+           <li class="sub_circle"><a class="nostylelink" href="#">DR</a></li>
+         </ul>
+                 </div>
+
+             <div class="circles" id="class1_DQ_div" >
+             <ul id="class1_DQ" class="circle_style">
+           <li class="sub_circle"><a class="nostylelink" href="#">DQ</a></li>
+         </ul>
+                 </div>
+
+             <div class="circles" id="class1_DP_div" >
+             <ul id="class1_DP" class="circle_style">
+           <li class="sub_circle"><a class="nostylelink" href="#">DP</a></li>
+         </ul>
+                 </div>-->
+        </div>
+        <br>
+
+
+        <table id="class2" class="info_table" cellspacing="0" width="100%">
+            <thead>
+            <tr>
+                <th>HLA</th>
+                <th title='Number of samples with this HLA'># Samples</th>
+                <th title='Number of peptides in samples with this HLA'># Peptides</th>
+                <th title='Peptides considered to be binders by netMHC'># Binding peptides</th>
+            </tr>
+            </thead>
+        </table>
+
+    </div>
+
+
+    <script>
+        $(document).ready(function () {
+// create dataTable
+            $('#class2').dataTable({
+                "paging": true,
+                "info": true,
+                searching: true,
+                data: ${class2},
+                columns: [
+                    {
+                        data: "hla",
+                        "render": function (data, type, row) {
+                            return "<a class='nostylelink'  href= '/source_id/" + data + "'>" + data + "</a>";
+                        }
+                    },
+                    {
+                        data: "samples",
+                        "render": function (data, type, row) {
+                            return "<a class='nostylelink'  href= '/source/" + data + "'>" + data + "</a>";
+                        }
+                    },
+                    {
+                        data: "peptides",
+                        "render": function (data, type, row) {
+                            return "<a class='nostylelink'  href= '/organ/" + data + "'>" + data + "</a>";
+                        }
+                    },
+                    {
+                        data: "scored_peptides",
+                        "render": function (data, type, row) {
+                            return "<a class='nostylelink'  href= '/dignity/" + data + "'>" + data + "</a>";
+                        }
+                    }
+                ]
+            });
+        });
+        $(document).ready(function () {
+            // DPA1 DPB1 DQA1 DQB1 DRB1 DRB3 DRB4 DRB5 DRB6
+            // HLA-DPA1
+            var hla_dpa1 = ${hla_dpa1};
+            for (var i = 0; i < hla_dpa1.length; i++) {
+                $("#class1_DPA1").append('<li class="sub_circle"><a class="nostylelink" href="/hla/' + hla_dpa1[i]['hla'] + '">' + hla_dpa1[i]['hla'].substring(5) + '</a></li>');
+            }
+            $('#class1_DPA1').circleMenu({
+                item_diameter: 40,
+                circle_radius: 150,
+                direction: 'full'
+            });
+            // HLA-DPB1
+            var hla_dpb1 = ${hla_dpb1};
+            for (var i = 0; i < hla_dpb1.length; i++) {
+                $("#class1_DPB1").append('<li class="sub_circle"><a class="nostylelink" href="/hla/' + hla_dpb1[i]['hla'] + '">' + hla_dpb1[i]['hla'].substring(5) + '</a></li>');
+            }
+            $('#class1_DPB1').circleMenu({
+                item_diameter: 40,
+                circle_radius: 150,
+                direction: 'full'
+            });
+            // HLA-DQA1
+            var hla_dqa1 = ${hla_dqa1};
+            for (var i = 0; i < hla_dqa1.length; i++) {
+                $("#class1_DQA1").append('<li class="sub_circle"><a class="nostylelink" href="/hla/' + hla_dqa1[i]['hla'] + '">' + hla_dqa1[i]['hla'].substring(5) + '</a></li>');
+            }
+            $('#class1_DQA1').circleMenu({
+                item_diameter: 40,
+                circle_radius: 150,
+                direction: 'full'
+            });
+            // HLA-DQB1
+            var hla_dqb1 = ${hla_dqb1};
+            for (var i = 0; i < hla_dqb1.length; i++) {
+                $("#class1_DQB1").append('<li class="sub_circle"><a class="nostylelink" href="/hla/' + hla_dqb1[i]['hla'] + '">' + hla_dqb1[i]['hla'].substring(5) + '</a></li>');
+            }
+            $('#class1_DQB1').circleMenu({
+                item_diameter: 40,
+                circle_radius: 150,
+                direction: 'full'
+            });
+            // HLA-DRB1
+            var hla_drb1 = ${hla_drb1};
+            for (var i = 0; i < hla_drb1.length; i++) {
+                $("#class1_DRB1").append('<li class="sub_circle"><a class="nostylelink" href="/hla/' + hla_drb1[i]['hla'] + '">' + hla_drb1[i]['hla'].substring(5) + '</a></li>');
+            }
+            $('#class1_DRB1').circleMenu({
+                item_diameter: 40,
+                circle_radius: 150,
+                direction: 'full'
+            });
+            // HLA-DRB3
+            var hla_drb3 = ${hla_drb3};
+            for (var i = 0; i < hla_drb3.length; i++) {
+                $("#class1_DRB3").append('<li class="sub_circle"><a class="nostylelink" href="/hla/' + hla_drb3[i]['hla'] + '">' + hla_drb3[i]['hla'].substring(5) + '</a></li>');
+            }
+            $('#class1_DRB3').circleMenu({
+                item_diameter: 40,
+                circle_radius: 150,
+                direction: 'full'
+            });
+            // HLA-DRB4
+            var hla_drb4 = ${hla_drb4};
+            for (var i = 0; i < hla_drb4.length; i++) {
+                $("#class1_DRB4").append('<li class="sub_circle"><a class="nostylelink" href="/hla/' + hla_drb4[i]['hla'] + '">' + hla_drb4[i]['hla'].substring(5) + '</a></li>');
+            }
+            $('#class1_DRB4').circleMenu({
+                item_diameter: 40,
+                circle_radius: 150,
+                direction: 'full'
+            });
+            // HLA-DRB5
+            var hla_drb5 = ${hla_drb5};
+            for (var i = 0; i < hla_drb5.length; i++) {
+                $("#class1_DRB5").append('<li class="sub_circle"><a class="nostylelink" href="/hla/' + hla_drb5[i]['hla'] + '">' + hla_drb5[i]['hla'].substring(5) + '</a></li>');
+            }
+            $('#class1_DRB5').circleMenu({
+                item_diameter: 40,
+                circle_radius: 150,
+                direction: 'full'
+            });
+            // HLA-DRB6
+            var hla_drb6 = ${hla_drb6};
+            for (var i = 0; i < hla_drb6.length; i++) {
+                $("#class1_DRB6").append('<li class="sub_circle"><a class="nostylelink" href="/hla/' + hla_drb6[i]['hla'] + '">' + hla_drb6[i]['hla'].substring(5) + '</a></li>');
+            }
+            $('#class1_DRB6').circleMenu({
+                item_diameter: 40,
+                circle_radius: 150,
+                direction: 'full'
+            });
+
+
+        });
+
+
+    </script>
+
+</metal:block>
+
+</body>
+</html>
+</html>
