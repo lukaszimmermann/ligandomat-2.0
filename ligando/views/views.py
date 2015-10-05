@@ -1,5 +1,5 @@
 from pyramid.response import Response
-from pyramid.view import view_config
+from pyramid.view import view_config, notfound_view_config
 from sqlalchemy import func, distinct
 import simplejson as json
 
@@ -212,3 +212,9 @@ def hla_atlas_classII(request):
             "hla_drb3": hla_drb3, "hla_drb4": hla_drb5, "hla_drb5": hla_drb5,
             "hla_drb6": hla_drb6, }
     # return {"class2": class2, "hla_dr": hla_dr, "hla_dp": hla_dp, "hla_dq": hla_dq}
+
+# error page view
+@notfound_view_config(renderer = '../templates/error_templates/404_error.pt')
+def notfound(request):
+    request.response.status = 404
+    return {}
