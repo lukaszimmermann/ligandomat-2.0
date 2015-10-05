@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html metal:use-macro="load: ../base_layout.pt">
+<html lang="${request.locale_name}">
+<head>
+
+</head>
+
+<body>
+<metal:block fill-slot="content">
+    <div class="main_wrapper">
+        <small> Error 500 - Internal Server Error.</small>
+      <h1>The server was unable to complete your request.</h1>
+        Please try reloading the page or go back to our
+        <button type="submit" onclick="location.href='/'">
+            mainpage.
+        </button>
+
+
+    </div>
+
+
+</metal:block>
+
+</body>
+</html>
+</html>
