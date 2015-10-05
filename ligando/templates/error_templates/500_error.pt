@@ -14,11 +14,7 @@
         <button type="submit" onclick="location.href='/'">
             mainpage.
         </button>
-
-
     </div>
-
-
 </metal:block>
 
 </body>
