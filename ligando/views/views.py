@@ -1,6 +1,7 @@
 from pyramid.response import Response
 from pyramid.view import view_config, notfound_view_config
 from sqlalchemy import func, distinct
+from sqlalchemy.exc import OperationalError as SqlAlchemyOperationalError
 import simplejson as json
 
 from ligando.models import (
@@ -213,8 +214,13 @@ def hla_atlas_classII(request):
             "hla_drb6": hla_drb6, }
     # return {"class2": class2, "hla_dr": hla_dr, "hla_dp": hla_dp, "hla_dq": hla_dq}
 
-# error page view
+# error page views
 @notfound_view_config(renderer = '../templates/error_templates/404_error.pt')
 def notfound(request):
     request.response.status = 404
+    return {}
+
+@view_config(context=SqlAlchemyOperationalError, renderer = '../templates/error_templates/500_error.pt')
+def internaserver(request):
+    request.response.status = 500
     return {}
