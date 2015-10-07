@@ -2,6 +2,7 @@ from pyramid.response import Response
 from pyramid.view import view_config, notfound_view_config, forbidden_view_config
 from sqlalchemy import func, distinct
 from sqlalchemy.exc import OperationalError as SqlAlchemyOperationalError
+from pyramid.httpexceptions import HTTPBadRequest, HTTPUnauthorized
 import simplejson as json
 
 from ligando.models import (
@@ -235,13 +236,13 @@ def forbidden(request):
     return {}
 
 
-@view_config(renderer='../templates/error_templates/400_error.pt')
+@view_config(context=HTTPBadRequest,renderer='../templates/error_templates/400_error.pt')
 def badrequest(request):
     request.response.status = 400
     return {}
 
 
-@view_config(renderer='../templates/error_templates/401_error.pt')
+@view_config(context=HTTPUnauthorized, renderer='../templates/error_templates/401_error.pt')
 def unauthorized(request):
     request.response.status = 401
     return {}
