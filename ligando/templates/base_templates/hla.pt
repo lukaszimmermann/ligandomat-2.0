@@ -1,9 +1,5 @@
-<html metal:use-macro="load: ../base_layout.pt">
-<html lang="${request.locale_name}">
-<head>
+<html metal:use-macro="load: ../base_layout.pt" lang="${request.locale_name}">
 
-
-</head>
 
 <body>
 <metal:block fill-slot="content">
@@ -14,17 +10,17 @@
             <table>
                 <tr>
                     <td>Peptides:</td>
-                    <td id="pep_stat"></td>
+                    <td id="pep_stat" align="right"></td>
                 </tr>
                 <tr>
-                    <td>Sources</td>
-                    <td id="source_stat"></td>
+                    <td>Sources:</td>
+                    <td id="source_stat" align="right"></td>
                 </tr>
             </table>
         </div>
         <div style="float: right; width: 640px"><img id="seqlogo" src="" onerror='this.style.display = "none"'></div>
 
-        <table id="example" class="info_table" cellspacing="0" width="1000px">
+        <table id="example" class="info_table">
             <thead>
             <tr>
                 <th>Source Id</th>
@@ -42,32 +38,42 @@
         $(document).ready(function () {
 // create dataTable
             $('#example').dataTable({
-                "paging": false,
+                "paging": true,
                 "ordering": false,
                 "info": false,
-                searching: false,
+                searching: true,
                 data: ${sources},
                 columns: [
-                    { data: "source_id",
+                    {
+                        data: "source_id",
                         "render": function (data, type, row) {
                             return "<a class='nostylelink'  href= '/source/" + data + "'>" + data + "</a>";
-                        }},
-                    { data: "patient_id",
+                        }
+                    },
+                    {
+                        data: "patient_id",
                         "render": function (data, type, row) {
                             return "<a class='nostylelink'  href= '/source/" + data + "'>" + data + "</a>";
-                        }},
-                    { data: "organ",
+                        }
+                    },
+                    {
+                        data: "organ",
                         "render": function (data, type, row) {
                             return "<a class='nostylelink' href= '/organ/" + data + "'>" + data + "</a>";
-                        }},
-                    { data: "histology",
+                        }
+                    },
+                    {
+                        data: "histology",
                         "render": function (data, type, row) {
                             return "<a class='nostylelink' href= '/histology/" + data + "'>" + data + "</a>";
-                        }},
-                    { data: "dignity",
+                        }
+                    },
+                    {
+                        data: "dignity",
                         "render": function (data, type, row) {
                             return "<a class='nostylelink' href= '/histology/" + data + "'>" + data + "</a>";
-                        }}
+                        }
+                    }
                 ]
             });
         });
@@ -89,5 +95,4 @@
 </metal:block>
 </body>
 
-</html>
 </html>
