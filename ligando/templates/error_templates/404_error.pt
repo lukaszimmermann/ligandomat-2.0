@@ -1,9 +1,5 @@
 <!DOCTYPE html>
 <html metal:use-macro="load: ../base_layout.pt">
-<html lang="${request.locale_name}">
-<head>
-
-</head>
 
 <body>
 <metal:block fill-slot="content">
@@ -18,5 +14,4 @@
 </metal:block>
 
 </body>
-</html>
 </html>
