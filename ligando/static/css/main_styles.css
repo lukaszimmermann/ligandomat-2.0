@@ -136,6 +136,11 @@ main {
 .info_table thead {
 }
 
+.info_table tbody .alt  th {
+    background: white;
+    color: black;
+}
+
 .info_table tbody .alt td {
     background: white;
     color: black;

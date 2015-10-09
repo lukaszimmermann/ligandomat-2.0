@@ -4,16 +4,16 @@
 <body>
 <metal:block fill-slot="content">
     <div class="main_wrapper">
-        <h1 style="text-align: center">${hla}</h1>
+        <h1 style="text-align:left;">HLA-${hla}</h1>
 
         <div style="float: left;  width: 200px">
-            <table>
+            <table class="info_table" width="10%">
                 <tr>
-                    <td>Peptides:</td>
+                    <th>Peptides</th>
                     <td id="pep_stat" align="right"></td>
                 </tr>
-                <tr>
-                    <td>Sources:</td>
+                <tr class="alt">
+                    <th>Sources</th>
                     <td id="source_stat" align="right"></td>
                 </tr>
             </table>
@@ -47,7 +47,7 @@
                     {
                         data: "source_id",
                         "render": function (data, type, row) {
-                            return "<a class='nostylelink'  href= '/source/" + data + "'>" + data + "</a>";
+                            return "<a class='nostylelink'  href= '/source_id/" + data + "'>" + data + "</a>";
                         }
                     },
                     {
@@ -71,7 +71,7 @@
                     {
                         data: "dignity",
                         "render": function (data, type, row) {
-                            return "<a class='nostylelink' href= '/histology/" + data + "'>" + data + "</a>";
+                            return "<a class='nostylelink' href= '/dignity/" + data + "'>" + data + "</a>";
                         }
                     }
                 ]
