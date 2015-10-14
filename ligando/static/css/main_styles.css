@@ -37,7 +37,6 @@ html body {
     transform: translate(-50%, -50%)
 }
 
-
 .nostylelink {
     text-decoration: solid;
     color: black;
@@ -136,7 +135,7 @@ main {
 .info_table thead {
 }
 
-.info_table tbody .alt  th {
+.info_table tbody .alt th {
     background: white;
     color: black;
 }
@@ -438,7 +437,7 @@ table.orphan_table tr.even {
 /*table.protein_sequence tr.odd { background-color: white; }*/
 /*table.protein_sequence tr.even { background-color: rgb(240, 235, 224); }*/
 
-button{
+button {
     color: black;
     text-align: center;
     margin: 1pt;
