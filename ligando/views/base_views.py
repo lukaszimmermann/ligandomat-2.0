@@ -1,3 +1,4 @@
+from sqlite3 import complete_statement
 from pyramid.response import Response
 from pyramid.view import view_config
 from sqlalchemy import func, distinct, String
@@ -164,9 +165,85 @@ def hla_page(request):
         query = query.filter(HlaType.hla_string == request.matchdict["hla"])
         statistic = json.dumps(query.all())
 
+        #extract data for pie charts
+        #Todo: methode auslagern
+        #Todo: Farben fuer alle definieren
+        colors={
+            'blood':["#bf616a", "#cd848b"], 'malignant':["#bf616a", "#cd848b"],'AML':["#bf616a", "#cd848b"], 'CLL':["#bf616a", "#cd848b"], 'PBMC':["#bf616a", "#cd848b"],
+                'B-ALL':["#bf616a", "#cd848b"], 'LCL':["#bf616a", "#cd848b"], 'CML':["#bf616a", "#cd848b"], 'B cells':["#bf616a", "#cd848b"], 'na':["#bf616a", "#cd848b"],
+                'MM':["#bf616a", "#cd848b"], 'PV':["#bf616a", "#cd848b"], 'T-ALL':["#bf616a", "#cd848b"], 'ALL':["#bf616a", "#cd848b"], 'granulocytes':["#bf616a", "#cd848b"], 'mystocytoma':["#bf616a", "#cd848b"],
+            'brain':["#5B90BF", "#7ea8cd"], 'benign':["#5B90BF", "#7ea8cd"], 'GBM':["#5B90BF", "#7ea8cd"],'glioma':["#5B90BF", "#7ea8cd"],'cerebellum':["#5B90BF", "#7ea8cd"],
+            'ovary':["#a3be8c", "#bed1ad"], 'OvCa':["#d08770", "#dda797"],'ovary + fallopian tube':["#d08770", "#dda797"],
+            'kidney':["#d08770", "#dda797"],'RCC':["#ab7967", "#be9789"],'embryonic':["#ab7967", "#be9789"],'Oncocytoma':["#ab7967", "#be9789"],
+            'colon':["#ab7967", "#be9789"],'CRC':["#a3be8c", "#bed1ad"],
+            'lung':["#ebcb8b", "#f2deb5"], 'NSCLC':["#ebcb8b", "#f2deb5"], 'fibroblast':["#ebcb8b", "#f2deb5"],
+            'bladder':["#96b5b4", "#b4cac9"], 'BlCa':["#96b5b4", "#b4cac9"],
+            'bone marrow':["#8fa1b3", "#adbac7"],'BMNC':["#8fa1b3", "#adbac7"], #MM gibts hier auch
+            'breast':["#b48ead","#c8acc3"], 'BrCa':["#b48ead","#c8acc3"],
+            'liver':["#473550", "#63496e"], 'HCC':["#473550", "#63496e"], 'CCC':["#473550", "#63496e"],
+            'cervix':["#65292f", "#8a3840"], 'cervical adenocarcinoma':["#65292f", "#8a3840"],
+            'smooth muscle':["#284967", "#36648c"], 'LMS':["#284967", "#36648c"], 'leiomyosarcom':["#284967","#36648c"],
+            'muscle':["#465b33", "#5f7c46"],
+            'pancreas':["#6c3423","#92472f"],
+            'skin':["#5c3e33","#7d5445"],
+            'spleen':["#7a5815", "#a6781c"],
+            'small intestine':["3b5453", "#507170"],
+            'heart, small intestine':["#3a4755","#4e6173"],
+            'myelon':["#361619", "#5b252a"],
+            'stomach':["#152737", "#24425c"],
+            'thyroid':["#26311c", "#3f522e"],
+            'thymus':["#31211b", "#52372d"]}
+        complete_sources = json.loads(sources)
+
+        organ = []
+        organ_list =[]
+        dignity = []
+        dignity_list =[]
+        histology=[]
+        histology_list =[]
+
+        from collections import Counter
+        for source in complete_sources:
+            organ.append(source['organ'])
+            histology.append(source['histology'])
+            dignity.append(source['dignity'])
+
+        organs = Counter(organ)
+        histologies = Counter(histology)
+        print histologies
+        dignities = Counter(dignity)
+
+        for key,value in organs.iteritems():
+            organ_json ={}
+            organ_json['label']=key
+            organ_json['value']=value
+            organ_json['color']= colors[key][0]
+            organ_json['highlight']= colors[key][1]
+            organ_list.append(organ_json)
+        organ_chart= json.dumps(organ_list)
+
+
+        for key,value in histologies.iteritems():
+            organ_json ={}
+            organ_json['label']=key
+            organ_json['value']=value
+            organ_json['color']= colors[key][0]
+            organ_json['highlight']= colors[key][1]
+            histology_list.append(organ_json)
+        histology_chart= json.dumps(histology_list)
+
+        for key,value in dignities.iteritems():
+            organ_json ={}
+            organ_json['label']=key
+            organ_json['value']=value
+            organ_json['color']= colors[key][0]
+            organ_json['highlight']= colors[key][1]
+            dignity_list.append(organ_json)
+        dignity_chart = json.dumps(dignity_list)
+
     except:
         return Response(conn_err_msg, content_type='text/plain', status_int=500)
-    return {"sources": sources, "hla": request.matchdict["hla"], "statistic": statistic}
+    return {"sources": sources, "hla": request.matchdict["hla"], "statistic": statistic, "organs": organ_chart, "dignity":dignity_chart,"histology":histology_chart}
 
 
 @view_config(route_name='msrun', renderer='../templates/base_templates/msrun.pt', request_method="GET")

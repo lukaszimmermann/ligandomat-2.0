@@ -7,8 +7,10 @@
         <h1 style="text-align:left;">HLA-${hla}</h1>
 
         <div style="float: left;  width: 200px">
-            <table class="info_table" >
-                <thead><th>GENERAL INFORMATION</th></thead>
+            <table class="info_table">
+                <thead>
+                <th>GENERAL INFORMATION</th>
+                </thead>
                 <tbody>
                 <tr>
                     <th>Gene name</th>
@@ -42,9 +44,11 @@
             </table>
             <br>
 
-            <table class="info_table" >
-             <thead><th>DATABASE INFORMATION</th></thead>
-               <tbody>
+            <table class="info_table">
+                <thead>
+                <th>DATABASE INFORMATION</th>
+                </thead>
+                <tbody>
                 <tr>
                     <th>Peptides</th>
                     <td id="pep_stat" align="right"></td>
@@ -56,11 +60,29 @@
                 </tbody>
             </table>
         </div>
+
+
         <div style="float: right; width: 640px; text-align: center"><h3>Peptide-binding motif</h3>
-            <img id="seqlogo" src="" onerror='this.style.display = "none"' >
+            <img id="seqlogo" src="" onerror='this.style.display = "none"'>
         </div>
 
-        <table id="example" class="info_table">
+
+        <div id="canvas-holder" style="float:left;clear: both; width:33.3%">
+            <h4>Organ</h4>
+            <canvas id="organ" width="200" height="200" style=" margin: auto;display: block;"/>
+        </div>
+
+        <div id="canvas-holder" style="float:left; width:33.3%">
+            <h4>Histology</h4>
+            <canvas id="histology" width="200" height="200" style=" margin: auto;display: block;"/>
+        </div>
+        <div id="canvas-holder" style="float:left; width:33.3%">
+            <h4>Dignity</h4>
+            <canvas id="dignity" width="200" height="200" style=" margin: auto;display: block;"/>
+        </div>
+
+
+        <table id="example" class="info_table" >
             <thead>
             <tr>
                 <th>Source ID</th>
@@ -71,9 +93,28 @@
             </tr>
             </thead>
         </table>
+
+
     </div>
 
     <script>
+
+        $(document).ready(function () {
+
+            var organ;
+            organ = ${organs};
+            var dignity;
+            dignity = ${dignity};
+            var histology;
+            histology = ${histology};
+            var ctx = document.getElementById("organ").getContext("2d");
+            window.myPie = new Chart(ctx).Pie(organ);
+            var ctx = document.getElementById("histology").getContext("2d");
+            window.myPie = new Chart(ctx).Doughnut(histology);
+            var ctx = document.getElementById("dignity").getContext("2d");
+            window.myPie = new Chart(ctx).Doughnut(dignity);
+
+        });
 
         $(document).ready(function () {
             // create dataTable
@@ -128,6 +169,7 @@
             document.getElementById("seqlogo").src = "${request.static_url("ligando:static/seqlogo/" +hla.replace(":", "") + ".png")}";
 
         });
+
 
     </script>
 
