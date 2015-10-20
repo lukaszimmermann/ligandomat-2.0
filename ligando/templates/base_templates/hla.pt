@@ -57,6 +57,10 @@
                     <th>Sources</th>
                     <td id="source_stat" align="right"></td>
                 </tr>
+                <tr>
+                    <th>Patients</th>
+                    <td id="patient_stat" align="right"></td>
+                </tr>
                 </tbody>
             </table>
         </div>
@@ -67,22 +71,13 @@
         </div>
 
 
-        <div id="canvas-holder" style="float:left;clear: both; width:33.3%">
+        <div class="canvas-holder">
             <h4>Organ</h4>
             <canvas id="organ" width="200" height="200" style=" margin: auto;display: block;"/>
         </div>
 
-        <div id="canvas-holder" style="float:left; width:33.3%">
-            <h4>Histology</h4>
-            <canvas id="histology" width="200" height="200" style=" margin: auto;display: block;"/>
-        </div>
-        <div id="canvas-holder" style="float:left; width:33.3%">
-            <h4>Dignity</h4>
-            <canvas id="dignity" width="200" height="200" style=" margin: auto;display: block;"/>
-        </div>
 
-
-        <table id="example" class="info_table" >
+        <table id="example" class="info_table">
             <thead>
             <tr>
                 <th>Source ID</th>
@@ -103,16 +98,10 @@
 
             var organ;
             organ = ${organs};
-            var dignity;
-            dignity = ${dignity};
-            var histology;
-            histology = ${histology};
+
             var ctx = document.getElementById("organ").getContext("2d");
             window.myPie = new Chart(ctx).Pie(organ);
-            var ctx = document.getElementById("histology").getContext("2d");
-            window.myPie = new Chart(ctx).Doughnut(histology);
-            var ctx = document.getElementById("dignity").getContext("2d");
-            window.myPie = new Chart(ctx).Doughnut(dignity);
+
 
         });
 
@@ -164,6 +153,18 @@
             document.getElementById("pep_stat").innerHTML = "<a title='Show all Peptides'  class='nostylelink' href='javascript:post(\x22../peptide_query\x22, {hla_typing: \x22${hla}\x22, grouping:\x22peptide\x22}," + ${statistic}[0]["pep_count"] + " )'> " + ${statistic}[0]["pep_count"] + "</a>";
             document.getElementById("source_stat").innerHTML = ${sources}.
             length;
+            function getUnique(a, b, c) { //array, placeholder, placeholder
+                b = a.length;
+                while (c = --b)while (c--)a[b] !== a[c] || a.splice(c, 1);
+            }
+
+            var data = ${sources};
+            var uniquePatients = [];
+            for (var i = 0; i != data.length; i++) {
+                if ("patient_id" in data[i]) uniquePatients.push(data[i].patient_id);
+            }
+            (getUnique(uniquePatients));
+            document.getElementById("patient_stat").innerHTML = uniquePatients.length;
 
             // set the corresponding seqlogo
             document.getElementById("seqlogo").src = "${request.static_url("ligando:static/seqlogo/" +hla.replace(":", "") + ".png")}";
