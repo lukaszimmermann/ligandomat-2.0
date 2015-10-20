@@ -447,3 +447,12 @@ button {
     -webkit-box-shadow: inset 0 -2px rgb(180, 160, 105);
     box-shadow: inset 0 -2px rgb(180, 160, 105);
 }
+
+
+/*Canvas styles */
+.canvas-holder  {
+    float:left;
+    clear: both;
+    width:33.3%;
+    padding-bottom: 30px;
+}
