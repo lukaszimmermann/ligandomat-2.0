@@ -1,8 +1,36 @@
 from sqlalchemy import or_, func
+import simplejson as json
+from collections import Counter
 
 __author__ = 'Linus Backert'
 
 from sqlalchemy.orm import aliased
+
+#colors for all different organs
+colors={'blood':["#bf616a", "#cd848b"],
+            'brain':["#5B90BF", "#7ea8cd"],
+            'ovary':["#a3be8c", "#bed1ad"],
+            'kidney':["#d08770", "#dda797"],
+            'colon':["#ab7967", "#be9789"],
+            'lung':["#ebcb8b", "#f2deb5"],
+            'bladder':["#96b5b4", "#b4cac9"],
+            'bone marrow':["#8fa1b3", "#adbac7"],
+            'breast':["#b48ead","#c8acc3"],
+            'liver':["#473550", "#63496e"],
+            'cervix':["#65292f", "#8a3840"],
+            'smooth muscle':["#284967", "#36648c"],
+            'muscle':["#465b33", "#5f7c46"],
+            'pancreas':["#6c3423","#92472f"],
+            'skin':["#5c3e33","#7d5445"],
+            'spleen':["#7a5815", "#a6781c"],
+            'small intestine':["3b5453", "#507170"],
+            'heart, small intestine':["#3a4755","#4e6173"],
+            'myelon':["#361619", "#5b252a"],
+            'stomach':["#152737", "#24425c"],
+            'thyroid':["#26311c", "#3f522e"],
+            'thymus':["#31211b", "#52372d"]}
+
+
 
 # writes to log files
 def log_writer(logfile, message):
@@ -124,3 +152,24 @@ might be caused by one of the following things:
 After you fix the problem, please restart the Pyramid application to
 try it again.
 """
+
+def get_chart_data(sources):
+    organ = []
+    organ_list =[]
+
+    for source in sources:
+        organ.append(source['organ'])
+
+    organs = Counter(organ)
+
+
+    for key,value in organs.iteritems():
+        organ_json ={}
+        organ_json['label']=key
+        organ_json['value']=value
+        organ_json['color']= colors[key][0]
+        organ_json['highlight']= colors[key][1]
+        organ_list.append(organ_json)
+    organ_chart= json.dumps(organ_list)
+
+    return organ_chart
