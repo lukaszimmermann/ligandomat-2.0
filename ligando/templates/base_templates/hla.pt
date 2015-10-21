@@ -6,19 +6,27 @@
     <div class="main_wrapper">
         <h1 style="text-align:left;">HLA-${hla}</h1>
 
-        <div style="float: left;  width: 200px">
-            <table class="info_table">
+        <div style="float: left;  width:200px;">
+            <table class="info_table" >
                 <thead>
                 <th>GENERAL INFORMATION</th>
                 </thead>
                 <tbody>
                 <tr>
                     <th>Gene name</th>
-                    <td></td>
+                    <td id="gene_name"></td>
                 </tr>
                 <tr class="alt">
                     <th>Description</th>
-                    <td></td>
+                    <td id="description"></td>
+                </tr>
+                <tr>
+                    <th>Organism</th>
+                    <td id="organism"></td>
+                </tr>
+                <tr class="alt">
+                    <th><p>Sequence</p></th>
+                    <td style="word-break:break-all;word-wrap:break-word" id="sequence"></td>
                 </tr>
                 <tr>
                     <th>Entrez gene summary</th>
@@ -34,7 +42,7 @@
                 </tr>
                 <tr class="alt">
                     <th>Uniprot</th>
-                    <td></td>
+                    <td id="uniprot"></td>
                 </tr>
                 <tr>
                     <th>Antibodypedia</th>
@@ -93,7 +101,17 @@
     </div>
 
     <script>
+        //Gene Information
+        $(document).ready(function () {
 
+            document.getElementById("gene_name").innerHTML = ${genes}[0]["gene_name"];
+            document.getElementById("description").innerHTML = ${genes}[0]["description"].split("HUMAN")[1].split("OS=")[0];
+            document.getElementById("organism").innerHTML = ${genes}[0]["organism"];
+             document.getElementById("uniprot").innerHTML = "<a title='Go to Uniprot' class='nostylelink' href='http://www.uniprot.org/uniprot/" + ${genes}[0]["name"] + "'>" + ${genes}[0]["name"] + "</a>";
+            document.getElementById("sequence").innerHTML = ${genes}[0]["sequence"];
+        })
+
+        //organ chart
         $(document).ready(function () {
 
             var organ;
