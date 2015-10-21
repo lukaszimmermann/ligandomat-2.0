@@ -132,6 +132,16 @@ main {
     color: black;
 }
 
+
+th {
+    font-size: 10px;
+    font-weight: bold;
+}
+ tbody {
+     font-size: 12px;
+     font-weight: normal;
+ }
+
 .info_table thead {
 }
 
