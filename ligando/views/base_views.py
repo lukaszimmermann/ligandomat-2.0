@@ -171,15 +171,16 @@ def hla_page(request):
         organ_chart= get_chart_data(complete_sources)
 
         #extract gene information
-        #TODO: filter by exact Allel
         query = DBSession.query(Protein.name,
                                 Protein.organism,
                                 Protein.description,
                                 Protein.sequence,
                                 Protein.gene_name)
-        query = query.filter(Protein.gene_name == "HLA-" + request.matchdict["hla"].split("*")[0])
+
         descriptor = request.matchdict["hla"].split("*")
         hla_description =  descriptor[0] + descriptor[1].split(":")[0]
+
+        query = query.filter(Protein.gene_name == "HLA-" + descriptor[0])
         query = query.filter(Protein.description.like("%" + hla_description + "%"))
         gene_information =  json.dumps(query.all())
 
