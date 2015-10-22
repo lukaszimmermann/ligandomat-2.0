@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html metal:use-macro="load: ../base_layout.pt">
+
+<body>
+<metal:block fill-slot="content">
+    <div class="main_wrapper">
+        <small> Error 404 - Page not found.</small>
+        <h1>Sorry, the requested page does not seem to exist.</h1>
+        Please check the URL and try your luck again or go back to our
+        <button type="submit" onclick="location.href='/'">
+            mainpage.
+        </button>
+    </div>
+</metal:block>
+
+</body>
+</html>

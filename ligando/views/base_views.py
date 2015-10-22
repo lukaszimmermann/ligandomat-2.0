@@ -1,8 +1,10 @@
+from sqlite3 import complete_statement
 from pyramid.response import Response
 from pyramid.view import view_config
 from sqlalchemy import func, distinct, String
 import simplejson as json
 from sqlalchemy import or_, func
+from ligando.views.view_helper import get_chart_data
 
 
 from ligando.models import (
@@ -164,9 +166,30 @@ def hla_page(request):
         query = query.filter(HlaType.hla_string == request.matchdict["hla"])
         statistic = json.dumps(query.all())
 
+        #extract data for organ pie chart
+        complete_sources = json.loads(sources)
+        organ_charts= get_chart_data(complete_sources)
+        organ_chart = organ_charts[0]
+        organ_flot = organ_charts[1]
+
+        #extract gene information
+        query = DBSession.query(Protein.name,
+                                Protein.organism,
+                                Protein.description,
+                                Protein.sequence,
+                                Protein.gene_name)
+
+        descriptor = request.matchdict["hla"].split("*")
+        hla_description =  descriptor[0] + descriptor[1].split(":")[0]
+
+        query = query.filter(Protein.gene_name == "HLA-" + descriptor[0])
+        query = query.filter(Protein.description.like("%" + hla_description + "%"))
+        gene_information =  json.dumps(query.all())
+
+
     except:
         return Response(conn_err_msg, content_type='text/plain', status_int=500)
-    return {"sources": sources, "hla": request.matchdict["hla"], "statistic": statistic}
+    return {"sources": sources, "hla": request.matchdict["hla"], "statistic": statistic, "organs": organ_chart, "genes": gene_information, "flot": organ_flot}
 
 
 @view_config(route_name='msrun', renderer='../templates/base_templates/msrun.pt', request_method="GET")

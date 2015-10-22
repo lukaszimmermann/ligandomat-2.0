@@ -1,33 +1,95 @@
-<html metal:use-macro="load: ../base_layout.pt">
-<html lang="${request.locale_name}">
-<head>
+<html metal:use-macro="load: ../base_layout.pt" lang="${request.locale_name}">
 
-
-</head>
 
 <body>
 <metal:block fill-slot="content">
     <div class="main_wrapper">
-        <h1 style="text-align: center">${hla}</h1>
+        <h1 style="text-align:left;">HLA-${hla}</h1>
 
-        <div style="float: left;  width: 200px">
-            <table>
+        <div style="float: left;  width:200px;">
+            <table class="info_table" >
+                <thead>
+                <th>GENERAL INFORMATION</th>
+                </thead>
+                <tbody>
                 <tr>
-                    <td>Peptides:</td>
-                    <td id="pep_stat"></td>
+                    <th>Gene name</th>
+                    <td id="gene_name"></td>
+                </tr>
+                <tr class="alt">
+                    <th>Description</th>
+                    <td id="description"></td>
                 </tr>
                 <tr>
-                    <td>Sources</td>
-                    <td id="source_stat"></td>
+                    <th>Organism</th>
+                    <td id="organism"></td>
                 </tr>
+                <tr class="alt">
+                    <th><p>Sequence</p></th>
+                    <td style="word-break:break-all;word-wrap:break-word" id="sequence"></td>
+                </tr>
+                <tr>
+                    <th>Entrez gene summary</th>
+                    <td></td>
+                </tr>
+                <tr class="alt">
+                    <th>Entrez gene</th>
+                    <td></td>
+                </tr>
+                <tr>
+                    <th>Ensembl</th>
+                    <td></td>
+                </tr>
+                <tr class="alt">
+                    <th>Uniprot</th>
+                    <td id="uniprot"></td>
+                </tr>
+                <tr>
+                    <th>Antibodypedia</th>
+                    <td></td>
+                </tr>
+                </tbody>
+            </table>
+            <br>
+
+            <table class="info_table">
+                <thead>
+                <th>DATABASE INFORMATION</th>
+                </thead>
+                <tbody>
+                <tr>
+                    <th>Peptides</th>
+                    <td id="pep_stat" align="right"></td>
+                </tr>
+                <tr class="alt">
+                    <th>Sources</th>
+                    <td id="source_stat" align="right"></td>
+                </tr>
+                <tr>
+                    <th>Patients</th>
+                    <td id="patient_stat" align="right"></td>
+                </tr>
+                </tbody>
             </table>
         </div>
-        <div style="float: right; width: 640px"><img id="seqlogo" src="" onerror='this.style.display = "none"'></div>
 
-        <table id="example" class="info_table" cellspacing="0" width="1000px">
+
+        <div style="float: right; width: 640px; text-align: center"><h3>Peptide-binding motif</h3>
+            <img id="seqlogo" src="" onerror='this.style.display = "none"'>
+        </div>
+
+
+        <div class="canvas-holder">
+            <h4>Organ</h4>
+            <canvas id="organ" width="200" height="200" style=" margin: auto;display: block;"/>
+        </div>
+        <div id="placeholder" style="width:200px; height:200px;margin: auto;display: block; float:left; width:33.3%;padding-bottom: 30px;"></div>
+
+
+        <table id="example" class="info_table">
             <thead>
             <tr>
-                <th>Source Id</th>
+                <th>Source ID</th>
                 <th>Patient ID</th>
                 <th>Organ</th>
                 <th>Histology</th>
@@ -35,39 +97,85 @@
             </tr>
             </thead>
         </table>
+
+
     </div>
 
     <script>
+        //Gene Information
+        $(document).ready(function () {
+
+            document.getElementById("gene_name").innerHTML = ${genes}[0]["gene_name"];
+            document.getElementById("description").innerHTML = ${genes}[0]["description"].split("HUMAN")[1].split("OS=")[0];
+            document.getElementById("organism").innerHTML = ${genes}[0]["organism"];
+             document.getElementById("uniprot").innerHTML = "<a title='Go to Uniprot' class='nostylelink' href='http://www.uniprot.org/uniprot/" + ${genes}[0]["name"] + "'>" + ${genes}[0]["name"] + "</a>";
+            document.getElementById("sequence").innerHTML = ${genes}[0]["sequence"];
+        })
+
+        //organ chart
+        $(document).ready(function () {
+
+            var organ;
+            organ = ${organs};
+
+            var ctx = document.getElementById("organ").getContext("2d");
+            window.myPie = new Chart(ctx).Pie(organ);
+
+
+        });
+
+        //flot pie try
+        $.plot('#placeholder', ${flot}, {
+                series: {
+                    pie: {
+                            show: true
+                        }
+    },
+            grid: {
+        hoverable: true,
+        clickable: true
+    }
+});
 
         $(document).ready(function () {
-// create dataTable
+            // create dataTable
             $('#example').dataTable({
-                "paging": false,
+                "paging": true,
                 "ordering": false,
                 "info": false,
-                searching: false,
+                searching: true,
                 data: ${sources},
                 columns: [
-                    { data: "source_id",
+                    {
+                        data: "source_id",
+                        "render": function (data, type, row) {
+                            return "<a class='nostylelink'  href= '/source_id/" + data + "'>" + data + "</a>";
+                        }
+                    },
+                    {
+                        data: "patient_id",
                         "render": function (data, type, row) {
                             return "<a class='nostylelink'  href= '/source/" + data + "'>" + data + "</a>";
-                        }},
-                    { data: "patient_id",
-                        "render": function (data, type, row) {
-                            return "<a class='nostylelink'  href= '/source/" + data + "'>" + data + "</a>";
-                        }},
-                    { data: "organ",
+                        }
+                    },
+                    {
+                        data: "organ",
                         "render": function (data, type, row) {
                             return "<a class='nostylelink' href= '/organ/" + data + "'>" + data + "</a>";
-                        }},
-                    { data: "histology",
+                        }
+                    },
+                    {
+                        data: "histology",
                         "render": function (data, type, row) {
                             return "<a class='nostylelink' href= '/histology/" + data + "'>" + data + "</a>";
-                        }},
-                    { data: "dignity",
+                        }
+                    },
+                    {
+                        data: "dignity",
                         "render": function (data, type, row) {
-                            return "<a class='nostylelink' href= '/histology/" + data + "'>" + data + "</a>";
-                        }}
+                            return "<a class='nostylelink' href= '/dignity/" + data + "'>" + data + "</a>";
+                        }
+                    }
                 ]
             });
         });
@@ -77,11 +185,24 @@
             document.getElementById("pep_stat").innerHTML = "<a title='Show all Peptides'  class='nostylelink' href='javascript:post(\x22../peptide_query\x22, {hla_typing: \x22${hla}\x22, grouping:\x22peptide\x22}," + ${statistic}[0]["pep_count"] + " )'> " + ${statistic}[0]["pep_count"] + "</a>";
             document.getElementById("source_stat").innerHTML = ${sources}.
             length;
+            function getUnique(a, b, c) { //array, placeholder, placeholder
+                b = a.length;
+                while (c = --b)while (c--)a[b] !== a[c] || a.splice(c, 1);
+            }
+
+            var data = ${sources};
+            var uniquePatients = [];
+            for (var i = 0; i != data.length; i++) {
+                if ("patient_id" in data[i]) uniquePatients.push(data[i].patient_id);
+            }
+            (getUnique(uniquePatients));
+            document.getElementById("patient_stat").innerHTML = uniquePatients.length;
 
             // set the corresponding seqlogo
             document.getElementById("seqlogo").src = "${request.static_url("ligando:static/seqlogo/" +hla.replace(":", "") + ".png")}";
 
         });
+
 
     </script>
 
@@ -89,5 +210,4 @@
 </metal:block>
 </body>
 
-</html>
 </html>
