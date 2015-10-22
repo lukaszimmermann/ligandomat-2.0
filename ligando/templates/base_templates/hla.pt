@@ -83,6 +83,7 @@
             <h4>Organ</h4>
             <canvas id="organ" width="200" height="200" style=" margin: auto;display: block;"/>
         </div>
+        <div id="placeholder" style="width:200px; height:200px;margin: auto;display: block; float:left; width:33.3%;padding-bottom: 30px;"></div>
 
 
         <table id="example" class="info_table">
@@ -122,6 +123,19 @@
 
 
         });
+
+        //flot pie try
+        $.plot('#placeholder', ${flot}, {
+                series: {
+                    pie: {
+                            show: true
+                        }
+    },
+            grid: {
+        hoverable: true,
+        clickable: true
+    }
+});
 
         $(document).ready(function () {
             // create dataTable

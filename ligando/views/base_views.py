@@ -168,7 +168,9 @@ def hla_page(request):
 
         #extract data for organ pie chart
         complete_sources = json.loads(sources)
-        organ_chart= get_chart_data(complete_sources)
+        organ_charts= get_chart_data(complete_sources)
+        organ_chart = organ_charts[0]
+        organ_flot = organ_charts[1]
 
         #extract gene information
         query = DBSession.query(Protein.name,
@@ -187,7 +189,7 @@ def hla_page(request):
 
     except:
         return Response(conn_err_msg, content_type='text/plain', status_int=500)
-    return {"sources": sources, "hla": request.matchdict["hla"], "statistic": statistic, "organs": organ_chart, "genes": gene_information}
+    return {"sources": sources, "hla": request.matchdict["hla"], "statistic": statistic, "organs": organ_chart, "genes": gene_information, "flot": organ_flot}
 
 
 @view_config(route_name='msrun', renderer='../templates/base_templates/msrun.pt', request_method="GET")
