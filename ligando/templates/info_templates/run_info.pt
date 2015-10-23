@@ -57,11 +57,9 @@
                     { data: "sample_mass"}
 
                 ],
-                "sDom": 'T<"clear">lfrtip',
-                oTableTools: {
-                    "sSwfPath": "${request.static_url('ligando:static/swf/copy_csv_xls_pdf.swf')}",
-                    "aButtons": ["csv"]
-                }
+
+                dom: 'Bfrtip',
+                buttons: ['csv', 'excel', 'pdf']
             });
         });
     </script>

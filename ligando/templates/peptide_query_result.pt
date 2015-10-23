@@ -171,11 +171,8 @@ $(document).ready(function () {
                         return "<a class='nostylelink'  href= '/msrun/" + row.ms_run_id + "'>" + data + "</a>";
                     }}
             ],
-            "sDom": 'T<"clear">lfrtip',
-            oTableTools: {
-                "sSwfPath": "${request.static_url('ligando:static/swf/copy_csv_xls_pdf.swf')}",
-                "aButtons": ["csv"]
-            }
+            dom: 'Bfrtip',
+            buttons: ['csv', 'excel', 'pdf']
 
         });
     } else if ("${grouping}" == "peptide") {
@@ -258,11 +255,10 @@ $(document).ready(function () {
                         return return_string
                     }}
             ],
-            "sDom": 'T<"clear">lfrtip',
-            oTableTools: {
-                "sSwfPath": "${request.static_url('ligando:static/swf/copy_csv_xls_pdf.swf')}",
-                "aButtons": ["csv"]
-            }
+            dom: 'Bfrtip',
+            buttons: ['csv', 'excel', 'pdf']
+
+
         });
     }
     else if ("${grouping}" == "source") {
@@ -351,13 +347,9 @@ $(document).ready(function () {
                         return return_string
                     }}
             ],
-            "sDom": 'T<"clear">lfrtip',
-            oTableTools: {
-                "sSwfPath": "${request.static_url('ligando:static/swf/copy_csv_xls_pdf.swf')}",
-                "aButtons": ["csv"]
+            dom: 'Bfrtip',
+            buttons: ['csv', 'excel', 'pdf']
 
-
-            }
         });
     }
     else if ("${grouping}" == "source_psm") {
@@ -443,13 +435,8 @@ $(document).ready(function () {
                         return return_string
                     }}
             ],
-            "sDom": 'T<"clear">lfrtip',
-            oTableTools: {
-                "sSwfPath": "${request.static_url('ligando:static/swf/copy_csv_xls_pdf.swf')}",
-                "aButtons": ["csv"]
-
-
-            }
+            dom: 'Bfrtip',
+            buttons: ['csv', 'excel', 'pdf']
         });
     }
     else if ("${grouping}" == "protein") {
@@ -517,11 +504,8 @@ $(document).ready(function () {
                         return return_string;
                     }}
             ],
-            "sDom": 'T<"clear">lfrtip',
-            oTableTools: {
-                "sSwfPath": "${request.static_url('ligando:static/swf/copy_csv_xls_pdf.swf')}",
-                "aButtons": ["csv"]
-            }
+            dom: 'Bfrtip',
+            buttons: ['csv', 'excel', 'pdf']
         });
     }
 
