@@ -119,6 +119,10 @@ main {
     background: lightgrey;
 }
 
+.info_table.dataTable thead th {
+    padding: 10px 10px;
+}
+
 .info_table {
     font: normal 14px;
     width: 500px;
@@ -137,7 +141,9 @@ th {
     font-size: 10px;
     font-weight: bold;
 }
- tbody {
+
+
+tbody {
      font-size: 12px;
      font-weight: normal;
  }
