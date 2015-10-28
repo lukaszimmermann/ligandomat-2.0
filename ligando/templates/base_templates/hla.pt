@@ -92,8 +92,6 @@
                 <th>Source ID</th>
                 <th>Patient ID</th>
                 <th>Organ</th>
-                <th>Histology</th>
-                <th>Dignity</th>
             </tr>
             </thead>
         </table>
@@ -164,18 +162,7 @@
                             return "<a class='nostylelink' href= '/organ/" + data + "'>" + data + "</a>";
                         }
                     },
-                    {
-                        data: "histology",
-                        "render": function (data, type, row) {
-                            return "<a class='nostylelink' href= '/histology/" + data + "'>" + data + "</a>";
-                        }
-                    },
-                    {
-                        data: "dignity",
-                        "render": function (data, type, row) {
-                            return "<a class='nostylelink' href= '/dignity/" + data + "'>" + data + "</a>";
-                        }
-                    }
+
                 ]
             });
         });
