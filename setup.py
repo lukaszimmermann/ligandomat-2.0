@@ -23,9 +23,9 @@ requires = [
     'simplejson'
     ]
 
-setup(name='ligando',
-      version='0.0',
-      description='ligando',
+setup(name='HLA_Ligand_Atlas',
+      version='0.1',
+      description='HLA_Ligand_Atlas',
       long_description=README + '\n\n' + CHANGES,
       classifiers=[
         "Programming Language :: Python",
@@ -33,8 +33,8 @@ setup(name='ligando',
         "Topic :: Internet :: WWW/HTTP",
         "Topic :: Internet :: WWW/HTTP :: WSGI :: Application",
         ],
-      author='',
-      author_email='',
+      author='Linus Backert',
+      author_email='linus.backert@uni-tuebingen.de',
       url='',
       keywords='web wsgi bfg pylons pyramid',
       packages=find_packages(),

@@ -166,6 +166,7 @@ def hla_page(request):
         query = query.filter(HlaType.hla_string == request.matchdict["hla"])
         statistic = json.dumps(query.all())
 
+        # TODO: this crashes if no correct HLA type is submitted! catch!
         #extract data for organ pie chart
         complete_sources = json.loads(sources)
         organ_charts= get_chart_data(complete_sources)

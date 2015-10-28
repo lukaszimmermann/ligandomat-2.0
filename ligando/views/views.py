@@ -48,7 +48,10 @@ def my_view(request):
 # test view
 @view_config(route_name='test_view', renderer='../templates/test_template.pt')
 def test_view(request):
-    return dict()
+    result_dict = dict()
+    result_dict["test"] = DBSession.query(MsRun.filename).filter(MsRun.filename == "testfilename").all()
+    result_dict["count"] = DBSession.query(func.count(MsRun.filename)).filter(MsRun.filename == "testfilename").one()[0]
+    return result_dict
 
 
 # faq view
