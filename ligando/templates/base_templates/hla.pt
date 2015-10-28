@@ -178,12 +178,6 @@
             }
 
             var data = ${sources};
-            var uniquePatients = [];
-            for (var i = 0; i != data.length; i++) {
-                if ("patient_id" in data[i]) uniquePatients.push(data[i].patient_id);
-            }
-            (getUnique(uniquePatients));
-            document.getElementById("patient_stat").innerHTML = uniquePatients.length;
 
             // set the corresponding seqlogo
             document.getElementById("seqlogo").src = "${request.static_url("ligando:static/seqlogo/" +hla.replace(":", "") + ".png")}";
