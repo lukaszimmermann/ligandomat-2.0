@@ -142,6 +142,9 @@ th {
     font-weight: bold;
 }
 
+th.head{
+    white-space: nowrap
+}
 
 tbody {
      font-size: 12px;

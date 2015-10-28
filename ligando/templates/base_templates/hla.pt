@@ -7,11 +7,13 @@
         <h1 style="text-align:left;">HLA-${hla}</h1>
 
         <div style="float: left;  width:200px;">
-            <table class="info_table" >
-                <thead>
-                <th>GENERAL INFORMATION</th>
-                </thead>
+            <table class="info_table">
                 <tbody>
+                <tr>
+                    <th class="head">
+                        GENERAL INFORMATION
+                    </th>
+                </tr>
                 <tr>
                     <th>Gene name</th>
                     <td id="gene_name"></td>
@@ -25,7 +27,7 @@
                     <td id="organism"></td>
                 </tr>
                 <tr class="alt">
-                    <th><p>Sequence</p></th>
+                    <th>Sequence</th>
                     <td style="word-break:break-all;word-wrap:break-word" id="sequence"></td>
                 </tr>
                 <tr>
@@ -53,10 +55,12 @@
             <br>
 
             <table class="info_table">
-                <thead>
-                <th>DATABASE INFORMATION</th>
-                </thead>
                 <tbody>
+                <tr>
+                    <th>
+                        DATABASE INFORMATION
+                    </th>
+                </tr>
                 <tr>
                     <th>Peptides</th>
                     <td id="pep_stat" align="right"></td>
@@ -64,10 +68,6 @@
                 <tr class="alt">
                     <th>Sources</th>
                     <td id="source_stat" align="right"></td>
-                </tr>
-                <tr>
-                    <th>Patients</th>
-                    <td id="patient_stat" align="right"></td>
                 </tr>
                 </tbody>
             </table>
@@ -81,9 +81,10 @@
 
         <div class="canvas-holder">
             <h4>Organ</h4>
-            <canvas id="organ" width="200" height="200" style=" margin: auto;display: block;"/>
+
+            <div id="placeholder"
+                 style="width:400px; height:200px;margin: auto;display: block; float:left; padding-bottom: 30px;"></div>
         </div>
-        <div id="placeholder" style="width:200px; height:200px;margin: auto;display: block; float:left; width:33.3%;padding-bottom: 30px;"></div>
 
 
         <table id="example" class="info_table">
@@ -106,35 +107,47 @@
             document.getElementById("gene_name").innerHTML = ${genes}[0]["gene_name"];
             document.getElementById("description").innerHTML = ${genes}[0]["description"].split("HUMAN")[1].split("OS=")[0];
             document.getElementById("organism").innerHTML = ${genes}[0]["organism"];
-             document.getElementById("uniprot").innerHTML = "<a title='Go to Uniprot' class='nostylelink' href='http://www.uniprot.org/uniprot/" + ${genes}[0]["name"] + "'>" + ${genes}[0]["name"] + "</a>";
+            document.getElementById("uniprot").innerHTML = "<a title='Go to Uniprot' class='nostylelink' href='http://www.uniprot.org/uniprot/" + ${genes}[0]["name"] + "'>" + ${genes}[0]["name"] + "</a>";
             document.getElementById("sequence").innerHTML = ${genes}[0]["sequence"];
-        })
+        });
 
-        //organ chart
-        $(document).ready(function () {
 
-            var organ;
-            organ = ${organs};
+        //flot pie
+        $.plot('#placeholder', ${organ}, {
+            series: {
+                pie: {
+                    innerRadius: 0.5,
+                    show: true
+                }
+            },
+            grid: {
+                hoverable: true
+            }
+        });
 
-            var ctx = document.getElementById("organ").getContext("2d");
-            window.myPie = new Chart(ctx).Pie(organ);
+        //add tooltips to pie chart when hover
+        $("<div id='tooltip'></div>").css({
+            position: "absolute",
+            display: "none",
+            border: "1px solid #fdd",
+            padding: "2px",
+            "background-color": "#fee",
+            opacity: 0.80
+        }).appendTo("#placeholder");
 
+        $('#placeholder').bind("plothover", function (event, pos, item) {
+            if (item) {
+                var percent = parseFloat(item.series.percent).toFixed(2);
+                $("#tooltip").html(item.series.label + " " + percent + "%")
+
+                        .fadeIn(200);
+            } else {
+                $("#tooltip").hide();
+            }
 
         });
 
-        //flot pie try
-        $.plot('#placeholder', ${flot}, {
-                series: {
-                    pie: {
-                            show: true
-                        }
-    },
-            grid: {
-        hoverable: true,
-        clickable: true
-    }
-});
-
+        //DataTable with sources
         $(document).ready(function () {
             // create dataTable
             $('#example').dataTable({
@@ -161,8 +174,7 @@
                         "render": function (data, type, row) {
                             return "<a class='nostylelink' href= '/organ/" + data + "'>" + data + "</a>";
                         }
-                    },
-
+                    }
                 ]
             });
         });
@@ -170,14 +182,7 @@
         $(document).ready(function () {
             // set statistics
             document.getElementById("pep_stat").innerHTML = "<a title='Show all Peptides'  class='nostylelink' href='javascript:post(\x22../peptide_query\x22, {hla_typing: \x22${hla}\x22, grouping:\x22peptide\x22}," + ${statistic}[0]["pep_count"] + " )'> " + ${statistic}[0]["pep_count"] + "</a>";
-            document.getElementById("source_stat").innerHTML = ${sources}.
-            length;
-            function getUnique(a, b, c) { //array, placeholder, placeholder
-                b = a.length;
-                while (c = --b)while (c--)a[b] !== a[c] || a.splice(c, 1);
-            }
-
-            var data = ${sources};
+            document.getElementById("source_stat").innerHTML = ${sources}.length;
 
             // set the corresponding seqlogo
             document.getElementById("seqlogo").src = "${request.static_url("ligando:static/seqlogo/" +hla.replace(":", "") + ".png")}";
