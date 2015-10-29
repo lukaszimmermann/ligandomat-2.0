@@ -39,16 +39,3 @@ def run_overview(request):
     except DBAPIError:
         return Response(conn_err_msg, content_type='text/plain', status_int=500)
     return {'project': your_json}
-
-
-@view_config(route_name='orphan_run_overview', renderer='../templates/info_templates/orphan_run_info.pt')
-def orphan_run_overview(request):
-    try:
-        # get orphan runs
-        your_json = json.dumps(DBSession.query(MsRun.ms_run_id, MsRun.filename).filter(
-            MsRun.source_source_id == None).filter(MsRun.flag_trash == 0).group_by(
-            MsRun.ms_run_id).all())
-
-    except DBAPIError:
-        return Response(conn_err_msg, content_type='text/plain', status_int=500)
-    return {'project': your_json}
