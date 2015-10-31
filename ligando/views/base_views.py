@@ -269,8 +269,14 @@ def protein_page(request):
 
 @view_config(route_name='organ', renderer='../templates/base_templates/organ.pt', request_method="GET")
 def organ_page(request):
-    try:
-        query = DBSession.query(Source.source_id, Source.organ,
+    # try:
+    # query = DBSession.query(Protein.gene_name, func.count(Source.source_id.distinct()))
+    # query = query.join(Protein.protein_id, SpectrumHit.spectrum_hit_id)
+    # query = query.join(Source)
+    # protein_stats = json.dumps(query.all())
+
+
+    query = DBSession.query(Source.source_id, Source.organ,
                                 Source.histology, Source.patient_id, Source.dignity)
         query = query.filter(Source.organ == request.matchdict["organ"])
         sources = json.dumps(query.all())
@@ -280,9 +286,10 @@ def organ_page(request):
         query = query.filter(Source.organ == request.matchdict["organ"])
         statistic = json.dumps(query.all())
 
-    except:
-        return Response(conn_err_msg, content_type='text/plain', status_int=500)
-    return {"sources": sources, "organ": request.matchdict["organ"], "statistic": statistic}
+    #except:
+    #    return Response(conn_err_msg, content_type='text/plain', status_int=500)
+    return {"sources": sources, "organ": request.matchdict["organ"], "statistic": statistic,
+            "protein_stats": protein_stats}
 
 
 @view_config(route_name='person', renderer='../templates/base_templates/person.pt', request_method="GET")

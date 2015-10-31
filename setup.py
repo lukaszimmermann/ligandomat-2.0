@@ -9,7 +9,7 @@ with open(os.path.join(here, 'CHANGES.txt')) as f:
     CHANGES = f.read()
 
 
-test = "test"
+
 requires = [
     'pyramid',
     'pyramid_chameleon',
@@ -40,7 +40,7 @@ setup(name='HLA_Ligand_Atlas',
       packages=find_packages(),
       include_package_data=True,
       zip_safe=False,
-      test_suite='ligando',
+      test_suite='HLA_Ligand_Atlas',
       install_requires=requires,
       entry_points="""\
       [paste.app_factory]
