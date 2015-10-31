@@ -9,11 +9,11 @@
 
 <body>
 <metal:block fill-slot="content">
-<h3>Search Results:</h3>
 <div class="main_wrapper" >
+    <h3>Search Results:</h3>
     <div id="placeholder"> <h3>No search results found!</h3> </div>
     <div id="protein_div" style="float: left" >
-    <table id="protein"  class="info_table" style="width: 500px" cellspacing="0" >
+        <table id="protein" class="table table-striped table-bordered" style="width: 500px" cellspacing="0">
         <thead>
         <tr>
         <th>Protein</th>
@@ -22,7 +22,7 @@
     </table>
     </div>
     <div id="peptide_div" style="clear:both;float: left" >
-    <table id="peptide"  class="info_table" style="width: 500px"  cellspacing="0">
+        <table id="peptide" class="table table-striped table-bordered" style="width: 500px" cellspacing="0">
         <thead>
         <tr>
         <th>Peptide</th>
@@ -31,7 +31,7 @@
     </table>
     </div>
     <div id="hla_div" style="clear:both;float: left">
-    <table id="hla"  class="info_table" style="width: 500px"  cellspacing="0" >
+        <table id="hla" class="table table-striped table-bordered" style="width: 500px" cellspacing="0">
         <thead>
         <tr>
         <th>HLA-Type</th>
@@ -40,7 +40,7 @@
     </table>
     </div>
     <div id="organ_div" style="clear:both;float: left" >
-    <table id="organ"  class="info_table" style="width: 500px"  cellspacing="0" >
+        <table id="organ" class="table table-striped table-bordered" style="width: 500px" cellspacing="0">
         <thead>
         <tr>
         <th>Organ</th>
@@ -49,7 +49,7 @@
     </table>
     </div>
     <div id="location_div" style="clear:both;float: left">
-    <table id="location"  class="info_table" style="width: 500px"  >
+        <table id="location" class="table table-striped table-bordered" style="width: 500px">
         <thead>
         <tr>
         <th>Location</th>
@@ -85,6 +85,7 @@ $('#'+tables[i]).dataTable( {
     "paging":   false,
     "info":     false,
     searching: false,
+    sort: false,
     "language": {
         "emptyTable": "No Results"},
     data: autocomplete_dict[tables[i]],

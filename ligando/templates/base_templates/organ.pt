@@ -12,7 +12,7 @@
 
     <div class="main_wrapper">
         <h1 style="text-align: center">${organ}</h1>
-        <table>
+        <table class="table table-striped table-bordered" style="width: 300px">
             <tr>
                 <td>Peptides:</td>
                 <td id="pep_stat"></td>
@@ -22,7 +22,9 @@
                 <td id="source_stat"></td>
             </tr>
         </table>
-        <table id="example" class="info_table" cellspacing="0" width="100%">
+        <div id="container" style="width:100%; height:400px;"></div>
+
+        <table id="example" class="table table-striped table-bordered" cellspacing="0" width="100%">
             <thead>
             <tr>
                 <th>Source ID</th>
@@ -67,9 +69,29 @@
         // set statistics
         $(document).ready(function () {
             document.getElementById("pep_stat").innerHTML = "<a title='Show all Peptides'  class='nostylelink' href='javascript:post(\x22../peptide_query\x22, {organ: \x22${organ}\x22, grouping:\x22peptide\x22}," + ${statistic}[0]["pep_count"] + " )'> " + ${statistic}[0]["pep_count"] + "</a>";
-            document.getElementById("source_stat").innerHTML = ${sources}.
+            document.getElementById("source_stat").innerHTML =; ${sources}.
             length;
 
+        });
+        $(document).ready(function () {
+            $('#container').highcharts({
+                chart: {
+                    type: 'column'
+                },
+                title: {
+                    text: 'Most abundant Proteins'
+                },
+
+                yAxis: {
+                    title: {
+                        text: 'Fruit eaten'
+                    }
+                },
+
+                series: [{
+                    data: [1, 0, 4]
+                }]
+            })
         });
 
     </script>

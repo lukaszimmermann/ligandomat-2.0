@@ -1,14 +1,79 @@
+/*
 * {
     font-family: FF zwo, sans-serif;
 }
-
+*/
+/*
 html body {
-    /*background-color: rgb(244, 244, 244);*/
+    /!*background-color: rgb(244, 244, 244);*!/
     margin: 0;
     padding: 0;
     height: 100%;
-    /*background-image: url("/static/images/body_bg.png");*/
+    /!*background-image: url("/static/images/body_bg.png");*!/
+}*/
+body {
+    padding-top: 60px;
+    padding-bottom: 30px;
 }
+
+/*.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  /!* Set the fixed height of the footer here *!/
+  height: 60px;
+  background-color: #f5f5f5;
+}*/
+.footer {
+    clear: left;
+    height: 40px;
+    margin-top: 1em;
+    text-align: center;
+}
+
+/*#header {
+    height: 100px;
+    padding-top: 10px;
+    background-color: white;
+}*/
+
+/*#footer {
+    /!*position:absolute;*!/
+    /!*bottom: 20px;*!/
+    height: 30px;
+    /!*height: auto;*!/
+    background-color: white;
+}*/
+
+/*#main_container {
+    background-color: white;
+    min-height: 90vh;
+    display: flex;
+    /!*!// Direction of the items, can be row or column*!/
+    flex-direction: column;
+    /!*height: 100%;*!/
+    width: 1200px;
+    margin: 0 auto;
+
+    /!*min-height:100%;*!/
+    /!*position:relative;*!/
+}*/
+
+/*main {
+    flex: 1;
+}*/
+
+.main_wrapper {
+
+    margin-right: auto;
+    overflow: auto;
+    width: 1200px;
+    margin-left: auto;
+    align-content: center;
+    /* review may break if page to wide */
+    /*overflow-x: hidden;*/
+}
+
 
 .circles {
     width: 390px;
@@ -57,56 +122,15 @@ html body {
     outline: none;
 }
 
-#content_div {
+/*#content_div {
     background-color: white;
     min-height: 100%;
 
     padding-bottom: 20px;
-}
+}*/
 
-#header {
-    height: 100px;
-    padding-top: 10px;
-    background-color: white;
-}
 
-#footer {
-    /*position:absolute;*/
-    /*bottom: 20px;*/
-    height: 30px;
-    /*height: auto;*/
-    background-color: white;
-}
 
-#main_container {
-    background-color: white;
-    min-height: 90vh;
-    display: flex;
-    /*// Direction of the items, can be row or column*/
-    flex-direction: column;
-    /*height: 100%;*/
-    width: 1200px;
-    margin: 0 auto;
-
-    /*min-height:100%;*/
-    /*position:relative;*/
-}
-
-main {
-
-    flex: 1;
-}
-
-.main_wrapper {
-
-    margin-right: auto;
-    overflow: auto;
-    width: 1200px;
-    margin-left: auto;
-    align-content: center;
-    /* review may break if page to wide */
-    overflow-x: hidden;
-}
 
 .tissue_table {
     font: normal 14px;
@@ -119,19 +143,20 @@ main {
     background: lightgrey;
 }
 
-.info_table {
+/*.info_table {
     font: normal 14px;
     width: 500px;
     text-align: left;
-    /*overflow: hidden;*/
+    /!*overflow: hidden;*!/
     border: 0 solid rgb(232, 225, 208);
     -webkit-border-radius: 3px;
-    /*-moz-border-radius: 3px;*/
+    /!*-moz-border-radius: 3px;*!/
     border-radius: 3px;
     background-color: rgb(232, 225, 208);
     color: black;
-}
+}*/
 
+/*
 
 th {
     font-size: 10px;
@@ -162,9 +187,10 @@ table.info_table tr.odd {
 table.info_table tr.even {
     background-color: rgb(240, 235, 224);
 }
+*/
 
 .wrapper {
-    margin-top: 20pt;
+    /*margin-top: 20pt;*/
     margin-right: auto;
     overflow: auto;
     /*width: 980px;*/
@@ -181,13 +207,6 @@ table.info_table tr.even {
     font-size: 18px;
 }
 
-/*.footer {*/
-/*clear:left;*/
-/*margin-top:1em;*/
-/*background:#efefef;*/
-/*text-align:center;*/
-/*padding:10px;*/
-/*}*/
 
 .title {
     align-content: center;
@@ -204,8 +223,9 @@ table.info_table tr.even {
 
 .logo {
     align-content: center;
-    position: relative;
-    width: 200px;
+    position: absolute;
+    /*width: 200px;*/
+    bottom: 5px;
     float: left
 }
 
@@ -225,9 +245,9 @@ table.info_table tr.even {
     font-size: 16px;
 }
 
-input {
+/*input {
     font-size: 16px;
-}
+}*/
 
 .nice_button {
     position: relative;
@@ -259,57 +279,6 @@ button.nice_button:active {
     text-align: left;
 }
 
-/* upload table style */
-.datagrid table {
-    border-collapse: collapse;
-    text-align: left;
-}
-
-.datagrid {
-    width: 100%;
-    font: normal 11px;
-    background: #fff;
-    overflow: hidden;
-    border: 0 solid rgb(180, 160, 105);
-    -webkit-border-radius: 3px;
-    /*-moz-border-radius: 3px;*/
-    border-radius: 3px;
-}
-
-.datagrid table td, .datagrid table th {
-    padding: 1px 3px;
-}
-
-.datagrid table thead th {
-
-    background-color: rgb(195, 178, 133);
-    color: black;
-}
-
-.datagrid table thead th:first-child {
-
-}
-
-.datagrid table tbody td {
-    color: black;
-    border-left: 1px solid #E1EEF4;
-    font-size: 10px;
-    font-weight: normal;
-}
-
-.datagrid table tbody .alt td {
-    background: rgb(232, 225, 208);
-    color: black;
-}
-
-.datagrid table tbody td:first-child {
-    border-left: none;
-}
-
-.datagrid table tbody tr:last-child td {
-    border-bottom: none;
-}
-
 /* autocomplete */
 .ui-autocomplete {
     max-height: 200px;
@@ -334,61 +303,17 @@ button.nice_button:active {
 }
 
 /* update table style*/
-.updategrid table {
+/*.updategrid table {
     border-collapse: collapse;
     text-align: left;
-}
-
-.updategrid {
-    /*width: 300pt;*/
-    font: normal 12px Arial;
-    background: #fff;
-    overflow: hidden;
-    border: 0 solid rgb(180, 160, 105);
-    -webkit-border-radius: 3px;
-    /*-moz-border-radius: 3px;*/
-    border-radius: 3px;
-}
-
-.updategrid table td, .updategrid table th {
-    padding: 1px 3px;
-}
-
-.updategrid table thead th {
-    background-color: rgb(195, 178, 133);
-    color: black;
-}
-
-.updategrid table thead th:first-child {
-
-}
-
-.updategrid table tbody td {
-    color: black;
-    border-left: 1px solid #E1EEF4;
-    font-size: 12px;
-    font-weight: normal;
-}
-
-.updategrid table tbody .alt td {
-    background: rgb(232, 225, 208);
-    color: black;
-}
-
-.updategrid table tbody td:first-child {
-    border-left: none;
-}
-
-.updategrid table tbody tr:last-child td {
-    border-bottom: none;
-}
-
+}*/
+/*
 .orphan_table {
     font-size: 14px;
     overflow: hidden;
     border: 0 solid rgb(232, 225, 208);
     -webkit-border-radius: 3px;
-    /*-moz-border-radius: 3px;*/
+    /!*-moz-border-radius: 3px;*!/
     border-radius: 3px;
     background-color: rgb(232, 225, 208);
     color: black;
@@ -405,7 +330,7 @@ table.orphan_table tr.odd {
 
 table.orphan_table tr.even {
     background-color: rgb(240, 235, 224);
-}
+}*/
 
 .protein_sequence {
     font: 14px;
@@ -447,7 +372,7 @@ table.orphan_table tr.even {
 /*table.protein_sequence tr.odd { background-color: white; }*/
 /*table.protein_sequence tr.even { background-color: rgb(240, 235, 224); }*/
 
-button {
+/*button {
     color: black;
     text-align: center;
     margin: 1pt;
@@ -456,7 +381,7 @@ button {
     cursor: pointer;
     -webkit-box-shadow: inset 0 -2px rgb(180, 160, 105);
     box-shadow: inset 0 -2px rgb(180, 160, 105);
-}
+}*/
 
 
 /*Canvas styles */
