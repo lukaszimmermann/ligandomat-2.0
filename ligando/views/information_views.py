@@ -25,17 +25,3 @@ def source_overview(request):
         return Response(conn_err_msg, content_type='text/plain', status_int=500)
     return {'project': your_json}
 
-
-@view_config(route_name='run_overview', renderer='../templates/info_templates/run_info.pt')
-def run_overview(request):
-    try:
-        # query MS runs. Important: run_date has to be castet to string, otherwise  json.dumps can not create json object
-        your_json = json.dumps(
-            DBSession.query(MsRun.ms_run_id, MsRun.filename, Source.patient_id, Source.organ, Source.dignity,
-                            func.cast(MsRun.ms_run_date, String).label("ms_run_date"),
-                            MsRun.antibody_set, MsRun.used_share,
-                            MsRun.sample_mass).join(Source).group_by(MsRun.ms_run_id).all())
-
-    except DBAPIError:
-        return Response(conn_err_msg, content_type='text/plain', status_int=500)
-    return {'project': your_json}
