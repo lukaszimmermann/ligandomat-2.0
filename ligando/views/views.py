@@ -83,24 +83,24 @@ def news(request):
 def hla_atlas(request):
     # TODO: precalculate Number of peptides beforehand
     # TODO: scored peptides. right now only dummy values
-    # HLA-A
-    query = DBSession.query(HlaType.hla_string.label("hla"))
-    query = query.filter(HlaType.digits == 4)
-    query = query.filter(HlaType.hla_string.like("A*%"))
-    query = query.order_by(HlaType.hla_string)
-    hla_a = json.dumps(query.all())
-    # HLA-B
-    query = DBSession.query(HlaType.hla_string.label("hla"))
-    query = query.filter(HlaType.digits == 4)
-    query = query.filter(HlaType.hla_string.like("B*%"))
-    query = query.order_by(HlaType.hla_string)
-    hla_b = json.dumps(query.all())
-    # HLA-C
-    query = DBSession.query(HlaType.hla_string.label("hla"))
-    query = query.filter(HlaType.digits == 4)
-    query = query.filter(HlaType.hla_string.like("C*%"))
-    query = query.order_by(HlaType.hla_string)
-    hla_c = json.dumps(query.all())
+    # # HLA-A
+    # query = DBSession.query(HlaType.hla_string.label("hla"))
+    # query = query.filter(HlaType.digits == 4)
+    # query = query.filter(HlaType.hla_string.like("A*%"))
+    # query = query.order_by(HlaType.hla_string)
+    # hla_a = json.dumps(query.all())
+    # # HLA-B
+    # query = DBSession.query(HlaType.hla_string.label("hla"))
+    # query = query.filter(HlaType.digits == 4)
+    # query = query.filter(HlaType.hla_string.like("B*%"))
+    # query = query.order_by(HlaType.hla_string)
+    # hla_b = json.dumps(query.all())
+    # # HLA-C
+    # query = DBSession.query(HlaType.hla_string.label("hla"))
+    # query = query.filter(HlaType.digits == 4)
+    # query = query.filter(HlaType.hla_string.like("C*%"))
+    # query = query.order_by(HlaType.hla_string)
+    # hla_c = json.dumps(query.all())
 
     query = DBSession.query(HlaType.hla_string.label("hla"), func.count(Source.source_id.distinct()).label("samples"),
                             func.count(PeptideRun.sequence.distinct()).label("peptides"),
@@ -116,7 +116,7 @@ def hla_atlas(request):
     query = query.group_by(HlaType.hla_string)
     class1 = json.dumps(query.all())
 
-    return {"class1": class1, "hla_a": hla_a, "hla_b": hla_b, "hla_c": hla_c}
+    return {"class1": class1}  # , "hla_a": hla_a, "hla_b": hla_b, "hla_c": hla_c}
 
 
 @view_config(route_name='hla_atlas_classII', renderer='../templates/hla_atlas_classII.pt')
@@ -126,60 +126,60 @@ def hla_atlas_classII(request):
     # HLA-DR, -DP and -DQ
     # DPA1 DPB1 DQA1 DQB1 DRB1 DRB3 DRB4 DRB5 DRB6
 
-    # HLA-DPA1
-    query = DBSession.query(HlaType.hla_string.label("hla"))
-    query = query.filter(HlaType.digits == 4)
-    query = query.filter(HlaType.hla_string.like("DPA1%"))
-    query = query.order_by(HlaType.hla_string)
-    hla_dpa1 = json.dumps(query.all())
-    # HLA-DPB1
-    query = DBSession.query(HlaType.hla_string.label("hla"))
-    query = query.filter(HlaType.digits == 4)
-    query = query.filter(HlaType.hla_string.like("DPB1%"))
-    query = query.order_by(HlaType.hla_string)
-    hla_dpb1 = json.dumps(query.all())
-    # HLA-DQA1
-    query = DBSession.query(HlaType.hla_string.label("hla"))
-    query = query.filter(HlaType.digits == 4)
-    query = query.filter(HlaType.hla_string.like("DQA1%"))
-    query = query.order_by(HlaType.hla_string)
-    hla_dqa1 = json.dumps(query.all())
-    # HLA-DQB1
-    query = DBSession.query(HlaType.hla_string.label("hla"))
-    query = query.filter(HlaType.digits == 4)
-    query = query.filter(HlaType.hla_string.like("DQB1%"))
-    query = query.order_by(HlaType.hla_string)
-    hla_dqb1 = json.dumps(query.all())
-    # HLA-DRB1
-    query = DBSession.query(HlaType.hla_string.label("hla"))
-    query = query.filter(HlaType.digits == 4)
-    query = query.filter(HlaType.hla_string.like("DRB1%"))
-    query = query.order_by(HlaType.hla_string)
-    hla_drb1 = json.dumps(query.all())
-    # HLA-DRB3
-    query = DBSession.query(HlaType.hla_string.label("hla"))
-    query = query.filter(HlaType.digits == 4)
-    query = query.filter(HlaType.hla_string.like("DRB3%"))
-    query = query.order_by(HlaType.hla_string)
-    hla_drb3 = json.dumps(query.all())
-    # HLA-DRB4
-    query = DBSession.query(HlaType.hla_string.label("hla"))
-    query = query.filter(HlaType.digits == 4)
-    query = query.filter(HlaType.hla_string.like("DRB4%"))
-    query = query.order_by(HlaType.hla_string)
-    hla_drb4 = json.dumps(query.all())
-    # HLA-DRB5
-    query = DBSession.query(HlaType.hla_string.label("hla"))
-    query = query.filter(HlaType.digits == 4)
-    query = query.filter(HlaType.hla_string.like("DRB5%"))
-    query = query.order_by(HlaType.hla_string)
-    hla_drb5 = json.dumps(query.all())
-    # HLA-DRB6
-    query = DBSession.query(HlaType.hla_string.label("hla"))
-    query = query.filter(HlaType.digits == 4)
-    query = query.filter(HlaType.hla_string.like("DRB6%"))
-    query = query.order_by(HlaType.hla_string)
-    hla_drb6 = json.dumps(query.all())
+    # # HLA-DPA1
+    # query = DBSession.query(HlaType.hla_string.label("hla"))
+    # query = query.filter(HlaType.digits == 4)
+    # query = query.filter(HlaType.hla_string.like("DPA1%"))
+    # query = query.order_by(HlaType.hla_string)
+    # hla_dpa1 = json.dumps(query.all())
+    # # HLA-DPB1
+    # query = DBSession.query(HlaType.hla_string.label("hla"))
+    # query = query.filter(HlaType.digits == 4)
+    # query = query.filter(HlaType.hla_string.like("DPB1%"))
+    # query = query.order_by(HlaType.hla_string)
+    # hla_dpb1 = json.dumps(query.all())
+    # # HLA-DQA1
+    # query = DBSession.query(HlaType.hla_string.label("hla"))
+    # query = query.filter(HlaType.digits == 4)
+    # query = query.filter(HlaType.hla_string.like("DQA1%"))
+    # query = query.order_by(HlaType.hla_string)
+    # hla_dqa1 = json.dumps(query.all())
+    # # HLA-DQB1
+    # query = DBSession.query(HlaType.hla_string.label("hla"))
+    # query = query.filter(HlaType.digits == 4)
+    # query = query.filter(HlaType.hla_string.like("DQB1%"))
+    # query = query.order_by(HlaType.hla_string)
+    # hla_dqb1 = json.dumps(query.all())
+    # # HLA-DRB1
+    # query = DBSession.query(HlaType.hla_string.label("hla"))
+    # query = query.filter(HlaType.digits == 4)
+    # query = query.filter(HlaType.hla_string.like("DRB1%"))
+    # query = query.order_by(HlaType.hla_string)
+    # hla_drb1 = json.dumps(query.all())
+    # # HLA-DRB3
+    # query = DBSession.query(HlaType.hla_string.label("hla"))
+    # query = query.filter(HlaType.digits == 4)
+    # query = query.filter(HlaType.hla_string.like("DRB3%"))
+    # query = query.order_by(HlaType.hla_string)
+    # hla_drb3 = json.dumps(query.all())
+    # # HLA-DRB4
+    # query = DBSession.query(HlaType.hla_string.label("hla"))
+    # query = query.filter(HlaType.digits == 4)
+    # query = query.filter(HlaType.hla_string.like("DRB4%"))
+    # query = query.order_by(HlaType.hla_string)
+    # hla_drb4 = json.dumps(query.all())
+    # # HLA-DRB5
+    # query = DBSession.query(HlaType.hla_string.label("hla"))
+    # query = query.filter(HlaType.digits == 4)
+    # query = query.filter(HlaType.hla_string.like("DRB5%"))
+    # query = query.order_by(HlaType.hla_string)
+    # hla_drb5 = json.dumps(query.all())
+    # # HLA-DRB6
+    # query = DBSession.query(HlaType.hla_string.label("hla"))
+    # query = query.filter(HlaType.digits == 4)
+    # query = query.filter(HlaType.hla_string.like("DRB6%"))
+    # query = query.order_by(HlaType.hla_string)
+    # hla_drb6 = json.dumps(query.all())
 
     # # HLA-DR
     # query = DBSession.query(HlaType.hla_string.label("hla"))
@@ -212,10 +212,10 @@ def hla_atlas_classII(request):
 
     # DPA1 DPB1 DQA1 DQB1 DRB1 DRB3 DRB4 DRB5 DRB6
 
-    return {"class2": class2, "hla_dpa1": hla_dpa1, "hla_dpb1": hla_dpb1,
-            "hla_dqa1": hla_dqa1, "hla_dqb1": hla_dqb1, "hla_drb1": hla_drb1,
-            "hla_drb3": hla_drb3, "hla_drb4": hla_drb5, "hla_drb5": hla_drb5,
-            "hla_drb6": hla_drb6, }
+    return {"class2": class2}  # , "hla_dpa1": hla_dpa1, "hla_dpb1": hla_dpb1,
+    # "hla_dqa1": hla_dqa1, "hla_dqb1": hla_dqb1, "hla_drb1": hla_drb1,
+    # "hla_drb3": hla_drb3, "hla_drb4": hla_drb5, "hla_drb5": hla_drb5,
+    #"hla_drb6": hla_drb6, }
     # return {"class2": class2, "hla_dr": hla_dr, "hla_dp": hla_dp, "hla_dq": hla_dq}
 
 

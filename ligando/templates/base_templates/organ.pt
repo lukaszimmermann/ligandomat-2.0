@@ -22,7 +22,7 @@
                 <td id="source_stat"></td>
             </tr>
         </table>
-        <div id="container" style="width:100%; height:400px;"></div>
+        <div id="numberOfProteins" style="width:100%; height:400px;"></div>
 
         <table id="example" class="table table-striped table-bordered" cellspacing="0" width="100%">
             <thead>
@@ -47,22 +47,30 @@
                 searching: false,
                 data: ${sources},
                 columns: [
-                    { data: "source_id",
+                    {
+                        data: "source_id",
                         "render": function (data, type, row) {
                             return "<a class='nostylelink'  href= '/source_id/" + data + "'>" + data + "</a>";
-                        }},
-                    { data: "patient_id",
+                        }
+                    },
+                    {
+                        data: "patient_id",
                         "render": function (data, type, row) {
                             return "<a class='nostylelink'  href= '/source/" + data + "'>" + data + "</a>";
-                        }},
-                    { data: "histology",
+                        }
+                    },
+                    {
+                        data: "histology",
                         "render": function (data, type, row) {
                             return "<a class='nostylelink' href= '/histology/" + data + "'>" + data + "</a>";
-                        }},
-                    { data: "dignity",
+                        }
+                    },
+                    {
+                        data: "dignity",
                         "render": function (data, type, row) {
                             return "<a class='nostylelink' href= '/dignity/" + data + "'>" + data + "</a>";
-                        }}
+                        }
+                    }
                 ]
             });
         });
@@ -74,25 +82,56 @@
 
         });
         $(document).ready(function () {
-            $('#container').highcharts({
+
+            var options = {
                 chart: {
                     type: 'column'
                 },
                 title: {
                     text: 'Most abundant Proteins'
                 },
-
+                xAxis: {
+                    categories: []
+                },
                 yAxis: {
                     title: {
-                        text: 'Fruit eaten'
+                        text: 'Number of Proteins'
                     }
                 },
+                series: [],
+                tooltip: {
+                    formatter: function () {
+                        return '<b>' + this.x +
+                                ' : ' + this.y + '</b>';
+                    }
+                }
+            };
 
-                series: [{
-                    data: [1, 0, 4]
-                }]
-            })
+            protein_stats = ${protein_stats};
+            var series = {
+                name: {},
+                data: [],
+                showInLegend: false
+            };
+            var categories = [];
+            $.each(protein_stats, function (i, row) {
+                categories.push(row["gene_name"]);
+                series.data.push(parseInt(row["source_count"]));
+
+            });
+            //series.data.push(protein_stats);
+            console.log(series.data);
+            console.log(categories);
+            options.series.push(series);
+            options.xAxis.categories = categories;
+            console.log(options.series);
+            console.log(options.xAxis.categories);
+            console.log(options);
+
+
+            $('#numberOfProteins').highcharts(options);
         });
+
 
     </script>
 

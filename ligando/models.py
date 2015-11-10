@@ -199,6 +199,19 @@ t_spectrum_protein_map = Table(
 )
 
 
+class Tissue_protein_count(Base):
+    __tablename__ = 'tissue_protein_count'
+
+    tissue_protein_count_id = Column(Integer, primary_key=True)
+    tissue = Column(String(45, u'latin1_german1_ci'), index=True)
+    protein_protein_id = Column(Integer, ForeignKey(u'protein.protein_id'), nullable=False, index=True)
+    source_count = Column(Integer, nullable=False)
+
+    protein_protein = relationship(u'Protein')
+
+
+
+
 class User(Base):
     __tablename__ = 'users'
 

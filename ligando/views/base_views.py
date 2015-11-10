@@ -1,7 +1,7 @@
 from sqlite3 import complete_statement
 from pyramid.response import Response
 from pyramid.view import view_config
-from sqlalchemy import func, distinct, String
+from sqlalchemy import func, distinct, String, desc
 import simplejson as json
 from sqlalchemy import or_, func
 from ligando.views.view_helper import get_chart_data
@@ -15,7 +15,7 @@ from ligando.models import (
     HlaType,
     t_hla_map,
     SpectrumHit,
-    t_spectrum_protein_map)
+    t_spectrum_protein_map, Tissue_protein_count)
 from ligando.views.view_helper import conn_err_msg, js_list_creator, js_list_creator_dataTables
 
 
@@ -271,27 +271,27 @@ def protein_page(request):
 def organ_page(request):
     # try:
 
-    query = DBSession.query(func.count(Source.source_id.distinct()), Protein.gene_name)
-    query = query.join(SpectrumHit)
-    query = query.join(t_spectrum_protein_map)
+    query = DBSession.query(Tissue_protein_count.source_count, Protein.gene_name)
+    query = query.order_by(desc(Tissue_protein_count.source_count))
     query = query.join(Protein)
-
-    query = query.filter(Source.organ == request.matchdict["organ"])
+    query = query.group_by(Protein.gene_name)
+    query = query.filter(Tissue_protein_count.tissue == request.matchdict["organ"]).limit(10)
     protein_stats = json.dumps(query.all())
 
     query = DBSession.query(Source.source_id, Source.organ,
                                 Source.histology, Source.patient_id, Source.dignity)
-        query = query.filter(Source.organ == request.matchdict["organ"])
-        sources = json.dumps(query.all())
+    query = query.filter(Source.organ == request.matchdict["organ"])
+    sources = json.dumps(query.all())
 
-        query = DBSession.query(func.count(SpectrumHit.sequence.distinct()).label("pep_count"))
-        query = query.join(Source)
-        query = query.filter(Source.organ == request.matchdict["organ"])
-        statistic = json.dumps(query.all())
+    query = DBSession.query(func.count(SpectrumHit.sequence.distinct()).label("pep_count"))
+    query = query.join(Source)
+    query = query.filter(Source.organ == request.matchdict["organ"])
+    statistic = json.dumps(query.all())
 
     #except:
     #    return Response(conn_err_msg, content_type='text/plain', status_int=500)
-    return {"sources": sources, "organ": request.matchdict["organ"], "statistic": statistic,
+    return {"sources": sources, "organ": request.matchdict["organ"][0].upper() + request.matchdict["organ"][1:],
+            "statistic": statistic,
             "protein_stats": protein_stats}
 
 @view_config(route_name='peptide', renderer='../templates/base_templates/peptide.pt', request_method="GET")
