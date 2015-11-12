@@ -22,7 +22,46 @@
                 <td id="source_stat"></td>
             </tr>
         </table>
-        <div id="numberOfProteins" style="width:100%; height:400px;"></div>
+        <ul class="nav nav-tabs">
+            <li class="active"><a href="#class1" data-toggle="tab">Class 1</a></li>
+            <li><a href="#class2" data-toggle="tab">Class 2</a></li>
+            <li><a href="#combined" data-toggle="tab">Combined</a></li>
+        </ul>
+        <div class="tab-content">
+
+            <!-- Class I Tab -->
+            <div class="tab-pane fade in active" id="class1">
+                <div id="numberOfProteins_classI" style=" height:400px;"></div>
+            </div>
+
+            <!-- Class 2 Tab -->
+            <div class="tab-pane fade" id="class2">
+                <div id="numberOfProteins_classII" style=" height:400px;"></div>
+            </div>
+
+            <!-- combined -->
+            <div class="tab-pane fade" id="combined">
+                <div id="numberOfProteins_combined" style="height:400px;"></div>
+            </div>
+        </div><!-- tab content -->
+
+        <ul class="nav nav-tabs">
+            <li class="active"><a href="#pep_class1" data-toggle="tab">Class 1</a></li>
+            <li><a href="#pep_class2" data-toggle="tab">Class 2</a></li>
+        </ul>
+        <div class="tab-content">
+
+            <!-- Class I Tab -->
+            <div class="tab-pane fade in active" id="pep_class1">
+                <div id="numberOfPep_classI" style=" height:400px;"></div>
+            </div>
+
+            <!-- Class 2 Tab -->
+            <div class="tab-pane fade" id="pep_class2">
+                <div id="numberOfPep_classII" style=" height:400px;"></div>
+            </div>
+        </div><!-- tab content -->
+
 
         <table id="example" class="table table-striped table-bordered" cellspacing="0" width="100%">
             <thead>
@@ -37,6 +76,7 @@
     </div>
 
     <script>
+
 
         $(document).ready(function () {
 // create dataTable
@@ -77,25 +117,43 @@
         // set statistics
         $(document).ready(function () {
             document.getElementById("pep_stat").innerHTML = "<a title='Show all Peptides'  class='nostylelink' href='javascript:post(\x22../peptide_query\x22, {organ: \x22${organ}\x22, grouping:\x22peptide\x22}," + ${statistic}[0]["pep_count"] + " )'> " + ${statistic}[0]["pep_count"] + "</a>";
-            document.getElementById("source_stat").innerHTML =; ${sources}.
+            document.getElementById("source_stat").innerHTML =${sources}.
             length;
 
-        });
+        });;
+
+        // Tissues specific proteins
+        // Class I
         $(document).ready(function () {
 
             var options = {
                 chart: {
                     type: 'column'
                 },
+                credits: {
+                    enabled: false
+                },
                 title: {
-                    text: 'Most abundant Proteins'
+                    text: 'Tissue specific class I Proteins'
                 },
                 xAxis: {
-                    categories: []
+                    type: []
                 },
                 yAxis: {
                     title: {
-                        text: 'Number of Proteins'
+                        text: 'Number of Sources'
+                    }
+                },
+                plotOptions: {
+                    series: {
+                        cursor: 'pointer',
+                        point: {
+                            events: {
+                                click: function () {
+                                    window.location.href = "/protein/" + this.category + "$geneName";
+                                }
+                            }
+                        }
                     }
                 },
                 series: [],
@@ -107,9 +165,71 @@
                 }
             };
 
-            protein_stats = ${protein_stats};
+            protein_stats = ${protein_stats_classI};
             var series = {
-                name: {},
+                name: ["Number of Proteins"],
+                data: [],
+                showInLegend: false
+            };
+            var categories = [];
+            $.each(protein_stats, function (i, row) {
+                categories.push(row["gene_name"]);
+                //series.name.push(row["gene_name"]+"/"+ row["name"]);
+                series.data.push(parseInt(row["source_count"]));
+
+            });
+            options.series.push(series);
+            options.xAxis.categories = categories;
+
+
+            $('#numberOfProteins_classI').highcharts(options);
+        });
+
+        // Class II
+        $(document).ready(function () {
+
+            var options = {
+                chart: {
+                    type: 'column'
+                },
+                credits: {
+                    enabled: false
+                },
+                title: {
+                    text: 'Tissue specific class II Proteins'
+                },
+                xAxis: {
+                    categories: []
+                },
+                yAxis: {
+                    title: {
+                        text: 'Number of Sources'
+                    }
+                },
+                plotOptions: {
+                    series: {
+                        cursor: 'pointer',
+                        point: {
+                            events: {
+                                click: function () {
+                                    window.location.href = "/protein/" + this.category + "$geneName";
+                                }
+                            }
+                        }
+                    }
+                },
+                series: [],
+                tooltip: {
+                    formatter: function () {
+                        return '<b>' + this.x +
+                                ' : ' + this.y + '</b>';
+                    }
+                }
+            };
+
+            protein_stats = ${protein_stats_classII};
+            var series = {
+                name: ["Number of Proteins"],
                 data: [],
                 showInLegend: false
             };
@@ -119,18 +239,201 @@
                 series.data.push(parseInt(row["source_count"]));
 
             });
-            //series.data.push(protein_stats);
-            console.log(series.data);
-            console.log(categories);
             options.series.push(series);
             options.xAxis.categories = categories;
-            console.log(options.series);
-            console.log(options.xAxis.categories);
-            console.log(options);
 
 
-            $('#numberOfProteins').highcharts(options);
+            $('#numberOfProteins_classII').highcharts(options);
         });
+
+        // Combined
+        $(document).ready(function () {
+
+            var options = {
+                chart: {
+                    type: 'column'
+                },
+                credits: {
+                    enabled: false
+                },
+                title: {
+                    text: 'Tissue specific class I and II Proteins'
+                },
+                xAxis: {
+                    categories: []
+                },
+                yAxis: {
+                    title: {
+                        text: 'Number of Sources'
+                    }
+                },
+                plotOptions: {
+                    series: {
+                        cursor: 'pointer',
+                        point: {
+                            events: {
+                                click: function () {
+                                    window.location.href = "/protein/" + this.category + "$geneName";
+                                }
+                            }
+                        }
+                    }
+                },
+                series: [],
+                tooltip: {
+                    formatter: function () {
+                        return '<b>' + this.x +
+                                ' : ' + this.y + '</b>';
+                    }
+                }
+            };
+
+            protein_stats = ${protein_stats_combined};
+            var series = {
+                name: ["Number of Proteins"],
+                data: [],
+                showInLegend: false
+            };
+            var categories = [];
+            $.each(protein_stats, function (i, row) {
+                categories.push(row["gene_name"]);
+                series.data.push(parseInt(row["source_count"]));
+
+            });
+            options.series.push(series);
+            options.xAxis.categories = categories;
+
+
+            $('#numberOfProteins_combined').highcharts(options);
+        });
+
+
+        // Tissues specific PEPTIDES
+        // Class I
+        $(document).ready(function () {
+
+            var options = {
+                chart: {
+                    type: 'column'
+                },
+                credits: {
+                    enabled: false
+                },
+                title: {
+                    text: 'Tissue specific class I Peptides'
+                },
+                xAxis: {
+                    type: []
+                },
+                yAxis: {
+                    title: {
+                        text: 'Number of Sources'
+                    }
+                },
+                plotOptions: {
+                    series: {
+                        cursor: 'pointer',
+                        point: {
+                            events: {
+                                click: function () {
+                                    window.location.href = "/peptide/" + this.category;
+                                }
+                            }
+                        }
+                    }
+                },
+                series: [],
+                tooltip: {
+                    formatter: function () {
+                        return '<b>' + this.x +
+                                ' : ' + this.y + '</b>';
+                    }
+                }
+            };
+
+            peptide_stats = ${peptide_stats_classI};
+            var series = {
+                name: ["Number of Peptides"],
+                data: [],
+                showInLegend: false
+            };
+            var categories = [];
+            $.each(peptide_stats, function (i, row) {
+                categories.push(row["spectrum_hit_sequence"]);
+                //series.name.push(row["gene_name"]+"/"+ row["name"]);
+                series.data.push(parseInt(row["source_count"]));
+
+            });
+            options.series.push(series);
+            options.xAxis.categories = categories;
+
+
+            $('#numberOfPep_classI').highcharts(options);
+        });
+
+        // Class II
+        $(document).ready(function () {
+
+            var options = {
+                chart: {
+                    type: 'column'
+                },
+                credits: {
+                    enabled: false
+                },
+                title: {
+                    text: 'Tissue specific class II Peptides'
+                },
+                xAxis: {
+                    type: []
+                },
+                yAxis: {
+                    title: {
+                        text: 'Number of Sources'
+                    }
+                },
+                plotOptions: {
+                    series: {
+                        cursor: 'pointer',
+                        point: {
+                            events: {
+                                click: function () {
+                                    window.location.href = "/peptide/" + this.category;
+                                }
+                            }
+                        }
+                    }
+                },
+                series: [],
+                tooltip: {
+                    formatter: function () {
+                        return '<b>' + this.x +
+                                ' : ' + this.y + '</b>';
+                    }
+                }
+            };
+
+            peptide_stats = ${peptide_stats_classII};
+            var series = {
+                name: ["Number of Peptides"],
+                data: [],
+                showInLegend: false
+            };
+            var categories = [];
+            $.each(peptide_stats, function (i, row) {
+                categories.push(row["spectrum_hit_sequence"]);
+                //series.name.push(row["gene_name"]+"/"+ row["name"]);
+                series.data.push(parseInt(row["source_count"]));
+
+            });
+            options.series.push(series);
+            options.xAxis.categories = categories;
+
+
+            $('#numberOfPep_classII').highcharts(options);
+        });
+
+
 
 
     </script>
