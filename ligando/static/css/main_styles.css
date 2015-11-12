@@ -78,7 +78,7 @@ body {
 
 /* bootstrap hack end */
 
-
+/*
 .main_wrapper {
 
     margin-right: auto;
@@ -86,9 +86,9 @@ body {
     width: 1200px;
     margin-left: auto;
     align-content: center;
-    /* review may break if page to wide */
-    /*overflow-x: hidden;*/
-}
+    !* review may break if page to wide *!
+    !*overflow-x: hidden;*!
+}*/
 
 .nostylelink {
     text-decoration: solid;
@@ -101,6 +101,8 @@ body {
     color: rgb(165, 30, 55);
 }
 
+
+
 th.head{
     white-space: nowrap
 }
@@ -110,6 +112,7 @@ tbody {
      font-weight: normal;
  }
 
+/*
 .boxed {
     background: white;
     border: 1px solid #DDD;
@@ -118,13 +121,14 @@ tbody {
     color: #666;
     outline: none;
 }
+*/
 
-
+/*
 .wrapper {
-    /*margin-top: 20pt;*/
+    !*margin-top: 20pt;*!
     margin-right: auto;
     overflow: auto;
-    /*width: 980px;*/
+    !*width: 980px;*!
     margin-left: auto;
     align-content: center;
 
@@ -149,17 +153,10 @@ tbody {
 }
 
 .title_wrapper {
-    /*display: inline-block;*/
-}
+    !*display: inline-block;*!
+}*/
 
-.logo {
-    align-content: center;
-    position: absolute;
-    /*width: 200px;*/
-    bottom: 5px;
-    float: left
-}
-
+/*
 .nice_dropdown {
     font-size: 16px;
 }
@@ -175,6 +172,7 @@ tbody {
 .nice_input {
     font-size: 16px;
 }
+*/
 
 /*input {
     font-size: 16px;
@@ -204,11 +202,12 @@ button.nice_button:active {
     outline: none;
 }
 
+/*
 .homegrid {
     width: 300pt;
     overflow: hidden;
     text-align: left;
-}
+}*/
 
 /* autocomplete */
 .ui-autocomplete {
@@ -222,12 +221,13 @@ button.nice_button:active {
 }
 
 /* tooltips */
-/*
+
 .ui-tooltip {
     width: auto;
     font-size: 12px !important;
 }
 
+/*
 .ui-datepicker {
     width: auto !important;
     font-size: 14px !important;
@@ -316,9 +316,33 @@ table.orphan_table tr.even {
 
 
 /*Canvas styles */
+/*
 .canvas-holder  {
     float:left;
     clear: both;
     width:33.3%;
     padding-bottom: 30px;
+}
+*/
+
+/* carousel indicators */
+.carousel-indicators li {
+    background-color: #999;
+    background-color: rgba(70, 70, 70, .25);
+}
+
+.carousel-indicators .active {
+    background-color: #444;
+}
+
+/* bootstrap class to remove whitespace between grid */
+.row.no-gutters {
+    margin-right: 0;
+    margin-left: 0;
+}
+
+.row.no-gutters > [class^="col-"],
+.row.no-gutters > [class*=" col-"] {
+    padding-right: 0;
+    padding-left: 0;
 }

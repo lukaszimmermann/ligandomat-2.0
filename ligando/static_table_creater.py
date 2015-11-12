@@ -171,6 +171,7 @@ def tissue_specific_peptides_creater():
 
     # collect all sources
     tissues = DBSession.query(Source.organ.distinct()).all()
+
     ###########
     # CLASS I #
     ###########
@@ -210,17 +211,11 @@ def tissue_specific_peptides_creater():
     # inserting
     Tissue_specific_peptides.__table__.insert().execute(result)
 
-    print str(len(result)) + " rows added into Tissue_protein_count class I"
+    print str(len(result)) + " rows added into Tissue_peptide_count class I"
 
-    Tissue_specific_peptides.__table__.drop(checkfirst=False)
-    # Create the table
-    Tissue_specific_peptides.__table__.create(checkfirst=True)
-
-    # collect all sources
-    tissues = DBSession.query(Source.organ.distinct()).all()
-    ###########
-    # CLASS I #
-    ###########
+    ############
+    # CLASS II #
+    ############
 
     # calculate for each peptide on which tissue they occure
     query = DBSession.query(func.group_concat(Source.organ.distinct()).label('sources'),
@@ -259,15 +254,7 @@ def tissue_specific_peptides_creater():
     # inserting
     Tissue_specific_peptides.__table__.insert().execute(result)
 
-    print str(len(result)) + " rows added into Tissue_protein_count class II"
-
-    ############
-    # CLASS II #
-    ############
+    print str(len(result)) + " rows added into Tissue_peptide_count class II"
 
 # tissue_specific_peptides_creater()
-
-
-
-
 # tissue_protein_count_creater()

@@ -7,32 +7,73 @@
 
 <body>
 <metal:block fill-slot="content">
-<div  class="main_wrapper">
 
 
-<div  id="statistic_wrapper" class="wrapper" >
-     <div class="boxed" style="width:500px;height: 400px;float:left;display: flex;align-items: center;">
-     <img width="400px" style="display: block; margin-left: auto;
-    margin-right: auto;"  src="../static/images/Adult_male_diagram_template.svg.png">
-     </div>
-    <div class="boxed" style=" float: right;position:relative;max-width: 500px; height: 400px;"><span > Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet
-    </span></div>
-    <br>
-        <div id="slider1_container"  style="clear:both; position: relative; width: 1000px; height: 200px;">
-    <div u="slides" style="cursor: move; position: absolute;margin-top: 20px; margin-bottom: 20px; left:300px;width: 600px; height: 160px;">
-        <div><img u="image" src="../static/images/UT_WBMW_Rot_RGB_01.png" /></div>
-        <div><img u="image" src="../static/images/ETK.png" /></div>
-        <div><img u="image" src="../static/images/optitype.png" /></div>
+    <div class="container">
+
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+                <h2>HLA Ligand Atlas</h2>
+
+                <h3>A database for naturally processed Human Leukocyte Antigen (HLA) ligands</h3>
+
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2 ">
+                <img class="center-block" width="300px" src="../static/images/figuren_2_cut.svg">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
+                nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et
+                accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem
+                ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod
+                tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et
+                justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor
+                sit amet
+
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2" style="margin-bottom: 20px">
+
+                <div id="myCarousel" class="carousel slide" data-ride="carousel">
+                    <!-- Indicators -->
+                    <ol class="carousel-indicators">
+                        <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+                        <li data-target="#myCarousel" data-slide-to="1"></li>
+                        <li data-target="#myCarousel" data-slide-to="2"></li>
+                    </ol>
+
+                    <!-- Wrapper for slides -->
+                    <div class="carousel-inner" role="listbox">
+                        <div class="item active">
+                            <img src="../static/images/UT_WBMW_Rot_RGB_01.png" style="height: 200px;"
+                                 alt="University of Tübingen">
+                        </div>
+
+                        <div class="item">
+                            <img src="../static/images/ETK.png" style="height: 200px;" alt="ETK">
+                        </div>
+
+                        <div class="item">
+                            <img src="../static/images/optitype.png" style="height: 200px;" alt="OptiType">
+                        </div>
+                    </div>
+
+
+                </div>
+
+            </div>
+        </div>
     </div>
 
-</div>
 
 
 
 
-
-</div>
-</div>
 <script>
 
 
