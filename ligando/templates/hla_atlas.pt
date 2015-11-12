@@ -8,29 +8,8 @@
 <body>
 <metal:block fill-slot="content">
     <div class="main_wrapper">
-        <div id="circle_menus">
-            <div class="circles" id="class1_A_div">
-                <ul id="class1_A">
-                    <li class="sub_circle"><a class="nostylelink" href="#">A*</a></li>
-                </ul>
-            </div>
-
-            <div class="circles" id="class1_B_div">
-                <ul id="class1_B" class="circle_style">
-                    <li class="sub_circle"><a class="nostylelink" href="#">B*</a></li>
-                </ul>
-            </div>
-
-            <div class="circles" id="class1_C_div">
-                <ul id="class1_C" class="circle_style">
-                    <li class="sub_circle"><a class="nostylelink" href="#">C*</a></li>
-                </ul>
-            </div>
-        </div>
-        <br>
-
-
-        <table id="class1" class="info_table" cellspacing="0" width="100%">
+        <!--? TODO: change class of all tables class="table table-striped table-bordered" -->
+        <table id="class1" class="table table-striped table-bordered" width="100%">
             <thead>
             <tr>
                 <th>HLA</th>
@@ -81,40 +60,7 @@
                 ]
             });
         });
-        $(document).ready(function () {
-            // HLA-A
-            var hla_a = ${hla_a};
-            for (var i = 0; i < hla_a.length; i++) {
-                $("#class1_A").append('<li class="sub_circle"><a class="nostylelink" href="/hla/' + hla_a[i]['hla'] + '">' + hla_a[i]['hla'].substring(2) + '</a></li>');
-            }
-            $('#class1_A').circleMenu({
-                item_diameter: 40,
-                circle_radius: 150,
-                direction: 'full'
-            });
 
-            // HLA-B
-            var hla_b = ${hla_b};
-            for (var i = 0; i < hla_b.length; i++) {
-                $("#class1_B").append('<li class="sub_circle"><a class="nostylelink" href="/hla/' + hla_b[i]['hla'] + '">' + hla_b[i]['hla'].substring(2) + '</a></li>');
-            }
-            $('#class1_B').circleMenu({
-                item_diameter: 40,
-                circle_radius: 150,
-                direction: 'full'
-            });
-
-            // HLA-C
-            var hla_c = ${hla_c};
-            for (var i = 0; i < hla_c.length; i++) {
-                $("#class1_C").append('<li class="sub_circle"><a class="nostylelink" href="/hla/' + hla_c[i]['hla'] + '">' + hla_c[i]['hla'].substring(2) + '</a></li>');
-            }
-            $('#class1_C').circleMenu({
-                item_diameter: 40,
-                circle_radius: 150,
-                direction: 'full'
-            });
-        });
 
 
     </script>

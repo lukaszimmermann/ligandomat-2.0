@@ -6,8 +6,8 @@
     <div class="main_wrapper">
         <h1 style="text-align:left;">HLA-${hla}</h1>
 
-        <div style="float: left;  width:200px;">
-            <table class="info_table">
+        <div style="float: left;  max-width:50%;">
+            <table class="table table-striped table-bordered">
                 <tbody>
                 <tr>
                     <th class="head">
@@ -54,7 +54,7 @@
             </table>
             <br>
 
-            <table class="info_table">
+            <table class="table table-striped table-bordered">
                 <tbody>
                 <tr>
                     <th>
@@ -74,7 +74,7 @@
         </div>
 
 
-        <div style="float: right; width: 640px; text-align: center"><h3>Peptide-binding motif</h3>
+        <div style="float: right; max-width: 50%; text-align: center"><h3>Peptide-binding motif</h3>
             <img id="seqlogo" src="" onerror='this.style.display = "none"'>
         </div>
 
@@ -87,7 +87,7 @@
         </div>
 
 
-        <table id="example" class="info_table">
+        <table id="example" class="table table-striped table-bordered" width="100%">
             <thead>
             <tr>
                 <th>Source ID</th>

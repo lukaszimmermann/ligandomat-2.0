@@ -5,9 +5,9 @@ import pyramid
 from sqlalchemy.orm import sessionmaker
 from ligando import main, route_adder
 from ligando.views.base_views import peptide_page, protein_page, source_page, source_id_page, hla_page, msrun_page, \
-    organ_page, celltype_page, histology_page, dignity_page, treatment_page, person_page, location_page
+    organ_page
 from ligando.views.db_analysis import venn_analysis, venn_analysis_result
-from ligando.views.information_views import source_overview, run_overview
+from ligando.views.information_views import source_overview
 from ligando.views.search_view import search_result
 
 __author__ = 'Linus Backert'
@@ -119,14 +119,7 @@ class TestViews(IntegrationTestBase):
         self.assertNotEqual(response["trash_count"], 0)
         self.assertIsInstance(response["sources"], str)
 
-    def test_hla_atlas(self):
-        # test if site is accessible and added as routine
-        res = self.app.get('/')
-        self.assertEqual(res.status_int, 200)
-        # test for content of result dict
-        request = testing.DummyRequest()
-        response = my_view(request)
-        # TODO: Write Tests for HLA Atlas as soon it is done
+
 
     def test_search(self):
         # test if site is accessible and added as routine
@@ -158,23 +151,6 @@ class TestViews(IntegrationTestBase):
                                                                         "patient_id", "person", "celltype",
                                                                         "histology", "source_id", "organism",
                                                                         "location"])
-
-    def test_run_overview(self):
-        # test if site is accessible and added as routine
-        res = self.app.post('/runs')
-        self.assertEqual(res.status_int, 200)
-
-        # test for content of result dict
-        request = testing.DummyRequest()
-        response = run_overview(request)
-        self.assertNotEqual(response, dict())
-        self.assertIn("project", response)
-        if len(eval(response['project'].replace("null", "None"))) > 0:
-            self.assertItemsEqual(eval(response['project'].replace("null", "None"))[0].keys(),
-                                  ["dignity", "sample_mass",
-                                   "organ", "ms_run_id", "used_share",
-                                   "patient_id", "antibody_set", "filename",
-                                   "ms_run_date"])
 
     # TODO: Decide if needed anymore
     def test_peptide_query(self):
@@ -291,91 +267,8 @@ class TestViews(IntegrationTestBase):
         request = testing.DummyRequest(matchdict={"organ": "test"})
         response = organ_page(request)
         self.assertNotEqual(response, dict())
-        self.assertItemsEqual(response.keys(), ["organ", "sources", "statistic"])
-        self.assertEqual(response["organ"], "test")
-        self.assertItemsEqual(eval(response["statistic"].strip("[]")).keys(),
-                              ["pep_count"])
-
-    def test_celltype(self):
-        # test if site is accessible and added as routine
-        res = self.app.get('/celltype/test')
-        self.assertEqual(res.status_int, 200)
-
-        # test for content of result dict
-        request = testing.DummyRequest(matchdict={"celltype": "test"})
-        response = celltype_page(request)
-        self.assertNotEqual(response, dict())
-        self.assertItemsEqual(response.keys(), ["celltype", "sources", "statistic"])
-        self.assertEqual(response["celltype"], "test")
-        self.assertItemsEqual(eval(response["statistic"].strip("[]")).keys(),
-                              ["pep_count"])
-
-    def test_histology(self):
-        # test if site is accessible and added as routine
-        res = self.app.get('/histology/test')
-        self.assertEqual(res.status_int, 200)
-
-        # test for content of result dict
-        request = testing.DummyRequest(matchdict={"histology": "test"})
-        response = histology_page(request)
-        self.assertNotEqual(response, dict())
-        self.assertItemsEqual(response.keys(), ["histology", "sources", "statistic"])
-        self.assertEqual(response["histology"], "test")
-        self.assertItemsEqual(eval(response["statistic"].strip("[]")).keys(),
-                              ["pep_count"])
-
-    def test_dignity(self):
-        # test if site is accessible and added as routine
-        res = self.app.get('/dignity/test')
-        self.assertEqual(res.status_int, 200)
-
-        # test for content of result dict
-        request = testing.DummyRequest(matchdict={"dignity": "test"})
-        response = dignity_page(request)
-        self.assertNotEqual(response, dict())
-        self.assertItemsEqual(response.keys(), ["dignity", "sources", "statistic"])
-        self.assertEqual(response["dignity"], "test")
-        self.assertItemsEqual(eval(response["statistic"].strip("[]")).keys(),
-                              ["pep_count"])
-
-    def test_treatment(self):
-        # test if site is accessible and added as routine
-        res = self.app.get('/treatment/test')
-        self.assertEqual(res.status_int, 200)
-
-        # test for content of result dict
-        request = testing.DummyRequest(matchdict={"treatment": "test"})
-        response = treatment_page(request)
-        self.assertNotEqual(response, dict())
-        self.assertItemsEqual(response.keys(), ["treatment", "sources", "statistic"])
-        self.assertEqual(response["treatment"], "test")
-        self.assertItemsEqual(eval(response["statistic"].strip("[]")).keys(),
-                              ["pep_count"])
-
-    def test_person(self):
-        # test if site is accessible and added as routine
-        res = self.app.get('/person/test')
-        self.assertEqual(res.status_int, 200)
-
-        # test for content of result dict
-        request = testing.DummyRequest(matchdict={"person": "test"})
-        response = person_page(request)
-        self.assertNotEqual(response, dict())
-        self.assertItemsEqual(response.keys(), ["person", "sources", "runs"])
-        self.assertEqual(response["person"], "test")
-
-    def test_location(self):
-
-        # test if site is accessible and added as routine
-        res = self.app.get('/location/test')
-        self.assertEqual(res.status_int, 200)
-
-        # test for content of result dict
-        request = testing.DummyRequest(matchdict={"location": "test"})
-        response = location_page(request)
-        self.assertNotEqual(response, dict())
-        self.assertItemsEqual(response.keys(), ["location", "sources", "statistic"])
-        self.assertEqual(response["location"], "test")
+        self.assertItemsEqual(response.keys(), ["organ", "sources", "statistic", "protein_stats"])
+        self.assertEqual(response["organ"], "Test")
         self.assertItemsEqual(eval(response["statistic"].strip("[]")).keys(),
                               ["pep_count"])
 
@@ -441,7 +334,7 @@ class TestViews(IntegrationTestBase):
         request = testing.DummyRequest()
         response = hla_atlas(request)
         self.assertIsInstance(response, dict)
-        self.assertItemsEqual(response.keys(), ["hla_a", "hla_b", "hla_c", "class1"])
+        # self.assertItemsEqual(response.keys(), ["hla_a", "hla_b", "hla_c", "class1"])
         # Asserts that at least one HLA is in the DB
         if len(eval(response["class1"])) > 0:
             self.assertItemsEqual(eval(response["class1"])[0].keys(),
@@ -455,9 +348,9 @@ class TestViews(IntegrationTestBase):
         request = testing.DummyRequest()
         response = hla_atlas_classII(request)
         self.assertIsInstance(response, dict)
-        self.assertItemsEqual(response.keys(), ["hla_dpb1", "hla_dpa1", "hla_dqa1", "hla_dqb1", "hla_drb1",
-                                                "hla_drb3", "hla_drb4", "hla_drb5", "hla_drb6",
-                                                "class2"])
+        # self.assertItemsEqual(response.keys(), ["hla_dpb1", "hla_dpa1", "hla_dqa1", "hla_dqb1", "hla_drb1",
+        #                                       "hla_drb3", "hla_drb4", "hla_drb5", "hla_drb6",
+        #                                       "class2"])
         # Asserts that at least one HLA is in the DB
         if len(eval(response["class2"])) > 0:
             self.assertItemsEqual(eval(response["class2"])[0].keys(),
