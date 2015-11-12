@@ -6,32 +6,36 @@
 
 <body>
 <metal:block fill-slot="content">
-<div class="main_wrapper">
+    <div class="container">
 
-    <div class="wrapper">
-        <h1 style="text-align: left" id="title"></h1>
-        <!--?<table><tr><td>MW:</td><td>100</td><td>pI</td><td>-2</td></tr></table>-->
-        <p style="font-size: 18px;font-weight: bold">Tissues</p>
-        <table class="table table-striped table-bordered">
-            <tr>
-                <td id="t1">t1</td>
-                <td>t2</td>
-                <td id="t3">t3</td>
-                <td id="t4">t4</td>
-                <td>t5</td>
-                <td id="t6">t6</td>
-                <td>t7</td>
-            </tr>
-        </table>
-
+        <div class="row">
+            <div class="col-md-10 col-md-offset-1 text-center">
+                <h1 id="title"></h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-10 col-md-offset-1">
+                <h3>Tissues</h3>
+                <table class="table table-striped table-bordered">
+                    <tr>
+                        <td id="t1">t1</td>
+                        <td>t2</td>
+                        <td id="t3">t3</td>
+                        <td id="t4">t4</td>
+                        <td>t5</td>
+                        <td id="t6">t6</td>
+                        <td>t7</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
         <br>
 
-        <div id="left_collumn" style="float:left; width: 700px; border-right: solid thin black; ">
+        <div class="row">
+            <div class="col-md-5 col-md-offset-1">
+                <h3>Source Antigen</h3>
 
-            <p style="font-size: 18px;font-weight: bold">Source Antigen</p>
-
-            <div style="float: left;">
-                <table class="table table-striped table-bordered" id="proteins" style="float: right" width="480px">
+                <table class="table table-striped table-bordered" id="proteins">
                     <thead>
                     <tr>
                         <td>Proteins</td>
@@ -47,131 +51,124 @@
                     </tr>
                     </tbody>
                 </table>
+
+
+                <h3>HLA</h3>
+
+                <h3>Class 1</h3>
+
+                <div class="row no-gutters">
+                    <div class="col-md-4">
+                        <table class="table table-striped table-bordered" id="hla_class1_A">
+                            <thead>
+                            <tr>
+                                <td>HLA-A</td>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col-md-4">
+                        <table class="table table-striped table-bordered" id="hla_class1_B">
+                            <thead>
+                            <tr>
+                                <td>HLA-B</td>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col-md-4">
+                        <table class="table table-striped table-bordered" id="hla_class1_C">
+                            <thead>
+                            <tr>
+                                <td>HLA-C</td>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
             </div>
 
-            <div style="clear: both"></div>
-            <br>
+                <h3>Class 2</h3>
 
-            <p style="font-size: 18px;font-weight: bold">HLA</p>
+                <div class="row no-gutters">
+                    <div class="col-md-3">
+                        <table class="table table-striped table-bordered" id="hla_class2_DPB">
+                            <thead>
+                            <tr>
+                                <td>HLA-DPB</td>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col-md-3">
+                        <table class="table table-striped table-bordered" id="hla_class2_DQA">
+                            <thead>
+                            <tr>
+                                <td>HLA-DQA</td>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
 
-            <p style="font-size: 18px;font-weight: bold">Class 1</p>
-
-            <div style="float: left;">
-                <table class="table table-striped table-bordered" id="hla_class1_A"
-                       style="width:150px; margin-bottom: 20px; float: left">
-                    <thead>
-                    <tr>
-                        <td>HLA-A</td>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                        <td></td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
-            <div style="float: left;">
-                <table class="table table-striped table-bordered" id="hla_class1_B"
-                       style="width:150px; margin-bottom: 20px; float: left">
-                    <thead>
-                    <tr>
-                        <td>HLA-B</td>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                        <td></td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
-            <div style="float: left;">
-                <table class="table table-striped table-bordered" id="hla_class1_C"
-                       style="width:150px; margin-bottom: 20px; float: left">
-                    <thead>
-                    <tr>
-                        <td>HLA-C</td>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                        <td></td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
-
-            <p style="clear:both;font-size: 18px;font-weight: bold">Class 2</p>
-
-
-            <div style="clear:both;float: left;">
-                <table class="table table-striped table-bordered" id="hla_class2_DPB"
-                       style="width:150px; margin-bottom: 20px;float: left">
-                    <thead>
-                    <tr>
-                        <td>HLA-DPB</td>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                        <td></td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
-
-            <div style="float: left;">
-                <table class="table table-striped table-bordered" id="hla_class2_DQA"
-                       style="width:150px; margin-bottom: 20px;float: left">
-                    <thead>
-                    <tr>
-                        <td>HLA-DQA</td>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                        <td></td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
-            <div style="float: left;">
-                <table class="table table-striped table-bordered" id="hla_class2_DQB"
-                       style="width:150px; margin-bottom: 20px;float: left">
-                    <thead>
-                    <tr>
-                        <td>HLA-DQB</td>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                        <td></td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
-            <div style="float: left;">
-                <table class="table table-striped table-bordered" id="hla_class2_DRB"
-                       style="width:150px; margin-bottom: 20px;float: left">
-                    <thead>
-                    <tr>
-                        <td>HLA-DRB</td>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                        <td></td>
-                    </tr>
-                    </tbody>
-                </table>
+                    <div class="col-md-3">
+                        <table class="table table-striped table-bordered" id="hla_class2_DQB">
+                            <thead>
+                            <tr>
+                                <td>HLA-DQB</td>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col-md-3">
+                        <table class="table table-striped table-bordered" id="hla_class2_DRB">
+                            <thead>
+                            <tr>
+                                <td>HLA-DRB</td>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
             </div>
 
         </div>
 
-        <div id="right_collumn" style="float: left; margin-left: 20px">
-            <p style="font-size: 18px;font-weight: bold">Link out</p>
-            <table class="table table-striped table-bordered" style="width: 300px" id="linkouts">
+            <div class="col-md-5">
+                <h3>Link out</h3>
+                <table class="table table-striped table-bordered" id="linkouts">
                 <thead>
                 <td>Database</td>
                 <td>Link</td>
@@ -194,8 +191,8 @@
             <br>
 
 
-            <p style="font-size: 18px;font-weight: bold">Experimental Evidence (Summary)</p>
-            <table class="table table-striped table-bordered" style="width: 300px" id="exp_ev">
+                <h3>Experimental Evidence (Summary)</h3>
+                <table class="table table-striped table-bordered" id="exp_ev">
                 <thead>
                 <td>Experimental evidence</td>
                 <td>Score</td>
@@ -212,11 +209,8 @@
                 </tbody>
             </table>
         </div>
-
-
     </div>
 </div>
-<br>
 
 <script>
 
@@ -228,9 +222,9 @@
     $(document).ready(function () {
 // create dataTable
         //"pageLength": 50
-        var class1_length = Math.max(${hla_class1_A}.length, ${hla_class1_B}.;
-        length,; ${hla_class1_C}.
-        length;
+        var class1_length = Math.max(${hla_class1_A}.length, ${hla_class1_B}.
+        length,;; ${hla_class1_C}.
+        length
         )
 
         //console.log(class1_length);
@@ -249,7 +243,7 @@
         });
         for (var i = 1; i <= class1_length -${hla_class1_A}.
         length;
-        i++;
+        i++
         )
         {
             tab.row.add(["-"]).draw();
@@ -270,7 +264,7 @@
 
         for (var i = 1; i <= class1_length -${hla_class1_B}.
         length;
-        i++;
+        i++
         )
         {
             tab.row.add(["-"]).draw();
@@ -291,17 +285,18 @@
 
         for (var i = 1; i <= class1_length -${hla_class1_C}.
         length;
-        i++;
+        i++
         )
         {
             tab.row.add(["-"]).draw();
         }
 
 
-        var class2_length = Math.max(${hla_class2_DPB}.length, ${hla_class2_DQA}.;
-        length,; ${hla_class2_DQB}.
-        length,; ${hla_class2_DRB}.
-        length;
+        var class2_length = Math.max(${hla_class2_DPB}.length, ${hla_class2_DQA}.
+        length,;
+        ; ${hla_class2_DQB}.
+        length,${hla_class2_DRB}.
+        length
         )
         var tab = $('#hla_class2_DPB').DataTable({
             "paging": false,
@@ -317,7 +312,7 @@
         });
         for (var i = 1; i <= class2_length -${hla_class2_DPB}.
         length;
-        i++;
+        i++
         )
         {
             tab.row.add(["-"]).draw();
@@ -337,7 +332,7 @@
         });
         for (var i = 1; i <= class2_length -${hla_class2_DQA}.
         length;
-        i++;
+        i++
         )
         {
             tab.row.add(["-"]).draw();
@@ -357,7 +352,7 @@
         });
         for (var i = 1; i <= class2_length -${hla_class2_DQB}.
         length;
-        i++;
+        i++
         )
         {
             tab.row.add(["-"]).draw();
@@ -377,7 +372,7 @@
         });
         for (var i = 1; i <= class2_length -${hla_class2_DRB}.
         length;
-        i++;
+        i++
         )
         {
             tab.row.add(["-"]).draw();
@@ -425,7 +420,16 @@
 
             ]
         });
-    });
+    });;
+    ;
+    ;
+    ;
+    ;
+    ;
+    ;
+    ;
+    ;
+    ;
 
 
     $("#t1").eq(0).css("background-color", "rgb(180, 160, 105)");

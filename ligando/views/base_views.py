@@ -325,6 +325,16 @@ def organ_page(request):
     # query = query.limit(50)
     peptide_stats_classI = json.dumps(query.all())
 
+    # class I
+    query = DBSession.query(Tissue_specific_peptides.source_count, Tissue_specific_peptides.spectrum_hit_sequence)
+    query = query.order_by(desc(Tissue_specific_peptides.source_count))
+    query = query.group_by(Tissue_specific_peptides.spectrum_hit_sequence)
+    query = query.filter(Tissue_specific_peptides.tissue == request.matchdict["organ"])
+    query = query.filter(Tissue_specific_peptides.hla_class == 2)
+    query = query.filter(Tissue_specific_peptides.source_count > 1)
+    # query = query.limit(50)
+    peptide_stats_classII = json.dumps(query.all())
+
 
 
     query = DBSession.query(Source.source_id, Source.organ,
@@ -332,19 +342,21 @@ def organ_page(request):
     query = query.filter(Source.organ == request.matchdict["organ"])
     sources = json.dumps(query.all())
 
-    query = DBSession.query(func.count(SpectrumHit.sequence.distinct()).label("pep_count"))
-    query = query.join(Source)
-    query = query.filter(Source.organ == request.matchdict["organ"])
-    statistic = json.dumps(query.all())
+    # query = DBSession.query(func.count(SpectrumHit.sequence.distinct()).label("pep_count"))
+    # query = query.join(Source)
+    # query = query.filter(Source.organ == request.matchdict["organ"])
+    # statistic = json.dumps(query.all())
 
     #except:
     #    return Response(conn_err_msg, content_type='text/plain', status_int=500)
-    return {"sources": sources, "organ": request.matchdict["organ"][0].upper() + request.matchdict["organ"][1:],
-            "statistic": statistic,
+    return {"sources": sources,
+            "organ": request.matchdict["organ"][0].upper() + request.matchdict["organ"][1:],
+            # "statistic": statistic,
             "protein_stats_classI": protein_stats_classI,
             "protein_stats_classII": protein_stats_classII,
             "protein_stats_combined": protein_stats_combined,
-            "peptide_stats_classI": peptide_stats_classI
+            "peptide_stats_classI": peptide_stats_classI,
+            "peptide_stats_classII": peptide_stats_classII
 
             }
 
