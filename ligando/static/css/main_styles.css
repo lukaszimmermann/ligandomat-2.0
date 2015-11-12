@@ -316,14 +316,13 @@ table.orphan_table tr.even {
 
 
 /*Canvas styles */
-/*
 .canvas-holder  {
     float:left;
     clear: both;
     width:33.3%;
     padding-bottom: 30px;
 }
-*/
+
 
 /* carousel indicators */
 .carousel-indicators li {

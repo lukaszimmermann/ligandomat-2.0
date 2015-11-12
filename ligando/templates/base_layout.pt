@@ -42,6 +42,12 @@
     <script src="http://code.highcharts.com/modules/exporting.js"></script>
     <script src="${request.static_url('ligando:static/js/highchart_plugins/export-csv.js')}"></script>
 
+    <!--Flot chart -->
+    <script type="text/javascript" charset="utf8"
+            src="${request.static_url('ligando:static/js/jquery.flot.js')}"></script>
+    <script type="text/javascript" charset="utf8"
+            src="${request.static_url('ligando:static/js/jquery.flot.pie.js')}"></script>
+
 
 
     <script src="${request.static_url('ligando:static/js/jquery-ui.min.js')}"></script>
