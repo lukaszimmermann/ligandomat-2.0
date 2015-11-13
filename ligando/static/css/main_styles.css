@@ -210,12 +210,13 @@ button.nice_button:active {
     font-size: 14px !important;
 }
 
-/* tooltips */
-
-.ui-tooltip {
+/* tooltips
+/*TODO: Tooltip borken */
+/*.ui-tooltip {
     width: auto;
     font-size: 12px !important;
 }
+*/
 
 /*
 .ui-datepicker {
