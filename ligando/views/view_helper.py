@@ -164,9 +164,9 @@ def get_chart_data(sources):
 
     organ_array = []
     for key, value in organs.iteritems():
-        organ_flot = {'label': key, 'data': value, 'color': colors[key]}
+        organ_json = {'name': key, 'y': value, 'color': colors[key]}
 
-        organ_array.append(organ_flot)
+        organ_array.append(organ_json)
 
     organ_array = json.dumps(organ_array)
 
