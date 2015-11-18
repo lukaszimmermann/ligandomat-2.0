@@ -1,17 +1,17 @@
 <!DOCTYPE html>
 <html metal:use-macro="load: ../base_layout.pt">
-
 <body>
 <metal:block fill-slot="content">
-    <div class="main_wrapper">
-        <small> Error 500 - Internal Server Error.</small>
-      <h1>The server was unable to complete your request.</h1>
-        Please try reloading the page or go back to our
-        <button type="submit" onclick="location.href='/'">
-            mainpage.
-        </button>
+    <div class="container">
+        <div class="col-md-10 col-md-offset-1">
+            <small> Error 500 - Internal Server Error.</small>
+            <h1>The server was unable to complete your request.</h1>
+            Please try reloading the page or go back to our
+            <button type="submit" onclick="location.href='/'">
+                mainpage.
+            </button>
+        </div>
     </div>
 </metal:block>
-
 </body>
 </html>
