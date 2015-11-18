@@ -53,10 +53,10 @@
     <script src="${request.static_url('ligando:static/js/jquery-ui.min.js')}"></script>
     <script src="${request.static_url('ligando:static/js/shared.js')}"></script>
 
+
     <script>
-        // tooltips
-        $(function () {
-            $(document).tooltip();
+        $(document).ready(function () {
+            $('[data-toggle="tooltip"]').tooltip();
         });
     </script>
 
@@ -118,6 +118,7 @@
 
     <main>
         <div id="content_div"  metal:define-slot="content"></div>
+
     </main>
     <!-- Small whitespace between content an footer -->
     <div style="height: 10px"></div>
