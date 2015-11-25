@@ -1,17 +1,17 @@
 <!DOCTYPE html>
 <html metal:use-macro="load: ../base_layout.pt">
-
 <body>
 <metal:block fill-slot="content">
-    <div class="main_wrapper">
-        <small> Error 403 - Forbidden.</small>
-        <h1>Access is denied due to invalid credentials. </h1>
-        You do not have permission to view this page using the credentials that you supplied. Go back to our
-        <button type="submit" onclick="location.href='/'">
-            mainpage.
-        </button>
+    <div class="container">
+        <div class="col-md-10 col-md-offset-1">
+            <small> Error 403 - Forbidden.</small>
+            <h1>Access is denied due to invalid credentials. </h1>
+            You do not have permission to view this page using the credentials that you supplied. Go back to our
+            <button type="submit" onclick="location.href='/'">
+                mainpage.
+            </button>
+        </div>
     </div>
 </metal:block>
-
 </body>
 </html>

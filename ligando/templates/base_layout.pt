@@ -42,8 +42,6 @@
     <script src="http://code.highcharts.com/modules/exporting.js"></script>
     <script src="${request.static_url('ligando:static/js/highchart_plugins/export-csv.js')}"></script>
 
-
-
     <script src="${request.static_url('ligando:static/js/jquery-ui.min.js')}"></script>
     <script src="${request.static_url('ligando:static/js/shared.js')}"></script>
 
