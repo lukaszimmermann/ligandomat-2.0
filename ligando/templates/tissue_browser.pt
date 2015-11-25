@@ -1,0 +1,164 @@
+<html metal:use-macro="load: base_layout.pt">
+<!DOCTYPE html>
+<html lang="${request.locale_name}">
+<head>
+
+
+</head>
+
+<body>
+
+<metal:block fill-slot="content">
+
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-10 col-md-offset-1">
+                <h2>Tissue Browser</h2>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-2 col-md-offset-1">
+                <div class="row">
+                    <div class="col-md-3 col-md-offset-7 text-right ">
+                        <!-- TODO: Bad hack! Align text via css -->
+                        <br>
+                        <a>Heart</a>
+                    </div>
+                    <div class="col-md-2 ">
+                        <img class="center-block" width="70px" src="../static/images/herz_cut.svg">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3 col-md-offset-4  text-right">
+                        <br>
+                        <a>Brain</a>
+                    </div>
+                    <div class="col-md-3">
+                        <img class="center-block" width="70px" src="../static/images/herz_cut.svg">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3 col-md-offset-2 text-right">
+                        <br>
+                        <a>Spleen</a>
+                    </div>
+                    <div class="col-md-3">
+                        <img class="center-block" width="70px" src="../static/images/herz_cut.svg">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3 text-right">
+                        <br>
+                        <a>Breast</a>
+                    </div>
+                    <div class="col-md-3">
+                        <img class="center-block" width="70px" src="../static/images/herz_cut.svg">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3 col-md-offset-2 text-right">
+                        <br>
+                        <a>Uterus</a>
+                    </div>
+                    <div class="col-md-3">
+                        <img class="center-block" width="70px" src="../static/images/herz_cut.svg">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3 col-md-offset-4  text-right">
+                        <br>
+                        <a>Lung</a>
+                    </div>
+                    <div class="col-md-3">
+                        <img class="center-block" width="70px" src="../static/images/herz_cut.svg">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 col-md-offset-6 text-left">
+                        <br>
+                        <a>Prostate</a>
+                    </div>
+                    <div class="col-md-2">
+                        <img class="center-block" width="70px" src="../static/images/herz_cut.svg">
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 ">
+                <img class="pull-right" width="500px" src="../static/images/figuren_2_cut.svg">
+            </div>
+            <div class="col-md-2 ">
+                <div class="row">
+                    <div class="col-md-6">
+                        <img width="70px" src="../static/images/herz_cut.svg">
+                    </div>
+                    <div class="col-md-3">
+                        <br>
+                        <a>Kidney</a>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 col-md-offset-2">
+                        <img class="center-block" width="70px" src="../static/images/herz_cut.svg">
+                    </div>
+                    <div class="col-md-3 center">
+                        <br>
+                        <a>Bladder</a>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 col-md-offset-4">
+                        <img class="center-block" width="70px" src="../static/images/herz_cut.svg">
+                    </div>
+                    <div class="col-md-2 center">
+                        <br>
+                        <a>Liver</a>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 col-md-offset-6">
+                        <img class="center-block" width="70px" src="../static/images/herz_cut.svg">
+                    </div>
+                    <div class="col-md-1 text-right">
+                        <div class="col-md-1 col-md-offset-2">
+                            <br>
+                            <a>Skin</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 col-md-offset-4">
+                        <img class="center-block" width="70px" src="../static/images/herz_cut.svg">
+                    </div>
+                    <div class="col-md-2 center">
+                        <br>
+                        <a>Stomach</a>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 col-md-offset-2">
+                        <img class="center-block" width="70px" src="../static/images/herz_cut.svg">
+                    </div>
+                    <div class="col-md-4 center">
+                        <br>
+                        <a>Pancreas</a>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <img class="center-block" width="70px" src="../static/images/herz_cut.svg">
+                    </div>
+                    <div class="col-md-6 ">
+                        <br>
+                        <a>Thyroid</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</metal:block>
+
+</body>
+
+</html>
+</html>

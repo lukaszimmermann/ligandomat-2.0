@@ -219,6 +219,11 @@ def hla_atlas_classII(request):
     # return {"class2": class2, "hla_dr": hla_dr, "hla_dp": hla_dp, "hla_dq": hla_dq}
 
 
+@view_config(route_name='tissue_browser', renderer='../templates/tissue_browser.pt')
+def tissue_browser(request):
+    return {}
+
+
 # error page views
 # only the five most common errors
 @notfound_view_config(renderer='../templates/error_templates/404_error.pt')

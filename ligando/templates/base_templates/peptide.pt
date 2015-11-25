@@ -16,17 +16,23 @@
         <div class="row">
             <div class="col-md-10 col-md-offset-1">
                 <h3>Tissues</h3>
-                <table class="table table-striped table-bordered">
-                    <tr>
-                        <td id="t1">t1</td>
-                        <td>t2</td>
-                        <td id="t3">t3</td>
-                        <td id="t4">t4</td>
-                        <td>t5</td>
-                        <td id="t6">t6</td>
-                        <td>t7</td>
-                    </tr>
-                </table>
+            </div>
+            <div class="col-md-10 col-md-offset-1">
+                <img id="heart" width="60px" src="../static/images/herz_cut.svg">
+                <img id="brain" width="60px" style="opacity: 0.3" src="../static/images/herz_cut.svg">
+                <img id="spleen" width="60px" src="../static/images/herz_cut.svg">
+                <img id="breast" width="60px" style="opacity: 0.3" src="../static/images/herz_cut.svg">
+                <img id="uterus" width="60px" src="../static/images/herz_cut.svg">
+                <img id="prostate" width="60px" src="../static/images/herz_cut.svg">
+                <img id="lung" width="60px" style="opacity: 0.3" src="../static/images/herz_cut.svg">
+                <img id="kidney" width="60px" src="../static/images/herz_cut.svg">
+                <img id="bladder" width="60px" src="../static/images/herz_cut.svg">
+                <img id="liver" width="60px" style="opacity: 0.3" src="../static/images/herz_cut.svg">
+                <img id="skin" width="60px" src="../static/images/herz_cut.svg">
+                <img id="stomach" width="60px" src="../static/images/herz_cut.svg">
+                <img id="pancreas" width="60px" style="opacity: 0.3" src="../static/images/herz_cut.svg">
+                <img id="thyroid" width="60px" style="opacity: 0.3" src="../static/images/herz_cut.svg">
+
             </div>
         </div>
         <br>
@@ -167,47 +173,22 @@
         </div>
 
             <div class="col-md-5">
-                <h3>Link out</h3>
-                <table class="table table-striped table-bordered" id="linkouts">
-                <thead>
-                <td>Database</td>
-                <td>Link</td>
-                </thead>
-                <tbody>
-                <tr>
-                    <td>Syfpeithi:</td>
-                    <td><a href="http://www.syfpeithi.de/">${peptide}</a></td>
-                </tr>
-                <tr>
-                    <td>IEDB:</td>
-                    <td><a href="http://www.iedb.org/epitope/58560">${peptide}</a></td>
-                </tr>
-                <tr>
-                    <td>PubMed:</td>
-                    <td><a href="http://www.ncbi.nlm.nih.gov/pubmed/?term=">${peptide}</a></td>
-                </tr>
-                </tbody>
-            </table>
-            <br>
+                <h3>Experimental Evidence</h3>
+                The peptide was found in ${ms_run_count} MS runs with ${psms} PSMs.
 
+                <br>
 
-                <h3>Experimental Evidence (Summary)</h3>
-                <table class="table table-striped table-bordered" id="exp_ev">
-                <thead>
-                <td>Experimental evidence</td>
-                <td>Score</td>
-                </thead>
-                <tbody>
-                <tr>
-                    <td>PSMs:</td>
-                    <td>${psms}</td>
-                </tr>
-                <tr>
-                    <td>Number of MS Runs:</td>
-                    <td>${ms_run_count}</td>
-                </tr>
-                </tbody>
-            </table>
+                <h3>Related Information</h3>
+                SYFPEITHI
+                <a href="http://www.syfpeithi.de/"><span class="glyphicon glyphicon-globe"
+                                                         aria-hidden="true"></span></a>
+                <br>
+                IEDB <a href="http://www.iedb.org/epitope/58560"><span class="glyphicon glyphicon-globe"
+                                                                       aria-hidden="true"></span></a>
+                <br>
+                PubMed
+                <a href="http://www.ncbi.nlm.nih.gov/pubmed/?term="><span class="glyphicon glyphicon-globe"
+                                                                          aria-hidden="true"></span></a>
         </div>
     </div>
 </div>
@@ -223,7 +204,7 @@
 // create dataTable
         //"pageLength": 50
         var class1_length = Math.max(${hla_class1_A}.length, ${hla_class1_B}.
-        length,;; ${hla_class1_C}.
+        length,;${hla_class1_C}.
         length
         )
 
@@ -379,19 +360,7 @@
         }
 
 
-        $('#linkouts').DataTable({
-            "paging": false,
-            "ordering": false,
-            "info": false,
-            searching: false
-        });
 
-        $('#exp_ev').DataTable({
-            "paging": false,
-            "ordering": false,
-            "info": false,
-            searching: false
-        });
 
 
         $('#proteins').dataTable({
@@ -420,7 +389,7 @@
 
             ]
         });
-    });;
+    });;;
     ;
     ;
     ;
@@ -431,11 +400,6 @@
     ;
     ;
 
-
-    $("#t1").eq(0).css("background-color", "rgb(180, 160, 105)");
-    $("#t3").eq(0).css("background-color", "rgb(180, 160, 105)");
-    $("#t4").eq(0).css("background-color", "rgb(180, 160, 105)");
-    $("#t6").eq(0).css("background-color", "rgb(180, 160, 105)");
 </script>
 
 </metal:block>

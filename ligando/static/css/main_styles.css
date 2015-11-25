@@ -95,11 +95,7 @@ body {
     color: black;
 }
 
-.nostylelink:hover {
-    text-decoration: none;
 
-    color: rgb(165, 30, 55);
-}
 
 /*
 
@@ -336,4 +332,14 @@ table.orphan_table tr.even {
 .row.no-gutters > [class*=" col-"] {
     padding-right: 0;
     padding-left: 0;
+}
+
+.text-align-div {
+    table-layout: fixed;
+    display: table;
+}
+
+.text-align-text {
+    vertical-align: middle;
+    display: table-cell;
 }
