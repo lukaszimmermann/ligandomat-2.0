@@ -150,7 +150,7 @@
                     enabled: false
                 },
                 title: {
-                    text: 'Tissue specific class I Proteins'
+                    text: '${organ}' + ' specific HLA I Proteins'
                 },
                 xAxis: {
                     type: []
@@ -183,7 +183,7 @@
 
             protein_stats = ${protein_stats_classI};
             var series = {
-                name: ["Number of Proteins"],
+                name: ["Number of Sources"],
                 data: [],
                 showInLegend: false
             };
@@ -212,7 +212,7 @@
                     enabled: false
                 },
                 title: {
-                    text: 'Tissue specific class II Proteins'
+                    text: '${organ}' + ' specific HLA II Proteins'
                 },
                 xAxis: {
                     categories: []
@@ -245,7 +245,7 @@
 
             protein_stats = ${protein_stats_classII};
             var series = {
-                name: ["Number of Proteins"],
+                name: ["Number of Sources"],
                 data: [],
                 showInLegend: false
             };
@@ -273,7 +273,7 @@
                     enabled: false
                 },
                 title: {
-                    text: 'Tissue specific class I and II Proteins'
+                    text: '${organ}' + ' specific HLA I and II Proteins'
                 },
                 xAxis: {
                     categories: []
@@ -306,7 +306,7 @@
 
             protein_stats = ${protein_stats_combined};
             var series = {
-                name: ["Number of Proteins"],
+                name: ["Number of Sources"],
                 data: [],
                 showInLegend: false
             };
@@ -336,7 +336,7 @@
                     enabled: false
                 },
                 title: {
-                    text: 'Tissue specific class I Peptides'
+                    text: '${organ}' + ' specific HLA I Peptides'
                 },
                 xAxis: {
                     type: []
@@ -369,7 +369,7 @@
 
             peptide_stats = ${peptide_stats_classI};
             var series = {
-                name: ["Number of Peptides"],
+                name: ["Number of Sources"],
                 data: [],
                 showInLegend: false
             };
@@ -398,7 +398,7 @@
                     enabled: false
                 },
                 title: {
-                    text: 'Tissue specific class II Peptides'
+                    text: '${organ}' + ' specific HLA II Peptides'
                 },
                 xAxis: {
                     type: []
@@ -431,7 +431,7 @@
 
             peptide_stats = ${peptide_stats_classII};
             var series = {
-                name: ["Number of Peptides"],
+                name: ["Number of Sources"],
                 data: [],
                 showInLegend: false
             };
