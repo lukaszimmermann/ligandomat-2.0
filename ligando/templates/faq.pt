@@ -7,14 +7,15 @@
 
 <body>
 <metal:block fill-slot="content">
-    <div class="main_wrapper">
+    <div class="container">
         <!--? TODO: fill with content-->
-
-        Frequently Asked Questions (FAQ):
-        <br>
-        1. None:
-
-
+        <div class="row">
+            <div class="col-md-10 col-md-offset-1">
+                <h2>Frequently Asked Questions (FAQ):</h2>
+                <br>
+                1. None:
+            </div>
+        </div>
     </div>
 
 
