@@ -286,7 +286,7 @@ def organ_page(request):
     query = DBSession.query(Tissue_protein_count.source_count, Protein.name, Protein.gene_name)
     query = query.order_by(desc(Tissue_protein_count.source_count))
     query = query.join(Protein)
-    query = query.group_by(Protein.name)
+    # query = query.group_by(Protein.name)
     query = query.filter(Tissue_protein_count.tissue == request.matchdict["organ"])
     query = query.filter(Tissue_protein_count.hla_class == 1)
     query = query.filter(Tissue_protein_count.source_count > 1)
@@ -296,7 +296,7 @@ def organ_page(request):
     query = DBSession.query(Tissue_protein_count.source_count, Protein.name, Protein.gene_name)
     query = query.order_by(desc(Tissue_protein_count.source_count))
     query = query.join(Protein)
-    query = query.group_by(Protein.name)
+    #query = query.group_by(Protein.name)
     query = query.filter(Tissue_protein_count.tissue == request.matchdict["organ"])
     query = query.filter(Tissue_protein_count.hla_class == 2)
     query = query.filter(Tissue_protein_count.source_count > 1)
@@ -306,7 +306,7 @@ def organ_page(request):
     query = DBSession.query(Tissue_protein_count.source_count, Protein.name, Protein.gene_name)
     query = query.order_by(desc(Tissue_protein_count.source_count))
     query = query.join(Protein)
-    query = query.group_by(Protein.name)
+    #query = query.group_by(Protein.name)
     query = query.filter(Tissue_protein_count.tissue == request.matchdict["organ"])
     query = query.filter(Tissue_protein_count.hla_class == 0)
     query = query.filter(Tissue_protein_count.source_count > 1)
@@ -317,7 +317,7 @@ def organ_page(request):
     # class I
     query = DBSession.query(Tissue_specific_peptides.source_count, Tissue_specific_peptides.spectrum_hit_sequence)
     query = query.order_by(desc(Tissue_specific_peptides.source_count))
-    query = query.group_by(Tissue_specific_peptides.spectrum_hit_sequence)
+    #query = query.group_by(Tissue_specific_peptides.spectrum_hit_sequence)
     query = query.filter(Tissue_specific_peptides.tissue == request.matchdict["organ"])
     query = query.filter(Tissue_specific_peptides.hla_class == 1)
     query = query.filter(Tissue_specific_peptides.source_count > 1)
@@ -327,7 +327,7 @@ def organ_page(request):
     # class I
     query = DBSession.query(Tissue_specific_peptides.source_count, Tissue_specific_peptides.spectrum_hit_sequence)
     query = query.order_by(desc(Tissue_specific_peptides.source_count))
-    query = query.group_by(Tissue_specific_peptides.spectrum_hit_sequence)
+    #query = query.group_by(Tissue_specific_peptides.spectrum_hit_sequence)
     query = query.filter(Tissue_specific_peptides.tissue == request.matchdict["organ"])
     query = query.filter(Tissue_specific_peptides.hla_class == 2)
     query = query.filter(Tissue_specific_peptides.source_count > 1)
@@ -397,7 +397,7 @@ def peptide_page(request):
         query = query.join(SpectrumHit)
         query = query.filter(MsRun.flag_trash == 0)
         query = query.filter(SpectrumHit.sequence == request.matchdict["peptide"])
-        query = query.filter(HlaType.digits == 4)
+        #query = query.filter(HlaType.digits == 4)
         query = query.filter(HlaType.hla_string.like("A%"))
         query = query.group_by(HlaType.hla_string)
         hla_class1_A = js_list_creator_dataTables(query.all())
@@ -408,7 +408,7 @@ def peptide_page(request):
         query = query.join(SpectrumHit)
         query = query.filter(MsRun.flag_trash == 0)
         query = query.filter(SpectrumHit.sequence == request.matchdict["peptide"])
-        query = query.filter(HlaType.digits == 4)
+        #query = query.filter(HlaType.digits == 4)
         query = query.filter(
              HlaType.hla_string.like("B%"))
         query = query.group_by(HlaType.hla_string)
@@ -420,7 +420,7 @@ def peptide_page(request):
         query = query.join(SpectrumHit)
         query = query.filter(MsRun.flag_trash == 0)
         query = query.filter(SpectrumHit.sequence == request.matchdict["peptide"])
-        query = query.filter(HlaType.digits == 4)
+        #query = query.filter(HlaType.digits == 4)
         query = query.filter(
             HlaType.hla_string.like("C%"))
         query = query.group_by(HlaType.hla_string)
@@ -433,7 +433,7 @@ def peptide_page(request):
         query = query.join(SpectrumHit)
         query = query.filter(MsRun.flag_trash == 0)
         query = query.filter(SpectrumHit.sequence == request.matchdict["peptide"])
-        query = query.filter(HlaType.digits == 4)
+        #query = query.filter(HlaType.digits == 4)
         query = query.filter(
             or_(HlaType.hla_string.like("DPB%")))
         query = query.group_by(HlaType.hla_string)
@@ -445,7 +445,7 @@ def peptide_page(request):
         query = query.join(SpectrumHit)
         query = query.filter(MsRun.flag_trash == 0)
         query = query.filter(SpectrumHit.sequence == request.matchdict["peptide"])
-        query = query.filter(HlaType.digits == 4)
+        #query = query.filter(HlaType.digits == 4)
         query = query.filter(
             or_(HlaType.hla_string.like("DQA%")))
         query = query.group_by(HlaType.hla_string)
@@ -457,7 +457,7 @@ def peptide_page(request):
         query = query.join(SpectrumHit)
         query = query.filter(MsRun.flag_trash == 0)
         query = query.filter(SpectrumHit.sequence == request.matchdict["peptide"])
-        query = query.filter(HlaType.digits == 4)
+        #query = query.filter(HlaType.digits == 4)
         query = query.filter(
             or_(HlaType.hla_string.like("DQB%")))
         query = query.group_by(HlaType.hla_string)
@@ -469,7 +469,7 @@ def peptide_page(request):
         query = query.join(SpectrumHit)
         query = query.filter(MsRun.flag_trash == 0)
         query = query.filter(SpectrumHit.sequence == request.matchdict["peptide"])
-        query = query.filter(HlaType.digits == 4)
+        #query = query.filter(HlaType.digits == 4)
         query = query.filter(
             or_(HlaType.hla_string.like("DRB%")))
         query = query.group_by(HlaType.hla_string)
@@ -483,3 +483,7 @@ def peptide_page(request):
             "hla_class2_DPB": hla_class2_DPB, "hla_class2_DQA": hla_class2_DQA, "hla_class2_DQB": hla_class2_DQB,
             "hla_class2_DRB": hla_class2_DRB, "psms": psms, "ms_run_count": ms_run_count}
 
+    # @view_config(route_name='peptide', renderer='../templates/base_templates/peptide.pt', request_method="GET")
+    # def peptide_page(request):
+    #    #peaks = open("../static/spectra_test/test_put_0_100.txt").readall()
+    #    return {'sequence': 'AAAVPRAAF', 'peaks': peaks}

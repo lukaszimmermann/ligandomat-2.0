@@ -274,8 +274,7 @@
 
 
         var class2_length = Math.max(${hla_class2_DPB}.length, ${hla_class2_DQA}.
-        length,;
-        ; ${hla_class2_DQB}.
+        length,;${hla_class2_DQB}.
         length,${hla_class2_DRB}.
         length
         )
@@ -390,6 +389,7 @@
             ]
         });
     });;;
+    ;
     ;
     ;
     ;
