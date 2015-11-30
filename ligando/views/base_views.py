@@ -483,7 +483,7 @@ def peptide_page(request):
             "hla_class2_DPB": hla_class2_DPB, "hla_class2_DQA": hla_class2_DQA, "hla_class2_DQB": hla_class2_DQB,
             "hla_class2_DRB": hla_class2_DRB, "psms": psms, "ms_run_count": ms_run_count}
 
-    # @view_config(route_name='peptide', renderer='../templates/base_templates/peptide.pt', request_method="GET")
-    # def peptide_page(request):
-    #    #peaks = open("../static/spectra_test/test_put_0_100.txt").readall()
-    #    return {'sequence': 'AAAVPRAAF', 'peaks': peaks}
+@view_config(route_name='peptide_spectra', renderer='../templates/base_templates/peptide_spectra.pt', request_method="GET")
+def peptide_spectra_page(request):
+    peaks = open("ligando/static/spectra_test/test_output_0_100.txt").readline()
+    return {'sequence': 'AAAVPRAAF', 'peaks': peaks}

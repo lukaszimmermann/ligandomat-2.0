@@ -50,16 +50,16 @@
                     <!-- Wrapper for slides -->
                     <div class="carousel-inner center-block" style="width: 400px; height: 200px" role="listbox">
                         <div class="item active">
-                            <img src="../static/images/UT_WBMW_Rot_RGB_01.png" style="height: 200px;"
+                            <img src="../static/images/UT_WBMW_Rot_RGB_01.png" style="height: 150px;"
                                  alt="University of Tübingen">
                         </div>
 
                         <div class="item">
-                            <img src="../static/images/ETK.png" style="height: 200px;" alt="ETK">
+                            <img src="../static/images/ETK.png" style="height: 150px;" alt="ETK">
                         </div>
 
                         <div class="item">
-                            <img src="../static/images/optitype.png" style="height: 200px;" alt="OptiType">
+                            <img src="../static/images/optitype.png" style="height: 150px;" alt="OptiType">
                         </div>
                     </div>
 

@@ -174,7 +174,7 @@
 
             <div class="col-md-5">
                 <h3>Experimental Evidence</h3>
-                The peptide was found in ${ms_run_count} MS runs with ${psms} PSMs.
+                The peptide was found in ${ms_run_count} MS runs with <a href="/peptide_spectra/${peptide}}" >${psms} PSMs</a>.
 
                 <br>
 
@@ -222,10 +222,7 @@
                 }}
             ]
         });
-        for (var i = 1; i <= class1_length -${hla_class1_A}.
-        length;
-        i++
-        )
+        for (var i = 1; i <= class1_length -${hla_class1_A}.length;i++)
         {
             tab.row.add(["-"]).draw();
         }
@@ -243,10 +240,7 @@
             ]
         });
 
-        for (var i = 1; i <= class1_length -${hla_class1_B}.
-        length;
-        i++
-        )
+        for (var i = 1; i <= class1_length -${hla_class1_B}.length;i++)
         {
             tab.row.add(["-"]).draw();
         }
@@ -264,10 +258,7 @@
             ]
         });
 
-        for (var i = 1; i <= class1_length -${hla_class1_C}.
-        length;
-        i++
-        )
+        for (var i = 1; i <= class1_length -${hla_class1_C}.length;i++)
         {
             tab.row.add(["-"]).draw();
         }
@@ -290,10 +281,7 @@
                 }}
             ]
         });
-        for (var i = 1; i <= class2_length -${hla_class2_DPB}.
-        length;
-        i++
-        )
+        for (var i = 1; i <= class2_length -${hla_class2_DPB}.length;i++)
         {
             tab.row.add(["-"]).draw();
         }
@@ -310,10 +298,7 @@
                 }}
             ]
         });
-        for (var i = 1; i <= class2_length -${hla_class2_DQA}.
-        length;
-        i++
-        )
+        for (var i = 1; i <= class2_length -${hla_class2_DQA}.length;i++)
         {
             tab.row.add(["-"]).draw();
         }
@@ -330,10 +315,7 @@
                 }}
             ]
         });
-        for (var i = 1; i <= class2_length -${hla_class2_DQB}.
-        length;
-        i++
-        )
+        for (var i = 1; i <= class2_length -${hla_class2_DQB}.length;i++)
         {
             tab.row.add(["-"]).draw();
         }
@@ -350,10 +332,7 @@
                 }}
             ]
         });
-        for (var i = 1; i <= class2_length -${hla_class2_DRB}.
-        length;
-        i++
-        )
+        for (var i = 1; i <= class2_length -${hla_class2_DRB}.length;i++)
         {
             tab.row.add(["-"]).draw();
         }
@@ -388,17 +367,7 @@
 
             ]
         });
-    });;;
-    ;
-    ;
-    ;
-    ;
-    ;
-    ;
-    ;
-    ;
-    ;
-    ;
+    });;;;;;;;;;;;;
 
 </script>
 

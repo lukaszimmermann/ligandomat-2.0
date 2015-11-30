@@ -32,6 +32,7 @@ def route_adder(config):
 
     # base pages
     config.add_route('peptide', '/peptide/{peptide}')
+    config.add_route('peptide_spectra', '/peptide_spectra/{peptide}')
     config.add_route('source', '/source/{source}')
     config.add_route('source_id', '/source_id/{source_id}')
     config.add_route('hla', '/hla/{hla}')
