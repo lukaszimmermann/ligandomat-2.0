@@ -8,66 +8,68 @@
 <body>
 
 <metal:block fill-slot="content">
-<div class="main_wrapper">
-    <div style="margin-top:20pt">
+<div class="container">
+    <div class="row">
+        <div class="col-md-10 col-md-offset-1">
         <!--? Result table, with different stylings for different groupings-->
-        <table id="example" class="info_table" cellspacing="0" width="100%">
-            <thead>
-            <tr tal:condition="grouping == 'run'">
-                <th>Sequence</th>
-                <th>RT [min]</th>
-                <th>Score</th>
-                <th>E-value</th>
-                <th>Q-value</th>
-                <!--?<th>#PSM</th>-->
-                <th>HLA Typing</th>
-                <th>Protein</th>
-                <th>Histology</th>
-                <th>Source ID</th>
-                <th>Patient ID</th>
-                <th>MS Run</th>
-            </tr>
-            <tr tal:condition="grouping == 'peptide'">
-                <th>Sequence</th>
-                <th>Protein</th>
-                <th>Source ID</th>
-                <th>Patient ID</th>
-                <th>Dignity</th>
-                <th>HLA Typing</th>
-            </tr>
-            <tr tal:condition="grouping == 'source'">
-                <th>Sequence</th>
-                <th>RT [min]</th>
-                <th>Score</th>
-                <th>E-value</th>
-                <th>Q-value</th>
-                <th>HLA Typing</th>
-                <th>Protein</th>
-                <th>Histology</th>
-                <th>Source ID</th>
-                <th>Patient ID</th>
-            </tr>
-            <tr tal:condition="grouping == 'source_psm'">
-                <th>Sequence</th>
-                <th>Score</th>
-                <th>E-value</th>
-                <th>Q-value</th>
-                <th>#PSM</th>
-                <th>HLA Typing</th>
-                <th>Protein</th>
-                <th>Histology</th>
-                <th>Source ID</th>
-                <th>Patient ID</th>
-            </tr>
-            <tr tal:condition="grouping == 'protein'">
-                <th>Protein</th>
-                <th>Peptides</th>
-                <th>Source ID</th>
-                <th>Patient ID</th>
-                <th>Dignity</th>
-            </tr>
-            </thead>
-        </table>
+            <table id="example" class="table table-striped table-bordered" cellspacing="0" width="100%">
+                <thead>
+                <tr tal:condition="grouping == 'run'">
+                    <th>Sequence</th>
+                    <th>RT [min]</th>
+                    <th>Score</th>
+                    <th>E-value</th>
+                    <th>Q-value</th>
+                    <!--?<th>#PSM</th>-->
+                    <th>HLA Typing</th>
+                    <th>Protein</th>
+                    <th>Histology</th>
+                    <th>Source ID</th>
+                    <th>Patient ID</th>
+                    <th>MS Run</th>
+                </tr>
+                <tr tal:condition="grouping == 'peptide'">
+                    <th>Sequence</th>
+                    <th>Protein</th>
+                    <th>Source ID</th>
+                    <th>Patient ID</th>
+                    <th>Dignity</th>
+                    <th>HLA Typing</th>
+                </tr>
+                <tr tal:condition="grouping == 'source'">
+                    <th>Sequence</th>
+                    <th>RT [min]</th>
+                    <th>Score</th>
+                    <th>E-value</th>
+                    <th>Q-value</th>
+                    <th>HLA Typing</th>
+                    <th>Protein</th>
+                    <th>Histology</th>
+                    <th>Source ID</th>
+                    <th>Patient ID</th>
+                </tr>
+                <tr tal:condition="grouping == 'source_psm'">
+                    <th>Sequence</th>
+                    <th>Score</th>
+                    <th>E-value</th>
+                    <th>Q-value</th>
+                    <th>#PSM</th>
+                    <th>HLA Typing</th>
+                    <th>Protein</th>
+                    <th>Histology</th>
+                    <th>Source ID</th>
+                    <th>Patient ID</th>
+                </tr>
+                <tr tal:condition="grouping == 'protein'">
+                    <th>Protein</th>
+                    <th>Peptides</th>
+                    <th>Source ID</th>
+                    <th>Patient ID</th>
+                    <th>Dignity</th>
+                </tr>
+                </thead>
+            </table>
+        </div>
     </div>
 </div>
 

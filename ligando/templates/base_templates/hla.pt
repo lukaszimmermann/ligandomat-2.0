@@ -150,6 +150,7 @@
 
 
         //DataTable with sources
+        //TODO: fix links!
         $(document).ready(function () {
             // create dataTable
             $('#example').dataTable({
@@ -188,9 +189,9 @@
             document.getElementById("source_stat").innerHTML =${sources}.length;
 
             // set the corresponding seqlogo
-            document.getElementById("seqlogo").src = "${request.static_url("ligando:static/seqlogo/" +hla.replace(":", "") + ".png")}";
+            document.getElementById("seqlogo").src = "${request.static_url("ligando:static/seqlogo/" +hla.replace(":", "").replace("*","_") + ".png")}";
 
-        });
+        });;
 
     </script>
 

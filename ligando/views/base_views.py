@@ -15,7 +15,7 @@ from ligando.models import (
     HlaType,
     t_hla_map,
     SpectrumHit,
-    t_spectrum_protein_map, Tissue_protein_count, Tissue_specific_peptides)
+    t_spectrum_protein_map, Tissue_protein_count, Tissue_specific_peptides, HLA_statistics)
 from ligando.views.view_helper import conn_err_msg, js_list_creator, js_list_creator_dataTables
 
 
@@ -159,9 +159,7 @@ def hla_page(request):
         # : --> %3A
         sources = json.dumps(query.all())
 
-        query = DBSession.query(func.count(SpectrumHit.sequence.distinct()).label("pep_count"))
-        query = query.join(Source)
-        query = query.join(t_hla_map)
+        query = DBSession.query(HLA_statistics.peptide_count.label("pep_count"))
         query = query.join(HlaType)
         query = query.filter(HlaType.hla_string == request.matchdict["hla"])
         statistic = json.dumps(query.all())

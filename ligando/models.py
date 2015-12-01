@@ -234,6 +234,17 @@ class Tissue_HLA_peptide_count(Base):
     hla_types_hla_types = relationship(u'HlaType')
 
 
+class HLA_statistics(Base):
+    __tablename__ = 'HLA_statistics'
+    HLA_statistics_id = Column(Integer, primary_key=True)
+    sample_count = Column(Integer)
+    peptide_count = Column(Integer)
+    binding_peptide_count = Column(Integer)
+    hla_type_hla_type_id = Column(ForeignKey(u'hla_type.hla_type_id'), nullable=False, index=True)
+
+    hla_types_hla_type = relationship(u'HlaType')
+
+
 class User(Base):
     __tablename__ = 'users'
 

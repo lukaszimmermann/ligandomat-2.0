@@ -1,3 +1,4 @@
+<!--suppress BadExpressionStatementJS -->
 <html metal:use-macro="load: ../base_layout.pt">
 <!DOCTYPE html>
 <html lang="${request.locale_name}">
@@ -204,7 +205,7 @@
 // create dataTable
         //"pageLength": 50
         var class1_length = Math.max(${hla_class1_A}.length, ${hla_class1_B}.
-        length,;${hla_class1_C}.
+        length,;; ${hla_class1_C}.
         length
         )
 
@@ -264,11 +265,7 @@
         }
 
 
-        var class2_length = Math.max(${hla_class2_DPB}.length, ${hla_class2_DQA}.
-        length,;${hla_class2_DQB}.
-        length,${hla_class2_DRB}.
-        length
-        )
+        var class2_length = Math.max(${hla_class2_DPB}.length, ${hla_class2_DQA}.length,;${hla_class2_DQB}.length,${hla_class2_DRB}.length)
         var tab = $('#hla_class2_DPB').DataTable({
             "paging": false,
             "ordering": false,
@@ -367,7 +364,8 @@
 
             ]
         });
-    });;;;;;;;;;;;;
+    });;;;;;;;;;;;
+
 
 </script>
 
