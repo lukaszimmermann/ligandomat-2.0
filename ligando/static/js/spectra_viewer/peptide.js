@@ -36,11 +36,11 @@ function Peptide(seq, staticModifications, varModifications, ntermModification, 
     //----------------------------------------------------------------------------------------
     this.sequence = function () {
         return sequence;
-    };
+    }
 
     this.varMods = function() {
         return varMods;
-    };
+    }
 
     // index: index in the seq.
     // If this is a N-term sequence we will sum up the mass of the amino acids in the sequence up-to index (exclusive).
@@ -48,7 +48,7 @@ function Peptide(seq, staticModifications, varModifications, ntermModification, 
     // modification masses are added
     this.getSeqMassMono = function _seqMassMono(index, term) {
         return _getSeqMass(index, term, "mono");
-    };
+    }
 
     // index: index in the seq.
     // If this is a N-term sequence we will sum up the mass of the amino acids in the sequence up-to index (exclusive).
@@ -56,7 +56,7 @@ function Peptide(seq, staticModifications, varModifications, ntermModification, 
     // modification masses are added
     this.getSeqMassAvg = function _seqMassAvg(index, term) {
         return _getSeqMass(index, term, "avg");
-    };
+    }
 
     // Returns the monoisotopic neutral mass of the peptide; modifications added. N-term H and C-term OH are added
     this.getNeutralMassMono = function _massNeutralMono() {
@@ -79,7 +79,7 @@ function Peptide(seq, staticModifications, varModifications, ntermModification, 
         mass = mass + Ion.MASS_O_16 + Ion.MASS_H_1;
 
         return mass;
-    };
+    }
 
     //Returns the avg neutral mass of the peptide; modifications added. N-term H and C-term OH are added
     this.getNeutralMassAvg = function _massNeutralAvg() {
@@ -102,7 +102,7 @@ function Peptide(seq, staticModifications, varModifications, ntermModification, 
             mass = mass + Ion.MASS_O + Ion.MASS_H;
 
             return mass;
-        };
+        }
 
     this.getPotentialLosses = function _getPotentialLosses(sion)
     {
@@ -116,7 +116,7 @@ function Peptide(seq, staticModifications, varModifications, ntermModification, 
         {
             return cterm_totalLossOptions[sequence.length - fragmentIndex];
         }
-    };
+    }
 
     this.customPotentialLosses = potentialLosses_custom;
     this.lorikeetPotentialLosses = potentialLosses_lorikeet;
@@ -126,11 +126,11 @@ function Peptide(seq, staticModifications, varModifications, ntermModification, 
         if(loss) return loss;
         loss = potentialLosses_lorikeet[lossLabel];
         if(loss) return loss;
-    };
+    }
     this.recalculateLossOptions = function _recalculate(selectedLossOptions, maxLossCount)
     {
         _calculateTotalLossOptions(selectedLossOptions, maxLossCount);
-    };
+    }
 
     //----------------------------------------------------------------------------------------
     //----------------------------------------------------------------------------------------
@@ -291,7 +291,7 @@ function Peptide(seq, staticModifications, varModifications, ntermModification, 
         for (var l = 0; l < lossOptions.length; l += 1) {  // these are the potential losses at index i in the sequence.
             var loss = lossOptions[l];
             if(!(loss.label() in selectedLossLabels))
-
+                continue;
             else
                 validLossOptions.push(loss);
         }
@@ -532,13 +532,13 @@ function NeutralLoss(lossMassMono, lossMassAvg, formula, label)
         {
             return this.label;
         }
-    };
+    }
 
     this.label = function _getLabel()
     {
         if(this.userLabel) return this.userLabel;
         return "-"+Math.round(this.monoLossMass);
-    };
+    }
 
     this.htmlLabel = function _getHtmlLabel()
     {
@@ -576,15 +576,15 @@ function NeutralLoss(lossMassMono, lossMassAvg, formula, label)
 NeutralLoss.AmmoniaLoss = function _getAmmoniaLoss()
 {
     return new NeutralLoss(Ion.AmmoniaLossMass_mono, Ion.AmmoniaLossMass_avg, "NH3", "*");
-};
+}
 NeutralLoss.WaterLoss = function _getWaterLoss()
 {
     return new NeutralLoss(Ion.WaterLossMass_mono, Ion.WaterLossMass_avg, "H2O", "o");
-};
+}
 NeutralLoss.PhosphoLoss = function _getPhosphoLoss()
 {
     return new NeutralLoss(Ion.PhosphoLossMass_mono, Ion.PhosphoLossMass_avg, "H3PO4", "p");
-};
+}
 
 function LossCombination()
 {
@@ -593,7 +593,7 @@ function LossCombination()
     this.addLoss = function _addLoss(loss)
     {
         this.losses.push(loss);
-    };
+    }
 
     this.getLabels = function _getLabels()
     {
@@ -603,7 +603,7 @@ function LossCombination()
             label += ", "+this.losses[l].label();
         }
         return label;
-    };
+    }
 
     this.getLabel = function _getLabel()
     {
@@ -620,7 +620,7 @@ function LossCombination()
             }
             return " -" + Math.round(lossMass);
         }
-    };
+    }
 
     this.getTotalLossMass = function _getTotalLossMass(massType)
     {
@@ -649,7 +649,7 @@ LossCombination.copyLossCombination = function _copyLossCombination(originalLoss
         newLossCombination.addLoss(losses[l]);
     }
     return newLossCombination;
-};
+}
 
 function LossCombinationList(numLosses)
 {
@@ -659,7 +659,7 @@ function LossCombinationList(numLosses)
     this.lossCombinationCount = function _getLossCombinationCount()
     {
         return this.lossCombinations.length;
-    };
+    }
 
     this.addLossCombination = function _addLossCombination(lossCombination)
     {
@@ -676,7 +676,7 @@ function LossCombinationList(numLosses)
         {
             this.lossCombinations.push(lossCombination);
         }
-    };
+    }
 
     this.getLossCombination = function _getLossCombinationAtIndex(index)
     {
@@ -697,7 +697,7 @@ LossCombinationList.copyLossCombinationList = function _copyLossCombinationList(
         newLossCombinationList.addLossCombination(lossCombination);
     }
     return newLossCombinationList;
-};
+}
 
 
 

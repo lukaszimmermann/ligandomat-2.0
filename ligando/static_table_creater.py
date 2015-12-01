@@ -286,7 +286,19 @@ def HLA_statistics_creater():
 
 
 
+def sequence_extractor():
+    query= DBSession.query(SpectrumHit.sequence.distinct())
+    query = query.join(Source)
+    query = query.join(t_hla_map)
+    query = query.join(HlaType)
+    query = query.filter(HlaType.digits==4)
+    query = query.filter(HlaType.hla_string.op('regexp')("^[ABC]"))
+    result = query.all()
+    f = open("classI_peptides.txt", "w")
+    for pep in result:
+        f.write(str(pep)+"\n")
 
+#sequence_extractor()
 
 #HLA_statistics_creater()
 

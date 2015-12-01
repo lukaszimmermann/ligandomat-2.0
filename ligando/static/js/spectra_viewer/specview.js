@@ -387,7 +387,7 @@
                          ticks: [0, maxInt*0.1, maxInt*0.2, maxInt*0.3, maxInt*0.4, maxInt*0.5,
                                  maxInt*0.6, maxInt*0.7, maxInt*0.8, maxInt*0.9, maxInt],
                          tickFormatter: function(val, axis) {return Math.round((val * 100)/maxInt)+"%";}}
-	        };
+	        }
         container.data("plotOptions", plotOptions);
         container.data("maxInt", maxInt);
 
@@ -959,7 +959,7 @@
 			slide: function(event, ui) {
 				var height = ui.value;
 				//console.log(ui.value);
-				options.height = height;
+				options.height = height
 				$(getElementSelector(container, elementIds.msmsplot)).css({height: height});
 				plotAccordingToChoices(container);
 				$(getElementSelector(container, elementIds.slider_height_val)).text(height);
@@ -1107,7 +1107,7 @@
                                 {mass:120.0813, aa:'F'},
                                 {mass:101.0715, aa:'Q'},
                                 {mass:136.0762, aa:'Y'},
-                                {mass:159.0922, aa:'W'}];
+                                {mass:159.0922, aa:'W'}]
 
         var immoniumIonMatches = [];
         var labels = [];
@@ -1328,7 +1328,7 @@
 					}
 				}
 				if(sion.type == "z") {
-					if(!container.data("massTypeChanged") && ionSeries.z[sion.charge])	 // already calculated
+					if(!container.data("massTypeChanged") && ionSeries.z[sion.charge])	continue; // already calculated
 					else {
 						todoIonSeries.push(sion);
 						ionSeries.z[sion.charge] = [];
@@ -1339,7 +1339,7 @@
 
 			if(container.data("options").sequence) {
 
-                var sequence = container.data("options").sequence;
+                var sequence = container.data("options").sequence
 				var massType = getMassType(container);
 				
 				for(var i = 1; i < sequence.length; i += 1) {
@@ -2285,7 +2285,7 @@
         myTable+= ' id="'+getElementId(container, elementIds.immoniumIons)+'"/><span style="font-weight:bold;">Immonium ions</span>';
 
         // Reporter ions
-        myTable += "<br/>";
+        myTable += "<br/>"
         myTable+= '<input type="checkbox" value="true" ';
         if(options.labelReporters == true)
         {
