@@ -14,6 +14,12 @@
     <div class="container">
         <div class="row">
             <div class="col-md-10 col-md-offset-1">
+                <ol class="breadcrumb">
+                  <li><a href="/">Home</a></li>
+                  <li>Tissue Browser</li>
+                </ol>
+            </div>
+            <div class="col-md-10 col-md-offset-1">
                 <h2>Tissue Browser</h2>
             </div>
         </div>
