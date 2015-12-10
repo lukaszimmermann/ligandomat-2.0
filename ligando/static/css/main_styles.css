@@ -16,6 +16,11 @@ body {
     padding-bottom: 30px;
 }
 
+main {
+    /* Space for footer */
+    margin-bottom: 50px;
+}
+
 /*.footer {
   position: absolute;
   bottom: 0;
