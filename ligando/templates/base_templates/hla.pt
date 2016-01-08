@@ -64,7 +64,10 @@
                     <!-- Peptide-binding motif -->
                     <div class="tab-pane fade in active" id="peptidemotif">
                         <div style="min-width: 310px; height: 400px; max-width: 600px; margin: 0 auto">
-                            <img style="height: 400px; margin: 0 auto" id="seqlogo" src="" onerror='this.style.display = "none"'>
+                            <img style="height: 400px; display: block; text-align: center; line-height: 100px; /* needed to align alternative text */
+                                vertical-align: middle; margin: 0 auto" id="seqlogo" src="" alt="No peptide-binding motif available yet.">
+
+
                         </div>
                     </div>
 
@@ -103,6 +106,7 @@
         });
 
         //tissue pie chart
+        var d = new Date();
         $(document).ready(function () {
             $('#tissue_chart').highcharts({
                 // var options =  {
@@ -118,6 +122,20 @@
                 //TITLE REMOVED TO FIT THEME, NO DIFFERENT FONTS
                 title: {
                     text: ''
+                },
+                exporting: {
+                    chartOptions: {
+                        title: {
+                            text: 'Distribution of tissues for HLA-${hla}'
+                        },
+                        subtitle: {
+                            text: "Source: " + document.URL + ", " + d.toUTCString() ,
+                            align: "left",
+                            verticalAlign: "bottom",
+                            y: 5
+                        }
+                    },
+                    filename: "DistributionOfTissues_HLA-${hla}"
                 },
                 tooltip: {
                     pointFormat: '{series.name}: <b>{point.y}</b>'
