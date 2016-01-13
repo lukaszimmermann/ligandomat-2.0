@@ -132,7 +132,7 @@
                             text: "Source: " + document.URL + ", " + d.toUTCString() ,
                             align: "left",
                             verticalAlign: "bottom",
-                            y: 5
+                            y: 10
                         }
                     },
                     filename: "DistributionOfTissues_HLA-${hla}"

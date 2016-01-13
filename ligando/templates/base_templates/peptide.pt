@@ -222,9 +222,8 @@
     $(document).ready(function () {
 // create dataTable
         //"pageLength": 50
-        var class1_length = Math.max(${hla_class1_A}.length, ${hla_class1_B}.
-        length,;; ${hla_class1_C}.
-        length
+        var class1_length = Math.max(${hla_class1_A}.length, ${hla_class1_B}.length,;;
+            ${hla_class1_C}.length
         )
 
         //console.log(class1_length);
@@ -420,16 +419,7 @@
 
             ]
         });
-    });;
-    ;
-    ;
-    ;
-    ;
-    ;
-    ;
-    ;
-    ;
-    ;
+    });
 
 
     $("#t1").eq(0).css("background-color", "rgb(180, 160, 105)");
