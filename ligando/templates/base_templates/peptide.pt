@@ -1,3 +1,4 @@
+<!--suppress BadExpressionStatementJS -->
 <html metal:use-macro="load: ../base_layout.pt">
 <!DOCTYPE html>
 <html lang="${request.locale_name}">
