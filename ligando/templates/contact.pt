@@ -7,20 +7,34 @@
 
 <body>
 <metal:block fill-slot="content">
-    <div class="main_wrapper">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-10 col-md-offset-1">
+                <ol class="breadcrumb">
+                    <li><a href="/">Home</a></li>
+                    <li>About</li>
+                    <li>Contact</li>
+                </ol>
+            </div>
+            <div class="col-md-5 col-md-offset-1">
+                <h2>Contact</h2>
 
-        Contact:
-        <br>
-        Address: <br>
-        Eberhard-Karls-Universität Tübingen <br>
-        WSI/ZBIT <br>
-        Applied Bioinformatics Group <br>
-        Sand 14 <br>
-        72076 Tübingen <br>
-        phone: +49-7071-29-70458 <br>
-        fax: +49-7071-29-5152 <br>
+                <address>
+                    <strong>Eberhard-Karls-Universität Tübingen</strong><br>
+                    WSI/ZBIT <br>
+                    Applied Bioinformatics Group <br>
+                    Sand 14 <br>
+                    72076 Tübingen <br><br>
+                    phone: +49-7071-29-70458 <br>
+                    fax: +49-7071-29-5152 <br>
+                </address>
 
 
+            </div>
+            <div class="col-md-5">
+                <img src="../static/images/uni.jpg" class="img-responsive img-rounded" alt="Universität Tübingen" >
+            </div>
+        </div>
     </div>
 
 

@@ -9,103 +9,123 @@
 
 <body>
 <metal:block fill-slot="content">
-<div class="main_wrapper" >
-    <h3>Search Results:</h3>
-    <div id="placeholder"> <h3>No search results found!</h3> </div>
-    <div id="protein_div" style="float: left" >
-        <table id="protein" class="table table-striped table-bordered" style="width: 500px" cellspacing="0">
-        <thead>
-        <tr>
-        <th>Protein</th>
-        </tr>
-        </thead>
-    </table>
+    <div class="main_wrapper container" >
+        <div class="row">
+            <div class="col-md-10 col-md-offset-1">
+                <h1>Search Results</h1>
+                <div id="placeholder"> <h3>No search results found!</h3> </div>
+                <div id="protein_div" style="float: left" >
+
+                    <table id="protein" class="table table-striped table-bordered" style="width: 500px" cellspacing="0">
+                        <thead>
+                        <tr>
+                            <th>Protein</th>
+                        </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-10 col-md-offset-1">
+                <div id="peptide_div" style="clear:both;float: left" >
+                    <table id="peptide" class="table table-striped table-bordered" style="width: 500px" cellspacing="0">
+                        <thead>
+                        <tr>
+                            <th>Peptide</th>
+                        </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-10 col-md-offset-1">
+                <div id="hla_div" style="clear:both;float: left">
+                    <table id="hla" class="table table-striped table-bordered" style="width: 500px" cellspacing="0">
+                        <thead>
+                        <tr>
+                            <th>HLA-Type</th>
+                        </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-10 col-md-offset-1">
+                <div id="organ_div" style="clear:both;float: left" >
+                    <table id="organ" class="table table-striped table-bordered" style="width: 500px" cellspacing="0">
+                        <thead>
+                        <tr>
+                            <th>Organ</th>
+                        </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-10 col-md-offset-1">
+                <div id="location_div" style="clear:both;float: left">
+                    <table id="location" class="table table-striped table-bordered" style="width: 500px">
+                        <thead>
+                        <tr>
+                            <th>Location</th>
+                        </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+
     </div>
-    <div id="peptide_div" style="clear:both;float: left" >
-        <table id="peptide" class="table table-striped table-bordered" style="width: 500px" cellspacing="0">
-        <thead>
-        <tr>
-        <th>Peptide</th>
-        </tr>
-        </thead>
-    </table>
-    </div>
-    <div id="hla_div" style="clear:both;float: left">
-        <table id="hla" class="table table-striped table-bordered" style="width: 500px" cellspacing="0">
-        <thead>
-        <tr>
-        <th>HLA-Type</th>
-        </tr>
-        </thead>
-    </table>
-    </div>
-    <div id="organ_div" style="clear:both;float: left" >
-        <table id="organ" class="table table-striped table-bordered" style="width: 500px" cellspacing="0">
-        <thead>
-        <tr>
-        <th>Organ</th>
-        </tr>
-        </thead>
-    </table>
-    </div>
-    <div id="location_div" style="clear:both;float: left">
-        <table id="location" class="table table-striped table-bordered" style="width: 500px">
-        <thead>
-        <tr>
-        <th>Location</th>
-        </tr>
-        </thead>
-    </table>
-    </div>
+    <script>
+        var tables = [
+            'organ',
+            'location',
+            'hla',
+            'peptide',
+            'protein'];
+        var autocomplete_dict = {
+            'organ':${organ},
+            'location':${location},
+            'hla':${hla},
+            'peptide':${peptide},
+            'protein':${protein}};
 
 
-</div>
-<script>
-    var tables = [
-        'organ',
-        'location',
-        'hla',
-        'peptide',
-        'protein'];
-var autocomplete_dict = {
-        'organ':${organ},
-        'location':${location},
-        'hla':${hla},
-        'peptide':${peptide},
-        'protein':${protein}};
+        $(document).ready(function() {
 
-
-$(document).ready(function() {
-
-    for(var i =0; i < tables.length; i++ ){
-            $("#placeholder").hide();
+            for(var i =0; i < tables.length; i++ ){
+                $("#placeholder").hide();
 
 // create dataTables
-$('#'+tables[i]).dataTable( {
-    "paging":   false,
-    "info":     false,
-    searching: false,
-    sort: false,
-    "language": {
-        "emptyTable": "No Results"},
-    data: autocomplete_dict[tables[i]],
-    columns: [
-        { data: tables[i],
-            "render": function ( data, type, row ) {
-                return "<a class='nostylelink'  href= '/"+tables[i]+"/"+data + "'>"+data + "</a>" ;
-            }}
-    ]
-} );
-        if(autocomplete_dict[tables[i]].length > 0) {
-            $('#'+tables[i]).css("background-color","rgb(180,160,105)");
-        }else{
-            $('#'+tables[i]).css("opacity", "0.6");
-        }
+                $('#'+tables[i]).dataTable( {
+                    "paging":   false,
+                    "info":     false,
+                    searching: false,
+                    sort: false,
+                    "language": {
+                        "emptyTable": "No Results"},
+                    data: autocomplete_dict[tables[i]],
+                    columns: [
+                        { data: tables[i],
+                            "render": function ( data, type, row ) {
+                                return "<a class='nostylelink'  href= '/"+tables[i]+"/"+data + "'>"+data + "</a>" ;
+                            }}
+                    ]
+                } );
+                if(autocomplete_dict[tables[i]].length > 0) {
+                    $('#'+tables[i]).css("background-color","rgb(180,160,105)");
+                }else{
+                    $('#'+tables[i]).css("opacity", "0.6");
+                }
 
-    }
-} );
+            }
+        } );
 
-</script>
+    </script>
 
 
 </metal:block>

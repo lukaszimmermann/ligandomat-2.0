@@ -18,15 +18,15 @@ metadata = Base.metadata
 
 t_hla_map = Table(
     'hla_map', metadata,
-    Column('fk_hla_types_id', ForeignKey(u'hla_types.hla_types_id'), nullable=False, index=True),
+    Column('fk_hla_type_id', ForeignKey(u'hla_type.hla_type_id'), nullable=False, index=True),
     Column('fk_source_id', ForeignKey(u'source.source_id'), nullable=False, index=True)
 )
 
 
 class HlaType(Base):
-    __tablename__ = 'hla_types'
+    __tablename__ = 'hla_type'
 
-    hla_types_id = Column(Integer, primary_key=True, unique=True)
+    hla_type_id = Column(Integer, primary_key=True, unique=True)
     hla_string = Column(String(255), nullable=False)
     digits = Column(Integer)
 
@@ -222,6 +222,27 @@ class Tissue_specific_peptides(Base):
     hla_class = Column(Integer, index=True)
 
     spectrum_hit_spectrum_hit = relationship(u'SpectrumHit')
+
+
+class Tissue_HLA_peptide_count(Base):
+    __tablename__ = 'tissue_HLA_peptide_count'
+    tissue_HLA_peptide_count_id = Column(Integer, primary_key=True)
+    tissue = Column(String(45, u'latin1_german1_ci'), index=True)
+    hla_type_hla_types_id = Column(ForeignKey(u'hla_type.hla_type_id'), nullable=False, index=True)
+    peptide_count = Column(Integer, nullable=False)
+
+    hla_types_hla_types = relationship(u'HlaType')
+
+
+class HLA_statistics(Base):
+    __tablename__ = 'HLA_statistics'
+    HLA_statistics_id = Column(Integer, primary_key=True)
+    sample_count = Column(Integer)
+    peptide_count = Column(Integer)
+    binding_peptide_count = Column(Integer)
+    hla_type_hla_type_id = Column(ForeignKey(u'hla_type.hla_type_id'), nullable=False, index=True)
+
+    hla_types_hla_type = relationship(u'HlaType')
 
 
 class User(Base):

@@ -25,10 +25,6 @@
                         <td>Description:</td>
                         <td id="description"></td>
                     </tr>
-                    <tr>
-                        <td>Organism:</td>
-                        <td id="organism"></td>
-                    </tr>
                     <tr class="alt">
                         <td>Uniprot:</td>
                         <td id="uniprot"></td>
@@ -119,7 +115,6 @@
             // Setting basic information
             document.getElementById("gene_name").innerHTML = ${statistics}[0]["gene_name"];
             document.getElementById("description").innerHTML = ${statistics}[0]["description"].split("HUMAN")[1].split("OS=")[0];
-            document.getElementById("organism").innerHTML = ${statistics}[0]["organism"];
             document.getElementById("uniprot").innerHTML = "<a data-toggle='tooltip' title='Go to Uniprot' class='nostylelink' href='http://www.uniprot.org/uniprot/" + ${statistics}[0]["name"] + "'>" + ${statistics}[0]["name"] + "</a>";
             var sequence = ${statistics}[0]["sequence"];
             var complete_sequence = "";
@@ -179,12 +174,12 @@
                 dom: 'Bfrtip',
                 buttons: [{
                     extend: 'collection',
-                    text: "Print",
+                    text: "Export",
                     buttons: ['csv', 'excel', 'pdf']
                 }],
                 columns: [
                     {"render": function (data, type, row) {
-                        return "<a class='nostylelink' href= '/peptide/" + data + "'>" + data + "</a>";
+                        return "<div  data-toggle='modal' data-target='#loading_modal'><a class='nostylelink' href= '/peptide/" + data + "'>" + data + "</a></div>";
                     }}
                 ]
             });

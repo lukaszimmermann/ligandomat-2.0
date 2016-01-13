@@ -7,13 +7,22 @@
 
 <body>
 <metal:block fill-slot="content">
-    <div class="main_wrapper">
+    <div class="container">
         <!--? TODO: fill with content-->
-
-        Information page
-        <br>
-        MS method + configuration
-
+        <div class="row">
+            <div class="col-md-10 col-md-offset-1">
+                <ol class="breadcrumb">
+                    <li><a href="/">Home</a></li>
+                    <li>About</li>
+                    <li>Information</li>
+                </ol>
+            </div>
+            <div class="col-md-10 col-md-offset-1">
+                <h2>Information page</h2>
+                <br>
+                MS method + configuration
+            </div>
+        </div>
     </div>
 
 

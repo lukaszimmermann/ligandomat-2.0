@@ -9,7 +9,7 @@ from ligando.models import (
     DBSession,
     Source,
     MsRun,
-    HlaType, PeptideRun, t_hla_map)
+    HlaType, PeptideRun, t_hla_map, HLA_statistics)
 from ligando.views.view_helper import js_list_creator, conn_err_msg
 
 
@@ -102,18 +102,16 @@ def hla_atlas(request):
     # query = query.order_by(HlaType.hla_string)
     # hla_c = json.dumps(query.all())
 
-    query = DBSession.query(HlaType.hla_string.label("hla"), func.count(Source.source_id.distinct()).label("samples"),
-                            func.count(PeptideRun.sequence.distinct()).label("peptides"),
-                            func.count(PeptideRun.sequence.distinct()).label("scored_peptides"),
+    query = DBSession.query(HlaType.hla_string.label("hla"), HLA_statistics.sample_count.label("samples"),
+                            HLA_statistics.peptide_count.label("peptides"),
+                            HLA_statistics.binding_peptide_count.label("scored_peptides"),
                             )
 
-    query = query.join(t_hla_map)
-    query = query.join(Source)
-    query = query.join(PeptideRun)
+    query = query.join(HLA_statistics)
     query = query.filter(HlaType.digits == 4)
     query = query.filter(HlaType.hla_string.op('regexp')("^[ABC]"))
     # HlaType.hla_string.rlike("[ABC]*%"))
-    query = query.group_by(HlaType.hla_string)
+    #query = query.group_by(HlaType.hla_string)
     class1 = json.dumps(query.all())
 
     return {"class1": class1}  # , "hla_a": hla_a, "hla_b": hla_b, "hla_c": hla_c}
@@ -197,17 +195,16 @@ def hla_atlas_classII(request):
     # query = query.filter(HlaType.hla_string.like("DQ%"))
     # hla_dq = json.dumps(query.all())
 
-    query = DBSession.query(HlaType.hla_string.label("hla"), func.count(Source.source_id.distinct()).label("samples"),
-                            func.count(PeptideRun.sequence.distinct()).label("peptides"),
-                            func.count(PeptideRun.sequence.distinct()).label("scored_peptides"),
+    query = DBSession.query(HlaType.hla_string.label("hla"), HLA_statistics.sample_count.label("samples"),
+                            HLA_statistics.peptide_count.label("peptides"),
+                            HLA_statistics.binding_peptide_count.label("scored_peptides"),
                             )
 
-    query = query.join(t_hla_map)
-    query = query.join(Source)
-    query = query.join(PeptideRun)
+
+    query = query.join(HLA_statistics)
     query = query.filter(HlaType.digits == 4)
     query = query.filter(HlaType.hla_string.op('regexp')("^D"))
-    query = query.group_by(HlaType.hla_string)
+    #query = query.group_by(HlaType.hla_string)
     class2 = json.dumps(query.all())
 
     # DPA1 DPB1 DQA1 DQB1 DRB1 DRB3 DRB4 DRB5 DRB6
@@ -217,6 +214,11 @@ def hla_atlas_classII(request):
     # "hla_drb3": hla_drb3, "hla_drb4": hla_drb5, "hla_drb5": hla_drb5,
     #"hla_drb6": hla_drb6, }
     # return {"class2": class2, "hla_dr": hla_dr, "hla_dp": hla_dp, "hla_dq": hla_dq}
+
+
+@view_config(route_name='tissue_browser', renderer='../templates/tissue_browser.pt')
+def tissue_browser(request):
+    return {}
 
 
 # error page views

@@ -219,17 +219,17 @@ class TestViews(IntegrationTestBase):
 
         # TODO: Fix after implementation
 
-    #    def test_hla(self):
-    # test if site is accessible and added as routine
-    #        res = self.app.get('/hla/test')
-    # self.assertEqual(res.status_int, 200)
-    #
-    # # test for content of result dict
-    # request = testing.DummyRequest(matchdict={"hla": "test"})
-    # response = hla_page(request)
-    # self.assertNotEqual(response, dict())
-    # self.assertTrue("source" in response)
-    # self.assertEqual(response["source"], "test")
+    def test_hla(self):
+        # test if site is accessible and added as routine
+        res = self.app.get('/hla/test')
+        self.assertEqual(res.status_int, 200)
+
+        # test for content of result dict
+        request = testing.DummyRequest(matchdict={"hla": "test"})
+        response = hla_page(request)
+        self.assertNotEqual(response, dict())
+        self.assertTrue("source" in response)
+        self.assertEqual(response["source"], "test")
     # self.assertTrue("runs" in response)
     # self.assertTrue("metadata" in response)
     # self.assertTrue("statistic" in response)

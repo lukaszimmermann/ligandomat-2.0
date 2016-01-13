@@ -32,6 +32,7 @@ def route_adder(config):
 
     # base pages
     config.add_route('peptide', '/peptide/{peptide}')
+    config.add_route('peptide_spectra', '/peptide_spectra/{peptide}')
     config.add_route('source', '/source/{source}')
     config.add_route('source_id', '/source_id/{source_id}')
     config.add_route('hla', '/hla/{hla}')
@@ -50,6 +51,8 @@ def route_adder(config):
     # HLA atlas
     config.add_route('hla_atlas', '/hla_atlas')
     config.add_route('hla_atlas_classII', '/hla_atlas_classII')
+    # Tissue atlas
+    config.add_route('tissue_browser', '/tissue_browser')
 
     # test view TODO: remove before publishing
     config.add_route('test_view', '/test_view')

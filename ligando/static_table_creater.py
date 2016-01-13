@@ -6,7 +6,7 @@ import os
 from paste.deploy import appconfig
 from sqlalchemy import engine_from_config, func, String
 from models import DBSession, Base, User, Source, Tissue_protein_count, metadata, Protein, SpectrumHit, \
-    t_spectrum_protein_map, MsRun, Tissue_specific_peptides
+    t_spectrum_protein_map, MsRun, Tissue_specific_peptides, HLA_statistics, HlaType, t_hla_map
 from sqlalchemy.orm import sessionmaker
 
 here = os.path.dirname(__file__)
@@ -255,6 +255,52 @@ def tissue_specific_peptides_creater():
     Tissue_specific_peptides.__table__.insert().execute(result)
 
     print str(len(result)) + " rows added into Tissue_peptide_count class II"
+
+
+def HLA_statistics_creater():
+    # Drop the table
+    HLA_statistics.__table__.drop(checkfirst=True)
+    # Create the table
+    HLA_statistics.__table__.create(checkfirst=True)
+
+
+
+    # TODO: Maybe peptiderun should be used instead of Spectrum_hit
+    # TODO: query actual binding peptide count
+    query = DBSession.query(
+            HlaType.hla_type_id.label("hla_type_hla_types_id"),
+    func.count(Source.source_id.distinct()).label("sample_count"),
+                            func.count(SpectrumHit.sequence.distinct()).label("peptide_count"),
+                            func.count(SpectrumHit.sequence.distinct()).label("binding_peptide_count")
+    )
+    query = query.join(t_hla_map)
+    query = query.join(Source)
+    query = query.join(SpectrumHit)
+    query = query.group_by(HlaType.hla_type_id)
+    result = query.all()
+
+    to_add = []
+    for allele in result:
+        to_add.append(dict(zip(['hla_type_hla_type_id', 'sample_count', 'peptide_count', "binding_peptide_count"], allele)))
+    HLA_statistics.__table__.insert().execute(to_add)
+
+
+
+def sequence_extractor():
+    query= DBSession.query(SpectrumHit.sequence.distinct())
+    query = query.join(Source)
+    query = query.join(t_hla_map)
+    query = query.join(HlaType)
+    query = query.filter(HlaType.digits==4)
+    query = query.filter(HlaType.hla_string.op('regexp')("^[ABC]"))
+    result = query.all()
+    f = open("classI_peptides.txt", "w")
+    for pep in result:
+        f.write(str(pep)+"\n")
+
+#sequence_extractor()
+
+#HLA_statistics_creater()
 
 # tissue_specific_peptides_creater()
 # tissue_protein_count_creater()

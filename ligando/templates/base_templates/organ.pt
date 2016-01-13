@@ -14,81 +14,90 @@
     <div class="container">
         <div class="row">
             <div class="col-md-10 col-md-offset-1">
-        <h1 style="text-align: center">${organ}</h1>
-        <table class="table table-striped table-bordered" style="width: 300px">
-            <tr>
-                <td>Peptides:</td>
-                <td id="pep_stat"></td>
-            </tr>
-            <tr>
-                <td>Sources:</td>
-                <td id="source_stat"></td>
-            </tr>
-        </table>
+                <ol class="breadcrumb">
+                  <li><a href="/">Home</a></li>
+                  <li><a href="/tissue_browser">Tissue Browser</a></li>
+                  <li class="/organ/${organ}">${organ}</li>
+                </ol>
+            </div>
+            <div class="col-md-10 col-md-offset-1">
+                <h1 style="text-align: center">${organ}</h1>
+                <table class="table table-striped table-bordered" style="width: 300px">
+                    <tr>
+                        <td>Peptides:</td>
+                        <td id="pep_stat"></td>
+                    </tr>
+                    <tr>
+                        <td>Sources:</td>
+                        <td id="source_stat"></td>
+                    </tr>
+                </table>
             </div>
         </div>
         <div class="row">
             <div class="col-md-10 col-md-offset-1">
-        <ul class="nav nav-tabs">
-            <li class="active"><a href="#class1" data-toggle="tab">Class 1</a></li>
-            <li><a href="#class2" data-toggle="tab">Class 2</a></li>
-            <li><a href="#combined" data-toggle="tab">Combined</a></li>
-        </ul>
-        <div class="tab-content">
+                <h2>HLA Proteins</h2>
+                <ul class="nav nav-tabs">
+                    <li class="active"><a href="#class1" data-toggle="tab">Class 1</a></li>
+                    <li><a href="#class2" data-toggle="tab">Class 2</a></li>
+                    <li><a href="#combined" data-toggle="tab">Combined</a></li>
+                </ul>
+                <div class="tab-content">
 
-            <!-- Class I Tab -->
-            <div class="tab-pane fade in active" id="class1">
-                <div id="numberOfProteins_classI" style=" height:400px;"></div>
-            </div>
+                    <!-- Class I Tab -->
+                    <div class="tab-pane fade in active" id="class1">
+                        <div id="numberOfProteins_classI" style=" height:400px;"></div>
+                    </div>
 
-            <!-- Class 2 Tab -->
-            <div class="tab-pane fade" id="class2">
-                <div id="numberOfProteins_classII" style=" height:400px;"></div>
-            </div>
+                    <!-- Class 2 Tab -->
+                    <div class="tab-pane fade" id="class2">
+                        <div id="numberOfProteins_classII" style=" height:400px;"></div>
+                    </div>
 
-            <!-- combined -->
-            <div class="tab-pane fade" id="combined">
-                <div id="numberOfProteins_combined" style="height:400px;"></div>
-            </div>
-        </div><!-- tab content -->
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-md-10 col-md-offset-1">
-
-        <ul class="nav nav-tabs">
-            <li class="active"><a href="#pep_class1" data-toggle="tab">Class 1</a></li>
-            <li><a href="#pep_class2" data-toggle="tab">Class 2</a></li>
-        </ul>
-        <div class="tab-content">
-
-            <!-- Class I Tab -->
-            <div class="tab-pane fade in active" id="pep_class1">
-                <div id="numberOfPep_classI" style=" height:400px;"></div>
-            </div>
-
-            <!-- Class 2 Tab -->
-            <div class="tab-pane fade" id="pep_class2">
-                <div id="numberOfPep_classII" style=" height:400px;"></div>
-            </div>
-        </div><!-- tab content -->
+                    <!-- combined -->
+                    <div class="tab-pane fade" id="combined">
+                        <div id="numberOfProteins_combined" style="height:400px;"></div>
+                    </div>
+                </div><!-- tab content -->
             </div>
         </div>
 
         <div class="row">
             <div class="col-md-10 col-md-offset-1">
-        <table id="example" class="table table-striped table-bordered" cellspacing="0" width="100%">
-            <thead>
-            <tr>
-                <th>Source ID</th>
-                <th>Patient ID</th>
-                <th>Histology</th>
-                <th>Dignity</th>
-            </tr>
-            </thead>
-        </table>
-    </div>
+                <h2>HLA Peptides</h2>
+                <ul class="nav nav-tabs">
+                    <li class="active"><a href="#pep_class1" data-toggle="tab">Class 1</a></li>
+                    <li><a href="#pep_class2" data-toggle="tab">Class 2</a></li>
+                </ul>
+                <div class="tab-content">
+
+                    <!-- Class I Tab -->
+                    <div class="tab-pane fade in active" id="pep_class1">
+                        <div id="numberOfPep_classI" style=" height:400px;"></div>
+                    </div>
+
+                    <!-- Class 2 Tab -->
+                    <div class="tab-pane fade" id="pep_class2">
+                        <div id="numberOfPep_classII" style=" height:400px;"></div>
+                    </div>
+                </div><!-- tab content -->
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-10 col-md-offset-1">
+                <h2>Sources</h2>
+                <table id="example" class="table table-striped table-bordered" cellspacing="0" width="100%">
+                    <thead>
+                    <tr>
+                        <th>Source ID</th>
+                        <th>Patient ID</th>
+                        <th>Histology</th>
+                        <th>Dignity</th>
+                    </tr>
+                    </thead>
+                </table>
+            </div>
         </div>
     </div>
 
@@ -137,7 +146,8 @@
             document.getElementById("source_stat").innerHTML =${sources}.
             length;
 
-        });;
+        });
+        ;
         // Tissues specific proteins
         // Class I
         $(document).ready(function () {
@@ -150,7 +160,7 @@
                     enabled: false
                 },
                 title: {
-                    text: 'Tissue specific class I Proteins'
+                    text: '${organ}' + ' specific HLA I Proteins'
                 },
                 xAxis: {
                     type: []
@@ -183,7 +193,7 @@
 
             protein_stats = ${protein_stats_classI};
             var series = {
-                name: ["Number of Proteins"],
+                name: ["Number of Sources"],
                 data: [],
                 showInLegend: false
             };
@@ -212,7 +222,7 @@
                     enabled: false
                 },
                 title: {
-                    text: 'Tissue specific class II Proteins'
+                    text: '${organ}' + ' specific HLA II Proteins'
                 },
                 xAxis: {
                     categories: []
@@ -245,7 +255,7 @@
 
             protein_stats = ${protein_stats_classII};
             var series = {
-                name: ["Number of Proteins"],
+                name: ["Number of Sources"],
                 data: [],
                 showInLegend: false
             };
@@ -273,7 +283,7 @@
                     enabled: false
                 },
                 title: {
-                    text: 'Tissue specific class I and II Proteins'
+                    text: '${organ}' + ' specific HLA I and II Proteins'
                 },
                 xAxis: {
                     categories: []
@@ -306,7 +316,7 @@
 
             protein_stats = ${protein_stats_combined};
             var series = {
-                name: ["Number of Proteins"],
+                name: ["Number of Sources"],
                 data: [],
                 showInLegend: false
             };
@@ -336,7 +346,7 @@
                     enabled: false
                 },
                 title: {
-                    text: 'Tissue specific class I Peptides'
+                    text: '${organ}' + ' specific HLA I Peptides'
                 },
                 xAxis: {
                     type: []
@@ -369,7 +379,7 @@
 
             peptide_stats = ${peptide_stats_classI};
             var series = {
-                name: ["Number of Peptides"],
+                name: ["Number of Sources"],
                 data: [],
                 showInLegend: false
             };
@@ -398,7 +408,7 @@
                     enabled: false
                 },
                 title: {
-                    text: 'Tissue specific class II Peptides'
+                    text: '${organ}' + ' specific HLA II Peptides'
                 },
                 xAxis: {
                     type: []
@@ -431,7 +441,7 @@
 
             peptide_stats = ${peptide_stats_classII};
             var series = {
-                name: ["Number of Peptides"],
+                name: ["Number of Sources"],
                 data: [],
                 showInLegend: false
             };
@@ -448,8 +458,6 @@
 
             $('#numberOfPep_classII').highcharts(options);
         });
-
-
 
 
     </script>
