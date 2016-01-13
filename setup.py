@@ -22,11 +22,13 @@ requires = [
     'pyramid_tm',
     'simplejson',
     'numpy'
+    'webtest',
+    'mock'
     ]
 
-setup(name='HLA_Ligand_Atlas',
+setup(name='ligando',
       version='0.1',
-      description='HLA_Ligand_Atlas',
+      description='ligando',
       long_description=README + '\n\n' + CHANGES,
       classifiers=[
         "Programming Language :: Python",

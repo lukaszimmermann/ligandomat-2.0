@@ -12,7 +12,7 @@
 
         <div class="row">
             <div class="col-md-6 col-md-offset-1">
-                <h3>General Information</h3>
+                <h2>General Information</h2>
                 <table class="table table-striped table-bordered">
                     <tr>
                         <td nowrap>Gene name</td>
@@ -39,7 +39,7 @@
 
 
             <div class="col-md-4">
-                <h3>Database Information</h3>
+                <h2>Database</h2>
                 <table class="table table-striped table-bordered">
                     <tr>
                         <td>Peptides</td>
@@ -55,6 +55,7 @@
 
         <div class="row">
             <div class="col-md-10 col-md-offset-1">
+                <h2>Graphs</h2>
                 <ul class="nav nav-tabs">
                     <li class="active"><a href="#peptidemotif" data-toggle="tab">Peptide-binding motif</a></li>
                     <li><a href="#tissuepiechart" data-toggle="tab">Distribution of tissues</a></li>
@@ -82,6 +83,7 @@
         </div>
         <div class="row">
             <div class="col-md-10 col-md-offset-1">
+                <h2>Organs</h2>
                 <table id="example" class="table table-striped table-bordered">
                     <thead>
                     <tr>
@@ -168,6 +170,7 @@
 
 
         //DataTable with sources
+        //TODO: fix links!
         $(document).ready(function () {
             // create dataTable
             $('#example').dataTable({
@@ -206,9 +209,9 @@
             document.getElementById("source_stat").innerHTML =${sources}.length;
 
             // set the corresponding seqlogo
-            document.getElementById("seqlogo").src = "${request.static_url("ligando:static/seqlogo/" +hla.replace(":", "") + ".png")}";
+            document.getElementById("seqlogo").src = "${request.static_url("ligando:static/seqlogo/" +hla.replace(":", "").replace("*","_") + ".png")}";
 
-        });
+        });;
 
     </script>
 
