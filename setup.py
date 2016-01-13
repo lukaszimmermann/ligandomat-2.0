@@ -20,7 +20,8 @@ requires = [
     'zope.sqlalchemy',
     'waitress',
     'pyramid_tm',
-    'simplejson'
+    'simplejson',
+    'numpy'
     ]
 
 setup(name='HLA_Ligand_Atlas',
