@@ -20,6 +20,10 @@ requires = [
     'zope.sqlalchemy',
     'waitress',
     'pyramid_tm',
+    'simplejson',
+    'numpy',
+    'webtest',
+    'mock'
     ]
 
 setup(name='ligando',
