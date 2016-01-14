@@ -3,7 +3,7 @@
  *
  * Author:   Torstein Honsi
  * Licence:  MIT
- * Version:  1.3.6
+ * Version:  1.3.7
  */
 /*global Highcharts, window, document, Blob */
 (function (Highcharts) {
@@ -11,6 +11,7 @@
     'use strict';
 
     var each = Highcharts.each,
+        pick = Highcharts.pick,
         downloadAttrSupported = document.createElement('a').download !== undefined;
 
     Highcharts.setOptions({
@@ -33,12 +34,13 @@
             names = [],
             i,
             x,
+            xTitle = xAxis.options.title && xAxis.options.title.text,
 
-        // Options
+            // Options
             dateFormat = options.dateFormat || '%Y-%m-%d %H:%M:%S',
             columnHeaderFormatter = options.columnHeaderFormatter || function (series, key, keyLength) {
-                    return series.name + (keyLength > 1 ? ' (' + key + ')' : '');
-                };
+                return series.name + (keyLength > 1 ? ' ('+ key + ')' : '');
+            };
 
         // Loop the series and index values
         i = 0;
@@ -47,7 +49,13 @@
                 pointArrayMap = keys || series.pointArrayMap || ['y'],
                 valueCount = pointArrayMap.length,
                 requireSorting = series.requireSorting,
+                categoryMap = {},
                 j;
+
+            // Map the categories for value axes
+            each(pointArrayMap, function (prop) {
+                categoryMap[prop] = (series[prop + 'Axis'] && series[prop + 'Axis'].categories) || [];
+            });
 
             if (series.options.includeInCSVExport !== false && series.visible !== false) { // #55
                 j = 0;
@@ -57,7 +65,9 @@
                 }
 
                 each(series.points, function (point, pIdx) {
-                    var key = requireSorting ? point.x : pIdx;
+                    var key = requireSorting ? point.x : pIdx,
+                        prop,
+                        val;
 
                     j = 0;
 
@@ -72,7 +82,9 @@
                     }
 
                     while (j < valueCount) {
-                        rows[key][i + j] = point[pointArrayMap[j]];
+                        prop = pointArrayMap[j]; // y, z etc
+                        val = point[prop];
+                        rows[key][i + j] = pick(categoryMap[prop][val], val); // Pick a Y axis category if present
                         j = j + 1;
                     }
 
@@ -93,7 +105,10 @@
         });
 
         // Add header row
-        dataRows = [[xAxis.isDatetimeAxis ? 'DateTime' : 'Category'].concat(names)];
+        if (!xTitle) {
+            xTitle = xAxis.isDatetimeAxis ? 'DateTime' : 'Category';
+        }
+        dataRows = [[xTitle].concat(names)];
 
         // Transform the rows to CSV
         each(rowArr, function (row) {
@@ -103,7 +118,7 @@
                 if (xAxis.isDatetimeAxis) {
                     category = Highcharts.dateFormat(dateFormat, row.x);
                 } else if (xAxis.categories) {
-                    category = Highcharts.pick(xAxis.names[row.x], xAxis.categories[row.x], row.x)
+                    category = pick(xAxis.names[row.x], xAxis.categories[row.x], row.x)
                 } else {
                     category = row.x;
                 }
@@ -205,8 +220,14 @@
             name = 'chart';
         }
 
+        // MS specific. Check this first because of bug with Edge (#76)
+        if (window.Blob && window.navigator.msSaveOrOpenBlob) {
+            // Falls to msSaveOrOpenBlob if download attribute is not supported
+            blobObject = new Blob([content]);
+            window.navigator.msSaveOrOpenBlob(blobObject, name + '.' + extension);
+
         // Download attribute supported
-        if (downloadAttrSupported) {
+        } else if (downloadAttrSupported) {
             a = document.createElement('a');
             a.href = href;
             a.target = '_blank';
@@ -214,11 +235,6 @@
             document.body.appendChild(a);
             a.click();
             a.remove();
-
-        } else if (window.Blob && window.navigator.msSaveOrOpenBlob) {
-            // Falls to msSaveOrOpenBlob if download attribute is not supported
-            blobObject = new Blob([content]);
-            window.navigator.msSaveOrOpenBlob(blobObject, name + '.' + extension);
 
         } else {
             // Fall back to server side handling
@@ -258,7 +274,7 @@
                 '</head><body>' +
                 this.getTable(true) +
                 '</body></html>',
-            base64 = function (s) {
+            base64 = function (s) { 
                 return window.btoa(unescape(encodeURIComponent(s))); // #50
             };
         getContent(
@@ -277,14 +293,10 @@
     if (Highcharts.getOptions().exporting) {
         Highcharts.getOptions().exporting.buttons.contextButton.menuItems.push({
             textKey: 'downloadCSV',
-            onclick: function () {
-                this.downloadCSV();
-            }
+            onclick: function () { this.downloadCSV(); }
         }, {
             textKey: 'downloadXLS',
-            onclick: function () {
-                this.downloadXLS();
-            }
+            onclick: function () { this.downloadXLS(); }
         });
     }
 
