@@ -34,12 +34,12 @@ def tissue_protein_count_creater():
 
     # calculate for each protein on which tissue they occure
     query = DBSession.query(func.group_concat(Source.organ.distinct()).label('sources'),
-                            Protein.protein_id.label("protein_protein_id"), MsRun.antibody_set.label("antibody"))
+                            Protein.protein_id.label("protein_protein_id"), func.group_concat(MsRun.antibody_set.distinct()).label("antibody"))
     query = query.join(MsRun)
     query = query.join(SpectrumHit)
     query = query.join(t_spectrum_protein_map)
     query = query.join(Protein)
-    query = query.filter(func.find_in_set("W6/32", MsRun.antibody_set))
+    query = query.filter( MsRun.antibody_set == "W6/32")
 
     query = query.group_by(Protein.protein_id)
     protein_tissue_group_concat = query.all()
@@ -78,7 +78,7 @@ def tissue_protein_count_creater():
 
     # calculate for each protein on which tissue they occure
     query = DBSession.query(func.group_concat(Source.organ.distinct()).label('sources'),
-                            Protein.protein_id.label("protein_protein_id"), MsRun.antibody_set.label("antibody"))
+                            Protein.protein_id.label("protein_protein_id"), func.group_concat(MsRun.antibody_set.distinct()).label("antibody"))
     query = query.join(MsRun)
     query = query.join(SpectrumHit)
     query = query.join(t_spectrum_protein_map)
@@ -114,7 +114,8 @@ def tissue_protein_count_creater():
                 for row in insert:
                     result.append(dict(zip(['source_count', 'protein_protein_id', 'tissue', "hla_class"], row)))
     # inserting
-    Tissue_protein_count.__table__.insert().execute(result)
+    if len(result)>0:
+        Tissue_protein_count.__table__.insert().execute(result)
 
     print str(len(result)) + " rows added into Tissue_protein_count class II"
 
@@ -124,7 +125,7 @@ def tissue_protein_count_creater():
 
     # calculate for each protein on which tissue they occure
     query = DBSession.query(func.group_concat(Source.organ.distinct()).label('sources'),
-                            Protein.protein_id.label("protein_protein_id"), MsRun.antibody_set.label("antibody"))
+                            Protein.protein_id.label("protein_protein_id"), func.group_concat(MsRun.antibody_set.distinct()).label("antibody"))
     query = query.join(MsRun)
     query = query.join(SpectrumHit)
     query = query.join(t_spectrum_protein_map)
@@ -178,7 +179,7 @@ def tissue_specific_peptides_creater():
 
     # calculate for each peptide on which tissue they occure
     query = DBSession.query(func.group_concat(Source.organ.distinct()).label('sources'),
-                            SpectrumHit.sequence.label("spectrum_hit_sequence"), MsRun.antibody_set.label("antibody"))
+                            SpectrumHit.sequence.label("spectrum_hit_sequence"), func.group_concat(MsRun.antibody_set.distinct()).label("antibody"))
     query = query.join(MsRun)
     query = query.join(SpectrumHit)
     query = query.filter(func.find_in_set("W6/32", MsRun.antibody_set))
@@ -219,7 +220,7 @@ def tissue_specific_peptides_creater():
 
     # calculate for each peptide on which tissue they occure
     query = DBSession.query(func.group_concat(Source.organ.distinct()).label('sources'),
-                            SpectrumHit.sequence.label("spectrum_hit_sequence"), MsRun.antibody_set.label("antibody"))
+                            SpectrumHit.sequence.label("spectrum_hit_sequence"), func.group_concat(MsRun.antibody_set.distinct()).label("antibody"))
     query = query.join(MsRun)
     query = query.join(SpectrumHit)
     query = query.filter(func.find_in_set("Tue39", MsRun.antibody_set))
@@ -252,7 +253,8 @@ def tissue_specific_peptides_creater():
                 for row in insert:
                     result.append(dict(zip(['source_count', 'spectrum_hit_sequence', 'tissue', "hla_class"], row)))
     # inserting
-    Tissue_specific_peptides.__table__.insert().execute(result)
+    if len(result)>0:
+        Tissue_specific_peptides.__table__.insert().execute(result)
 
     print str(len(result)) + " rows added into Tissue_peptide_count class II"
 
@@ -268,7 +270,7 @@ def HLA_statistics_creater():
     # TODO: Maybe peptiderun should be used instead of Spectrum_hit
     # TODO: query actual binding peptide count
     query = DBSession.query(
-            HlaType.hla_type_id.label("hla_type_hla_types_id"),
+            HlaType.hla_type_id.label("hla_type_hla_type_id"),
     func.count(Source.source_id.distinct()).label("sample_count"),
                             func.count(SpectrumHit.sequence.distinct()).label("peptide_count"),
                             func.count(SpectrumHit.sequence.distinct()).label("binding_peptide_count")
@@ -302,5 +304,5 @@ def sequence_extractor():
 
 #HLA_statistics_creater()
 
-# tissue_specific_peptides_creater()
-# tissue_protein_count_creater()
+#tissue_specific_peptides_creater()
+#tissue_protein_count_creater()

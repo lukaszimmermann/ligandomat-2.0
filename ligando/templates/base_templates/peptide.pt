@@ -20,19 +20,19 @@
             </div>
             <div class="col-md-10 col-md-offset-1">
                 <img id="heart" width="60px" src="../static/images/herz_cut.svg">
-                <img id="brain" width="60px" style="opacity: 0.3" src="../static/images/herz_cut.svg">
-                <img id="spleen" width="60px" src="../static/images/herz_cut.svg">
-                <img id="breast" width="60px" style="opacity: 0.3" src="../static/images/herz_cut.svg">
-                <img id="uterus" width="60px" src="../static/images/herz_cut.svg">
-                <img id="prostate" width="60px" src="../static/images/herz_cut.svg">
-                <img id="lung" width="60px" style="opacity: 0.3" src="../static/images/herz_cut.svg">
-                <img id="kidney" width="60px" src="../static/images/herz_cut.svg">
-                <img id="bladder" width="60px" src="../static/images/herz_cut.svg">
-                <img id="liver" width="60px" style="opacity: 0.3" src="../static/images/herz_cut.svg">
-                <img id="skin" width="60px" src="../static/images/herz_cut.svg">
-                <img id="stomach" width="60px" src="../static/images/herz_cut.svg">
-                <img id="pancreas" width="60px" style="opacity: 0.3" src="../static/images/herz_cut.svg">
-                <img id="thyroid" width="60px" style="opacity: 0.3" src="../static/images/herz_cut.svg">
+                <img id="brain" width="60px" style="opacity: 0.3" src="../static/images/hirn Kopie_cut.svg">
+                <img id="spleen" width="60px" src="../static/images/milz Kopie_cut.svg">
+                <img id="breast" width="60px" style="opacity: 0.3" src="../static/images/brust Kopie_cut.svg">
+                <img id="uterus" width="60px" src="../static/images/uterus Kopie_cut.svg">
+                <img id="prostate" width="60px" src="../static/images/prostata_hoden Kopie_cut.svg">
+                <img id="lung" width="60px" style="opacity: 0.3" src="../static/images/lungen Kopie_cut.svg">
+                <img id="kidney" width="60px" src="../static/images/niere Kopie_cut.svg">
+                <img id="bladder" width="60px" src="../static/images/blase Kopie_cut.svg">
+                <img id="liver" width="60px" style="opacity: 0.3" src="../static/images/Leber Kopie_cut.svg">
+                <img id="skin" width="60px" src="../static/images/Haut Kopie_cut.svg">
+                <img id="stomach" width="60px" src="../static/images/magen Kopie_cut.svg">
+                <img id="pancreas" width="60px" style="opacity: 0.3" src="../static/images/pancreas Kopie_cut.svg">
+                <img id="thyroid" width="60px" style="opacity: 0.3" src="../static/images/schilddrüse Kopie_cut.svg">
 
             </div>
         </div>
