@@ -9,7 +9,7 @@ with open(os.path.join(here, 'CHANGES.txt')) as f:
     CHANGES = f.read()
 
 
-
+test = "test"
 requires = [
     'pyramid',
     'pyramid_chameleon',
@@ -27,7 +27,7 @@ requires = [
     ]
 
 setup(name='ligando',
-      version='0.1',
+      version='0.0',
       description='ligando',
       long_description=README + '\n\n' + CHANGES,
       classifiers=[
@@ -36,14 +36,14 @@ setup(name='ligando',
         "Topic :: Internet :: WWW/HTTP",
         "Topic :: Internet :: WWW/HTTP :: WSGI :: Application",
         ],
-      author='Linus Backert',
-      author_email='linus.backert@uni-tuebingen.de',
+      author='',
+      author_email='',
       url='',
       keywords='web wsgi bfg pylons pyramid',
       packages=find_packages(),
       include_package_data=True,
       zip_safe=False,
-      test_suite='HLA_Ligand_Atlas',
+      test_suite='ligando',
       install_requires=requires,
       entry_points="""\
       [paste.app_factory]
