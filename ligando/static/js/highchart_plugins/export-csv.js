@@ -35,6 +35,7 @@
             i,
             x,
             xTitle = xAxis.options.title && xAxis.options.title.text,
+            source = this.options.exporting.chartOptions.subtitle && this.options.exporting.chartOptions.subtitle.text,
 
             // Options
             dateFormat = options.dateFormat || '%Y-%m-%d %H:%M:%S',
@@ -129,6 +130,12 @@
             dataRows.push(row);
         });
 
+        // Add data source to csv file
+        if(source) {
+            // add one empty row before source
+            dataRows.push([]);
+            dataRows.push([source]);
+            }
         return dataRows;
     };
 
