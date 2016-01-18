@@ -10,7 +10,7 @@
     <title>HLA Ligand Atlas</title>
 
     <!-- Latest compiled and minified Bootswatch Theme -->
-    <link rel="stylesheet" type="text/css" href="${request.static_url('ligando:static/css/themes/bootstrap.min.css')}">
+    <link rel="stylesheet" type="text/css" href="${request.static_url('ligando:static/css/less/bootstrap-theme.css')}">
 
     <!-- Glyphicon Stylesheet not included in Bootswatch Theme -->
     <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css" crossorigin="anonymous">

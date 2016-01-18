@@ -2009,7 +2009,7 @@
 		if(options.sequence) {
 			
 			specinfo += '<div>';
-			specinfo += '<span style="font-weight:bold; color:#8B0000;">'+getModifiedSequence(options)+'</span>';
+			specinfo += '<span style="font-weight:bold; color:#1d71b8;">'+getModifiedSequence(options)+'</span>';
 
 			var neutralMass = 0;
 			
@@ -2180,7 +2180,7 @@
 		
 		// reset zoom option
 		myContent += '<nobr> ';
-		myContent += '<span style="width:100%; font-size:8pt; margin-top:5px; color:sienna;">Click and drag in the plot to zoom</span> ';
+		myContent += '<span style="width:100%; font-size:8pt; margin-top:5px; color:#1d71b8;">Click and drag in the plot to zoom</span> ';
 		myContent += 'X:<input id="'+getElementId(container, elementIds.zoom_x)+'" type="checkbox" value="X" checked="checked"/> ';
 		myContent += '&nbsp;Y:<input id="'+getElementId(container, elementIds.zoom_y)+'" type="checkbox" value="Y" /> ';
 		myContent += '&nbsp;<input id="'+getElementId(container, elementIds.resetZoom)+'" type="button" value="Zoom Out" /> ';
@@ -2247,9 +2247,9 @@
 		myTable += '<!-- z ions --> ';
         myTable += addIonToOptionsTable('z', defaultChargeStates, defaultSelectedIons['z']);
 		myTable += '<br/> ';
-		myTable += '<span id="'+getElementId(container, elementIds.deselectIonsLink)+'" style="font-size:8pt;text-decoration: underline; color:sienna;cursor:pointer;">[Deselect All]</span> ';
+		myTable += '<span id="'+getElementId(container, elementIds.deselectIonsLink)+'" style="font-size:8pt;text-decoration: underline; color:#1d71b8;cursor:pointer;">[Deselect All]</span> ';
 		myTable += '</div> ';
-		
+
 		myTable += '<span style="font-weight: bold;">Neutral Loss:</span> ';
 		myTable += '<div id="'+getElementId(container, elementIds.nl_choice)+'"> ';
         var peptide = container.data("options").peptide;
