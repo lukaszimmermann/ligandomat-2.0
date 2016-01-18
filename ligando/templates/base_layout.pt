@@ -127,7 +127,7 @@
     <main>
         <div id="content_div"  metal:define-slot="content"></div>
     </main>
-    <footer class="navbar navbar-default navbar-fixed-bottom">
+    <footer class="navbar navbar-default">
         <div class="container">
             <div class="row">
                 <br>
