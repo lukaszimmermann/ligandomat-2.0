@@ -148,6 +148,9 @@
 
         });
         ;
+
+        // Date of visit
+        var date = new Date();
         // Tissues specific proteins
         // Class I
         $(document).ready(function () {
@@ -161,6 +164,20 @@
                 },
                 title: {
                     text: '${organ}' + ' specific HLA I Proteins'
+                },
+                exporting: {
+                    chartOptions: {
+                         title: {
+                            text: '${organ}' + ' specific HLA I Proteins'
+                        },
+                        subtitle: {
+                            text: "Source: " + document.URL + ", " + date.toUTCString() ,
+                            align: "left",
+                            verticalAlign: "bottom",
+                            y: 10
+                        }
+                    },
+                    filename: '${organ}' + ' specific HLA I Proteins'
                 },
                 xAxis: {
                     type: []
@@ -224,6 +241,20 @@
                 title: {
                     text: '${organ}' + ' specific HLA II Proteins'
                 },
+                   exporting: {
+                    chartOptions: {
+                         title: {
+                            text: '${organ}' + ' specific HLA II Proteins'
+                        },
+                        subtitle: {
+                            text: "Source: " + document.URL + ", " + date.toUTCString() ,
+                            align: "left",
+                            verticalAlign: "bottom",
+                            y: 10
+                        }
+                    },
+                    filename: '${organ}' + ' specific HLA II Proteins'
+                },
                 xAxis: {
                     categories: []
                 },
@@ -284,6 +315,20 @@
                 },
                 title: {
                     text: '${organ}' + ' specific HLA I and II Proteins'
+                },
+                exporting: {
+                    chartOptions: {
+                         title: {
+                            text: '${organ}' + ' specific HLA I and II Proteins'
+                        },
+                        subtitle: {
+                            text: "Source: " + document.URL + ", " + date.toUTCString() ,
+                            align: "left",
+                            verticalAlign: "bottom",
+                            y: 10
+                        }
+                    },
+                    filename: '${organ}' + ' specific HLA I and II Proteins'
                 },
                 xAxis: {
                     categories: []
@@ -348,6 +393,20 @@
                 title: {
                     text: '${organ}' + ' specific HLA I Peptides'
                 },
+                  exporting: {
+                    chartOptions: {
+                         title: {
+                            text: '${organ}' + ' specific HLA I Peptides'
+                        },
+                        subtitle: {
+                            text: "Source: " + document.URL + ", " + date.toUTCString() ,
+                            align: "left",
+                            verticalAlign: "bottom",
+                            y: 10
+                        }
+                    },
+                    filename: '${organ}' + ' specific HLA I Peptides'
+                },
                 xAxis: {
                     type: []
                 },
@@ -409,6 +468,20 @@
                 },
                 title: {
                     text: '${organ}' + ' specific HLA II Peptides'
+                },
+                exporting: {
+                    chartOptions: {
+                         title: {
+                            text: '${organ}' + ' specific HLA II Peptides'
+                        },
+                        subtitle: {
+                            text: "Source: " + document.URL + ", " + date.toUTCString() ,
+                            align: "left",
+                            verticalAlign: "bottom",
+                            y: 10
+                        }
+                    },
+                    filename: '${organ}' + ' specific HLA II Peptides'
                 },
                 xAxis: {
                     type: []

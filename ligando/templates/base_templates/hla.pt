@@ -116,7 +116,7 @@
         });
 
         //tissue pie chart
-        var d = new Date();
+        var date = new Date();
         $(document).ready(function () {
             $('#tissue_chart').highcharts({
                 // var options =  {
@@ -142,7 +142,7 @@
                             text: 'Distribution of tissues for HLA-${hla}'
                         },
                         subtitle: {
-                            text: "Source: " + document.URL + ", " + d.toUTCString() ,
+                            text: "Source: " + document.URL + ", " + date.toUTCString() ,
                             align: "left",
                             verticalAlign: "bottom",
                             y: 10
