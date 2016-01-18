@@ -159,7 +159,8 @@ def hla_page(request):
         # : --> %3A
         sources = json.dumps(query.all())
 
-        query = DBSession.query(HLA_statistics.peptide_count.label("pep_count"))
+        query = DBSession.query(HLA_statistics.peptide_count.label("pep_count"),HLA_statistics.binding_peptide_count,
+                                HLA_statistics.sample_count)
         query = query.join(HlaType)
         query = query.filter(HlaType.hla_string == request.matchdict["hla"])
         statistic = json.dumps(query.all())

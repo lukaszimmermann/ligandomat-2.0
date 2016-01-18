@@ -9,7 +9,7 @@
 
 <body>
 <metal:block fill-slot="content">
-    <div class="main_wrapper container" >
+    <div class="container" >
         <div class="row">
             <div class="col-md-10 col-md-offset-1">
                 <h1>Search Results</h1>
@@ -112,12 +112,17 @@
                     columns: [
                         { data: tables[i],
                             "render": function ( data, type, row ) {
-                                return "<a class='nostylelink'  href= '/"+tables[i]+"/"+data + "'>"+data + "</a>" ;
+                                if(tables[i]=='protein'){
+                                    return "<a class='nostylelink'  href= '/" + tables[i] + "/" + data + "$uniprot'>" + data + "</a>";
+                                }else {
+                                    return "<a class='nostylelink'  href= '/" + tables[i] + "/" + data + "'>" + data + "</a>";
+                                }
                             }}
                     ]
                 } );
                 if(autocomplete_dict[tables[i]].length > 0) {
-                    $('#'+tables[i]).css("background-color","rgb(180,160,105)");
+                    $('#'+tables[i]).css("opacity", "1");
+                    //$('#'+tables[i]).css("background-color","rgb(180,160,105)");
                 }else{
                     $('#'+tables[i]).css("opacity", "0.6");
                 }
