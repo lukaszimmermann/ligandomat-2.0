@@ -126,16 +126,11 @@
     <footer class="navbar navbar-default">
         <div class="container">
             <div class="row">
-                <br>
-            </div>
-            <div class="row">
                 <div class="col-md-12 text-center">
-                    <p>© 2014-<span id="currentYear"></span>
+                    © 2014-<span id="currentYear"></span>
                         | <a class="nostylelink" href="http://www.uni-tuebingen.de">University of Tübingen</a>
                         | <a href="/contact">Contact</a> |
                         <a href="http://www.uni-tuebingen.de/impressum.html">Impressum</a>
-                    </p>
-
                 </div>
             </div>
         </div>
