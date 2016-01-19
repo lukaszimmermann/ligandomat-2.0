@@ -25,6 +25,10 @@ main {
     margin-top: -15px;
 }
 
+.navbar-title {
+    font-size: 18px;
+}
+
 /*.footer {
   position: absolute;
   bottom: 0;
