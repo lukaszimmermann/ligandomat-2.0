@@ -19,6 +19,12 @@ main {
     /* Space for footer */
 }
 
+.navbar-brand img {
+    height: 54px;
+    width: auto;
+    margin-top: -15px;
+}
+
 /*.footer {
   position: absolute;
   bottom: 0;
