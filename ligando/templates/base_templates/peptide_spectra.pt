@@ -12,7 +12,14 @@
 
 
     <div class="container">
-
+        <div class="row">
+            <div class="col-md-10 col-md-offset-1">
+                <ol class="breadcrumb">
+                    <li><a href="/">Home</a></li>
+                    <li>Peptide Spectra</li>
+                </ol>
+            </div>
+        </div>
         <div class="row">
             <div class="col-md-10 col-md-offset-1 text-center">
                 <div id="lorikeet"></div>
@@ -21,40 +28,40 @@
     </div>
 
 
-<script src="${request.static_url('ligando:static/js/spectra_viewer/jquery.flot.js')}"></script>
+    <script src="${request.static_url('ligando:static/js/spectra_viewer/jquery.flot.js')}"></script>
     <script src="${request.static_url('ligando:static/js/spectra_viewer/jquery.flot.selection.js')}"></script>
     <script src="${request.static_url('ligando:static/js/spectra_viewer/specview.js')}"></script>
     <script src="${request.static_url('ligando:static/js/spectra_viewer/peptide.js')}"></script>
     <script src="${request.static_url('ligando:static/js/spectra_viewer/aminoacid.js')}"></script>
     <script src="${request.static_url('ligando:static/js/spectra_viewer/ion.js')}"></script>
-<script>
+    <script>
 
 
 
-$(document).ready(function () {
-	/* render the spectrum with the given options */
-	$("#lorikeet").specview({sequence: sequence,
-								scanNum: 2441,
-								charge: 2,
-								precursorMz: 1012.1,
-								fileName:'sh_1617_JX_070209p_KO410_run1',
-								//staticMods: staticMods,
-								variableMods: varMods,
-								ntermMod: ntermMod,
-								//ctermMod: ctermMod,
-								peaks: peaks
-								});
-});
-var sequence = "FDSFGDLSSASAIMGNPK";
-var varMods = [];
-// modification index = 14; modification mass = 16.0; modified residue = 'M'
-varMods[0] = {index: 14, modMass: 16.0, aminoAcid: 'M'};
-// mass to be added to the N-terminus
-var ntermMod = 164.07;
-// peaks in the scan: [m/z, intensity] pairs.
-var peaks = ${peaks}["1"];
+        $(document).ready(function () {
+            /* render the spectrum with the given options */
+            $("#lorikeet").specview({sequence: sequence,
+                scanNum: 2441,
+                charge: 2,
+                precursorMz: 1012.1,
+                fileName:'sh_1617_JX_070209p_KO410_run1',
+                //staticMods: staticMods,
+                variableMods: varMods,
+                ntermMod: ntermMod,
+                //ctermMod: ctermMod,
+                peaks: peaks
+            });
+        });
+        var sequence = "FDSFGDLSSASAIMGNPK";
+        var varMods = [];
+        // modification index = 14; modification mass = 16.0; modified residue = 'M'
+        varMods[0] = {index: 14, modMass: 16.0, aminoAcid: 'M'};
+        // mass to be added to the N-terminus
+        var ntermMod = 164.07;
+        // peaks in the scan: [m/z, intensity] pairs.
+        var peaks = ${peaks}["1"];
 
-</script>
+    </script>
 
 </metal:block>
 

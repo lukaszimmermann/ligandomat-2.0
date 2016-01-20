@@ -5,6 +5,15 @@
 
     <div class="container">
         <div class="row">
+            <div class="col-md-10 col-md-offset-1">
+                <ol class="breadcrumb">
+                    <li><a href="/">Home</a></li>
+                    <li>HLA Browser</li>
+                    <li>HLA-${hla}</li>
+                </ol>
+            </div>
+        </div>
+        <div class="row">
             <div class="col-md-10 col-md-offset-1 text-center">
                 <h1 id="title">HLA-${hla}</h1>
             </div>

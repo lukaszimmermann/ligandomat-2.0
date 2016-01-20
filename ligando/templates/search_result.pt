@@ -12,6 +12,15 @@
     <div class="container" >
         <div class="row">
             <div class="col-md-10 col-md-offset-1">
+                <ol class="breadcrumb">
+                    <li><a href="/">Home</a></li>
+                    <li>Search</li>
+                    <li>"${request.params["search_all"]}"</li>
+                </ol>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-10 col-md-offset-1">
                 <h1>Search Results</h1>
                 <div id="placeholder"> <h3>No search results found!</h3> </div>
                 <div id="protein_div" style="float: left" >
