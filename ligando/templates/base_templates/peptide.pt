@@ -10,29 +10,39 @@
     <div class="container">
 
         <div class="row">
+            <div class="col-md-10 col-md-offset-1">
+                <ol class="breadcrumb">
+                    <li><a href="/">Home</a></li>
+                    <li>Peptide</li>
+                    <li>${peptide}</li>
+                </ol>
+            </div>
+        </div>
+
+        <div class="row">
             <div class="col-md-10 col-md-offset-1 text-center">
                 <h1 id="title"></h1>
             </div>
         </div>
         <div class="row">
             <div class="col-md-10 col-md-offset-1">
-                <h3>Tissues</h3>
+                <h1>Tissues</h1>
             </div>
             <div class="col-md-10 col-md-offset-1">
-                <img id="heart" width="60px" src="../static/images/herz_cut.svg">
-                <img id="brain" width="60px" style="opacity: 0.3" src="../static/images/hirn Kopie_cut.svg">
-                <img id="spleen" width="60px" src="../static/images/milz Kopie_cut.svg">
-                <img id="breast" width="60px" style="opacity: 0.3" src="../static/images/brust Kopie_cut.svg">
-                <img id="uterus" width="60px" src="../static/images/uterus Kopie_cut.svg">
-                <img id="prostate" width="60px" src="../static/images/prostata_hoden Kopie_cut.svg">
-                <img id="lung" width="60px" style="opacity: 0.3" src="../static/images/lungen Kopie_cut.svg">
-                <img id="kidney" width="60px" src="../static/images/niere Kopie_cut.svg">
-                <img id="bladder" width="60px" src="../static/images/blase Kopie_cut.svg">
-                <img id="liver" width="60px" style="opacity: 0.3" src="../static/images/Leber Kopie_cut.svg">
-                <img id="skin" width="60px" src="../static/images/Haut Kopie_cut.svg">
-                <img id="stomach" width="60px" src="../static/images/magen Kopie_cut.svg">
-                <img id="pancreas" width="60px" style="opacity: 0.3" src="../static/images/pancreas Kopie_cut.svg">
-                <img id="thyroid" width="60px" style="opacity: 0.3" src="../static/images/schilddrüse Kopie_cut.svg">
+                <img id="heart" width="60px" style="opacity: 0.3" src="../static/images/herz.svg">
+                <img id="brain" width="60px" style="opacity: 0.3" src="../static/images/hirn.svg">
+                <img id="spleen" width="60px" style="opacity: 0.3" src="../static/images/milz.svg">
+                <img id="breast" width="60px" style="opacity: 0.3" src="../static/images/brust.svg">
+                <img id="uterus" width="60px" style="opacity: 0.3" src="../static/images/uterus.svg">
+                <img id="prostate" width="60px" style="opacity: 0.3" src="../static/images/prostata_hoden.svg">
+                <img id="lung" width="60px" style="opacity: 0.3" src="../static/images/lungen.svg">
+                <img id="kidney" width="60px" style="opacity: 0.3" src="../static/images/niere.svg">
+                <img id="bladder" width="60px" style="opacity: 0.3" src="../static/images/blase.svg">
+                <img id="liver" width="60px" style="opacity: 0.3" src="../static/images/leber.svg">
+                <img id="skin" width="60px" style="opacity: 0.3" src="../static/images/haut.svg">
+                <img id="stomach" width="60px" style="opacity: 0.3" src="../static/images/magen.svg">
+                <img id="pancreas" width="60px" style="opacity: 0.3" src="../static/images/pankreas.svg">
+                <img id="thyroid" width="60px" style="opacity: 0.3" src="../static/images/thyroidea.svg">
 
             </div>
         </div>
@@ -40,7 +50,7 @@
 
         <div class="row">
             <div class="col-md-5 col-md-offset-1">
-                <h3>Source Antigen</h3>
+                <h1>Source Antigen</h1>
 
                 <table class="table table-striped table-bordered" id="proteins">
                     <thead>
@@ -60,9 +70,9 @@
                 </table>
 
 
-                <h3>HLA</h3>
+                <h1>HLA</h1>
 
-                <h3>Class 1</h3>
+                <h1>Class 1</h1>
 
                 <div class="row no-gutters">
                     <div class="col-md-4">
@@ -109,14 +119,14 @@
                     </div>
             </div>
 
-                <h3>Class 2</h3>
+                <h1>Class 2</h1>
 
                 <div class="row no-gutters">
                     <div class="col-md-3">
-                        <table class="table table-striped table-bordered" id="hla_class2_DPB">
+                        <table class="table table-striped table-bordered" id="hla_class2_DP">
                             <thead>
                             <tr>
-                                <td>HLA-DPB</td>
+                                <td>HLA-DP</td>
                             </tr>
                             </thead>
                             <tbody>
@@ -126,11 +136,11 @@
                             </tbody>
                         </table>
                     </div>
-                    <div class="col-md-3">
-                        <table class="table table-striped table-bordered" id="hla_class2_DQA">
+                    <div class="col-md-6">
+                        <table class="table table-striped table-bordered" id="hla_class2_DQ">
                             <thead>
                             <tr>
-                                <td>HLA-DQA</td>
+                                <td>HLA-DQ</td>
                             </tr>
                             </thead>
                             <tbody>
@@ -141,20 +151,6 @@
                         </table>
                     </div>
 
-                    <div class="col-md-3">
-                        <table class="table table-striped table-bordered" id="hla_class2_DQB">
-                            <thead>
-                            <tr>
-                                <td>HLA-DQB</td>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr>
-                                <td></td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
                     <div class="col-md-3">
                         <table class="table table-striped table-bordered" id="hla_class2_DRB">
                             <thead>
@@ -174,12 +170,12 @@
         </div>
 
             <div class="col-md-5">
-                <h3>Experimental Evidence</h3>
+                <h1>Experimental Evidence</h1>
                 The peptide was found in ${ms_run_count} MS runs with <a href="/peptide_spectra/${peptide}" >${psms} PSMs</a>.
 
                 <br>
 
-                <h3>Related Information</h3>
+                <h1>Related Information</h1>
                 SYFPEITHI
                 <a href="http://www.syfpeithi.de/"><span class="glyphicon glyphicon-globe"
                                                          aria-hidden="true"></span></a>
@@ -195,6 +191,27 @@
 </div>
 
 <script>
+    // TODO: allow subtissues
+    var organs = ["heart", "brain", "spleen", "breast", "uterus", "prostate", "lung", "kidney", "bladder", "liver", "skin", "stomach", "pancreas", "thyroid"];
+
+    // Set Opacity of the found tissues
+    // TODO: allow subtissues
+    $(document).ready(function(){
+        var found_organs = ${organs};
+        console.log(found_organs);
+        for(var i=0; i < organs.length; i++){
+            for(var j=0; j < found_organs.length; j++){
+                if(organs[i].charAt(0).toUpperCase() + organs[i].slice(1)== found_organs[j]){
+                    console.log(organs[i]);
+                    $('#'+organs[i]).css('opacity', '1');
+                    console.log($('#'+organs[i]));
+                }
+            }
+
+        }
+
+    });
+
 
 
     $(document).ready(function () {
@@ -204,7 +221,7 @@
     $(document).ready(function () {
 // create dataTable
         //"pageLength": 50
-        var class1_length = Math.max(${hla_class1_A}.length, ${hla_class1_B}.length,${hla_class1_C}.length)
+        var class1_length = Math.max(${hla_class1_A}.length, ${hla_class1_B}.length,${hla_class1_C}.length);
 
         //console.log(class1_length);
         var tab = $('#hla_class1_A').DataTable({
@@ -262,57 +279,41 @@
         }
 
 
-        var class2_length = Math.max(${hla_class2_DPB}.length, ${hla_class2_DQA}.length,${hla_class2_DQB}.length,${hla_class2_DRB}.length)
-        var tab = $('#hla_class2_DPB').DataTable({
+        var class2_length = Math.max(${hla_class2_DP}.length, ${hla_class2_DQ}.length,${hla_class2_DRB}.length)
+        var tab = $('#hla_class2_DP').DataTable({
             "paging": false,
             "ordering": false,
             "info": false,
             searching: false,
-            data: ${hla_class2_DPB},
+            data: ${hla_class2_DP},
             columns: [
                 {"render": function (data, type, row) {
                     return "<a class='nostylelink'  href= '/hla/" + data + "'>" + data + "</a>";
                 }}
             ]
         });
-        for (var i = 1; i <= class2_length -${hla_class2_DPB}.length;i++)
+        for (var i = 1; i <= class2_length -${hla_class2_DP}.length;i++)
         {
             tab.row.add(["-"]).draw();
         }
 
-        var tab = $('#hla_class2_DQA').DataTable({
+        var tab = $('#hla_class2_DQ').DataTable({
             "paging": false,
             "ordering": false,
             "info": false,
             searching: false,
-            data: ${hla_class2_DQA},
+            data: ${hla_class2_DQ},
             columns: [
                 {"render": function (data, type, row) {
                     return "<a class='nostylelink'  href= '/hla/" + data + "'>" + data + "</a>";
                 }}
             ]
         });
-        for (var i = 1; i <= class2_length -${hla_class2_DQA}.length;i++)
+        for (var i = 1; i <= class2_length -${hla_class2_DQ}.length;i++)
         {
             tab.row.add(["-"]).draw();
         }
 
-        var tab = $('#hla_class2_DQB').DataTable({
-            "paging": false,
-            "ordering": false,
-            "info": false,
-            searching: false,
-            data: ${hla_class2_DQB},
-            columns: [
-                {"render": function (data, type, row) {
-                    return "<a class='nostylelink'  href= '/hla/" + data + "'>" + data + "</a>";
-                }}
-            ]
-        });
-        for (var i = 1; i <= class2_length -${hla_class2_DQB}.length;i++)
-        {
-            tab.row.add(["-"]).draw();
-        }
 
         var tab = $('#hla_class2_DRB').DataTable({
             "paging": false,
@@ -344,7 +345,7 @@
             columns: [
                 {data: "protein",
                     "render": function (data, type, row) {
-                        return "<a class='nostylelink'  href= '/protein/" + data + "'>" + data + "</a>";
+                        return "<a class='nostylelink'  href= '/protein/" + data +"$uniprot" +  "'>" + data + "</a>";
                     }},
                 {data: "gene_name"},
                 {data: "protein",

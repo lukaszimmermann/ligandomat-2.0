@@ -1,0 +1,308 @@
+<html metal:use-macro="load: ../base_layout.pt">
+<!DOCTYPE html>
+<html lang="${request.locale_name}">
+<head>
+
+
+</head>
+
+<body>
+
+<metal:block fill-slot="content">
+
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-10 col-md-offset-1">
+                <ol class="breadcrumb">
+                  <li><a href="/">Home</a></li>
+                  <li><a href="/tissue_browser">Tissue Browser</a></li>
+                  <li> <a href="/organ/${organ}" class="/organ_hla/${organ}">${organ}</a></li>
+                    <li class="$"> ${hla}</li>
+                </ol>
+            </div>
+            </div>
+        <div class="row">
+            <div class="col-md-9 col-md-offset-1">
+                <h1 style="text-align: center">${organ}</h1>
+            </div>
+
+        <div class="row">
+            <div class="col-md-6 col-md-offset-1">
+
+                <table class="table table-striped table-bordered" style="width: 300px">
+                    <tr>
+                        <td>Peptides:</td>
+                        <td id="pep_stat"></td>
+                    </tr>
+                    <tr>
+                        <td>Number of Samples:</td>
+                        <td id="source_stat"></td>
+                    </tr>
+                </table>
+            </div>
+
+            </div>
+        <div class="row">
+            <div class="col-md-10 col-md-offset-1">
+                <h1>HLA Proteins</h1>
+                <ul class="nav nav-tabs">
+                    <li class="active"><a href="#proteins" data-toggle="tab">${hla}</a></li>
+                </ul>
+                <div class="tab-content">
+
+                    <!-- Class I Tab -->
+                    <div class="tab-pane fade in active" id="proteins">
+                        <div id="numberOfProteins" style=" height:400px;"></div>
+                    </div>
+
+                </div><!-- tab content -->
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-10 col-md-offset-1">
+                <h1>HLA Peptides</h1>
+                <ul class="nav nav-tabs">
+                    <li class="active"><a href="#peptides" data-toggle="tab">${hla}</a></li>
+                </ul>
+                <div class="tab-content">
+
+                    <!-- Class I Tab -->
+                    <div class="tab-pane fade in active" id="peptides">
+                        <div id="numberOfPep" style=" height:400px;"></div>
+                    </div>
+                </div><!-- tab content -->
+            </div>
+        </div>
+
+        <!--?<div class="row">-->
+            <!--?<div class="col-md-10 col-md-offset-1">-->
+                <!--?<h2>Sources</h2>-->
+                <!--?<table id="example" class="table table-striped table-bordered" cellspacing="0" width="100%">-->
+                    <!--?<thead>-->
+                    <!--?<tr>-->
+                        <!--?<th>Source ID</th>-->
+                        <!--?<th>Patient ID</th>-->
+                        <!--?<th>Histology</th>-->
+                        <!--?<th>Dignity</th>-->
+                    <!--?</tr>-->
+                    <!--?</thead>-->
+                <!--?</table>-->
+            <!--?</div>-->
+        <!--?</div>-->
+    </div>
+
+    <script>
+
+
+        /*$(document).ready(function () {
+// create dataTable
+            $('#example').dataTable({
+                "paging": false,
+                "ordering": false,
+                "info": false,
+                searching: false,
+                data: ,
+                columns: [
+                    {
+                        data: "source_id",
+                        "render": function (data, type, row) {
+                            return "<a class='nostylelink'  href= '/source_id/" + data + "'>" + data + "</a>";
+                        }
+                    },
+                    {
+                        data: "patient_id",
+                        "render": function (data, type, row) {
+                            return "<a class='nostylelink'  href= '/source/" + data + "'>" + data + "</a>";
+                        }
+                    },
+                    {
+                        data: "histology",
+                        "render": function (data, type, row) {
+                            return "<a class='nostylelink' href= '/histology/" + data + "'>" + data + "</a>";
+                        }
+                    },
+                    {
+                        data: "dignity",
+                        "render": function (data, type, row) {
+                            return "<a class='nostylelink' href= '/dignity/" + data + "'>" + data + "</a>";
+                        }
+                    }
+                ]
+            });
+        });*/
+        // set statistics
+        $(document).ready(function () {
+            document.getElementById("pep_stat").innerHTML = "<a title='Show all Peptides'  class='nostylelink' href='javascript:post(\x22../peptide_query\x22, {organ: \x22${organ}\x22, hla: \x22${hla}\x22, grouping:\x22peptide\x22}," + ${statistic}[0]["pep_count"] + " )'> " + ${statistic}[0]["pep_count"] + "</a>";
+            document.getElementById("source_stat").innerHTML =${sources}.length;
+
+        });
+        ;
+
+        // Date of visit
+        var date = new Date();
+        // Tissues specific proteins
+        // Class I
+        $(document).ready(function () {
+
+            var options = {
+                chart: {
+                    type: 'column'
+                },
+                credits: {
+                    enabled: false
+                },
+                title: {
+                    text: '${organ}' + ' specific ${hla} Proteins'
+                },
+                exporting: {
+                    chartOptions: {
+                         title: {
+                            text: '${organ}' + ' specific ${hla} Proteins'
+                        },
+                        subtitle: {
+                            text: "Source: " + document.URL + ", " + date.toUTCString() ,
+                            align: "left",
+                            verticalAlign: "bottom",
+                            y: 10
+                        }
+                    },
+                    filename: '${organ}' + ' specific ${hla} Proteins'
+                },
+                xAxis: {
+                    type: []
+                },
+                yAxis: {
+                    title: {
+                        text: 'Number of Sources'
+                    }
+                },
+                plotOptions: {
+                    series: {
+                        cursor: 'pointer',
+                        point: {
+                            events: {
+                                click: function () {
+                                    window.location.href = "/protein/" + this.category + "$geneName";
+                                }
+                            }
+                        }
+                    }
+                },
+                series: [],
+                tooltip: {
+                    formatter: function () {
+                        return '<b>' + this.x +
+                                ' : ' + this.y + '</b>';
+                    }
+                }
+            };
+
+            protein_stats = ${protein_stats};
+            var series = {
+                name: ["Number of Sources"],
+                data: [],
+                showInLegend: false
+            };
+            var categories = [];
+            $.each(protein_stats, function (i, row) {
+                categories.push(row["gene_name"]);
+                //series.name.push(row["gene_name"]+"/"+ row["name"]);
+                series.data.push(parseInt(row["source_count"]));
+
+            });
+            options.series.push(series);
+            options.xAxis.categories = categories;
+
+
+            $('#numberOfProteins').highcharts(options);
+        });
+
+
+        // Tissues specific PEPTIDES
+        // Class I
+        $(document).ready(function () {
+
+            var options = {
+                chart: {
+                    type: 'column'
+                },
+                credits: {
+                    enabled: false
+                },
+                title: {
+                    text: '${organ}' + ' specific ${hla} Peptides'
+                },
+                  exporting: {
+                    chartOptions: {
+                         title: {
+                            text: '${organ}' + ' specific ${hla} Peptides'
+                        },
+                        subtitle: {
+                            text: "Source: " + document.URL + ", " + date.toUTCString() ,
+                            align: "left",
+                            verticalAlign: "bottom",
+                            y: 10
+                        }
+                    },
+                    filename: '${organ}' + ' specific ${hla} Peptides'
+                },
+                xAxis: {
+                    type: []
+                },
+                yAxis: {
+                    title: {
+                        text: 'Number of Sources'
+                    }
+                },
+                plotOptions: {
+                    series: {
+                        cursor: 'pointer',
+                        point: {
+                            events: {
+                                click: function () {
+                                    window.location.href = "/peptide/" + this.category;
+                                }
+                            }
+                        }
+                    }
+                },
+                series: [],
+                tooltip: {
+                    formatter: function () {
+                        return '<b>' + this.x +
+                                ' : ' + this.y + '</b>';
+                    }
+                }
+            };
+
+            peptide_stats = ${peptide_stats};
+            var series = {
+                name: ["Number of Sources"],
+                data: [],
+                showInLegend: false
+            };
+            var categories = [];
+            $.each(peptide_stats, function (i, row) {
+                categories.push(row["peptide_run_sequence"]);
+                //series.name.push(row["gene_name"]+"/"+ row["name"]);
+                series.data.push(parseInt(row["source_count"]));
+
+            });
+            options.series.push(series);
+            options.xAxis.categories = categories;
+
+
+            $('#numberOfPep').highcharts(options);
+        });
+
+
+    </script>
+
+</metal:block>
+
+</body>
+
+</html>
+</html>

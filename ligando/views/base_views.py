@@ -15,7 +15,8 @@ from ligando.models import (
     HlaType,
     t_hla_map,
     SpectrumHit,
-    t_spectrum_protein_map, Tissue_protein_count, Tissue_specific_peptides, HLA_statistics)
+    t_spectrum_protein_map, Tissue_protein_count, Tissue_specific_peptides, HLA_statistics, PeptideRun,
+    t_peptide_run_spectrum_hit_map, Binding_prediction, Tissue_hla_protein_count, Tissue_hla_specific_peptides)
 from ligando.views.view_helper import conn_err_msg, js_list_creator, js_list_creator_dataTables
 
 
@@ -23,8 +24,8 @@ from ligando.views.view_helper import conn_err_msg, js_list_creator, js_list_cre
 def source_page(request):
     try:
         # Catch if there are no peptides!!
-        query = DBSession.query(func.count(SpectrumHit.spectrum_hit_id).label("count_hits"),
-                                func.count(SpectrumHit.sequence.distinct()).label("count_pep"),
+        query = DBSession.query(func.count(PeptideRun.peptide_run_id).label("count_hits"),
+                                func.count(PeptideRun.sequence.distinct()).label("count_pep"),
                                 func.count(Protein.name.distinct()).label("count_prot")
         )
         query = query.join(Source)
@@ -85,8 +86,8 @@ def source_page(request):
 def source_id_page(request):
     try:
         # Catch if there are no peptides!!
-        query = DBSession.query(func.count(SpectrumHit.spectrum_hit_id).label("count_hits"),
-                                func.count(SpectrumHit.sequence.distinct()).label("count_pep"),
+        query = DBSession.query(func.count(PeptideRun.peptide_run_id).label("count_hits"),
+                                func.count(PeptideRun.sequence.distinct()).label("count_pep"),
                                 func.count(Protein.name.distinct()).label("count_prot")
         )
         query = query.join(Source)
@@ -149,7 +150,7 @@ def source_id_page(request):
 
 @view_config(route_name='hla', renderer='../templates/base_templates/hla.pt', request_method="GET")
 def hla_page(request):
-    try:
+    #try:
         query = DBSession.query(Source.organ,Source.source_id, Source.dignity,
                                 Source.histology, Source.patient_id)
         query = query.join(t_hla_map)
@@ -159,7 +160,7 @@ def hla_page(request):
         # : --> %3A
         sources = json.dumps(query.all())
 
-        query = DBSession.query(HLA_statistics.peptide_count.label("pep_count"),HLA_statistics.binding_peptide_count,
+        query = DBSession.query(HLA_statistics.binding_peptide_count,
                                 HLA_statistics.sample_count)
         query = query.join(HlaType)
         query = query.filter(HlaType.hla_string == request.matchdict["hla"])
@@ -170,36 +171,22 @@ def hla_page(request):
         organ_chart = get_chart_data(complete_sources)
 
 
-        # extract gene information
-        query = DBSession.query(Protein.name,
-                                Protein.organism,
-                                Protein.description,
-                                Protein.sequence,
-                                Protein.gene_name)
-
-        descriptor = request.matchdict["hla"].split("*")
-        hla_description = descriptor[0] + descriptor[1].split(":")[0]
-
-        query = query.filter(Protein.gene_name == "HLA-" + descriptor[0])
-        query = query.filter(Protein.description.like("%" + hla_description + "%"))
-        gene_information = json.dumps(query.all())
 
 
-    except:
-        return Response(conn_err_msg, content_type='text/plain', status_int=500)
-    return {"sources": sources, "hla": request.matchdict["hla"], "statistic": statistic, "genes": gene_information,
-            "organ": organ_chart}
+    #except:
+    #    return Response(conn_err_msg, content_type='text/plain', status_int=500)
+        return {"sources": sources, "hla": request.matchdict["hla"], "statistic": statistic, "organ": organ_chart}
 
 
 @view_config(route_name='msrun', renderer='../templates/base_templates/msrun.pt', request_method="GET")
 def msrun_page(request):
     try:
-        query = DBSession.query(func.count(SpectrumHit.spectrum_hit_id).label("count_hits"),
-                                func.count(SpectrumHit.sequence.distinct()).label("count_pep"),
+        query = DBSession.query(func.count(PeptideRun.peptide_run_id).label("count_hits"),
+                                func.count(PeptideRun.sequence.distinct()).label("count_pep"),
                                 func.count(Protein.name.distinct()).label("count_prot")
                                 )
 
-        query = query.join(MsRun, SpectrumHit.ms_run_ms_run_id == MsRun.ms_run_id)
+        query = query.join(MsRun, PeptideRun.ms_run_ms_run_id == MsRun.ms_run_id)
         query = query.join(t_spectrum_protein_map)
         query = query.join(Protein)
         query = query.filter(MsRun.ms_run_id == request.matchdict["msrun"])
@@ -230,7 +217,7 @@ def msrun_page(request):
 @view_config(route_name='protein', renderer='../templates/base_templates/protein.pt', request_method="GET")
 def protein_page(request):
     try:
-
+        # Checking for different query types
         if request.matchdict["type"] == "geneName":
             # TODO: a gene name is not unique!
             query = DBSession.query(Protein.name)
@@ -248,15 +235,18 @@ def protein_page(request):
         query = query.filter(Protein.name == filter)
         temp_statistics = query.all()
         statistics = json.dumps(temp_statistics)
-        query = DBSession.query(SpectrumHit.sequence.distinct())
+        query = DBSession.query(PeptideRun.sequence.distinct())
+        query = query.join(Binding_prediction, PeptideRun.sequence == Binding_prediction.sequence)
+        query = query.join(t_peptide_run_spectrum_hit_map)
+        query = query.join(SpectrumHit)
         query = query.join(t_spectrum_protein_map)
         query = query.join(Protein)
-        query = query.join(MsRun)
+        query = query.join(MsRun, PeptideRun.ms_run_ms_run_id == MsRun.ms_run_id)
         query = query.filter(Protein.name == filter)
-        query = query.filter(SpectrumHit.source_source_id != None)
-        query = query.filter(MsRun.flag_trash ==0)
+        query = query.filter(PeptideRun.source_source_id != None)
+        query = query.filter(Binding_prediction.binder ==1)
         sequences = query.all()
-        # print sequences
+
         sequence_start = list()
         sequence_end = list()
         for seq in sequences:
@@ -277,125 +267,210 @@ def protein_page(request):
 
 @view_config(route_name='organ', renderer='../templates/base_templates/organ.pt', request_method="GET")
 def organ_page(request):
-    # try:
+    try:
+        organ = request.matchdict["organ"].lower()
 
-    # TODO: Gene_name is not unique, but using Uniprot names is not understandable
-    # Tissue specific proteins
-    # class I
-    query = DBSession.query(Tissue_protein_count.source_count, Protein.name, Protein.gene_name)
-    query = query.order_by(desc(Tissue_protein_count.source_count))
-    query = query.join(Protein)
-    # query = query.group_by(Protein.name)
-    query = query.filter(Tissue_protein_count.tissue == request.matchdict["organ"])
-    query = query.filter(Tissue_protein_count.hla_class == 1)
-    query = query.filter(Tissue_protein_count.source_count > 1)
-    # query = query.limit(50)
-    protein_stats_classI = json.dumps(query.all())
-    # class II
-    query = DBSession.query(Tissue_protein_count.source_count, Protein.name, Protein.gene_name)
-    query = query.order_by(desc(Tissue_protein_count.source_count))
-    query = query.join(Protein)
-    #query = query.group_by(Protein.name)
-    query = query.filter(Tissue_protein_count.tissue == request.matchdict["organ"])
-    query = query.filter(Tissue_protein_count.hla_class == 2)
-    query = query.filter(Tissue_protein_count.source_count > 1)
-    # query = query.limit(50)
-    protein_stats_classII = json.dumps(query.all())
-    # combined
-    query = DBSession.query(Tissue_protein_count.source_count, Protein.name, Protein.gene_name)
-    query = query.order_by(desc(Tissue_protein_count.source_count))
-    query = query.join(Protein)
-    #query = query.group_by(Protein.name)
-    query = query.filter(Tissue_protein_count.tissue == request.matchdict["organ"])
-    query = query.filter(Tissue_protein_count.hla_class == 0)
-    query = query.filter(Tissue_protein_count.source_count > 1)
-    # query = query.limit(50)
-    protein_stats_combined = json.dumps(query.all())
+        # TODO: Gene_name is not unique, but using Uniprot names is not understandable
+        # Tissue specific proteins
+        # class I
+        query = DBSession.query(Tissue_protein_count.source_count, Protein.name, Protein.gene_name)
+        query = query.order_by(desc(Tissue_protein_count.source_count))
+        query = query.join(Protein)
+        # query = query.group_by(Protein.name)
+        query = query.filter(Tissue_protein_count.tissue == organ)
+        query = query.filter(Tissue_protein_count.hla_class == 1)
+        query = query.filter(Tissue_protein_count.source_count > 1)
+        # query = query.limit(50)
+        protein_stats_classI = json.dumps(query.all())
+        # class II
+        query = DBSession.query(Tissue_protein_count.source_count, Protein.name, Protein.gene_name)
+        query = query.order_by(desc(Tissue_protein_count.source_count))
+        query = query.join(Protein)
+        #query = query.group_by(Protein.name)
+        query = query.filter(Tissue_protein_count.tissue == organ)
+        query = query.filter(Tissue_protein_count.hla_class == 2)
+        query = query.filter(Tissue_protein_count.source_count > 1)
+        # query = query.limit(50)
+        protein_stats_classII = json.dumps(query.all())
+        # combined
+        query = DBSession.query(Tissue_protein_count.source_count, Protein.name, Protein.gene_name)
+        query = query.order_by(desc(Tissue_protein_count.source_count))
+        query = query.join(Protein)
+        #query = query.group_by(Protein.name)
+        query = query.filter(Tissue_protein_count.tissue == organ)
+        query = query.filter(Tissue_protein_count.hla_class == 0)
+        query = query.filter(Tissue_protein_count.source_count > 1)
+        # query = query.limit(50)
+        protein_stats_combined = json.dumps(query.all())
 
-    # Tissues specific PEPTIDES
-    # class I
-    query = DBSession.query(Tissue_specific_peptides.source_count, Tissue_specific_peptides.spectrum_hit_sequence)
-    query = query.order_by(desc(Tissue_specific_peptides.source_count))
-    #query = query.group_by(Tissue_specific_peptides.spectrum_hit_sequence)
-    query = query.filter(Tissue_specific_peptides.tissue == request.matchdict["organ"])
-    query = query.filter(Tissue_specific_peptides.hla_class == 1)
-    query = query.filter(Tissue_specific_peptides.source_count > 1)
-    # query = query.limit(50)
-    peptide_stats_classI = json.dumps(query.all())
+        # Tissues specific PEPTIDES
+        # class I
+        query = DBSession.query(Tissue_specific_peptides.source_count, Tissue_specific_peptides.peptide_run_sequence)
+        query = query.order_by(desc(Tissue_specific_peptides.source_count))
+        #query = query.group_by(Tissue_specific_peptides.spectrum_hit_sequence)
+        query = query.filter(Tissue_specific_peptides.tissue == organ)
+        query = query.filter(Tissue_specific_peptides.hla_class == 1)
+        query = query.filter(Tissue_specific_peptides.source_count > 1)
+        # query = query.limit(50)
+        peptide_stats_classI = json.dumps(query.all())
 
-    # class I
-    query = DBSession.query(Tissue_specific_peptides.source_count, Tissue_specific_peptides.spectrum_hit_sequence)
-    query = query.order_by(desc(Tissue_specific_peptides.source_count))
-    #query = query.group_by(Tissue_specific_peptides.spectrum_hit_sequence)
-    query = query.filter(Tissue_specific_peptides.tissue == request.matchdict["organ"])
-    query = query.filter(Tissue_specific_peptides.hla_class == 2)
-    query = query.filter(Tissue_specific_peptides.source_count > 1)
-    # query = query.limit(50)
-    peptide_stats_classII = json.dumps(query.all())
+        # class I
+        query = DBSession.query(Tissue_specific_peptides.source_count, Tissue_specific_peptides.peptide_run_sequence)
+        query = query.order_by(desc(Tissue_specific_peptides.source_count))
+        #query = query.group_by(Tissue_specific_peptides.spectrum_hit_sequence)
+        query = query.filter(Tissue_specific_peptides.tissue == organ)
+        query = query.filter(Tissue_specific_peptides.hla_class == 2)
+        query = query.filter(Tissue_specific_peptides.source_count > 1)
+        # query = query.limit(50)
+        peptide_stats_classII = json.dumps(query.all())
 
+        # query sources
+        query = DBSession.query(Source.source_id, Source.organ,
+                                    Source.histology, Source.patient_id, Source.dignity)
+        query = query.filter(Source.organ == organ)
+        sources = json.dumps(query.all())
 
+        query = DBSession.query(func.count(PeptideRun.sequence.distinct()).label("pep_count"))
+        query = query.join(Source)
+        query = query.filter(Source.organ == organ)
+        statistic = json.dumps(query.all())
 
-    query = DBSession.query(Source.source_id, Source.organ,
-                                Source.histology, Source.patient_id, Source.dignity)
-    query = query.filter(Source.organ == request.matchdict["organ"])
-    sources = json.dumps(query.all())
+        # query HLAs for filtering
+        query = DBSession.query(HlaType.hla_string.distinct().label("hla"))
+        query = query.join(t_hla_map)
+        query = query.join(Source)
+        query = query.filter(Source.organ == organ)
+        query = query.order_by(HlaType.hla_string)
+        hlas = json.dumps(query.all())
 
-    # query = DBSession.query(func.count(SpectrumHit.sequence.distinct()).label("pep_count"))
-    # query = query.join(Source)
-    # query = query.filter(Source.organ == request.matchdict["organ"])
-    # statistic = json.dumps(query.all())
+    except:
+            return Response(conn_err_msg, content_type='text/plain', status_int=500)
 
-    #except:
-    #    return Response(conn_err_msg, content_type='text/plain', status_int=500)
     return {"sources": sources,
-            "organ": request.matchdict["organ"][0].upper() + request.matchdict["organ"][1:],
-            # "statistic": statistic,
+            "organ": organ[0].upper() + organ[1:],
+            "statistic": statistic,
             "protein_stats_classI": protein_stats_classI,
             "protein_stats_classII": protein_stats_classII,
             "protein_stats_combined": protein_stats_combined,
             "peptide_stats_classI": peptide_stats_classI,
-            "peptide_stats_classII": peptide_stats_classII
-
+            "peptide_stats_classII": peptide_stats_classII,
+            "hlas" : hlas
             }
+
+@view_config(route_name='organ_hla', renderer='../templates/base_templates/organ_hla.pt', request_method="GET")
+def organ_hla_page(request):
+    try:
+        organ = request.matchdict["organ"]
+        hla = request.matchdict["hla"]
+        hla_id = DBSession.query(HlaType.hla_type_id).filter(HlaType.hla_string == hla).all()[0][0]
+
+
+        # TODO: Gene_name is not unique, but using Uniprot names is not understandable
+        # Tissue specific proteins
+        query = DBSession.query(Tissue_hla_protein_count.source_count, Protein.name, Protein.gene_name)
+        query = query.order_by(desc(Tissue_hla_protein_count.source_count))
+        query = query.join(Protein)
+        # query = query.group_by(Protein.name)
+        query = query.filter(Tissue_hla_protein_count.tissue == request.matchdict["organ"])
+        query = query.filter(Tissue_hla_protein_count.hla_type_hla_type_id == hla_id)
+        query = query.filter(Tissue_hla_protein_count.source_count > 0)
+        protein_stats = json.dumps(query.all())
+
+        # Tissues specific PEPTIDES
+        query = DBSession.query(Tissue_hla_specific_peptides.source_count, Tissue_hla_specific_peptides.peptide_run_sequence)
+        query = query.order_by(desc(Tissue_hla_specific_peptides.source_count))
+        query = query.filter(Tissue_hla_specific_peptides.tissue == request.matchdict["organ"])
+        query = query.filter(Tissue_hla_specific_peptides.hla_type_hla_type_id == hla_id)
+        query = query.filter(Tissue_hla_specific_peptides.source_count > 0)
+        peptide_stats = json.dumps(query.all())
+
+
+        # query sources
+        query = DBSession.query(Source.source_id, Source.organ,
+                                    Source.histology, Source.patient_id, Source.dignity)
+        query = query.join(t_hla_map)
+        query = query.join(HlaType)
+        query = query.filter(Source.organ == request.matchdict["organ"])
+        query = query.filter(HlaType.hla_type_id == hla_id)
+        sources = json.dumps(query.all())
+
+        query = DBSession.query(func.count(PeptideRun.sequence.distinct()).label("pep_count"))
+        query = query.join(Source)
+        query = query.join(t_hla_map)
+        query = query.join(HlaType)
+        query = query.filter(Source.organ == request.matchdict["organ"])
+        query = query.filter(HlaType.hla_type_id == hla_id)
+        statistic = json.dumps(query.all())
+
+        # # query HLAs for filtering
+        # query = DBSession.query(HlaType.hla_string.distinct().label("hla"))
+        # query = query.join(t_hla_map)
+        # query = query.join(Source)
+        # query = query.filter(Source.organ == request.matchdict["organ"])
+        # query = query.order_by(HlaType.hla_string)
+        # hlas = json.dumps(query.all())
+
+    except:
+            return Response(conn_err_msg, content_type='text/plain', status_int=500)
+
+    return {"sources": sources,
+            "hla": hla,
+            "organ": request.matchdict["organ"][0].upper() + request.matchdict["organ"][1:],
+            "statistic": statistic,
+            "protein_stats": protein_stats,
+            "peptide_stats": peptide_stats
+            }
+
 
 @view_config(route_name='peptide', renderer='../templates/base_templates/peptide.pt', request_method="GET")
 def peptide_page(request):
     try:
+        # Proteins for the peptide
         query = DBSession.query(Protein.name.label("protein"), Protein.gene_name.label("gene_name"), Protein.sequence)
         query = query.join(t_spectrum_protein_map)
         query = query.join(SpectrumHit)
-        query = query.filter(SpectrumHit.sequence == request.matchdict["peptide"])
+        query = query.join(t_peptide_run_spectrum_hit_map)
+        query = query.join(PeptideRun)
+        query = query.filter(PeptideRun.sequence == request.matchdict["peptide"])
         query = query.group_by(Protein.name)
         proteins = json.dumps(query.all())
 
-        # TODO: No trash run filtering, cause there will be no trash runs in the final DB
-        # TODO: Makes no sense yet, cause for each run each peptide is only reported once!
-        query = DBSession.query(func.count(SpectrumHit.spectrum_hit_id))
-        query = query.filter(SpectrumHit.sequence == request.matchdict["peptide"])
+        # PSMs
+        query = DBSession.query(func.sum(PeptideRun.PSM))
+        query = query.filter(PeptideRun.sequence == request.matchdict["peptide"])
         psms = query.all()[0][0]
 
-        # TODO: No trash run filtering, cause there will be no trash runs in the final DB
-        query = DBSession.query(func.count(SpectrumHit.ms_run_ms_run_id))
-        query = query.filter(SpectrumHit.sequence == request.matchdict["peptide"])
+        # Number of MS_runs
+        query = DBSession.query(func.count(PeptideRun.ms_run_ms_run_id))
+        query = query.filter(PeptideRun.sequence == request.matchdict["peptide"])
         #query = query.group_by(SpectrumHit.sequence)
         #test = query.all()
         ms_run_count = query.all()[0][0]
 
-        query = DBSession.query(Source.patient_id)
-        query = query.join(SpectrumHit)
+        # Type of the organ of the sources with the peptides
+        query = DBSession.query(Source.organ.distinct())
+        query = query.join(PeptideRun)
         query = query.join(MsRun)
         query = query.filter(MsRun.flag_trash ==0)
-        query = query.filter(SpectrumHit.sequence == request.matchdict["peptide"])
-        query = query.group_by(Source.patient_id)
-        sources = js_list_creator_dataTables(query.all())
+        query = query.filter(PeptideRun.sequence == request.matchdict["peptide"])
+        organs = js_list_creator_dataTables(query.all())
+
+
+        # query = DBSession.query(Source.patient_id)
+        # query = query.join(SpectrumHit)
+        # query = query.join(MsRun)
+        # query = query.filter(MsRun.flag_trash ==0)
+        # query = query.filter(SpectrumHit.sequence == request.matchdict["peptide"])
+        # query = query.group_by(Source.patient_id)
+        # sources = js_list_creator_dataTables(query.all())
 
         #TODO: maybe sent one big query instead of many small ones
         query = DBSession.query(HlaType.hla_string.distinct().label("hla_class1_A"))
         query = query.join(t_hla_map)
         query = query.join(Source)
-        query = query.join(SpectrumHit)
+        query = query.join(PeptideRun)
         query = query.filter(MsRun.flag_trash == 0)
-        query = query.filter(SpectrumHit.sequence == request.matchdict["peptide"])
+        query = query.filter(PeptideRun.sequence == request.matchdict["peptide"])
         query = query.filter(HlaType.digits == 4)
         query = query.filter(HlaType.hla_string.like("A%"))
         hla_class1_A = js_list_creator_dataTables(query.all())
@@ -403,9 +478,9 @@ def peptide_page(request):
         query = DBSession.query(HlaType.hla_string.distinct().label("hla_class1_B"))
         query = query.join(t_hla_map)
         query = query.join(Source)
-        query = query.join(SpectrumHit)
+        query = query.join(PeptideRun)
         query = query.filter(MsRun.flag_trash == 0)
-        query = query.filter(SpectrumHit.sequence == request.matchdict["peptide"])
+        query = query.filter(PeptideRun.sequence == request.matchdict["peptide"])
         query = query.filter(HlaType.digits == 4)
         query = query.filter(
              HlaType.hla_string.like("B%"))
@@ -414,9 +489,9 @@ def peptide_page(request):
         query = DBSession.query(HlaType.hla_string.distinct().label("hla_class1_C"))
         query = query.join(t_hla_map)
         query = query.join(Source)
-        query = query.join(SpectrumHit)
+        query = query.join(PeptideRun)
         query = query.filter(MsRun.flag_trash == 0)
-        query = query.filter(SpectrumHit.sequence == request.matchdict["peptide"])
+        query = query.filter(PeptideRun.sequence == request.matchdict["peptide"])
         query = query.filter(HlaType.digits == 4)
         query = query.filter(
             HlaType.hla_string.like("C%"))
@@ -426,49 +501,40 @@ def peptide_page(request):
         query = DBSession.query(HlaType.hla_string.distinct().label("hla_class2_DPB"))
         query = query.join(t_hla_map)
         query = query.join(Source)
-        query = query.join(SpectrumHit)
+        query = query.join(PeptideRun)
         query = query.filter(MsRun.flag_trash == 0)
-        query = query.filter(SpectrumHit.sequence == request.matchdict["peptide"])
+        query = query.filter(PeptideRun.sequence == request.matchdict["peptide"])
         query = query.filter(HlaType.digits == 4)
-        query = query.filter(HlaType.hla_string.like("DPB%"))
-        hla_class2_DPB = js_list_creator_dataTables(query.all())
+        query = query.filter(HlaType.hla_string.like("DP%"))
+        hla_class2_DP = js_list_creator_dataTables(query.all())
 
         query = DBSession.query(HlaType.hla_string.distinct().label("hla_class2_DQA"))
         query = query.join(t_hla_map)
         query = query.join(Source)
-        query = query.join(SpectrumHit)
+        query = query.join(PeptideRun)
         query = query.filter(MsRun.flag_trash == 0)
-        query = query.filter(SpectrumHit.sequence == request.matchdict["peptide"])
+        query = query.filter(PeptideRun.sequence == request.matchdict["peptide"])
         query = query.filter(HlaType.digits == 4)
-        query = query.filter(HlaType.hla_string.like("DQA%"))
-        hla_class2_DQA = js_list_creator_dataTables(query.all())
+        query = query.filter(HlaType.hla_string.like("DQ%"))
+        hla_class2_DQ = js_list_creator_dataTables(query.all())
 
-        query = DBSession.query(HlaType.hla_string.distinct().label("hla_class2_DQB"))
-        query = query.join(t_hla_map)
-        query = query.join(Source)
-        query = query.join(SpectrumHit)
-        query = query.filter(MsRun.flag_trash == 0)
-        query = query.filter(SpectrumHit.sequence == request.matchdict["peptide"])
-        query = query.filter(HlaType.digits == 4)
-        query = query.filter(HlaType.hla_string.like("DQB%"))
-        hla_class2_DQB = js_list_creator_dataTables(query.all())
 
         query = DBSession.query(HlaType.hla_string.distinct().label("hla_class2_DRB"))
         query = query.join(t_hla_map)
         query = query.join(Source)
-        query = query.join(SpectrumHit)
+        query = query.join(PeptideRun)
         query = query.filter(MsRun.flag_trash == 0)
-        query = query.filter(SpectrumHit.sequence == request.matchdict["peptide"])
+        query = query.filter(PeptideRun.sequence == request.matchdict["peptide"])
         query = query.filter(HlaType.digits == 4)
         query = query.filter(HlaType.hla_string.like("DRB%"))
         hla_class2_DRB = js_list_creator_dataTables(query.all())
 
     except:
         return Response(conn_err_msg, content_type='text/plain', status_int=500)
-    return {"proteins": proteins, "sources": sources,
+    return {"proteins": proteins, "organs": organs,
             "peptide": request.matchdict["peptide"],
             "hla_class1_A": hla_class1_A, "hla_class1_B": hla_class1_B, "hla_class1_C": hla_class1_C,
-            "hla_class2_DPB": hla_class2_DPB, "hla_class2_DQA": hla_class2_DQA, "hla_class2_DQB": hla_class2_DQB,
+            "hla_class2_DP": hla_class2_DP, "hla_class2_DQ": hla_class2_DQ,
             "hla_class2_DRB": hla_class2_DRB, "psms": psms, "ms_run_count": ms_run_count}
 
 @view_config(route_name='peptide_spectra', renderer='../templates/base_templates/peptide_spectra.pt', request_method="GET")

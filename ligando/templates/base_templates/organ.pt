@@ -20,23 +20,42 @@
                   <li class="/organ/${organ}">${organ}</li>
                 </ol>
             </div>
-            <div class="col-md-10 col-md-offset-1">
+            </div>
+        <div class="row">
+            <div class="col-md-9 col-md-offset-1">
                 <h1 style="text-align: center">${organ}</h1>
+            </div>
+
+            <div class="col-md-1 pull-left">
+                    <div class="dropdown">
+                      <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenuclass1" data-toggle="dropdown"
+                      aria-haspopup="true" aria-expanded="true">
+                          Filter by HLA
+                      <span class="caret"></span></button>
+                      <ul id="hla_dropdown" class="dropdown-menu" aria-labelledby="dropdownMenuclass1">
+                      </ul>
+                    </div>
+                </div>
+            </div>
+        <div class="row">
+            <div class="col-md-6 col-md-offset-1">
+
                 <table class="table table-striped table-bordered" style="width: 300px">
                     <tr>
                         <td>Peptides:</td>
                         <td id="pep_stat"></td>
                     </tr>
                     <tr>
-                        <td>Sources:</td>
+                        <td>Number of Samples:</td>
                         <td id="source_stat"></td>
                     </tr>
                 </table>
             </div>
-        </div>
+
+            </div>
         <div class="row">
             <div class="col-md-10 col-md-offset-1">
-                <h2>HLA Proteins</h2>
+                <h1>HLA Proteins</h1>
                 <ul class="nav nav-tabs">
                     <li class="active"><a href="#class1" data-toggle="tab">Class 1</a></li>
                     <li><a href="#class2" data-toggle="tab">Class 2</a></li>
@@ -64,7 +83,7 @@
 
         <div class="row">
             <div class="col-md-10 col-md-offset-1">
-                <h2>HLA Peptides</h2>
+                <h1>HLA Peptides</h1>
                 <ul class="nav nav-tabs">
                     <li class="active"><a href="#pep_class1" data-toggle="tab">Class 1</a></li>
                     <li><a href="#pep_class2" data-toggle="tab">Class 2</a></li>
@@ -84,34 +103,34 @@
             </div>
         </div>
 
-        <div class="row">
-            <div class="col-md-10 col-md-offset-1">
-                <h2>Sources</h2>
-                <table id="example" class="table table-striped table-bordered" cellspacing="0" width="100%">
-                    <thead>
-                    <tr>
-                        <th>Source ID</th>
-                        <th>Patient ID</th>
-                        <th>Histology</th>
-                        <th>Dignity</th>
-                    </tr>
-                    </thead>
-                </table>
-            </div>
-        </div>
+        <!--?<div class="row">-->
+            <!--?<div class="col-md-10 col-md-offset-1">-->
+                <!--?<h2>Sources</h2>-->
+                <!--?<table id="example" class="table table-striped table-bordered" cellspacing="0" width="100%">-->
+                    <!--?<thead>-->
+                    <!--?<tr>-->
+                        <!--?<th>Source ID</th>-->
+                        <!--?<th>Patient ID</th>-->
+                        <!--?<th>Histology</th>-->
+                        <!--?<th>Dignity</th>-->
+                    <!--?</tr>-->
+                    <!--?</thead>-->
+                <!--?</table>-->
+            <!--?</div>-->
+        <!--?</div>-->
     </div>
 
     <script>
 
 
-        $(document).ready(function () {
+        /*$(document).ready(function () {
 // create dataTable
             $('#example').dataTable({
                 "paging": false,
                 "ordering": false,
                 "info": false,
                 searching: false,
-                data: ${sources},
+                data: ,
                 columns: [
                     {
                         data: "source_id",
@@ -139,12 +158,11 @@
                     }
                 ]
             });
-        });
+        });*/
         // set statistics
         $(document).ready(function () {
-            //document.getElementById("pep_stat").innerHTML = "<a title='Show all Peptides'  class='nostylelink' href='javascript:post(\x22../peptide_query\x22, {organ: \x22{organ}\x22, grouping:\x22peptide\x22}," + {statistic}[0]["pep_count"] + " )'> " + {statistic}[0]["pep_count"] + "</a>";
-            document.getElementById("source_stat").innerHTML =${sources}.
-            length;
+            document.getElementById("pep_stat").innerHTML = "<a title='Show all Peptides'  class='nostylelink' href='javascript:post(\x22../peptide_query\x22, {organ: \x22${organ}\x22, grouping:\x22peptide\x22}," + ${statistic}[0]["pep_count"] + " )'> " + ${statistic}[0]["pep_count"] + "</a>";
+            document.getElementById("source_stat").innerHTML =${sources}.length;
 
         });
         ;
@@ -444,7 +462,7 @@
             };
             var categories = [];
             $.each(peptide_stats, function (i, row) {
-                categories.push(row["spectrum_hit_sequence"]);
+                categories.push(row["peptide_run_sequence"]);
                 //series.name.push(row["gene_name"]+"/"+ row["name"]);
                 series.data.push(parseInt(row["source_count"]));
 
@@ -520,7 +538,7 @@
             };
             var categories = [];
             $.each(peptide_stats, function (i, row) {
-                categories.push(row["spectrum_hit_sequence"]);
+                categories.push(row["peptide_run_sequence"]);
                 //series.name.push(row["gene_name"]+"/"+ row["name"]);
                 series.data.push(parseInt(row["source_count"]));
 
@@ -531,6 +549,25 @@
 
             $('#numberOfPep_classII').highcharts(options);
         });
+
+        // HLA Dropdown
+        $(document).ready(function () {
+            var dropdown = $("#hla_dropdown");
+            dropdown.append('<li class="dropdown-header">Class I</li>');
+            var hlas = ${hlas};
+            var organ = "${organ}".charAt(0).toLowerCase() + "${organ}".slice(1);
+            class2 = false;
+            for (index = 0, len = hlas.length; index < len; ++index) {
+                var hla = hlas[index]["hla"];
+                if(hla.indexOf("D") >-1 && !class2){
+                    dropdown.append('<li role="separator" class="divider"></li>');
+                    dropdown.append('<li class="dropdown-header">Class II</li>');
+                    class2 = true;
+                }
+                dropdown.append('<li><a href="/organ_hla/'+organ+'$'+hla+'"><span class="tab">'+hla+'</span></a></li>');
+            }
+
+        })
 
 
     </script>

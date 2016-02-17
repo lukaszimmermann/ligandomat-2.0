@@ -9,6 +9,7 @@
 <metal:block fill-slot="content">
     <div class="container">
         <!--? TODO: fill with content-->
+        <!--? TODO: 1. why is there no DPB typing? -->
         <div class="row">
             <div class="col-md-10 col-md-offset-1">
                 <ol class="breadcrumb">

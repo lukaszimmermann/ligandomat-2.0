@@ -81,8 +81,6 @@ def news(request):
 # hla_atlas view
 @view_config(route_name='hla_atlas', renderer='../templates/hla_atlas.pt')
 def hla_atlas(request):
-    # TODO: precalculate Number of peptides beforehand
-    # TODO: scored peptides. right now only dummy values
     # # HLA-A
     # query = DBSession.query(HlaType.hla_string.label("hla"))
     # query = query.filter(HlaType.digits == 4)
@@ -103,7 +101,6 @@ def hla_atlas(request):
     # hla_c = json.dumps(query.all())
 
     query = DBSession.query(HlaType.hla_string.label("hla"), HLA_statistics.sample_count.label("samples"),
-                            HLA_statistics.peptide_count.label("peptides"),
                             HLA_statistics.binding_peptide_count.label("scored_peptides"),
                             )
 
@@ -196,7 +193,6 @@ def hla_atlas_classII(request):
     # hla_dq = json.dumps(query.all())
 
     query = DBSession.query(HlaType.hla_string.label("hla"), HLA_statistics.sample_count.label("samples"),
-                            HLA_statistics.peptide_count.label("peptides"),
                             HLA_statistics.binding_peptide_count.label("scored_peptides"),
                             )
 

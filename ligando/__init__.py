@@ -39,6 +39,7 @@ def route_adder(config):
     config.add_route('msrun', '/msrun/{msrun}')
     config.add_route('protein', '/protein/{protein}${type}')
     config.add_route('organ', '/organ/{organ}')
+    config.add_route('organ_hla', '/organ_hla/{organ}${hla}')
     # Database analysis
     config.add_route('venn_analysis', '/venn_analysis')
 

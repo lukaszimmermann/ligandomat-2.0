@@ -92,17 +92,6 @@ footer.navbar-default {
 
 /* bootstrap hack end */
 
-/*
-.main_wrapper {
-
-    margin-right: auto;
-    overflow: auto;
-    width: 1200px;
-    margin-left: auto;
-    align-content: center;
-    !* review may break if page to wide *!
-    !*overflow-x: hidden;*!
-}*/
 
 .nostylelink {
     text-decoration: solid;
@@ -304,7 +293,8 @@ table.orphan_table tr.even {
     font-family: monospace, monospace !important;
     white-space: pre-wrap !important;
     word-wrap: break-word !important;
-    text-align: left !important margin-bottom : 0 px;
+    text-align: left !important;
+    margin-bottom : 0px;
     margin-top: 0px;
     /*background: white;*/
     color: black;

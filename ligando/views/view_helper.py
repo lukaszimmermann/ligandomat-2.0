@@ -7,7 +7,15 @@ __author__ = 'Linus Backert'
 from sqlalchemy.orm import aliased
 
 # colors for all different organs
+# TODO: do not use fixed colors
 colors = {'blood': "#bf616a",
+          'cerebellum': "#bf616a",
+          'heart': "#bf616a",
+          'testis': "#bf616a",
+          'aorta': "#bf616a",
+          'trachea': "#bf616a",
+          'esophagus': "#bf616a",
+          'adrenalgland': "#bf616a",
           'brain': "#5B90BF",
           'ovary': "#a3be8c",
           'kidney': "#d08770",
@@ -158,13 +166,13 @@ try it again.
 def get_chart_data(sources):
     organ = []
     for source in sources:
-        organ.append(source['organ'])
+        organ.append(source['organ'].lower())
 
     organs = Counter(organ)
 
     organ_array = []
     for key, value in organs.iteritems():
-        organ_json = {'name': key, 'y': value, 'color': colors[key]}
+        organ_json = {'name': key, 'y': value,}# 'color': colors[key]}
 
         organ_array.append(organ_json)
 

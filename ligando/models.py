@@ -1,7 +1,8 @@
 # coding: utf-8
-from sqlalchemy import Column, Date, Enum, Float, ForeignKey, Integer, SmallInteger, String, Table, Text, text
+from sqlalchemy import Column, Date, Enum, Float, ForeignKey, Integer, SmallInteger, String, Table, Text, text, \
+    UniqueConstraint
 from sqlalchemy.orm import relationship
-from sqlalchemy.dialects.mysql.base import BIT
+from sqlalchemy.dialects.mysql.base import BIT, TINYINT
 from sqlalchemy.ext.declarative import declarative_base
 
 from sqlalchemy.orm import (
@@ -98,7 +99,7 @@ class PeptideRun(Base):
     __tablename__ = 'peptide_run'
 
     peptide_run_id = Column(Integer, primary_key=True)
-    sequence = Column(String(60), nullable=False, index=True)
+    sequence = Column(String(100), nullable=False, index=True)
     length = Column(Integer, nullable=False, index=True)
     ms_run_ms_run_id = Column(ForeignKey(u'ms_run.ms_run_id'), nullable=False, index=True)
     source_source_id = Column(ForeignKey(u'source.source_id'), index=True)
@@ -186,7 +187,7 @@ class SpectrumHit(Base):
     delta_cn = Column(Float(asdecimal=True))
     source_source_id = Column(ForeignKey(u'source.source_id'), index=True)
     modifications = Column(String(60, u'latin1_german1_ci'))
-    sequence = Column(String(60, u'latin1_german1_ci'), index=True)
+    sequence = Column(String(100, u'latin1_german1_ci'), index=True)
 
     ms_run_ms_run = relationship(u'MsRun')
     source_source = relationship(u'Source')
@@ -210,18 +211,49 @@ class Tissue_protein_count(Base):
 
     protein_protein = relationship(u'Protein')
 
+class Tissue_hla_protein_count(Base):
+    __tablename__ = 'tissue_hla_protein_count'
+
+    tissue_hla_protein_count_id = Column(Integer, primary_key=True)
+    tissue = Column(String(45, u'latin1_german1_ci'), index=True)
+    protein_protein_id = Column(Integer, ForeignKey(u'protein.protein_id'), nullable=False, index=True)
+    source_count = Column(Integer, nullable=False)
+    hla_type_hla_type_id = Column(Integer, ForeignKey(u'hla_type.hla_type_id'),
+                                  nullable=False, index=True)
+
+    protein_protein = relationship(u'Protein')
+    hla_type_hla_type = relationship(u'HlaType')
+
+    UniqueConstraint('tissue', 'hla_type_hla_type_id', 'method', name='tissue_hla_protein')
+
 
 class Tissue_specific_peptides(Base):
     __tablename__ = 'tissue_specific_peptides'
 
     tissue_specific_peptides_id = Column(Integer, primary_key=True)
     tissue = Column(String(45, u'latin1_german1_ci'), index=True)
-    spectrum_hit_sequence = Column(String(45, u'latin1_german1_ci'), ForeignKey(u'spectrum_hit.sequence'),
+    peptide_run_sequence = Column(String(100, u'latin1_german1_ci'), ForeignKey(u'spectrum_hit.sequence'),
                                    nullable=False, index=True)
     source_count = Column(Integer, nullable=False)
     hla_class = Column(Integer, index=True)
 
     spectrum_hit_spectrum_hit = relationship(u'SpectrumHit')
+
+class Tissue_hla_specific_peptides(Base):
+    __tablename__ = 'tissue_hla_specific_peptides'
+
+    tissue_specific_peptides_id = Column(Integer, primary_key=True)
+    tissue = Column(String(45, u'latin1_german1_ci'), index=True)
+    peptide_run_sequence = Column(String(100, u'latin1_german1_ci'), ForeignKey(u'spectrum_hit.sequence'),
+                                   nullable=False, index=True)
+    source_count = Column(Integer, nullable=False)
+    hla_type_hla_type_id = Column(Integer, ForeignKey(u'hla_type.hla_type_id'),
+                                  nullable=False, index=True)
+
+    spectrum_hit_spectrum_hit = relationship(u'SpectrumHit')
+    hla_type_hla_type = relationship(u'HlaType')
+
+    UniqueConstraint('tissue', 'hla_type_hla_type_id', 'method', name='tissue_hla')
 
 
 class Tissue_HLA_peptide_count(Base):
@@ -243,6 +275,22 @@ class HLA_statistics(Base):
     hla_type_hla_type_id = Column(ForeignKey(u'hla_type.hla_type_id'), nullable=False, index=True)
 
     hla_types_hla_type = relationship(u'HlaType')
+
+class Binding_prediction(Base):
+    __tablename__ = 'binding_prediction'
+    binding_prediction_id = Column(Integer, primary_key=True)
+    sequence = Column(String(100, u'latin1_german1_ci'), index=True)
+    method = Column(String(45), index=True)
+    binding_score = Column(Float)
+    rank = Column(Float)
+    binder = Column(TINYINT, index=True)
+    hla_type_hla_type_id = Column(ForeignKey(u'hla_type.hla_type_id'), nullable=False, index=True)
+
+    hla_types_hla_type = relationship(u'HlaType')
+    UniqueConstraint('sequence','hla_type_hla_type_id', 'method', name='sequence_hla_method')
+
+
+
 
 
 class User(Base):
@@ -310,7 +358,7 @@ class User(Base):
 #     trash_reason = Column(String(200))
 #     source_source = relationship(u'Source')
 #
-# # peptide protein map table
+# peptide protein map table
 # t_peptide_protein_map = Table(
 #     'peptide_protein_map', metadata,
 #     Column('peptide_run_peptide_run_id', ForeignKey(u'peptide_run.peptide_run_id'), nullable=False, index=True),
@@ -352,7 +400,7 @@ class User(Base):
 #     Column('pm_sh_map_spectrum_hit_spectrum_hit_id', ForeignKey(u'spectrum_hit.spectrum_hit_id'), nullable=False,
 #            index=True)
 # )
-#
+
 #
 # class Protein(Base):
 #     __tablename__ = 'protein'

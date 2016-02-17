@@ -23,7 +23,6 @@
                     <tr>
                         <th>HLA</th>
                         <th title='Number of samples with this HLA'># Samples</th>
-                        <th title='Number of peptides in samples with this HLA'># Peptides</th>
                         <th title='Peptides considered to be binders by netMHC'># Binding peptides</th>
                     </tr>
                     </thead>
@@ -54,14 +53,7 @@
                             return "<a class='nostylelink'  href= '/source/" + data + "'>" + data + "</a>"; //currently there is no page holding all samples
                         }
                     },
-                    {
-                        data: "peptides",
-                        "render": function (data, type, row) {
-                            return "<a class='nostylelink'  href= '/organ/" + data + "'>" + data + "</a>";
-
-                        }
-                    },
-                    {
+                    { //TODO: fix other links
                         data: "scored_peptides",
                         "render": function (data, type, row) {
                             return "<a class='nostylelink'  href= '/dignity/" + data + "'>" + data + "</a>";

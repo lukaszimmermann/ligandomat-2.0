@@ -23,7 +23,6 @@
                     <tr>
                         <th>HLA</th>
                         <th title='Number of samples with this HLA'># Samples</th>
-                        <th title='Number of peptides in samples with this HLA'># Peptides</th>
                         <th title='Peptides considered to be binders by netMHC'># Binding peptides</th>
                     </tr>
                     </thead>
@@ -53,12 +52,6 @@
                         data: "samples",
                         "render": function (data, type, row) {
                             return "<a class='nostylelink'  href= '/source/" + data + "'>" + data + "</a>";
-                        }
-                    },
-                    {
-                        data: "peptides",
-                        "render": function (data, type, row) {
-                            return "<a class='nostylelink'  href= '/organ/" + data + "'>" + data + "</a>";
                         }
                     },
                     {
