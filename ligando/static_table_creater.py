@@ -715,12 +715,14 @@ def peptide_run_creater():
 
     return None
 
-#peptide_run_creater()
-#sequence_extractor()
+if __name__ == '__main__':
+    print "static table creater"
+    #peptide_run_creater()
+    #sequence_extractor()
 
-#HLA_statistics_creater()
+    #HLA_statistics_creater()
 
-#tissue_specific_peptides_creater()
-#tissue_protein_count_creater()
-#tissue_hla_specific_peptides_creater()
-#tissue_hla_protein_count_creater()
+    #tissue_specific_peptides_creater()
+    #tissue_protein_count_creater()
+    #tissue_hla_specific_peptides_creater()
+    #tissue_hla_protein_count_creater()

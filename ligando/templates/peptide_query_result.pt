@@ -7,6 +7,7 @@
 
 <body>
 
+<!--? TODO: Rewrite whole page-->
 <metal:block fill-slot="content">
     <div class="container">
         <div class="row">
@@ -136,9 +137,9 @@
                                 var return_string = "";
                                 for (var prot = 0; prot < prot_split.length; prot++) {
                                     if (prot < prot_split.length - 1) {
-                                        return_string += "<a class='nostylelink'  href= '/protein/" + prot_split[prot] + "'>" + prot_split[prot] + "</a>, ";
+                                        return_string += "<a class='nostylelink'  href= '/protein/" + prot_split[prot] + "$uniprot'>" + prot_split[prot] + "</a>, ";
                                     } else {
-                                        return_string += "<a class='nostylelink'  href= '/protein/" + prot_split[prot] + "'>" + prot_split[prot] + "</a>";
+                                        return_string += "<a class='nostylelink'  href= '/protein/" + prot_split[prot] + "$uniprot'>" + prot_split[prot] + "</a>";
                                     }
                                 }
                                 return return_string
@@ -200,9 +201,9 @@
                                 var return_string = "";
                                 for (var prot = 0; prot < prot_split.length; prot++) {
                                     if (prot < prot_split.length - 1) {
-                                        return_string += "<a class='nostylelink'  href= '/protein/" + prot_split[prot] + "'>" + prot_split[prot] + "</a>, ";
+                                        return_string += "<a class='nostylelink'  href= '/protein/" + prot_split[prot] + "$uniprot'>" + prot_split[prot] + "</a>, ";
                                     } else {
-                                        return_string += "<a class='nostylelink'  href= '/protein/" + prot_split[prot] + "'>" + prot_split[prot] + "</a>";
+                                        return_string += "<a class='nostylelink'  href= '/protein/" + prot_split[prot] + "$uniprot'>" + prot_split[prot] + "</a>";
                                     }
                                 }
                                 return return_string
@@ -243,9 +244,9 @@
                                 var return_string = "";
                                 for (var dignity = 0; dignity < dignity_split.length; dignity++) {
                                     if (dignity < dignity_split.length - 1) {
-                                        return_string += "<a class='nostylelink'  href= '/protein/" + dignity_split[dignity] + "'>" + dignity_split[dignity] + "</a>, ";
+                                        return_string += "<a class='nostylelink'  href= '/protein/" + dignity_split[dignity] + "$uniprot'>" + dignity_split[dignity] + "</a>, ";
                                     } else {
-                                        return_string += "<a class='nostylelink'  href= '/protein/" + dignity_split[dignity] + "'>" + dignity_split[dignity] + "</a>";
+                                        return_string += "<a class='nostylelink'  href= '/protein/" + dignity_split[dignity] + "$uniprot'>" + dignity_split[dignity] + "</a>";
                                     }
                                 }
                                 return return_string
@@ -316,9 +317,9 @@
                                 var return_string = "";
                                 for (var prot = 0; prot < prot_split.length; prot++) {
                                     if (prot < prot_split.length - 1) {
-                                        return_string += "<a class='nostylelink'  href= '/protein/" + prot_split[prot] + "'>" + prot_split[prot] + "</a>, ";
+                                        return_string += "<a class='nostylelink'  href= '/protein/" + prot_split[prot] + "$uniprot'>" + prot_split[prot] + "</a>, ";
                                     } else {
-                                        return_string += "<a class='nostylelink'  href= '/protein/" + prot_split[prot] + "'>" + prot_split[prot] + "</a>";
+                                        return_string += "<a class='nostylelink'  href= '/protein/" + prot_split[prot] + "#uniprot'>" + prot_split[prot] + "</a>";
                                     }
                                 }
                                 return return_string
@@ -404,9 +405,9 @@
                                 var return_string = "";
                                 for (var prot = 0; prot < prot_split.length; prot++) {
                                     if (prot < prot_split.length - 1) {
-                                        return_string += "<a class='nostylelink'  href= '/protein/" + prot_split[prot] + "'>" + prot_split[prot] + "</a>, ";
+                                        return_string += "<a class='nostylelink'  href= '/protein/" + prot_split[prot] + "$uniprot'>" + prot_split[prot] + "</a>, ";
                                     } else {
-                                        return_string += "<a class='nostylelink'  href= '/protein/" + prot_split[prot] + "'>" + prot_split[prot] + "</a>";
+                                        return_string += "<a class='nostylelink'  href= '/protein/" + prot_split[prot] + "$uniprot'>" + prot_split[prot] + "</a>";
                                     }
                                 }
                                 return return_string
@@ -506,9 +507,9 @@
                                 var return_string = "";
                                 for (var dignity = 0; dignity < dignity_split.length; dignity++) {
                                     if (dignity < dignity_split.length - 1) {
-                                        return_string += "<a class='nostylelink'  href= '/protein/" + dignity_split[dignity] + "'>" + dignity_split[dignity] + "</a>, ";
+                                        return_string += "<a class='nostylelink'  href= '/protein/" + dignity_split[dignity] + "$uniprot'>" + dignity_split[dignity] + "</a>, ";
                                     } else {
-                                        return_string += "<a class='nostylelink'  href= '/protein/" + dignity_split[dignity] + "'>" + dignity_split[dignity] + "</a>";
+                                        return_string += "<a class='nostylelink'  href= '/protein/" + dignity_split[dignity] + "$uniprot'>" + dignity_split[dignity] + "</a>";
                                     }
                                 }
                                 return return_string;

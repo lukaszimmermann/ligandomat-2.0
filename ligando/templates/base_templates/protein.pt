@@ -5,6 +5,8 @@
 </head>
 
 <body>
+<!--? TODO: add further information-->
+
 <metal:block fill-slot="content">
 
     <div class="container">

@@ -150,7 +150,7 @@ def source_id_page(request):
 
 @view_config(route_name='hla', renderer='../templates/base_templates/hla.pt', request_method="GET")
 def hla_page(request):
-    #try:
+    try:
         query = DBSession.query(Source.organ,Source.source_id, Source.dignity,
                                 Source.histology, Source.patient_id)
         query = query.join(t_hla_map)
@@ -170,12 +170,24 @@ def hla_page(request):
         complete_sources = json.loads(sources)
         organ_chart = get_chart_data(complete_sources)
 
+        # TODO: Precalculate these (to slow)
+        # Peptide distribution
+        query = DBSession.query(func.length(PeptideRun.sequence).label("length") ,func.count(PeptideRun.sequence.distinct()).label("count"))
+        query = query.join(MsRun)
+        query = query.join(Source)
+        query = query.join(t_hla_map)
+        query = query.join(HlaType)
+        query = query.join(Binding_prediction, PeptideRun.sequence == Binding_prediction.sequence)
+        query = query.filter(Binding_prediction.hla_type_hla_type_id == HlaType.hla_type_id)
+        query = query.filter(Binding_prediction.binder == 1)
+        query = query.filter(HlaType.hla_string == request.matchdict["hla"])
+        query = query.group_by(func.length(PeptideRun.sequence))
+        # List of peptides for which one will create the Peptide binding motif-Logo
+        peptide_distribution = json.dumps(query.all())
 
-
-
-    #except:
-    #    return Response(conn_err_msg, content_type='text/plain', status_int=500)
-        return {"sources": sources, "hla": request.matchdict["hla"], "statistic": statistic, "organ": organ_chart}
+    except:
+        return Response(conn_err_msg, content_type='text/plain', status_int=500)
+    return {"sources": sources, "hla": request.matchdict["hla"], "statistic": statistic, "organ": organ_chart, "peptide_distribution": peptide_distribution}
 
 
 @view_config(route_name='msrun', renderer='../templates/base_templates/msrun.pt', request_method="GET")
@@ -365,6 +377,7 @@ def organ_hla_page(request):
         hla_id = DBSession.query(HlaType.hla_type_id).filter(HlaType.hla_string == hla).all()[0][0]
 
 
+
         # TODO: Gene_name is not unique, but using Uniprot names is not understandable
         # Tissue specific proteins
         query = DBSession.query(Tissue_hla_protein_count.source_count, Protein.name, Protein.gene_name)
@@ -394,12 +407,16 @@ def organ_hla_page(request):
         query = query.filter(HlaType.hla_type_id == hla_id)
         sources = json.dumps(query.all())
 
+
         query = DBSession.query(func.count(PeptideRun.sequence.distinct()).label("pep_count"))
         query = query.join(Source)
         query = query.join(t_hla_map)
         query = query.join(HlaType)
+        query = query.join(Binding_prediction, PeptideRun.sequence == Binding_prediction.sequence)
         query = query.filter(Source.organ == request.matchdict["organ"])
         query = query.filter(HlaType.hla_type_id == hla_id)
+        query = query.filter(HlaType.hla_type_id == Binding_prediction.hla_type_hla_type_id)
+        query = query.filter(Binding_prediction.binder ==1)
         statistic = json.dumps(query.all())
 
         # # query HLAs for filtering

@@ -18,7 +18,7 @@ from ligando.models import (
     t_hla_map,
     t_peptide_protein_map,
     SpectrumHit,
-    t_spectrum_protein_map)
+    t_spectrum_protein_map, Binding_prediction)
 from ligando.views.view_helper import conn_err_msg, create_filter, js_list_creator
 
 
@@ -57,6 +57,7 @@ def peptide_query(request):
 # peptide Query POST
 @view_config(route_name='peptide_query', renderer='../templates/peptide_query_result.pt', request_method="POST")
 def peptide_query_result(request):
+    # BUG: Query incorrect for hla!!!
     # Check if one of these parameters is set, if not forward to peptide_query page
     params_check_dict = ['sequence',
                          'source_id',
@@ -102,6 +103,7 @@ def peptide_query_result(request):
             query = query.join(HlaType)
             query = query.join(t_peptide_protein_map)
             query = query.join(Protein)
+            query = query.join(Binding_prediction, Binding_prediction.sequence== PeptideRun.sequence)
 
             # filter
             query = create_filter(query, 'sequence', request.params, "sequence", PeptideRun, 'sequence_rule', True,
@@ -118,6 +120,10 @@ def peptide_query_result(request):
             query = create_filter(query, 'hla_typing', request.params, "hla_string", HlaType, 'hla_typing_rule', False,
                                   set=False) # TODO: check if it works withou fk,
                                   #fk=HlaLookup.fk_hla_typess)
+            if "hla_typing" in request.params:
+                query = query.filter(Binding_prediction.binder == 1)
+                query = query.filter(Binding_prediction.hla_type_hla_type_id == HlaType.hla_type_id)
+
             query = create_filter(query, 'digits', request.params, 'digits', HlaType, None, False, set=False)
             query = create_filter(query, 'protein', request.params, "name", Protein, 'protein_rule', False, set=False,
                                   fk=PeptideRun.protein_proteins)
