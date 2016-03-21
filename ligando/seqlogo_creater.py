@@ -73,7 +73,7 @@ if __name__ == '__main__':
             query = query.filter(Binding_prediction.hla_type_hla_type_id == HlaType.hla_type_id)
             query = query.filter(Binding_prediction.binder == 1)
             query = query.filter(HlaType.hla_string == hla)
-            query = query.filter(PeptideRun.length == i) # peptides must have same lenght
+            query = query.filter(PeptideRun.length == i) # peptides must have same length
 
             # List of peptides for which one will create the Peptide binding motif-Logo
             peptide_list = query.all()

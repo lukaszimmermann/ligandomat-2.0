@@ -1,16 +1,4 @@
-/*
-* {
-    font-family: FF zwo, sans-serif;
-}
-*/
-/*
-html body {
-    /!*background-color: rgb(244, 244, 244);*!/
-    margin: 0;
-    padding: 0;
-    height: 100%;
-    /!*background-image: url("/static/images/body_bg.png");*!/
-}*/
+
 body {
     padding-top: 64px;
 }
@@ -29,14 +17,6 @@ main {
     font-size: 18px;
 }
 
-/*.footer {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  /!* Set the fixed height of the footer here *!/
-  height: 60px;
-  background-color: #f5f5f5;
-}*/
 footer.navbar-default {
     margin-bottom: 0;
     box-shadow: none;
@@ -44,38 +24,6 @@ footer.navbar-default {
     min-height: 20px;
     padding: 10px;
 }
-
-/*#header {
-    height: 100px;
-    padding-top: 10px;
-    background-color: white;
-}*/
-
-/*#footer {
-    /!*position:absolute;*!/
-    /!*bottom: 20px;*!/
-    height: 30px;
-    /!*height: auto;*!/
-    background-color: white;
-}*/
-
-/*#main_container {
-    background-color: white;
-    min-height: 90vh;
-    display: flex;
-    /!*!// Direction of the items, can be row or column*!/
-    flex-direction: column;
-    /!*height: 100%;*!/
-    width: 1200px;
-    margin: 0 auto;
-
-    /!*min-height:100%;*!/
-    /!*position:relative;*!/
-}*/
-
-/*main {
-    flex: 1;
-}*/
 
 /* bootstrap hack: fix content width inside hidden tabs */
 .tab-content > .tab-pane,
@@ -98,83 +46,7 @@ footer.navbar-default {
     color: black;
 }
 
-/*
-th.head{
-    white-space: nowrap
-}
 
-tbody {
-     font-size: 12px;
-     font-weight: normal;
- }
-
-*/
-
-/*
-.boxed {
-    background: white;
-    border: 1px solid #DDD;
-    border-radius: 5px;
-    box-shadow: 0 0 5px #DDD inset;
-    color: #666;
-    outline: none;
-}
-*/
-
-/*
-.wrapper {
-    !*margin-top: 20pt;*!
-    margin-right: auto;
-    overflow: auto;
-    !*width: 980px;*!
-    margin-left: auto;
-    align-content: center;
-
-}
-
-.hidden {
-    display: none;
-}
-
-.standard_text {
-    font-size: 18px;
-}
-
-
-.title {
-    align-content: center;
-    text-align: center;
-    color: rgb(165, 30, 55);
-    font-size: 28px;
-    font-weight: bold;
-    float: left;
-}
-
-.title_wrapper {
-    !*display: inline-block;*!
-}*/
-
-/*
-.nice_dropdown {
-    font-size: 16px;
-}
-
-.nice_dropdown_boolean {
-    font-size: 16px;
-}
-
-.nice_select_menu {
-    font-size: 16px;
-}
-
-.nice_input {
-    font-size: 16px;
-}
-*/
-
-/*input {
-    font-size: 16px;
-}*/
 
 .nice_button {
     position: relative;
@@ -200,13 +72,6 @@ button.nice_button:active {
     outline: none;
 }
 
-/*
-.homegrid {
-    width: 300pt;
-    overflow: hidden;
-    text-align: left;
-}*/
-
 /* autocomplete */
 .ui-autocomplete {
     max-height: 200px;
@@ -217,50 +82,6 @@ button.nice_button:active {
     padding-right: 20px;
     font-size: 14px !important;
 }
-
-/* tooltips
-/*TODO: Tooltip borken */
-/*.ui-tooltip {
-    width: auto;
-    font-size: 12px !important;
-}
-*/
-
-/*
-.ui-datepicker {
-    width: auto !important;
-    font-size: 14px !important;
-}*/
-
-/* update table style*/
-/*.updategrid table {
-    border-collapse: collapse;
-    text-align: left;
-}*/
-/*
-.orphan_table {
-    font-size: 14px;
-    overflow: hidden;
-    border: 0 solid rgb(232, 225, 208);
-    -webkit-border-radius: 3px;
-    /!*-moz-border-radius: 3px;*!/
-    border-radius: 3px;
-    background-color: rgb(232, 225, 208);
-    color: black;
-}
-
-.orphan_table tbody .alt td {
-    background: white;
-    color: black;
-}
-
-table.orphan_table tr.odd {
-    background-color: white;
-}
-
-table.orphan_table tr.even {
-    background-color: rgb(240, 235, 224);
-}*/
 
 .protein_sequence {
     font: 14px;
@@ -300,19 +121,6 @@ table.orphan_table tr.even {
     color: black;
 }
 
-/*table.protein_sequence tr.odd { background-color: white; }*/
-/*table.protein_sequence tr.even { background-color: rgb(240, 235, 224); }*/
-
-/*button {
-    color: black;
-    text-align: center;
-    margin: 1pt;
-    background: rgb(180, 160, 105);
-    border: 0;
-    cursor: pointer;
-    -webkit-box-shadow: inset 0 -2px rgb(180, 160, 105);
-    box-shadow: inset 0 -2px rgb(180, 160, 105);
-}*/
 
 
 /*Canvas styles */

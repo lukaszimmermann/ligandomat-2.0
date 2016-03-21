@@ -22,7 +22,7 @@ requires = [
     'pyramid_tm',
     'simplejson',
     'webtest',
-    'mock'
+    'mock', 'pyopenms'
     ]
 
 setup(name='ligando',

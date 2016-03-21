@@ -284,7 +284,7 @@ def tissue_specific_peptides_creater():
     query = query.join(PeptideRun)
     query = query.filter(func.find_in_set("W6/32", MsRun.antibody_set))
 
-    # TODO: What about multiple spectrum hits on the same source. Are they ignored?
+
     query = query.group_by(PeptideRun.sequence)
     peptide_tissue_group_concat = query.all()
 
@@ -715,6 +715,26 @@ def peptide_run_creater():
 
     return None
 
+def spectra_extracter():
+    print "Extracting spectra"
+    ms_runs = DBSession.query(MsRun.filename).all()
+
+    for run in ms_runs:
+        query = DBSession.query(SpectrumHit.spectrum_hit_id, SpectrumHit.first_scan)
+        query = query.join(t_peptide_run_spectrum_hit_map)
+        query = query.join(PeptideRun)
+        query = query.join(MsRun)
+        query = query.filter(MsRun.filename == run[0])
+        result = query.all()
+
+
+        f = open("export/ms_runs/" + str(run[0]) + ".txt", "w")
+        for spectrum in result:
+            f.write(str(spectrum[0])+ "," + str(spectrum[1]) + "\n")
+        f.close()
+    print "Extracted spectra"
+    return None
+
 if __name__ == '__main__':
     print "static table creater"
     #peptide_run_creater()
@@ -726,3 +746,5 @@ if __name__ == '__main__':
     #tissue_protein_count_creater()
     #tissue_hla_specific_peptides_creater()
     #tissue_hla_protein_count_creater()
+
+    spectra_extracter()

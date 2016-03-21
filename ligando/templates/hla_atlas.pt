@@ -44,19 +44,20 @@
                     {
                         data: "hla",
                         "render": function (data, type, row) {
-                            return "<a class='nostylelink'  href= '/hla/" + data + "'>" + data + "</a>";
+                            return "<a   href= '/hla/" + data + "'>" + data + "</a>";
                         }
                     },
                     { //TODO: fix other links
                         data: "samples",
                         "render": function (data, type, row) {
-                            return "<a class='nostylelink'  href= '/source/" + data + "'>" + data + "</a>"; //currently there is no page holding all samples
+                            return  data;
                         }
                     },
                     { //TODO: fix other links
                         data: "scored_peptides",
                         "render": function (data, type, row) {
-                            return "<a class='nostylelink'  href= '/dignity/" + data + "'>" + data + "</a>";
+                            return "<a title='Show all Peptides'  href='javascript:post(\x22../peptide_query\x22, {hla_typing: \x22"+ row["hla"] +"\x22 , grouping:\x22peptide\x22}," + data + " )'> " + data + "</a>"
+
                         }
                     }
                 ]

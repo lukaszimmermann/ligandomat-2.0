@@ -11,7 +11,7 @@ from ligando.models import (
     HlaType,
     t_hla_map,
     SpectrumHit,
-    t_spectrum_protein_map)
+    t_spectrum_protein_map, PeptideRun)
 from ligando.views.view_helper import conn_err_msg, js_list_creator, js_list_creator_dataTables
 
 
@@ -20,9 +20,8 @@ def search_result(request):
     # try:
     result = dict()
     # Search SpectrumHit Sequence
-    # TODO: Vllt lieber peptide_run benutzen?
-    result["peptide"] = json.dumps(DBSession.query(SpectrumHit.sequence.distinct().label('peptide')).join(MsRun).filter(
-        SpectrumHit.sequence == request.params["search_all"]).filter(MsRun.flag_trash==0).filter(SpectrumHit.source_source_id != None).all())
+    result["peptide"] = json.dumps(DBSession.query(PeptideRun.sequence.distinct().label('peptide')).join(MsRun).filter(
+        PeptideRun.sequence == request.params["search_all"]).filter(MsRun.flag_trash==0).filter(PeptideRun.source_source_id != None).all())
 
     # Search source columns
     result["patient_id"] = json.dumps(DBSession.query(Source.patient_id.distinct().label('source')).filter(

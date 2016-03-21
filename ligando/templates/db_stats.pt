@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html metal:use-macro="load: base_layout.pt">
+<html lang="${request.locale_name}">
+<head>
+
+</head>
+
+<body>
+<metal:block fill-slot="content">
+    <div class="container">
+        <!--? TODO: fill with content-->
+        <div class="row">
+            <div class="col-md-10 col-md-offset-1">
+                <ol class="breadcrumb">
+                    <li><a href="/">Home</a></li>
+                    <li>About</li>
+                    <li>Database Statistics</li>
+                </ol>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6 col-md-offset-1">
+                <h1>Database Statistics</h1>
+
+                <table class="table table-striped table-bordered">
+                    <tr>
+                        <td>Total number of Donors</td>
+                        <td id="source_stat" align="right"></td>
+                    </tr>
+                    <tr>
+                        <td>Total number of different Tissues</td>
+                        <td id="tissue_stat" align="right"></td>
+                    </tr>
+                    <tr>
+                        <td>Total number of Samples</td>
+                        <td id="sample_stat" align="right"></td>
+                    </tr>
+                    <tr>
+                        <td>Total number of MS Runs</td>
+                        <td id="msruns_stat" align="right"></td>
+                    </tr>
+                    <tr>
+                        <td>Total number of different Peptides</td>
+                        <td id="peptide_stat" align="right"></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6 col-md-offset-1">
+                <h1>Peptide Distribution Class I</h1>
+                <div id="classI_distribution" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6 col-md-offset-1">
+                <h1>Peptide Distribution Class II</h1>
+                <div id="classII_distribution" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+
+        $(document).ready(function () {
+            document.getElementById("source_stat").innerHTML = ${source_stat};
+            document.getElementById("tissue_stat").innerHTML = ${tissue_stat};
+            document.getElementById("sample_stat").innerHTML = ${sample_stat};
+            document.getElementById("msruns_stat").innerHTML = ${msruns_stat};
+            document.getElementById("peptide_stat").innerHTML = ${peptide_stat};
+        });
+
+
+        // Date of visit
+        var date = new Date();
+        // Peptide length distribution for classI
+        $(document).ready(function () {
+
+            var options = {
+                chart: {
+                    type: 'column'
+                },
+                credits: {
+                    enabled: false
+                },
+                title: {
+                    text: 'Peptide length distribution for Class I'
+                },
+                exporting: {
+                    chartOptions: {
+                         title: {
+                            text: 'Peptide length distribution for Class I'
+                        },
+                        subtitle: {
+                            text: "Source: " + document.URL + ", " + date.toUTCString() ,
+                            align: "left",
+                            verticalAlign: "bottom",
+                            y: 10
+                        }
+                    },
+                    filename: 'Peptide length distribution for Class I'
+                },
+                xAxis: {
+                    type: [],
+                    title: {
+                        text: 'Length'
+                    }
+                },
+                yAxis: {
+                    title: {
+                        text: 'Number of Peptides'
+                    }
+                },
+                series: [],
+                tooltip: {
+                    formatter: function () {
+                        return '<b>' + this.x +
+                                ' : ' + this.y + '</b>';
+                    }
+                }
+            };
+
+            protein_stats = ${classI_distribution};
+            var series = {
+                name: ["Number of Peptides"],
+                data: [],
+                showInLegend: false
+
+            };
+            var categories = [];
+            $.each(protein_stats, function (i, row) {
+                categories.push(parseInt(row["length"]));
+                //series.name.push(row["gene_name"]+"/"+ row["name"]);
+                series.data.push(parseInt(row["count"]));
+
+            });
+            options.series.push(series);
+            options.xAxis.categories = categories;
+
+
+            $('#classI_distribution').highcharts(options);
+        });
+
+        // Peptide length distribution for classII
+        $(document).ready(function () {
+
+            var options = {
+                chart: {
+                    type: 'column'
+                },
+                credits: {
+                    enabled: false
+                },
+                title: {
+                    text: 'Peptide length distribution for Class II'
+                },
+                exporting: {
+                    chartOptions: {
+                         title: {
+                            text: 'Peptide length distribution for Class II'
+                        },
+                        subtitle: {
+                            text: "Source: " + document.URL + ", " + date.toUTCString() ,
+                            align: "left",
+                            verticalAlign: "bottom",
+                            y: 10
+                        }
+                    },
+                    filename: 'Peptide length distribution for Class II'
+                },
+                xAxis: {
+                    type: [],
+                    title: {
+                        text: 'Length'
+                    }
+                },
+                yAxis: {
+                    title: {
+                        text: 'Number of Peptides'
+                    }
+                },
+                series: [],
+                tooltip: {
+                    formatter: function () {
+                        return '<b>' + this.x +
+                                ' : ' + this.y + '</b>';
+                    }
+                }
+            };
+
+            protein_stats = ${classII_distribution};
+            var series = {
+                name: ["Number of Peptides"],
+                data: [],
+                showInLegend: false
+
+            };
+            var categories = [];
+            $.each(protein_stats, function (i, row) {
+                categories.push(parseInt(row["length"]));
+                //series.name.push(row["gene_name"]+"/"+ row["name"]);
+                series.data.push(parseInt(row["count"]));
+
+            });
+            options.series.push(series);
+            options.xAxis.categories = categories;
+
+
+            $('#classII_distribution').highcharts(options);
+        });
+
+    </script>
+
+</metal:block>
+
+</body>
+</html>
+</html>

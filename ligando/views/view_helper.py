@@ -6,37 +6,6 @@ __author__ = 'Linus Backert'
 
 from sqlalchemy.orm import aliased
 
-# colors for all different organs
-# TODO: do not use fixed colors
-colors = {'blood': "#bf616a",
-          'cerebellum': "#bf616a",
-          'heart': "#bf616a",
-          'testis': "#bf616a",
-          'aorta': "#bf616a",
-          'trachea': "#bf616a",
-          'esophagus': "#bf616a",
-          'adrenalgland': "#bf616a",
-          'brain': "#5B90BF",
-          'ovary': "#a3be8c",
-          'kidney': "#d08770",
-          'colon': "#ab7967",
-          'lung': "#ebcb8b",
-          'bladder': "#96b5b4",
-          'bone marrow': "#8fa1b3",
-          'breast': "#b48ead",
-          'liver': "#473550",
-          'cervix': "#65292f",
-          'smooth muscle': "#284967",
-          'muscle': "#465b33",
-          'pancreas': "#6c3423",
-          'skin': "#5c3e33",
-          'spleen': "#7a5815",
-          'small intestine': "#507170",
-          'heart, small intestine': "#3a4755",
-          'myelon': "#361619",
-          'stomach': "#152737",
-          'thyroid': "#26311c",
-          'thymus': "#31211b"}
 
 
 # writes to log files

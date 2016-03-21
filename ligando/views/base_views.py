@@ -5,6 +5,7 @@ from sqlalchemy import func, distinct, String, desc
 import simplejson as json
 from sqlalchemy import or_, func
 from ligando.views.view_helper import get_chart_data
+import pyopenms as oms
 
 
 from ligando.models import (
@@ -231,7 +232,6 @@ def protein_page(request):
     try:
         # Checking for different query types
         if request.matchdict["type"] == "geneName":
-            # TODO: a gene name is not unique!
             query = DBSession.query(Protein.name)
             query = query.filter(Protein.gene_name == request.matchdict["protein"])
             filter = query.one()[0]
@@ -481,7 +481,6 @@ def peptide_page(request):
         # query = query.group_by(Source.patient_id)
         # sources = js_list_creator_dataTables(query.all())
 
-        #TODO: maybe sent one big query instead of many small ones
         query = DBSession.query(HlaType.hla_string.distinct().label("hla_class1_A"))
         query = query.join(t_hla_map)
         query = query.join(Source)
@@ -514,7 +513,7 @@ def peptide_page(request):
             HlaType.hla_string.like("C%"))
         hla_class1_C = js_list_creator_dataTables(query.all())
 
-        # TODO: there are probably more than these class 2 alleles
+
         query = DBSession.query(HlaType.hla_string.distinct().label("hla_class2_DPB"))
         query = query.join(t_hla_map)
         query = query.join(Source)
@@ -554,7 +553,50 @@ def peptide_page(request):
             "hla_class2_DP": hla_class2_DP, "hla_class2_DQ": hla_class2_DQ,
             "hla_class2_DRB": hla_class2_DRB, "psms": psms, "ms_run_count": ms_run_count}
 
+
+@view_config(route_name='peptide_ajax', renderer='json', request_method="GET")
+def specs(request):
+    query = DBSession.query(MsRun.filename)
+    query = query.join(SpectrumHit)
+    query = query.filter(SpectrumHit.spectrum_hit_id == request.matchdict["spectrum_hit_id"])
+    filename = query.all()[0][0]
+
+    query = DBSession.query(SpectrumHit.mzML_id)
+    query = query.filter(SpectrumHit.spectrum_hit_id == request.matchdict["spectrum_hit_id"])
+    mzML_id = query.all()[0][0]
+
+    mi = str("/Users/Backert/Documents/Doktorarbeit/LigandosphereDb/HLAtlas_test/"+ filename.strip(".RAW")+ ".mzML_shortened.mzml")
+    si = mzML_id
+    imf_skip = oms.IndexedMzMLFile()
+    #imf_skip.setSkipXMLChecks(True)
+    imf_skip.openFile(mi)
+    print imf_skip.getParsingSuccess()
+    if imf_skip.getParsingSuccess():
+        p = imf_skip.getSpectrumById(si)
+        mz = p.getMZArray()
+        inte = p.getIntensityArray()
+
+
+
+    return {'peaks': zip(mz, inte), "ntermMod" : 164.07, "filename" : filename}
+
 @view_config(route_name='peptide_spectra', renderer='../templates/base_templates/peptide_spectra.pt', request_method="GET")
 def peptide_spectra_page(request):
-    peaks = open("ligando/static/spectra_test/test_output_0_100.txt").readline()
-    return {'sequence': 'AAAVPRAAF', 'peaks': peaks}
+    sequence = request.matchdict["peptide"]
+
+    # get all spectrum_hits
+    query = DBSession.query(SpectrumHit.spectrum_hit_id.label("spectrum_hit_id"),
+                            SpectrumHit.search_engine_score.label("score"),
+                            SpectrumHit.delta_m.label("delta_m"),
+                            SpectrumHit.mzML_id.label("mzML_id"),
+                            MsRun.filename.label("filename"),
+                            Source.organ.label("organ"))
+    query = query.join(MsRun)
+    query = query.join(t_peptide_run_spectrum_hit_map)
+    query = query.join(PeptideRun)
+    query = query.join(Source)
+    query = query.filter(PeptideRun.sequence == sequence)
+    spectra = json.dumps(query.all())
+
+    #peaks = open("ligando/static/spectra_test/test_output_0_100.txt").readline()
+    return {'peptide': sequence, "spectra" : spectra}#, 'peaks': peaks}

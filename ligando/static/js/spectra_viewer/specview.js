@@ -36,8 +36,8 @@
                 precursorPeaks: null,
                 precursorPeakClickFn: null,
                 zoomMs1: false,
-                width: 700, 	// width of the ms/ms plot
-                height: 450, 	// height of the ms/ms plot
+                width: 700,     // width of the ms/ms plot
+                height: 450,    // height of the ms/ms plot
                 massError: 0.5, // mass tolerance (in th) for labeling peaks
                 massErrorUnit: massErrorTypeTh, // 'Th' or 'ppm'
                 extraPeakSeries:[],
@@ -49,7 +49,7 @@
                 labelImmoniumIons: true,
                 labelPrecursorPeak: true,
                 labelReporters: false,
-				tooltipZIndex: null,
+                tooltipZIndex: null,
                 showMassErrorPlot: false,
                 massErrorPlotDefaultUnit: null,
                 // Use these option to set the x-axis range (m/z) that will be displayed when the MS/MS plot is initialized or is fully zoomed out.
@@ -57,7 +57,7 @@
                 minDisplayMz: null,
                 maxDisplayMz: null
         };
-			
+
 	    var options = $.extend(true, {}, defaults, opts); // this is a deep copy
 
         return this.each(function() {

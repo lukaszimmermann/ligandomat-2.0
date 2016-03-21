@@ -101,6 +101,7 @@
                             <ul class="dropdown-menu">
                                 <li><a href="/faq">FAQ</a></li>
                                 <li><a href="/info">Information</a></li>
+                                <li><a href="/db_stats">Database Statistics</a></li>
                                 <li role="separator" class="divider"></li>
                                 <li><a href="/contact">Contact</a></li>
                                 <li><a href="http://www.uni-tuebingen.de/impressum.html">Imprint</a></li>

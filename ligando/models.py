@@ -188,6 +188,7 @@ class SpectrumHit(Base):
     source_source_id = Column(ForeignKey(u'source.source_id'), index=True)
     modifications = Column(String(60, u'latin1_german1_ci'))
     sequence = Column(String(100, u'latin1_german1_ci'), index=True)
+    mzML_id = Column(Integer)
 
     ms_run_ms_run = relationship(u'MsRun')
     source_source = relationship(u'Source')

@@ -2,16 +2,90 @@
     position: relative;
 }
 
-.circle-container a {
+.circle-container div {
     display: table;
     vertical-align: middle;
     overflow: hidden;
     position: absolute;
+    z-index: 10;
+
     top: 50%; left: 50%;
     width: 150px; height: 70px;
     /* border: 1px solid crimson; */
     margin: -35px -75px; /* half the width */
 }
+
+.circle-container a.picture-link {
+    z-index: 10;
+    display: table;
+    vertical-align: middle;
+    overflow: hidden;
+    top: 50%; left: 50%;
+    width: 150px; height: 70px;
+    /* border: 1px solid crimson; */
+}
+.table-dropdown-menu {
+    /*vertical-align: baseline;*/
+    /*overflow: visible;*/
+    position: relative;
+    /*z-index: 1000;*/
+
+    /*top: 100%;*/
+    /*left: 0;*/
+    /*!*display: none;*!*/
+    /*float: right;*/
+    /*min-width: 160px;*/
+    /*padding: 5px 0;*/
+    /*margin: 2px 0 0;*/
+    /*list-style: none;*/
+    /*font-size: 13px;*/
+    /*text-align: left;*/
+    /*background-color: #fff;*/
+    /*border: 1px solid #ccc;*/
+    /*border: 1px solid rgba(0, 0, 0, 0.15);*/
+    /*border-radius: 3px;*/
+    /*-webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);*/
+    /*box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);*/
+    /*background-clip: padding-box;*/
+
+    /* border: 1px solid crimson; */
+
+    /*position: absolute;*/
+    /*display: table;*/
+    /*vertical-align: middle;*/
+    /*overflow: hidden;*/
+    /*position: absolute;*/
+    /*top: 50%;*/
+    /*left: 50%;*/
+    /*width: 150px;*/
+    /*height: 70px;*/
+    /* border: 1px solid crimson; */
+    /*margin: -35px -75px;*/
+      /*top: 100%;*/
+      /*left: 0;*/
+      /*z-index: 1000;*/
+      /*display: none;*/
+      /*float: left;*/
+      /*min-width: 160px;*/
+      /*padding: 5px 0;*/
+      /*margin: 2px 0 0;*/
+      /*list-style: none;*/
+      /*background-color: #ffffff;*/
+      /*border: 1px solid #ccc;*/
+      /*border: 1px solid rgba(0, 0, 0, 0.2);*/
+      /**border-right-width: 2px;*/
+      /**border-bottom-width: 2px;*/
+      /*-webkit-border-radius: 6px;*/
+         /*-moz-border-radius: 6px;*/
+              /*border-radius: 6px;*/
+      /*-webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);*/
+         /*-moz-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);*/
+              /*box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);*/
+      /*-webkit-background-clip: padding-box;*/
+         /*-moz-background-clip: padding;*/
+              /*background-clip: padding-box;*/
+}
+
 
 .vertical-center {
     display: table-cell;
@@ -20,6 +94,7 @@
 }
 
 .circle-container a img {
+    z-index: 10;
     width: 70px;
     height:70px;
 }

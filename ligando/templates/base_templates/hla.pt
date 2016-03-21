@@ -62,8 +62,14 @@
 
         </div>
 
-        <!-- Peptide-binding motif -->
         <div class="row">
+            <div class="col-md-10 col-md-offset-1">
+                <div id="distribution" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+            </div>
+        </div>
+
+        <!-- Peptide-binding motif -->
+        <div class="row" tal:condition="not hla.startswith('D')">
             <div class="col-md-10 col-md-offset-1">
             <h1>Peptide binding motif</h1>
                 <!-- Creating tabs -->
@@ -77,25 +83,6 @@
             </div>
         </div>
 
-        <div class="row">
-            <div class="col-md-10 col-md-offset-1">
-                <div id="distribution" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
-            </div>
-        </div>
-        <!--?<div class="row">-->
-            <!--?<div class="col-md-10 col-md-offset-1">-->
-                <!--?<h1>Organs</h1>-->
-                <!--?<table id="example" class="table table-striped table-bordered">-->
-                    <!--?<thead>-->
-                    <!--?<tr>-->
-                        <!--?<th>Source ID</th>-->
-                        <!--?<th>Patient ID</th>-->
-                        <!--?<th>Tissue</th>-->
-                    <!--?</tr>-->
-                    <!--?</thead>-->
-                <!--?</table>-->
-            <!--?</div>-->
-        <!--?</div>-->
     </div>
 
     <script>
@@ -186,44 +173,47 @@
             document.getElementById("source_stat").innerHTML = ${sources}.length;
             document.getElementById("sample_stat").innerHTML = ${statistic}[0]["sample_count"];
 
-            var any_seqlogo = false;
-            for(i = min_len; i <= max_len; i++) {
 
-                if(peptide_distribution_array[i]>10) {
-                    any_seqlogo =true;
-                    if (i == 9) {
-                        $("#seqlogo_tabs").append('<li class="active"><a href="#' + i + 'mer" data-toggle="tab">' + i + 'mer</a></li>');
+            if('${hla}'.indexOf("D") == -1 ){
+                var any_seqlogo = false;
+                for(i = min_len; i <= max_len; i++) {
 
-                        $("#seqlogo_content").append('<div class="tab-pane fade in active" id="'+ i +'mer">' +
-                            '<div style="min-width: 310px; height: 400px; max-width: 600px; margin: 0 auto">' +
-                            '<img style="height: 400px; display: block; text-align: center; line-height: 100px; ' + /* needed to align alternative text */
-                            'vertical-align: middle; margin: 0 auto" id="seqlogo_'+ i +'" src="" alt="No peptide-binding motif available yet.">' +
-                            '</div>' +
-                            '</div>'
-                        )
+                    if(peptide_distribution_array[i]>10) {
+                        any_seqlogo =true;
+                        if (i == 9) {
+                            $("#seqlogo_tabs").append('<li class="active"><a href="#' + i + 'mer" data-toggle="tab">' + i + 'mer</a></li>');
 
-                    } else {
-                        $("#seqlogo_tabs").append('<li ><a href="#' + i + 'mer" data-toggle="tab">' + i + 'mer</a></li>');
-                        $("#seqlogo_content").append('<div class="tab-pane fade" id="'+ i +'mer">' +
-                            '<div style="min-width: 310px; height: 400px; max-width: 600px; margin: 0 auto">' +
-                            '<img style="height: 400px; display: block; text-align: center; line-height: 100px; ' + /* needed to align alternative text */
-                            'vertical-align: middle; margin: 0 auto" id="seqlogo_'+ i +'" src="" alt="No peptide-binding motif available yet.">' +
-                            '</div>' +
-                            '</div>'
+                            $("#seqlogo_content").append('<div class="tab-pane fade in active" id="'+ i +'mer">' +
+                                '<div style="min-width: 310px; height: 400px; max-width: 600px; margin: 0 auto">' +
+                                '<img style="height: 400px; display: block; text-align: center; line-height: 100px; ' + /* needed to align alternative text */
+                                'vertical-align: middle; margin: 0 auto" id="seqlogo_'+ i +'" src="" alt="No peptide-binding motif available yet.">' +
+                                '</div>' +
+                                '</div>'
+                            )
+
+                        } else {
+                            $("#seqlogo_tabs").append('<li ><a href="#' + i + 'mer" data-toggle="tab">' + i + 'mer</a></li>');
+                            $("#seqlogo_content").append('<div class="tab-pane fade" id="'+ i +'mer">' +
+                                '<div style="min-width: 310px; height: 400px; max-width: 600px; margin: 0 auto">' +
+                                '<img style="height: 400px; display: block; text-align: center; line-height: 100px; ' + /* needed to align alternative text */
+                                'vertical-align: middle; margin: 0 auto" id="seqlogo_'+ i +'" src="" alt="No peptide-binding motif available yet.">' +
+                                '</div>' +
+                                '</div>'
+                            )
+                        }
+
+                        temppath = "${request.static_url("ligando:static/seqlogo/A_0101.png")}";
+                        document.getElementById("seqlogo_"+i).src =  temppath.slice(0, -10)+ "test/" + '${hla}'.replace(":", "").replace("*","_") + "_"+i+".png";
+                    }else {
+                        $("#seqlogo_tabs").append('<li class="disabled"><a href="#' + i + 'mer" data-toggle="tab">' + i + 'mer</a></li>');
+                        $("#seqlogo_content").append('<div class="tab-pane fade in active" id="' + i + 'mer">' +
+                                '<div style="min-width: 310px; height: 400px; max-width: 600px; margin: 0 auto">' +
+                                '<img style="height: 400px; display: block; text-align: center; line-height: 100px; ' + /* needed to align alternative text */
+                                'vertical-align: middle; margin: 0 auto" id="seqlogo_' + i + '" src="" alt="No peptide-binding motif available yet.">' +
+                                '</div>' +
+                                '</div>'
                         )
                     }
-
-                    temppath = "${request.static_url("ligando:static/seqlogo/A_0101.png")}";
-                    document.getElementById("seqlogo_"+i).src =  temppath.slice(0, -10)+ "test/" + '${hla}'.replace(":", "").replace("*","_") + "_"+i+".png";
-                }else {
-                    $("#seqlogo_tabs").append('<li class="disabled"><a href="#' + i + 'mer" data-toggle="tab">' + i + 'mer</a></li>');
-                    $("#seqlogo_content").append('<div class="tab-pane fade in active" id="' + i + 'mer">' +
-                            '<div style="min-width: 310px; height: 400px; max-width: 600px; margin: 0 auto">' +
-                            '<img style="height: 400px; display: block; text-align: center; line-height: 100px; ' + /* needed to align alternative text */
-                            'vertical-align: middle; margin: 0 auto" id="seqlogo_' + i + '" src="" alt="No peptide-binding motif available yet.">' +
-                            '</div>' +
-                            '</div>'
-                    )
                 }
 
 
@@ -249,7 +239,7 @@
 
 
 
-         // Date of visit
+        // Date of visit
         var date = new Date();
         // Peptide length distribution for hla
         $(document).ready(function () {

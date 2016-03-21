@@ -29,20 +29,137 @@
                 <h1>Tissues</h1>
             </div>
             <div class="col-md-10 col-md-offset-1">
-                <img id="heart" width="60px" style="opacity: 0.3" src="../static/images/herz.svg">
-                <img id="brain" width="60px" style="opacity: 0.3" src="../static/images/hirn.svg">
-                <img id="spleen" width="60px" style="opacity: 0.3" src="../static/images/milz.svg">
-                <img id="breast" width="60px" style="opacity: 0.3" src="../static/images/brust.svg">
-                <img id="uterus" width="60px" style="opacity: 0.3" src="../static/images/uterus.svg">
-                <img id="prostate" width="60px" style="opacity: 0.3" src="../static/images/prostata_hoden.svg">
-                <img id="lung" width="60px" style="opacity: 0.3" src="../static/images/lungen.svg">
-                <img id="kidney" width="60px" style="opacity: 0.3" src="../static/images/niere.svg">
-                <img id="bladder" width="60px" style="opacity: 0.3" src="../static/images/blase.svg">
-                <img id="liver" width="60px" style="opacity: 0.3" src="../static/images/leber.svg">
-                <img id="skin" width="60px" style="opacity: 0.3" src="../static/images/haut.svg">
-                <img id="stomach" width="60px" style="opacity: 0.3" src="../static/images/magen.svg">
-                <img id="pancreas" width="60px" style="opacity: 0.3" src="../static/images/pankreas.svg">
-                <img id="thyroid" width="60px" style="opacity: 0.3" src="../static/images/thyroidea.svg">
+                <div class="col-md-8" style="padding-right: 0">
+                    <div class="col-md-1">
+                        <div class="dropdown" > <a href="#" class="dropdown-toggle picture-link"  data-toggle="dropdown" ><img id="heart" width="60px" style="opacity: 0.3" src="../static/images/herz.svg"></a>
+                            <ul class="dropdown-menu" id="heart_menu">
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-md-1">
+                        <div class="dropdown" >
+                            <a href="#" class="dropdown-toggle picture-link"  data-toggle="dropdown" >
+                                <img id="brain" width="60px" style="opacity: 0.3" src="../static/images/hirn.svg">
+                        </a>
+                            <ul class="dropdown-menu" id="brain_menu">
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-md-1">
+                        <div class="dropdown" >
+                            <a href="#" class="dropdown-toggle picture-link"  data-toggle="dropdown" >
+                                <img id="spleen" width="60px" style="opacity: 0.3" src="../static/images/milz.svg">
+                        </a>
+                            <ul class="dropdown-menu" id="spleen_menu">
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-md-1">
+                        <div class="dropdown" >
+                            <a href="#" class="dropdown-toggle picture-link"  data-toggle="dropdown" >
+                                <img id="breast" width="60px" style="opacity: 0.3" src="../static/images/brust.svg">
+                        </a>
+                            <ul class="dropdown-menu" id="breast_menu">
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-md-1">
+                        <div class="dropdown" >
+                        <a href="#" class="dropdown-toggle picture-link"  data-toggle="dropdown" >
+                            <img id="uterus" width="60px" style="opacity: 0.3" src="../static/images/uterus.svg">
+                    </a>
+                        <ul class="dropdown-menu" id="uterus_menu">
+                        </ul>
+                        </div>
+                    </div>
+
+                    <div class="col-md-1">
+                        <div class="dropdown" >
+                            <a href="#" class="dropdown-toggle picture-link"  data-toggle="dropdown" >
+                                <img id="prostate" width="60px" style="opacity: 0.3" src="../static/images/prostata_hoden.svg">
+                        </a>
+                            <ul class="dropdown-menu" id="prostate_menu">
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-md-1">
+                        <div class="dropdown" >
+                            <a href="#" class="dropdown-toggle picture-link"  data-toggle="dropdown" >
+                                <img id="lung" width="60px" style="opacity: 0.3" src="../static/images/lungen.svg">
+                        </a>
+                            <ul class="dropdown-menu" id="lung_menu">
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-md-1">
+                        <div class="dropdown" >
+                            <a href="#" class="dropdown-toggle picture-link"  data-toggle="dropdown" >
+                                <img id="kidney" width="60px" style="opacity: 0.3" src="../static/images/niere.svg">
+                        </a>
+                            <ul class="dropdown-menu" id="kidney_menu">
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-md-1">
+                        <div class="dropdown" >
+                            <a href="#" class="dropdown-toggle picture-link"  data-toggle="dropdown" >
+                                <img id="bladder" width="60px" style="opacity: 0.3" src="../static/images/blase.svg">
+                        </a>
+                            <ul class="dropdown-menu" id="bladder_menu">
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="col-md-1">
+                        <div class="dropdown" >
+                            <a href="#" class="dropdown-toggle picture-link"  data-toggle="dropdown" >
+                                <img id="liver" width="60px" style="opacity: 0.3" src="../static/images/leber.svg">
+                        </a>
+                            <ul class="dropdown-menu" id="liver_menu">
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-md-1">
+                        <div class="dropdown" >
+                            <a href="#" class="dropdown-toggle picture-link"  data-toggle="dropdown" >
+                                <img id="skin" width="60px" style="opacity: 0.3" src="../static/images/haut.svg">
+                        </a>
+                            <ul class="dropdown-menu" id="skin_menu">
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-md-1">
+                        <div class="dropdown" >
+                            <a href="#" class="dropdown-toggle picture-link"  data-toggle="dropdown" >
+                                <img id="stomach" width="60px" style="opacity: 0.3" src="../static/images/magen.svg">
+                        </a>
+                            <ul class="dropdown-menu" id="stomach_menu">
+                            </ul>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="col-md-4 " style="padding-left: 0">
+                    <div class="col-md-2">
+                        <div class="dropdown" >
+                            <a href="#" class="dropdown-toggle picture-link"  data-toggle="dropdown" >
+                                <img id="pancreas" width="60px" style="opacity: 0.3" src="../static/images/pankreas.svg">
+                        </a>
+                            <ul class="dropdown-menu" id="pancreas_menu">
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-md-2  ">
+                        <div class="dropdown" >
+                            <a href="#" class="dropdown-toggle picture-link"  data-toggle="dropdown" >
+                                <img id="thyroid" width="60px" style="opacity: 0.3" src="../static/images/thyroidea.svg">
+                        </a>
+                            <ul class="dropdown-menu" id="thyroid_menu">
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
 
             </div>
         </div>
@@ -193,22 +310,47 @@
 <script>
     // TODO: allow subtissues
     var organs = ["heart", "brain", "spleen", "breast", "uterus", "prostate", "lung", "kidney", "bladder", "liver", "skin", "stomach", "pancreas", "thyroid"];
+    var suborgans = {"heart":["heart", "aorta", "muscle", "tongue"],
+        "brain":["brain", "cerebellum", "small brain", "myelon", "bone marrow"],
+        "spleen": ["spleen"],
+        "breast": ["mamma"],
+        "uterus": ["uterus", "ovary"],
+        "prostate": ["prostate", "testis"],
+        "lung": ["lung", "trachea"],
+        "kidney": ["adrenal gland", "kidney"],
+        "bladder": ["bladder"],
+        "liver": ["liver"],
+        "skin": ["skin"],
+        "stomach": ["colon", "esophagus", "stomach", "small intestine"],
+        "pancreas": ["pankreas"],
+        "thyroid": ["thyroid", "glandula sublingualis", "lymph node"]};
 
     // Set Opacity of the found tissues
-    // TODO: allow subtissues
     $(document).ready(function(){
         var found_organs = ${organs};
-        console.log(found_organs);
-        for(var i=0; i < organs.length; i++){
-            for(var j=0; j < found_organs.length; j++){
-                if(organs[i].charAt(0).toUpperCase() + organs[i].slice(1)== found_organs[j]){
-                    console.log(organs[i]);
-                    $('#'+organs[i]).css('opacity', '1');
-                    console.log($('#'+organs[i]));
+        for(var i in suborgans){
+            for(var k=0; k < suborgans[i].length; k++){
+                for(var j=0; j < found_organs.length; j++){
+                    if (suborgans[i][k].charAt(0).toUpperCase() + suborgans[i][k].slice(1) == found_organs[j]) {
+                        $('#' + i).css('opacity', '1');
+                        $('#' + i+"_menu").append('<li><a  href="/organ/' + suborgans[i][k] + '">'+ suborgans[i][k].charAt(0).toUpperCase() + suborgans[i][k].slice(1) + '</a></li>');
+                    }
                 }
             }
 
         }
+
+    // setting empty menu if no organ was found
+    for(var i = 0; i < organs.length; i++){
+        var selected_menu = $('#'+organs[i]+'_menu');
+        if(selected_menu.children("li").length ==0){
+            $('#'+organs[i]+'_menu').append('<li><a class="disabled" href="#">Not found</a></li>' )
+        }
+    }
+    });
+    // Set up organ menus
+    $(document).ready(function(){
+
 
     });
 
@@ -218,6 +360,9 @@
         // Setting the title
         document.getElementById("title").innerHTML = "${peptide}";
     });
+
+
+
     $(document).ready(function () {
 // create dataTable
         //"pageLength": 50

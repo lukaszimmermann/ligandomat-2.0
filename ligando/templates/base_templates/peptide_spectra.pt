@@ -8,24 +8,48 @@
 
 <body>
 <metal:block fill-slot="content">
-
-
-
     <div class="container">
         <div class="row">
             <div class="col-md-10 col-md-offset-1">
                 <ol class="breadcrumb">
                     <li><a href="/">Home</a></li>
+                    <li><a href="/peptide/${peptide}">${peptide}</a></li>
                     <li>Peptide Spectra</li>
                 </ol>
             </div>
         </div>
         <div class="row">
             <div class="col-md-10 col-md-offset-1 text-center">
+                <h1 id="title"></h1>
+            </div>
+        </div>
+        <!--TODO: add further parameter --->
+        <div class="row">
+            <div class="col-md-10 col-md-offset-1 text-center">
+                 <table class="table table-striped table-bordered" id="spectra_list">
+                    <thead>
+                        <tr>
+                            <td>Organ</td>
+                            <!--?<td>Filename</td>-->
+                            <td>&Delta; M</td>
+                            <td>Score</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    <tr><td></td><td></td></tr>
+                    </tbody>
+                </table>
+             </div>
+        </div>
+
+
+        <div class="row">
+            <div class="col-md-10 col-md-offset-1 text-center">
                 <div id="lorikeet"></div>
             </div>
         </div>
     </div>
+
 
 
     <script src="${request.static_url('ligando:static/js/spectra_viewer/jquery.flot.js')}"></script>
@@ -37,29 +61,95 @@
     <script>
 
 
+$(document).ready(function() {
+    // Setting the title
+    document.getElementById("title").innerHTML = "${peptide}";
+});
 
-        $(document).ready(function () {
-            /* render the spectrum with the given options */
-            $("#lorikeet").specview({sequence: sequence,
-                scanNum: 2441,
-                charge: 2,
-                precursorMz: 1012.1,
-                fileName:'sh_1617_JX_070209p_KO410_run1',
-                //staticMods: staticMods,
-                variableMods: varMods,
-                ntermMod: ntermMod,
-                //ctermMod: ctermMod,
-                peaks: peaks
-            });
+$(document).ready(function() {
+    // create dataTable
+
+    $('#spectra_list').dataTable( {
+        "paging":   true,
+        "ordering": true,
+        "info":     false,
+        searching: false,
+        data: ${spectra},
+                columns: [
+                    { data: "organ" ,
+                    "render": function ( data, type, row ) {
+                        return data ;
+                    }},
+                    /*{ data: "filename" ,
+                    "render": function ( data, type, row ) {
+                        return data ;
+                    }},*/
+                        { data: "delta_m" ,
+                    "render": function ( data, type, row ) {
+                        return data.toFixed(4) ;
+                    }},
+
+                    { data: "score" ,
+                    "render": function ( data, type, row ) {
+                        return '<a type="button" onclick="spectrumCall(\''+row['spectrum_hit_id']+'\')">'+ data.toFixed(3) ;
+                    }}
+                ]
+            } );
+        } );
+
+
+
+
+
+//        $(document).ready(function () {
+//            /!* render the spectrum with the given options *!/
+//            $("#lorikeet").specview({sequence: sequence,
+//                scanNum: 2441,
+//                charge: 2,
+//                precursorMz: 1012.1,
+//                fileName:'sh_1617_JX_070209p_KO410_run1',
+//                //staticMods: staticMods,
+//                variableMods: varMods,
+//                ntermMod: ntermMod,
+//                //ctermMod: ctermMod,
+//                peaks: peaks
+//            });
+//        });
+
+
+        function spectrumCall(spectrum_hit_id) {
+            var request = $.ajax({
+            url: "/peptide_ajax/" + spectrum_hit_id,
+            type: "GET",
+            dataType: "json"
         });
-        var sequence = "FDSFGDLSSASAIMGNPK";
-        var varMods = [];
-        // modification index = 14; modification mass = 16.0; modified residue = 'M'
-        varMods[0] = {index: 14, modMass: 16.0, aminoAcid: 'M'};
-        // mass to be added to the N-terminus
-        var ntermMod = 164.07;
-        // peaks in the scan: [m/z, intensity] pairs.
-        var peaks = ${peaks}["1"];
+
+        request.done(function(msg) {
+                /*var sequence = "FDSFGDLSSASAIMGNPK";
+                var varMods = [];
+                // modification index = 14; modification mass = 16.0; modified residue = 'M'
+                varMods[0] = {index: 14, modMass: 16.0, aminoAcid: 'M'};
+                // mass to be added to the N-terminus
+                var ntermMod = 164.07;
+                // peaks in the scan: [m/z, intensity] pairs.
+                //
+                */
+                msg["sequence"] = '${peptide}';
+                var varMods = [];
+                varMods[0] = {index: 14, modMass: 16.0, aminoAcid: 'M'};
+                msg['varMods'] = varMods;
+                //msg['ntermMod'] = 164.07;
+                console.log(msg);
+                //$("#doener").html(vari);
+                $("#lorikeet").specview(msg);
+            //TODO: massdeviation und pageing
+
+        });
+
+        request.fail(function(jqXHR, textStatus) {
+            alert( "Request failed: " + textStatus );
+        });
+        }
 
     </script>
 

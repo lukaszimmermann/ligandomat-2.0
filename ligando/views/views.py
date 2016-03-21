@@ -9,7 +9,7 @@ from ligando.models import (
     DBSession,
     Source,
     MsRun,
-    HlaType, PeptideRun, t_hla_map, HLA_statistics)
+    HlaType, PeptideRun, t_hla_map, HLA_statistics, Binding_prediction)
 from ligando.views.view_helper import js_list_creator, conn_err_msg
 
 
@@ -45,14 +45,57 @@ def my_view(request):
     except:
         return Response(conn_err_msg, content_type='text/plain', status_int=500)
 
-# test view
-@view_config(route_name='test_view', renderer='../templates/test_template.pt')
-def test_view(request):
-    result_dict = dict()
-    result_dict["test"] = DBSession.query(MsRun.filename).filter(MsRun.filename == "testfilename").all()
-    result_dict["count"] = DBSession.query(func.count(MsRun.filename)).filter(MsRun.filename == "testfilename").one()[0]
-    return result_dict
 
+# faq view
+@view_config(route_name='db_stats', renderer='../templates/db_stats.pt')
+def db_stats(request):
+    source_stat = DBSession.query(func.count(Source.patient_id.distinct())).all()[0][0]
+    tissue_stat = DBSession.query(func.count(Source.organ.distinct())).all()[0][0]
+    sample_stat = DBSession.query(func.count(Source.source_id.distinct())).all()[0][0]
+    msruns_stat = DBSession.query(func.count(MsRun.ms_run_id.distinct())).all()[0][0]
+    peptide_stat = DBSession.query(func.count(PeptideRun.sequence.distinct())).all()[0][0]
+
+    # TODO: Precalculate these (to slow)
+    # Peptide distribution
+    query = DBSession.query(func.length(PeptideRun.sequence).label("length"),
+                            func.count(PeptideRun.sequence.distinct()).label("count"))
+    query = query.join(MsRun)
+    query = query.join(Source)
+    query = query.join(t_hla_map)
+    query = query.join(HlaType)
+    query = query.join(Binding_prediction, PeptideRun.sequence == Binding_prediction.sequence)
+    query = query.filter(Binding_prediction.hla_type_hla_type_id == HlaType.hla_type_id)
+    query = query.filter(HlaType.hla_string.notlike("D%"))
+    query = query.filter(Binding_prediction.binder == 1)
+    query = query.group_by(func.length(PeptideRun.sequence))
+    # List of peptides for which one will create the Peptide binding motif-Logo
+    classI_distribution = json.dumps(query.all())
+
+    # TODO: Precalculate these (to slow)
+    # Peptide distribution
+    query = DBSession.query(func.length(PeptideRun.sequence).label("length"),
+                            func.count(PeptideRun.sequence.distinct()).label("count"))
+    query = query.join(MsRun)
+    query = query.join(Source)
+    query = query.join(t_hla_map)
+    query = query.join(HlaType)
+    query = query.join(Binding_prediction, PeptideRun.sequence == Binding_prediction.sequence)
+    query = query.filter(Binding_prediction.hla_type_hla_type_id == HlaType.hla_type_id)
+    query = query.filter(HlaType.hla_string.like("D%"))
+    query = query.filter(Binding_prediction.binder == 1)
+    query = query.group_by(func.length(PeptideRun.sequence))
+    # List of peptides for which one will create the Peptide binding motif-Logo
+    classII_distribution = json.dumps(query.all())
+
+    return {"source_stat" : source_stat,
+            "tissue_stat" : tissue_stat,
+            "sample_stat" : sample_stat,
+            "msruns_stat" : msruns_stat,
+            "peptide_stat" : peptide_stat,
+            "classI_distribution" : classI_distribution,
+            "classII_distribution": classII_distribution
+
+            }
 
 # faq view
 @view_config(route_name='faq', renderer='../templates/faq.pt')
@@ -116,8 +159,6 @@ def hla_atlas(request):
 
 @view_config(route_name='hla_atlas_classII', renderer='../templates/hla_atlas_classII.pt')
 def hla_atlas_classII(request):
-    # TODO: precalculate Number of peptides beforehand
-    # TODO: scored peptides. right now only dummy values
     # HLA-DR, -DP and -DQ
     # DPA1 DPB1 DQA1 DQB1 DRB1 DRB3 DRB4 DRB5 DRB6
 
@@ -214,7 +255,10 @@ def hla_atlas_classII(request):
 
 @view_config(route_name='tissue_browser', renderer='../templates/tissue_browser.pt')
 def tissue_browser(request):
-    return {}
+    query = DBSession.query(Source.organ.label('tissue'), func.count(Source.source_id.distinct()).label('tissue_count'))
+    query = query.group_by(Source.organ)
+    organs =  json.dumps(query.all())
+    return {'tissues' : organs}
 
 
 # error page views
