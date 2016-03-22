@@ -23,59 +23,14 @@
                 <!--? Result table, with different stylings for different groupings-->
                 <table id="example" class="table table-striped table-bordered" cellspacing="0" width="100%">
                     <thead>
-                    <tr tal:condition="grouping == 'run'">
-                        <th>Sequence</th>
-                        <th>RT [min]</th>
-                        <th>Score</th>
-                        <th>E-value</th>
-                        <th>Q-value</th>
-                        <!--?<th>#PSM</th>-->
-                        <th>HLA Typing</th>
-                        <th>Protein</th>
-                        <th>Histology</th>
-                        <th>Source ID</th>
-                        <th>Patient ID</th>
-                        <th>MS Run</th>
-                    </tr>
-                    <tr tal:condition="grouping == 'peptide'">
+
+                    <tr>
                         <th>Sequence</th>
                         <th>Protein</th>
-                        <th>Source ID</th>
-                        <th>Patient ID</th>
-                        <th>Dignity</th>
+                        <th>Tissue</th>
                         <th>HLA Typing</th>
                     </tr>
-                    <tr tal:condition="grouping == 'source'">
-                        <th>Sequence</th>
-                        <th>RT [min]</th>
-                        <th>Score</th>
-                        <th>E-value</th>
-                        <th>Q-value</th>
-                        <th>HLA Typing</th>
-                        <th>Protein</th>
-                        <th>Histology</th>
-                        <th>Source ID</th>
-                        <th>Patient ID</th>
-                    </tr>
-                    <tr tal:condition="grouping == 'source_psm'">
-                        <th>Sequence</th>
-                        <th>Score</th>
-                        <th>E-value</th>
-                        <th>Q-value</th>
-                        <th>#PSM</th>
-                        <th>HLA Typing</th>
-                        <th>Protein</th>
-                        <th>Histology</th>
-                        <th>Source ID</th>
-                        <th>Patient ID</th>
-                    </tr>
-                    <tr tal:condition="grouping == 'protein'">
-                        <th>Protein</th>
-                        <th>Peptides</th>
-                        <th>Source ID</th>
-                        <th>Patient ID</th>
-                        <th>Dignity</th>
-                    </tr>
+
                     </thead>
                 </table>
             </div>
@@ -87,440 +42,63 @@
 
 
         $(document).ready(function () {
-            //console.log(${project});
+            $('#example').dataTable({
+                data: ${project},
+                columns: [
+                    { data: "sequence",
+                        "render": function (data, type, row) {
+                            return "<a class='nostylelink'  href= '/peptide/" + data + "'>" + data + "</a>";
+                        } },
+                    { data: "protein",
+                        // split protein string and create single links
+                        "render": function (data, type, row) {
+                            var prot_split = data.split(",");
+                            var return_string = "";
+                            for (var prot = 0; prot < prot_split.length; prot++) {
+                                if (prot < prot_split.length - 1) {
+                                    return_string += "<a class='nostylelink'  href= '/protein/" + prot_split[prot] + "$uniprot'>" + prot_split[prot] + "</a>, ";
+                                } else {
+                                    return_string += "<a class='nostylelink'  href= '/protein/" + prot_split[prot] + "$uniprot'>" + prot_split[prot] + "</a>";
+                                }
+                            }
+                            return return_string
+                        }},
+
+                    { data: "tissue",
+                        // split source string and create single links
+                        "render": function (data, type, row) {
+                            var source_split = String(data).split(",");
+                            var return_string = "";
+                            for (var source = 0; source < source_split.length; source++) {
+                                if (source < source_split.length - 1) {
+                                    return_string += "<a class='nostylelink'  href= '/organ/" + source_split[source] + "'>" + source_split[source] + "</a>, ";
+                                } else {
+                                    return_string += "<a class='nostylelink'  href= '/organ/" + source_split[source] + "'>" + source_split[source] + "</a>";
+                                }
+                            }
+                            return return_string
+                        }},
+
+                    { data: "hla_typing",
+                        // split HLA string and create single links
+                        "render": function (data, type, row) {
+                            var hla_split = data.split(",");
+                            var return_string = "";
+                            for (var hla = 0; hla < hla_split.length; hla++) {
+                                if (hla < hla_split.length - 1) {
+                                    return_string += "<a class='nostylelink'  href= '/hla/" + hla_split[hla] + "'>" + hla_split[hla] + "</a>, ";
+                                } else {
+                                    return_string += "<a class='nostylelink'  href= '/hla/" + hla_split[hla] + "'>" + hla_split[hla] + "</a>";
+                                }
+                            }
+                            return return_string
+                        }}
+                ],
+                dom: 'Bfrtip',
+                buttons: ['csv', 'excel', 'pdf']
 
 
-            // create dataTable for each type grouping, different collumns
-            if ("${grouping}" == "run") {
-                $('#example').dataTable({
-                    data: ${project},
-                    columns: [
-                        { data: "sequence",
-                            "render": function (data, type, row) {
-                                return "<a class='nostylelink'  href= '/peptide/" + data + "'>" + data + "</a>";
-                            } },
-                        { data: "minRT",
-                            "render": function (data, type, row) {
-                                return data + ' - ' + row.maxRT + '';
-                            }},
-                        { data: "minScore",
-                            "render": function (data, type, row) {
-                                return data + ' - ' + row.maxScore + '';
-                            }},
-                        { data: "minE",
-                            "render": function (data, type, row) {
-                                return data + ' - ' + row.maxE + '';
-                            }},
-                        { data: "minQ",
-                            "render": function (data, type, row) {
-                                return data + ' - ' + row.maxQ + '';
-                            }},
-//                { data: "PSM"},
-                        { data: "hla_typing",
-                            // split HLA string and create single links
-                            "render": function (data, type, row) {
-                                var hla_split = data.split(",");
-                                var return_string = "";
-                                for (var hla = 0; hla < hla_split.length; hla++) {
-                                    if (hla < hla_split.length - 1) {
-                                        return_string += "<a class='nostylelink'  href= '/hla/" + hla_split[hla] + "'>" + hla_split[hla] + "</a>, ";
-                                    } else {
-                                        return_string += "<a class='nostylelink'  href= '/hla/" + hla_split[hla] + "'>" + hla_split[hla] + "</a>";
-                                    }
-                                }
-                                return return_string
-                            }},
-                        { data: "protein",
-                            // split protein string and create single links
-                            "render": function (data, type, row) {
-                                var prot_split = data.split(",");
-                                var return_string = "";
-                                for (var prot = 0; prot < prot_split.length; prot++) {
-                                    if (prot < prot_split.length - 1) {
-                                        return_string += "<a class='nostylelink'  href= '/protein/" + prot_split[prot] + "$uniprot'>" + prot_split[prot] + "</a>, ";
-                                    } else {
-                                        return_string += "<a class='nostylelink'  href= '/protein/" + prot_split[prot] + "$uniprot'>" + prot_split[prot] + "</a>";
-                                    }
-                                }
-                                return return_string
-                            }},
-                        { data: "histology",
-                            "render": function (data, type, row) {
-                                return "<a class='nostylelink'  href= '/histology/" + data + "'>" + data + "</a>";
-                            }},
-
-                        { data: "source_id",
-                            // split source string and create single links
-                            "render": function (data, type, row) {
-                                var source_split = String(data).split(",");
-                                var return_string = "";
-                                for (var source = 0; source < source_split.length; source++) {
-                                    if (source < source_split.length - 1) {
-                                        return_string += "<a class='nostylelink'  href= '/source_id/" + source_split[source] + "'>" + source_split[source] + "</a>, ";
-                                    } else {
-                                        return_string += "<a class='nostylelink'  href= '/source_id/" + source_split[source] + "'>" + source_split[source] + "</a>";
-                                    }
-                                }
-                                return return_string
-                            }},
-                        { data: "patient_id",
-                            // split source string and create single links
-                            "render": function (data, type, row) {
-                                var source_split = data.split(",");
-                                var return_string = "";
-                                for (var source = 0; source < source_split.length; source++) {
-                                    if (source < source_split.length - 1) {
-                                        return_string += "<a class='nostylelink'  href= '/source/" + source_split[source] + "'>" + source_split[source] + "</a>, ";
-                                    } else {
-                                        return_string += "<a class='nostylelink'  href= '/source/" + source_split[source] + "'>" + source_split[source] + "</a>";
-                                    }
-                                }
-                                return return_string
-                            }},
-                        { data: "filename",
-                            "render": function (data, type, row) {
-                                return "<a class='nostylelink'  href= '/msrun/" + row.ms_run_id + "'>" + data + "</a>";
-                            }}
-                    ],
-                    dom: 'Bfrtip',
-                    buttons: ['csv', 'excel', 'pdf']
-
-                });
-            } else if ("${grouping}" == "peptide") {
-                $('#example').dataTable({
-                    data: ${project},
-                    columns: [
-                        { data: "sequence",
-                            "render": function (data, type, row) {
-                                return "<a class='nostylelink'  href= '/peptide/" + data + "'>" + data + "</a>";
-                            } },
-                        { data: "protein",
-                            // split protein string and create single links
-                            "render": function (data, type, row) {
-                                var prot_split = data.split(",");
-                                var return_string = "";
-                                for (var prot = 0; prot < prot_split.length; prot++) {
-                                    if (prot < prot_split.length - 1) {
-                                        return_string += "<a class='nostylelink'  href= '/protein/" + prot_split[prot] + "$uniprot'>" + prot_split[prot] + "</a>, ";
-                                    } else {
-                                        return_string += "<a class='nostylelink'  href= '/protein/" + prot_split[prot] + "$uniprot'>" + prot_split[prot] + "</a>";
-                                    }
-                                }
-                                return return_string
-                            }},
-
-                        { data: "source_id",
-                            // split source string and create single links
-                            "render": function (data, type, row) {
-                                var source_split = String(data).split(",");
-                                var return_string = "";
-                                for (var source = 0; source < source_split.length; source++) {
-                                    if (source < source_split.length - 1) {
-                                        return_string += "<a class='nostylelink'  href= '/source_id/" + source_split[source] + "'>" + source_split[source] + "</a>, ";
-                                    } else {
-                                        return_string += "<a class='nostylelink'  href= '/source_id/" + source_split[source] + "'>" + source_split[source] + "</a>";
-                                    }
-                                }
-                                return return_string
-                            }},
-                        { data: "patient_id",
-                            // split source string and create single links
-                            "render": function (data, type, row) {
-                                var source_split = data.split(",");
-                                var return_string = "";
-                                for (var source = 0; source < source_split.length; source++) {
-                                    if (source < source_split.length - 1) {
-                                        return_string += "<a class='nostylelink'  href= '/source/" + source_split[source] + "'>" + source_split[source] + "</a>, ";
-                                    } else {
-                                        return_string += "<a class='nostylelink'  href= '/source/" + source_split[source] + "'>" + source_split[source] + "</a>";
-                                    }
-                                }
-                                return return_string
-                            }},
-                        { data: "dignity",
-                            // split dignity string and create single links
-                            "render": function (data, type, row) {
-                                var dignity_split = data.split(",");
-                                var return_string = "";
-                                for (var dignity = 0; dignity < dignity_split.length; dignity++) {
-                                    if (dignity < dignity_split.length - 1) {
-                                        return_string += "<a class='nostylelink'  href= '/protein/" + dignity_split[dignity] + "$uniprot'>" + dignity_split[dignity] + "</a>, ";
-                                    } else {
-                                        return_string += "<a class='nostylelink'  href= '/protein/" + dignity_split[dignity] + "$uniprot'>" + dignity_split[dignity] + "</a>";
-                                    }
-                                }
-                                return return_string
-                            }},
-                        { data: "hla_typing",
-                            // split HLA string and create single links
-                            "render": function (data, type, row) {
-                                var hla_split = data.split(",");
-                                var return_string = "";
-                                for (var hla = 0; hla < hla_split.length; hla++) {
-                                    if (hla < hla_split.length - 1) {
-                                        return_string += "<a class='nostylelink'  href= '/hla/" + hla_split[hla] + "'>" + hla_split[hla] + "</a>, ";
-                                    } else {
-                                        return_string += "<a class='nostylelink'  href= '/hla/" + hla_split[hla] + "'>" + hla_split[hla] + "</a>";
-                                    }
-                                }
-                                return return_string
-                            }}
-                    ],
-                    dom: 'Bfrtip',
-                    buttons: ['csv', 'excel', 'pdf']
-
-
-                });
-            }
-            else if ("${grouping}" == "source") {
-                $('#example').dataTable({
-                    data: ${project},
-                    columns: [
-                        { data: "sequence",
-                            "render": function (data, type, row) {
-                                return "<a class='nostylelink'  href= '/peptide/" + data + "'>" + data + "</a>";
-                            } },
-                        { data: "minRT",
-                            "render": function (data, type, row) {
-                                return data + ' - ' + row.maxRT + '';
-                            }},
-                        { data: "minScore",
-                            "render": function (data, type, row) {
-                                return data + ' - ' + row.maxScore + '';
-                            }},
-                        { data: "minE",
-                            "render": function (data, type, row) {
-                                return data + ' - ' + row.maxE + '';
-                            }},
-                        { data: "minQ",
-                            "render": function (data, type, row) {
-                                return data + ' - ' + row.maxQ + '';
-                            }},
-                        { data: "hla_typing",
-                            // split HLA string and create single links
-                            "render": function (data, type, row) {
-                                var hla_split = data.split(",");
-                                var return_string = "";
-                                for (var hla = 0; hla < hla_split.length; hla++) {
-                                    if (hla < hla_split.length - 1) {
-                                        return_string += "<a class='nostylelink'  href= '/hla/" + hla_split[hla] + "'>" + hla_split[hla] + "</a>, ";
-                                    } else {
-                                        return_string += "<a class='nostylelink'  href= '/hla/" + hla_split[hla] + "'>" + hla_split[hla] + "</a>";
-                                    }
-                                }
-                                return return_string
-                            }},
-                        { data: "protein",
-                            // split protein string and create single links
-                            "render": function (data, type, row) {
-                                var prot_split = data.split(",");
-                                var return_string = "";
-                                for (var prot = 0; prot < prot_split.length; prot++) {
-                                    if (prot < prot_split.length - 1) {
-                                        return_string += "<a class='nostylelink'  href= '/protein/" + prot_split[prot] + "$uniprot'>" + prot_split[prot] + "</a>, ";
-                                    } else {
-                                        return_string += "<a class='nostylelink'  href= '/protein/" + prot_split[prot] + "#uniprot'>" + prot_split[prot] + "</a>";
-                                    }
-                                }
-                                return return_string
-                            }},
-                        { data: "histology",
-                            "render": function (data, type, row) {
-                                return "<a class='nostylelink'  href= '/histology/" + data + "'>" + data + "</a>";
-                            }},
-
-                        { data: "source_id",
-                            // split source string and create single links
-                            "render": function (data, type, row) {
-                                var source_split = String(data).split(",");
-                                var return_string = "";
-                                for (var source = 0; source < source_split.length; source++) {
-                                    if (source < source_split.length - 1) {
-                                        return_string += "<a class='nostylelink'  href= '/source_id/" + source_split[source] + "'>" + source_split[source] + "</a>, ";
-                                    } else {
-                                        return_string += "<a class='nostylelink'  href= '/source_id/" + source_split[source] + "'>" + source_split[source] + "</a>";
-                                    }
-                                }
-                                return return_string
-                            }},
-                        { data: "patient_id",
-                            // split source string and create single links
-                            "render": function (data, type, row) {
-                                var source_split = data.split(",");
-                                var return_string = "";
-                                for (var source = 0; source < source_split.length; source++) {
-                                    if (source < source_split.length - 1) {
-                                        return_string += "<a class='nostylelink'  href= '/source/" + source_split[source] + "'>" + source_split[source] + "</a>, ";
-                                    } else {
-                                        return_string += "<a class='nostylelink'  href= '/source/" + source_split[source] + "'>" + source_split[source] + "</a>";
-                                    }
-                                }
-                                return return_string
-                            }}
-                    ],
-                    dom: 'Bfrtip',
-                    buttons: ['csv', 'excel', 'pdf']
-
-                });
-            }
-            else if ("${grouping}" == "source_psm") {
-                $('#example').dataTable({
-                    data: ${project},
-                    columns: [
-                        { data: "sequence",
-                            "render": function (data, type, row) {
-                                return "<a class='nostylelink'  href= '/peptide/" + data + "'>" + data + "</a>";
-                            }},
-                        { data: "minScore",
-                            "render": function (data, type, row) {
-                                return data + ' - ' + row.maxScore + '';
-                            }},
-                        { data: "minE",
-                            "render": function (data, type, row) {
-                                return data + ' - ' + row.maxE + '';
-                            }},
-                        { data: "minQ",
-                            "render": function (data, type, row) {
-                                return data + ' - ' + row.maxQ + '';
-                            }},
-                        { data: "PSM"},
-                        { data: "hla_typing",
-                            // split HLA string and create single links
-                            "render": function (data, type, row) {
-                                var hla_split = data.split(",");
-                                var return_string = "";
-                                for (var hla = 0; hla < hla_split.length; hla++) {
-                                    if (hla < hla_split.length - 1) {
-                                        return_string += "<a class='nostylelink'  href= '/hla/" + hla_split[hla] + "'>" + hla_split[hla] + "</a>, ";
-                                    } else {
-                                        return_string += "<a class='nostylelink'  href= '/hla/" + hla_split[hla] + "'>" + hla_split[hla] + "</a>";
-                                    }
-                                }
-                                return return_string
-                            }},
-                        { data: "protein",
-                            // split protein string and create single links
-                            "render": function (data, type, row) {
-                                var prot_split = data.split(",");
-                                var return_string = "";
-                                for (var prot = 0; prot < prot_split.length; prot++) {
-                                    if (prot < prot_split.length - 1) {
-                                        return_string += "<a class='nostylelink'  href= '/protein/" + prot_split[prot] + "$uniprot'>" + prot_split[prot] + "</a>, ";
-                                    } else {
-                                        return_string += "<a class='nostylelink'  href= '/protein/" + prot_split[prot] + "$uniprot'>" + prot_split[prot] + "</a>";
-                                    }
-                                }
-                                return return_string
-                            }},
-                        { data: "histology",
-                            "render": function (data, type, row) {
-                                return "<a class='nostylelink'  href= '/histology/" + data + "'>" + data + "</a>";
-                            }},
-
-                        { data: "source_id",
-                            // split source string and create single links
-                            "render": function (data, type, row) {
-                                var source_split = String(data).split(",");
-                                var return_string = "";
-                                for (var source = 0; source < source_split.length; source++) {
-                                    if (source < source_split.length - 1) {
-                                        return_string += "<a class='nostylelink'  href= '/source_id/" + source_split[source] + "'>" + source_split[source] + "</a>, ";
-                                    } else {
-                                        return_string += "<a class='nostylelink'  href= '/source_id/" + source_split[source] + "'>" + source_split[source] + "</a>";
-                                    }
-                                }
-                                return return_string
-                            }},
-                        { data: "patient_id",
-                            // split source string and create single links
-                            "render": function (data, type, row) {
-                                var source_split = data.split(",");
-                                var return_string = "";
-                                for (var source = 0; source < source_split.length; source++) {
-                                    if (source < source_split.length - 1) {
-                                        return_string += "<a class='nostylelink'  href= '/source/" + source_split[source] + "'>" + source_split[source] + "</a>, ";
-                                    } else {
-                                        return_string += "<a class='nostylelink'  href= '/source/" + source_split[source] + "'>" + source_split[source] + "</a>";
-                                    }
-                                }
-                                return return_string
-                            }}
-                    ],
-                    dom: 'Bfrtip',
-                    buttons: ['csv', 'excel', 'pdf']
-                });
-            }
-            else if ("${grouping}" == "protein") {
-                $('#example').dataTable({
-                    data: ${project},
-                    columns: [
-                        { data: "protein",
-                            "render": function (data, type, row) {
-                                return "<a class='nostylelink'  href= '/protein/" + data + "'>" + data + "</a>";
-                            } },
-                        { data: "peptide",
-                            // split protein string and create single links
-                            "render": function (data, type, row) {
-                                var pep_split = data.split(",");
-                                var return_string = "";
-                                for (var pep = 0; pep < pep_split.length; pep++) {
-                                    if (pep < pep_split.length - 1) {
-                                        return_string += "<a class='nostylelink'  href= '/peptide/" + pep_split[pep] + "'>" + pep_split[pep] + "</a>, ";
-                                    } else {
-                                        return_string += "<a class='nostylelink'  href= '/peptide/" + pep_split[pep] + "'>" + pep_split[pep] + "</a>";
-                                    }
-                                }
-                                return return_string
-                            }},
-                        { data: "source_id",
-                            // split source string and create single links
-                            "render": function (data, type, row) {
-                                var source_split = String(data).split(",");
-                                var return_string = "";
-                                for (var source = 0; source < source_split.length; source++) {
-                                    if (source < source_split.length - 1) {
-                                        return_string += "<a class='nostylelink'  href= '/source_id/" + source_split[source] + "'>" + source_split[source] + "</a>, ";
-                                    } else {
-                                        return_string += "<a class='nostylelink'  href= '/source_id/" + source_split[source] + "'>" + source_split[source] + "</a>";
-                                    }
-                                }
-                                return return_string
-                            }},
-                        { data: "patient_id",
-                            // split source string and create single links
-                            "render": function (data, type, row) {
-                                var source_split = data.split(",");
-                                var return_string = "";
-                                for (var source = 0; source < source_split.length; source++) {
-                                    if (source < source_split.length - 1) {
-                                        return_string += "<a class='nostylelink'  href= '/source/" + source_split[source] + "'>" + source_split[source] + "</a>, ";
-                                    } else {
-                                        return_string += "<a class='nostylelink'  href= '/source/" + source_split[source] + "'>" + source_split[source] + "</a>";
-                                    }
-                                }
-                                return return_string
-                            }},
-                        { data: "dignity",
-                            // split protein string and create single links
-                            "render": function (data, type, row) {
-                                var dignity_split = data.split(",");
-                                var return_string = "";
-                                for (var dignity = 0; dignity < dignity_split.length; dignity++) {
-                                    if (dignity < dignity_split.length - 1) {
-                                        return_string += "<a class='nostylelink'  href= '/protein/" + dignity_split[dignity] + "$uniprot'>" + dignity_split[dignity] + "</a>, ";
-                                    } else {
-                                        return_string += "<a class='nostylelink'  href= '/protein/" + dignity_split[dignity] + "$uniprot'>" + dignity_split[dignity] + "</a>";
-                                    }
-                                }
-                                return return_string;
-                            }}
-                    ],
-                    dom: 'Bfrtip',
-                    buttons: ['csv', 'excel', 'pdf']
-                });
-            }
-
-
+            });
         });
     </script>
 

@@ -57,7 +57,7 @@
                     <div class="col-md-1">
                         <div class="dropdown" >
                             <a href="#" class="dropdown-toggle picture-link"  data-toggle="dropdown" >
-                                <img id="breast" width="60px" style="opacity: 0.3" src="../static/images/brust.svg">
+                                <img id="breast" width="60px" style="opacity: 0.3" src="../static/images/brust_orange.svg">
                         </a>
                             <ul class="dropdown-menu" id="breast_menu">
                             </ul>
@@ -66,7 +66,7 @@
                     <div class="col-md-1">
                         <div class="dropdown" >
                         <a href="#" class="dropdown-toggle picture-link"  data-toggle="dropdown" >
-                            <img id="uterus" width="60px" style="opacity: 0.3" src="../static/images/uterus.svg">
+                            <img id="uterus" width="60px" style="opacity: 0.3" src="../static/images/uterus_orange.svg">
                     </a>
                         <ul class="dropdown-menu" id="uterus_menu">
                         </ul>
@@ -192,11 +192,12 @@
                 <h1>Class 1</h1>
 
                 <div class="row no-gutters">
-                    <div class="col-md-4">
-                        <table class="table table-striped table-bordered" id="hla_class1_A">
+                    <div class="col-md-12">
+                        <table class="table table-striped table-bordered" id="hla_class1">
                             <thead>
                             <tr>
-                                <td>HLA-A</td>
+                                <td>HLA</td>
+                                <td title="IC50 predicted by netMHCpan">IC50</td>
                             </tr>
                             </thead>
                             <tbody>
@@ -206,73 +207,19 @@
                             </tbody>
                         </table>
                     </div>
-                    <div class="col-md-4">
-                        <table class="table table-striped table-bordered" id="hla_class1_B">
-                            <thead>
-                            <tr>
-                                <td>HLA-B</td>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr>
-                                <td></td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="col-md-4">
-                        <table class="table table-striped table-bordered" id="hla_class1_C">
-                            <thead>
-                            <tr>
-                                <td>HLA-C</td>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr>
-                                <td></td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
+
+
             </div>
 
                 <h1>Class 2</h1>
 
                 <div class="row no-gutters">
-                    <div class="col-md-3">
-                        <table class="table table-striped table-bordered" id="hla_class2_DP">
+                    <div class="col-md-12">
+                        <table class="table table-striped table-bordered" id="hla_class2">
                             <thead>
                             <tr>
-                                <td>HLA-DP</td>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr>
-                                <td></td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="col-md-6">
-                        <table class="table table-striped table-bordered" id="hla_class2_DQ">
-                            <thead>
-                            <tr>
-                                <td>HLA-DQ</td>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr>
-                                <td></td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-
-                    <div class="col-md-3">
-                        <table class="table table-striped table-bordered" id="hla_class2_DRB">
-                            <thead>
-                            <tr>
-                                <td>HLA-DRB</td>
+                                <td>HLA</td>
+                                <td title="IC50 predicted by netMHCIIpan">IC50</td>
                             </tr>
                             </thead>
                             <tbody>
@@ -293,6 +240,7 @@
                 <br>
 
                 <h1>Related Information</h1>
+                <!--? TODO: implement link outs-->
                 SYFPEITHI
                 <a href="http://www.syfpeithi.de/"><span class="glyphicon glyphicon-globe"
                                                          aria-hidden="true"></span></a>
@@ -308,7 +256,6 @@
 </div>
 
 <script>
-    // TODO: allow subtissues
     var organs = ["heart", "brain", "spleen", "breast", "uterus", "prostate", "lung", "kidney", "bladder", "liver", "skin", "stomach", "pancreas", "thyroid"];
     var suborgans = {"heart":["heart", "aorta", "muscle", "tongue"],
         "brain":["brain", "cerebellum", "small brain", "myelon", "bone marrow"],
@@ -366,120 +313,49 @@
     $(document).ready(function () {
 // create dataTable
         //"pageLength": 50
-        var class1_length = Math.max(${hla_class1_A}.length, ${hla_class1_B}.length,${hla_class1_C}.length);
 
         //console.log(class1_length);
-        var tab = $('#hla_class1_A').DataTable({
+        var tab = $('#hla_class1').DataTable({
             "paging": false,
-            "ordering": false,
+            "ordering": true,
             "info": false,
             "defaultContent": 'No entries to show',
             "searching": false,
-            data: ${hla_class1_A},
+            "order": [[ 1, "asc" ]],
+            data: ${hla_class1},
             columns: [
-                {"render": function (data, type, row) {
+                {data: "hla",
+                    "render": function (data, type, row) {
                     return "<a class='nostylelink'  href= '/hla/" + data + "'>" + data + "</a>";
-                }}
+                }},
+                {data: "score",
+                        "render": function (data, type, row) {
+                            return data.toFixed(1);
+                        }
+                    }
             ]
         });
-        for (var i = 1; i <= class1_length -${hla_class1_A}.length;i++)
-        {
-            tab.row.add(["-"]).draw();
-        }
 
-        var tab = $('#hla_class1_B').DataTable({
+        var tab = $('#hla_class2').DataTable({
             "paging": false,
-            "ordering": false,
+            "ordering": true,
             "info": false,
-            searching: false,
-            data: ${hla_class1_B},
+            "defaultContent": 'No entries to show',
+            "searching": false,
+            "order": [[ 1, "asc" ]],
+            data: ${hla_class2},
             columns: [
-                {"render": function (data, type, row) {
+                {data: "hla",
+                    "render": function (data, type, row) {
                     return "<a class='nostylelink'  href= '/hla/" + data + "'>" + data + "</a>";
-                }}
+                }},
+                {data: "score",
+                        "render": function (data, type, row) {
+                            return data.toFixed(1);
+                        }
+                    }
             ]
         });
-
-        for (var i = 1; i <= class1_length -${hla_class1_B}.length;i++)
-        {
-            tab.row.add(["-"]).draw();
-        }
-
-        var tab = $('#hla_class1_C').DataTable({
-            "paging": false,
-            "ordering": false,
-            "info": false,
-            searching: false,
-            data: ${hla_class1_C},
-            columns: [
-                {"render": function (data, type, row) {
-                    return "<a class='nostylelink'  href= '/hla/" + data + "'>" + data + "</a>";
-                }}
-            ]
-        });
-
-        for (var i = 1; i <= class1_length -${hla_class1_C}.length;i++)
-        {
-            tab.row.add(["-"]).draw();
-        }
-
-
-        var class2_length = Math.max(${hla_class2_DP}.length, ${hla_class2_DQ}.length,${hla_class2_DRB}.length)
-        var tab = $('#hla_class2_DP').DataTable({
-            "paging": false,
-            "ordering": false,
-            "info": false,
-            searching: false,
-            data: ${hla_class2_DP},
-            columns: [
-                {"render": function (data, type, row) {
-                    return "<a class='nostylelink'  href= '/hla/" + data + "'>" + data + "</a>";
-                }}
-            ]
-        });
-        for (var i = 1; i <= class2_length -${hla_class2_DP}.length;i++)
-        {
-            tab.row.add(["-"]).draw();
-        }
-
-        var tab = $('#hla_class2_DQ').DataTable({
-            "paging": false,
-            "ordering": false,
-            "info": false,
-            searching: false,
-            data: ${hla_class2_DQ},
-            columns: [
-                {"render": function (data, type, row) {
-                    return "<a class='nostylelink'  href= '/hla/" + data + "'>" + data + "</a>";
-                }}
-            ]
-        });
-        for (var i = 1; i <= class2_length -${hla_class2_DQ}.length;i++)
-        {
-            tab.row.add(["-"]).draw();
-        }
-
-
-        var tab = $('#hla_class2_DRB').DataTable({
-            "paging": false,
-            "ordering": false,
-            "info": false,
-            searching: false,
-            data: ${hla_class2_DRB},
-            columns: [
-                {"render": function (data, type, row) {
-                    return "<a class='nostylelink'  href= '/hla/" + data + "'>" + data + "</a>";
-                }}
-            ]
-        });
-        for (var i = 1; i <= class2_length -${hla_class2_DRB}.length;i++)
-        {
-            tab.row.add(["-"]).draw();
-        }
-
-
-
-
 
         $('#proteins').dataTable({
             "paging": false,

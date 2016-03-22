@@ -21,35 +21,15 @@ def search_result(request):
     result = dict()
     # Search SpectrumHit Sequence
     result["peptide"] = json.dumps(DBSession.query(PeptideRun.sequence.distinct().label('peptide')).join(MsRun).filter(
-        PeptideRun.sequence == request.params["search_all"]).filter(MsRun.flag_trash==0).filter(PeptideRun.source_source_id != None).all())
-
-    # Search source columns
-    result["patient_id"] = json.dumps(DBSession.query(Source.patient_id.distinct().label('source')).filter(
-        Source.patient_id == request.params["search_all"]).all())
-    result["dignity"] = json.dumps(DBSession.query(Source.dignity.distinct().label('dignity')).filter(
-        Source.dignity == request.params["search_all"]).all())
-    result["histology"] = json.dumps(DBSession.query(Source.histology.distinct().label('histology')).filter(
-        Source.histology == request.params["search_all"]).all())
+        PeptideRun.sequence == request.params["search_all"].upper()).filter(MsRun.flag_trash==0).filter(PeptideRun.source_source_id != None).all())
+    test = request.params["search_all"].upper()
+    # Search organ columns
     result["organ"] = json.dumps(DBSession.query(Source.organ.distinct().label('organ')).filter(
         Source.organ == request.params["search_all"]).all())
-    result["organism"] = json.dumps(DBSession.query(Source.organism.distinct().label('organism')).filter(
-        Source.organism == request.params["search_all"]).all())
-    result["celltype"] = json.dumps(DBSession.query(Source.celltype.distinct().label('celltype')).filter(
-        Source.celltype == request.params["search_all"]).all())
-    result["person"] = json.dumps(DBSession.query(Source.person.distinct().label('person')).filter(
-        Source.person == request.params["search_all"]).all())
-    result["location"] = json.dumps(DBSession.query(Source.location.distinct().label('location')).filter(
-        Source.location == request.params["search_all"]).all())
-
-    result["treatment"] = json.dumps(DBSession.query(Source.treatment.distinct().label('treatment')).filter(
-        Source.treatment == request.params["search_all"]).all())
 
     # Search HLA
     result["hla"] = json.dumps(DBSession.query(HlaType.hla_string.distinct().label('hla')).filter(
         HlaType.hla_string == request.params["search_all"]).all())
-    # Search MS_run
-    result["msrun"] = json.dumps(DBSession.query(MsRun.filename.distinct().label('msrun')).filter(
-        MsRun.filename == request.params["search_all"]).filter(MsRun.flag_trash ==0).all())
     # Search Protein
     result["protein"] = json.dumps(DBSession.query(Protein.name.distinct().label('protein')).filter(
         Protein.name == request.params["search_all"]).all())

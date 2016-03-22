@@ -78,7 +78,6 @@
                             return "<a class='nostylelink'  href= '/person/" + data + "'>" + data + "</a>";
                         }
                     },
-                    // TODO: Link to a prep_date page???
                     { data: "prep_date"}
                 ],
                 dom: 'Bfrtip',

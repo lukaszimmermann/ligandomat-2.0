@@ -122,8 +122,8 @@
                 digits = 2;
             }
             // Setting the statistics
-            document.getElementById("pep_stat").innerHTML = "<a title='Show all Peptides'  class='nostylelink' href='javascript:post(\x22../peptide_query\x22, {patient_id: \x22${source}\x22, grouping:\x22source\x22 , digits:\x22" + digits + "\x22}," + ${statistic}[0]["count_pep"] + " )'> " + ${statistic}[0]["count_pep"] + "</a>";
-            // TODO: create spectrum hit query
+            document.getElementById("pep_stat").innerHTML = "<a title='Show all Peptides'  class='nostylelink' href='javascript:post(\x22../peptide_query\x22, {source: \x22${source}\x22, grouping:\x22source\x22 , digits:\x22" + digits + "\x22}," + ${statistic}[0]["count_pep"] + " )'> " + ${statistic}[0]["count_pep"] + "</a>";
+
             document.getElementById("spec_stat").innerHTML = ${statistic}[0]["count_hits"];
             document.getElementById("prot_stat").innerHTML = ${statistic}[0]["count_prot"];
             document.getElementById("typing").innerHTML = allele_string.slice(0, -2);

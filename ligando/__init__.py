@@ -24,8 +24,6 @@ def route_adder(config):
     # home search
     config.add_route('search', '/search')
     # overview
-    # TODO: Remove if not necessary
-    config.add_route('source_overview', '/sources')
     config.add_route('run_overview', '/runs')
     # DB query
     config.add_route('peptide_query', '/peptide_query')

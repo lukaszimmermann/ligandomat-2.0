@@ -7,7 +7,6 @@ from ligando import main, route_adder
 from ligando.views.base_views import peptide_page, protein_page, source_page, source_id_page, hla_page, msrun_page, \
     organ_page
 from ligando.views.db_analysis import venn_analysis, venn_analysis_result
-from ligando.views.information_views import source_overview
 from ligando.views.search_view import search_result
 
 __author__ = 'Linus Backert'
@@ -125,23 +124,7 @@ class TestViews(IntegrationTestBase):
                                "person", "celltype", "histology", "msrun", "protein", "organism",
                                "hla", "location"])
 
-    def test_source_overview(self):
-        # test if site is accessible and added as routine
-        res = self.app.post('/sources')
-        self.assertEqual(res.status_int, 200)
 
-        # test for content of result dict
-        request = testing.DummyRequest()
-        response = source_overview(request)
-        self.assertNotEqual(response, dict())
-        self.assertIn("project", response)
-        # asserts that there are sources
-        if len(eval(response['project'])) > 0:
-            self.assertItemsEqual(eval(response['project'])[0].keys(), ["dignity", "metastatis",
-                                                                        "organ", "prep_date", "treatment",
-                                                                        "patient_id", "person", "celltype",
-                                                                        "histology", "source_id", "organism",
-                                                                        "location"])
 
     # TODO: Decide if needed anymore
     def test_peptide_query(self):

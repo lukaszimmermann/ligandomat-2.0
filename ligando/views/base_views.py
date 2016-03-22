@@ -481,77 +481,40 @@ def peptide_page(request):
         # query = query.group_by(Source.patient_id)
         # sources = js_list_creator_dataTables(query.all())
 
-        query = DBSession.query(HlaType.hla_string.distinct().label("hla_class1_A"))
+        query = DBSession.query(HlaType.hla_string.distinct().label("hla"),
+                                Binding_prediction.binding_score.label("score"))
         query = query.join(t_hla_map)
         query = query.join(Source)
         query = query.join(PeptideRun)
+        query = query.join(Binding_prediction, Binding_prediction.sequence == PeptideRun.sequence)
         query = query.filter(MsRun.flag_trash == 0)
         query = query.filter(PeptideRun.sequence == request.matchdict["peptide"])
         query = query.filter(HlaType.digits == 4)
-        query = query.filter(HlaType.hla_string.like("A%"))
-        hla_class1_A = js_list_creator_dataTables(query.all())
+        query = query.filter(HlaType.hla_string.notlike("D%"))
+        query = query.filter(HlaType.hla_type_id == Binding_prediction.hla_type_hla_type_id)
+        query = query.filter(Binding_prediction.binder == 1)
+        hla_class1 = json.dumps(query.all())
 
-        query = DBSession.query(HlaType.hla_string.distinct().label("hla_class1_B"))
+        query = DBSession.query(HlaType.hla_string.distinct().label("hla"),
+                                Binding_prediction.binding_score.label("score"))
         query = query.join(t_hla_map)
         query = query.join(Source)
         query = query.join(PeptideRun)
+        query = query.join(Binding_prediction, Binding_prediction.sequence == PeptideRun.sequence)
         query = query.filter(MsRun.flag_trash == 0)
         query = query.filter(PeptideRun.sequence == request.matchdict["peptide"])
         query = query.filter(HlaType.digits == 4)
-        query = query.filter(
-             HlaType.hla_string.like("B%"))
-        hla_class1_B = js_list_creator_dataTables(query.all())
-
-        query = DBSession.query(HlaType.hla_string.distinct().label("hla_class1_C"))
-        query = query.join(t_hla_map)
-        query = query.join(Source)
-        query = query.join(PeptideRun)
-        query = query.filter(MsRun.flag_trash == 0)
-        query = query.filter(PeptideRun.sequence == request.matchdict["peptide"])
-        query = query.filter(HlaType.digits == 4)
-        query = query.filter(
-            HlaType.hla_string.like("C%"))
-        hla_class1_C = js_list_creator_dataTables(query.all())
-
-
-        query = DBSession.query(HlaType.hla_string.distinct().label("hla_class2_DPB"))
-        query = query.join(t_hla_map)
-        query = query.join(Source)
-        query = query.join(PeptideRun)
-        query = query.filter(MsRun.flag_trash == 0)
-        query = query.filter(PeptideRun.sequence == request.matchdict["peptide"])
-        query = query.filter(HlaType.digits == 4)
-        query = query.filter(HlaType.hla_string.like("DP%"))
-        hla_class2_DP = js_list_creator_dataTables(query.all())
-
-        query = DBSession.query(HlaType.hla_string.distinct().label("hla_class2_DQA"))
-        query = query.join(t_hla_map)
-        query = query.join(Source)
-        query = query.join(PeptideRun)
-        query = query.filter(MsRun.flag_trash == 0)
-        query = query.filter(PeptideRun.sequence == request.matchdict["peptide"])
-        query = query.filter(HlaType.digits == 4)
-        query = query.filter(HlaType.hla_string.like("DQ%"))
-        hla_class2_DQ = js_list_creator_dataTables(query.all())
-
-
-        query = DBSession.query(HlaType.hla_string.distinct().label("hla_class2_DRB"))
-        query = query.join(t_hla_map)
-        query = query.join(Source)
-        query = query.join(PeptideRun)
-        query = query.filter(MsRun.flag_trash == 0)
-        query = query.filter(PeptideRun.sequence == request.matchdict["peptide"])
-        query = query.filter(HlaType.digits == 4)
-        query = query.filter(HlaType.hla_string.like("DRB%"))
-        hla_class2_DRB = js_list_creator_dataTables(query.all())
+        query = query.filter(HlaType.hla_string.like("D%"))
+        query = query.filter(HlaType.hla_type_id == Binding_prediction.hla_type_hla_type_id)
+        query = query.filter(Binding_prediction.binder == 1)
+        hla_class2 = json.dumps(query.all())
 
     except:
         return Response(conn_err_msg, content_type='text/plain', status_int=500)
     return {"proteins": proteins, "organs": organs,
             "peptide": request.matchdict["peptide"],
-            "hla_class1_A": hla_class1_A, "hla_class1_B": hla_class1_B, "hla_class1_C": hla_class1_C,
-            "hla_class2_DP": hla_class2_DP, "hla_class2_DQ": hla_class2_DQ,
-            "hla_class2_DRB": hla_class2_DRB, "psms": psms, "ms_run_count": ms_run_count}
+            "hla_class1": hla_class1,
+            "hla_class2": hla_class2, "psms": psms, "ms_run_count": ms_run_count}
 
 
 @view_config(route_name='peptide_ajax', renderer='json', request_method="GET")

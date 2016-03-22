@@ -166,7 +166,7 @@
                 }
         // Setting the statistics
         document.getElementById("pep_stat").innerHTML = "<a title='Show all Peptides'  class='nostylelink' href='javascript:post(\x22../peptide_query\x22, {run_name: document.getElementById(\x22title\x22).innerHTML, grouping:\x22run\x22, digits:\x22" + digits + "\x22}," + ${statistics}[0]["count_pep"] + " )'> " + ${statistics}[0]["count_pep"] + "</a>";
-        // TODO: create spectrum hit query
+
         document.getElementById("spec_stat").innerHTML = ${statistics}[0]["count_hits"];
         document.getElementById("prot_stat").innerHTML = ${statistics}[0]["count_prot"];
 

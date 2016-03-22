@@ -52,7 +52,7 @@
                 </div>
                 <div class="item4 left dropdown" >
 
-                <a href='#' class='dropdown-toggle picture-link' data-toggle="dropdown" ><span class="vertical-center">Breast</span><img src='../static/images/brust.svg'></a>
+                <a href='#' class='dropdown-toggle picture-link' data-toggle="dropdown" ><span class="vertical-center">Breast</span><img src='../static/images/brust_orange.svg'></a>
                     <ul class="dropdown-menu" >
                       <li><a href="#">Action</a></li>
                       <li><a href="#">Another action</a></li>
@@ -62,7 +62,7 @@
                 </div>
                 <div class="item5 left dropdown">
 
-                <a href='#' class='dropdown-toggle picture-link' data-toggle="dropdown" ><span class="vertical-center">Uterus</span><img src='../static/images/uterus.svg'></a>
+                <a href='#' class='dropdown-toggle picture-link' data-toggle="dropdown" ><span class="vertical-center">Uterus</span><img src='../static/images/uterus_orange.svg'></a>
                     <ul class="dropdown-menu" >
                       <li><a href="#">Action</a></li>
                       <li><a href="#">Another action</a></li>

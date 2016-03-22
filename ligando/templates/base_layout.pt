@@ -86,7 +86,7 @@
                 <!-- Collect the nav links, forms, and other content for toggling -->
                 <div class="collapse navbar-collapse" id="navbar-top">
                     <ul class="nav navbar-nav">
-                        <li class="active"><a href="/tissue_browser">Tissue Browser</a></li>
+                        <li ><a href="/tissue_browser">Tissue Browser</a></li>
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
                                aria-haspopup="true" aria-expanded="false">HLA Browser <span class="caret"></span></a>

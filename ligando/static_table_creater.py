@@ -9,7 +9,8 @@ from sqlalchemy.sql import text
 from sqlalchemy import engine_from_config, func, String
 from models import DBSession, Base, User, Source, Tissue_protein_count, metadata, Protein, SpectrumHit, \
     t_spectrum_protein_map, MsRun, Tissue_specific_peptides, HLA_statistics, HlaType, t_hla_map, Binding_prediction, \
-    PeptideRun, t_peptide_run_spectrum_hit_map, Tissue_hla_specific_peptides, Tissue_hla_protein_count
+    PeptideRun, t_peptide_run_spectrum_hit_map, Tissue_hla_specific_peptides, Tissue_hla_protein_count, Peptide_query, \
+    t_peptide_protein_map
 from sqlalchemy.orm import sessionmaker
 
 here = os.path.dirname(__file__)
@@ -735,6 +736,46 @@ def spectra_extracter():
     print "Extracted spectra"
     return None
 
+def peptide_query_creater():
+    print "Creating peptide_query table"
+
+    # Drop the table
+    Peptide_query.__table__.drop(checkfirst=True)
+    # Create the table
+    Peptide_query.__table__.create(checkfirst=False)
+    query = DBSession.query(PeptideRun.sequence.label("sequence"),
+                            func.group_concat(Protein.name.distinct().op('order by')(Protein.name)).label(
+                                "proteins"),
+                            func.group_concat(
+                                Source.organ.distinct().op('order by')(Source.organ)).label(
+                                "tissues"),
+                            func.group_concat(
+                                (HlaType.hla_string.distinct().op('order by')(HlaType.hla_string))).label(
+                                'hla_types'))
+
+    query = query.join(Source)
+    query = query.join(MsRun, PeptideRun.ms_run_ms_run_id == MsRun.ms_run_id)
+    query = query.join(t_hla_map)
+    query = query.join(HlaType)
+    query = query.join(t_peptide_protein_map)
+    query = query.join(Protein)
+    query = query.join(Binding_prediction, Binding_prediction.sequence == PeptideRun.sequence)
+    query = query.filter(Binding_prediction.binder == 1)
+    # if "hla_typing" in request.params:
+    query = query.filter(Binding_prediction.hla_type_hla_type_id == HlaType.hla_type_id)
+    query = query.group_by(PeptideRun.sequence)
+    result = query.all()
+
+    to_add = list()
+    for r in result:
+        to_add.append(dict(zip(['sequence', 'proteins', "tissues", "hla_types"], r)))
+
+
+    Peptide_query.__table__.insert().execute(to_add)
+
+
+    print "Created peptide_query table"
+
 if __name__ == '__main__':
     print "static table creater"
     #peptide_run_creater()
@@ -746,5 +787,6 @@ if __name__ == '__main__':
     #tissue_protein_count_creater()
     #tissue_hla_specific_peptides_creater()
     #tissue_hla_protein_count_creater()
+    #peptide_query_creater()
 
-    spectra_extracter()
+    #spectra_extracter()

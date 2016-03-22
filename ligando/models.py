@@ -290,6 +290,13 @@ class Binding_prediction(Base):
     hla_types_hla_type = relationship(u'HlaType')
     UniqueConstraint('sequence','hla_type_hla_type_id', 'method', name='sequence_hla_method')
 
+class Peptide_query(Base):
+    __tablename__ = 'peptide_query'
+    peptide_query_id = Column(Integer, primary_key=True)
+    sequence = Column(String(100, u'latin1_german1_ci'), index=True)
+    proteins = Column(Text)
+    tissues = Column(Text)
+    hla_types = Column(Text)
 
 
 

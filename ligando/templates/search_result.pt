@@ -74,31 +74,17 @@
                 </div>
             </div>
         </div>
-        <div class="row">
-            <div class="col-md-10 col-md-offset-1">
-                <div id="location_div" style="clear:both;float: left">
-                    <table id="location" class="table table-striped table-bordered" style="width: 500px">
-                        <thead>
-                        <tr>
-                            <th>Location</th>
-                        </tr>
-                        </thead>
-                    </table>
-                </div>
-            </div>
-        </div>
+
 
     </div>
     <script>
         var tables = [
             'organ',
-            'location',
             'hla',
             'peptide',
             'protein'];
         var autocomplete_dict = {
             'organ':${organ},
-            'location':${location},
             'hla':${hla},
             'peptide':${peptide},
             'protein':${protein}};
