@@ -19,20 +19,28 @@
                     </ol>
                 </div>
             </div>
-            <div class="col-md-10 col-md-offset-1">
-                <!--? Result table, with different stylings for different groupings-->
-                <table id="example" class="table table-striped table-bordered" cellspacing="0" width="100%">
-                    <thead>
+            <div class="row">
+                <div class="col-md-10 col-md-offset-1" style="padding-bottom: 10px">
+                    <span  id="search_params"></span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-10 col-md-offset-1">
+                    <!--? Result table, with different stylings for different groupings-->
+                    <table id="example" class="table table-striped table-bordered" cellspacing="0" width="100%">
+                        <thead>
 
-                    <tr>
-                        <th>Sequence</th>
-                        <th>Protein</th>
-                        <th>Tissue</th>
-                        <th>HLA Typing</th>
-                    </tr>
+                        <tr>
+                            <th>Sequence</th>
+                            <th>Protein</th>
+                            <th>Gene Name</th>
+                            <th>Tissue</th>
+                            <th>HLA Typing</th>
+                        </tr>
 
-                    </thead>
-                </table>
+                        </thead>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
@@ -42,6 +50,21 @@
 
 
         $(document).ready(function () {
+            // Setting search parameters
+            var search_text = "Filtered results by ";
+            var search = ${search};
+            var counter = 0;
+            for (var property in search) {
+                if(counter == 0) {
+                    search_text = search_text + "<b>"+ search[property] + "</b>";
+                }else{
+                    search_text = search_text + " and <b>" + search[property]+"</b>";
+                }
+                counter += 1;
+            }
+            $("#search_params").html(search_text)
+
+
             $('#example').dataTable({
                 data: ${project},
                 columns: [
@@ -59,6 +82,21 @@
                                     return_string += "<a class='nostylelink'  href= '/protein/" + prot_split[prot] + "$uniprot'>" + prot_split[prot] + "</a>, ";
                                 } else {
                                     return_string += "<a class='nostylelink'  href= '/protein/" + prot_split[prot] + "$uniprot'>" + prot_split[prot] + "</a>";
+                                }
+                            }
+                            return return_string
+                        }},
+
+                    { data: "gene_name",
+                        // split protein string and create single links
+                        "render": function (data, type, row) {
+                            var prot_split = data.split(",");
+                            var return_string = "";
+                            for (var prot = 0; prot < prot_split.length; prot++) {
+                                if (prot < prot_split.length - 1) {
+                                    return_string += "<a class='nostylelink'  href= '/protein/" + prot_split[prot] + "$gene_name'>" + prot_split[prot] + "</a>, ";
+                                } else {
+                                    return_string += "<a class='nostylelink'  href= '/protein/" + prot_split[prot] + "$gene_name'>" + prot_split[prot] + "</a>";
                                 }
                             }
                             return return_string

@@ -26,122 +26,76 @@
                 <!-- left -->
                 <div class="item1 left dropdown" >
                     <a href="#" class="dropdown-toggle picture-link"  data-toggle="dropdown" ><span class="vertical-center">Heart</span><img src='../static/images/herz.svg'></a>
-                    <ul class="dropdown-menu">
-                      <li><a  href="#">Action</a></li>
-                      <li><a  href="#">Another action</a></li>
+                    <ul class="dropdown-menu" id="heart_menu">
                     </ul>
                 </div>
                 <div class="item2 left dropdown" >
                 <a href="#" class='dropdown-toggle picture-link' data-toggle="dropdown" ><span class="vertical-center">Brain</span><img src='../static/images/hirn.svg'></a>
-                    <ul class="dropdown-menu" >
-                      <li><a href="#">Action</a></li>
-                      <li><a href="#">Another action</a></li>
-                      <li><a href="#">Another action</a></li>
-                      <li><a href="#">Another action</a></li>
+                    <ul class="dropdown-menu" id="brain_menu">
                     </ul>
                 </div>
                 <div class="item3 left dropdown" >
 
                 <a href='#' class='dropdown-toggle picture-link' data-toggle="dropdown" ><span class="vertical-center">Spleen</span><img src='../static/images/milz.svg'></a>
-                   <ul class="dropdown-menu" >
-                      <li><a href="#">Action</a></li>
-                      <li><a href="#">Another action</a></li>
-                      <li><a href="#">Another action</a></li>
-                      <li><a href="#">Another action</a></li>
+                   <ul class="dropdown-menu" id="spleen_menu" >
                     </ul>
                 </div>
                 <div class="item4 left dropdown" >
-
                 <a href='#' class='dropdown-toggle picture-link' data-toggle="dropdown" ><span class="vertical-center">Breast</span><img src='../static/images/brust_orange.svg'></a>
-                    <ul class="dropdown-menu" >
-                      <li><a href="#">Action</a></li>
-                      <li><a href="#">Another action</a></li>
-                      <li><a href="#">Another action</a></li>
-                      <li><a href="#">Another action</a></li>
+                    <ul class="dropdown-menu" id="breast_menu">
                     </ul>
                 </div>
                 <div class="item5 left dropdown">
-
                 <a href='#' class='dropdown-toggle picture-link' data-toggle="dropdown" ><span class="vertical-center">Uterus</span><img src='../static/images/uterus_orange.svg'></a>
-                    <ul class="dropdown-menu" >
-                      <li><a href="#">Action</a></li>
-                      <li><a href="#">Another action</a></li>
-                      <li><a href="#">Another action</a></li>
-                      <li><a href="#">Another action</a></li>
+                    <ul class="dropdown-menu" id="uterus_menu">
                     </ul>
                 </div>
                 <div class="item6 left dropdown" >
-
                 <a href='#' class='dropdown-toggle picture-link' data-toggle="dropdown" ><span class="vertical-center">Lung</span><img src='../static/images/lungen.svg'></a>
-                    <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
-                      <li><a tabindex="-1" href="#">Action</a></li>
-                      <li><a tabindex="-1" href="#">Another action</a></li>
+                    <ul class="dropdown-menu" id="lung_menu">
                     </ul>
                 </div>
                 <div class="item7 left dropdown" >
-
                 <a href='#' class='dropdown-toggle picture-link' data-toggle="dropdown" ><span class="vertical-center">Prostate</span><img src='../static/images/prostata_hoden.svg'></a>
-                    <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
-                      <li><a tabindex="-1" href="#">Action</a></li>
-                      <li><a tabindex="-1" href="#">Another action</a></li>
+                    <ul class="dropdown-menu" id="prostate_menu">
                     </ul>
                 </div>
 
                 <!-- right -->
                 <div class="item8 right dropdown" >
-
                 <a href='#' class='dropdown-toggle picture-link' data-toggle="dropdown" ><img src='../static/images/niere.svg'><span class="vertical-center">Kidney</span></a>
-                    <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
-                      <li><a tabindex="-1" href="#">Action</a></li>
-                      <li><a tabindex="-1" href="#">Another action</a></li>
+                    <ul class="dropdown-menu" id="kidney_menu">
                     </ul>
                 </div>
                 <div class="item9 right dropdown" >
-
                 <a href='#' class='dropdown-toggle picture-link' data-toggle="dropdown" ><img src='../static/images/blase.svg'><span class="vertical-center">Bladder</span></a>
-                    <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
-                      <li><a tabindex="-1" href="#">Action</a></li>
-                      <li><a tabindex="-1" href="#">Another action</a></li>
+                    <ul class="dropdown-menu" id="bladder_menu">
                     </ul>
                 </div>
                 <div class="item10 right dropdown" >
-
                 <a href='#' class='dropdown-toggle picture-link' data-toggle="dropdown" ><img src='../static/images/leber.svg'><span class="vertical-center">Liver</span></a>
-                    <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
-                      <li><a tabindex="-1" href="#">Action</a></li>
-                      <li><a tabindex="-1" href="#">Another action</a></li>
+                    <ul class="dropdown-menu" id="liver_menu">
                     </ul>
                 </div>
                 <div class="item11 right dropdown">
-
                 <a href='#' class='dropdown-toggle picture-link' data-toggle="dropdown" ><img src='../static/images/haut.svg'><span class="vertical-center">Skin</span></a>
-                    <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
-                      <li><a tabindex="-1" href="#">Action</a></li>
-                      <li><a tabindex="-1" href="#">Another action</a></li>
+                    <ul class="dropdown-menu" id="skin_menu">
                     </ul>
                 </div>
                 <div class="item12 right dropdown" >
 
                 <a href='#' class='dropdown-toggle picture-link' data-toggle="dropdown" ><img src='../static/images/magen.svg'><span class="vertical-center">Stomach</span></a>
-                    <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
-                      <li><a tabindex="-1" href="#">Action</a></li>
-                      <li><a tabindex="-1" href="#">Another action</a></li>
+                    <ul class="dropdown-menu" id="stomach_menu">
                     </ul>
                 </div>
                 <div class="item13 right dropdown" >
-
                 <a href='#' class='dropdown-toggle picture-link' data-toggle="dropdown" ><img src='../static/images/pankreas.svg'><span class="vertical-center">Pancreas</span></a>
-                    <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
-                      <li><a tabindex="-1" href="#">Action</a></li>
-                      <li><a tabindex="-1" href="#">Another action</a></li>
+                    <ul class="dropdown-menu" id="pancreas_menu">
                     </ul>
                 </div>
                 <div class="item14 right dropdown" >
-
                 <a href='#' class='dropdown-toggle picture-link' data-toggle="dropdown" ><img src='../static/images/thyroidea.svg'><span class="vertical-center">Thyroid</span></a>
-                    <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
-                      <li><a tabindex="-1" href="#">Action</a></li>
-                      <li><a tabindex="-1" href="#">Another action</a></li>
+                    <ul class="dropdown-menu" id="thyroid_menu">
                     </ul>
                 </div>
 
@@ -202,6 +156,31 @@
                 ]
             } );
         } );
+    var suborgans = {"heart":["heart", "aorta", "muscle", "tongue"],
+        "brain":["brain", "cerebellum", "small brain", "myelon", "bone marrow"],
+        "spleen": ["spleen"],
+        "breast": ["mamma"],
+        "uterus": ["uterus", "ovary"],
+        "prostate": ["prostate", "testis"],
+        "lung": ["lung", "trachea"],
+        "kidney": ["adrenal gland", "kidney"],
+        "bladder": ["bladder"],
+        "liver": ["liver"],
+        "skin": ["skin"],
+        "stomach": ["colon", "esophagus", "stomach", "small intestine"],
+        "pancreas": ["pankreas"],
+        "thyroid": ["thyroid", "glandula sublingualis", "lymph node"]};
+
+    // Set Opacity of the found tissues
+    $(document).ready(function(){
+        for(var i in suborgans){
+            for(var k=0; k < suborgans[i].length; k++){
+                        $('#' + i+"_menu").append('<li><a  href="/organ/' + suborgans[i][k] + '">'+ suborgans[i][k].charAt(0).toUpperCase() + suborgans[i][k].slice(1) + '</a></li>');
+                    }
+                }
+            });
+
+
 </script>
 
 </metal:block>

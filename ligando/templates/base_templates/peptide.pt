@@ -326,7 +326,7 @@
             columns: [
                 {data: "hla",
                     "render": function (data, type, row) {
-                    return "<a class='nostylelink'  href= '/hla/" + data + "'>" + data + "</a>";
+                    return "<a href= '/hla/" + data + "'>" + data + "</a>";
                 }},
                 {data: "score",
                         "render": function (data, type, row) {
@@ -347,7 +347,7 @@
             columns: [
                 {data: "hla",
                     "render": function (data, type, row) {
-                    return "<a class='nostylelink'  href= '/hla/" + data + "'>" + data + "</a>";
+                    return "<a  href= '/hla/" + data + "'>" + data + "</a>";
                 }},
                 {data: "score",
                         "render": function (data, type, row) {
@@ -366,12 +366,12 @@
             columns: [
                 {data: "protein",
                     "render": function (data, type, row) {
-                        return "<a class='nostylelink'  href= '/protein/" + data +"$uniprot" +  "'>" + data + "</a>";
+                        return "<a href= '/protein/" + data +"$uniprot" +  "'>" + data + "</a>";
                     }},
                 {data: "gene_name"},
                 {data: "protein",
                     "render": function (data, type, row) {
-                        return "<a class='nostylelink'  href= 'http://www.uniprot.org/uniprot/" + data + "'>" + "Link" + "</a>";
+                        return "<a href= 'http://www.uniprot.org/uniprot/" + data + "'>" + "Link" + "</a>";
                     }},
                 {data: "sequence",
                     "render": function (data, type, row) {

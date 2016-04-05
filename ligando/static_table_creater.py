@@ -10,7 +10,7 @@ from sqlalchemy import engine_from_config, func, String
 from models import DBSession, Base, User, Source, Tissue_protein_count, metadata, Protein, SpectrumHit, \
     t_spectrum_protein_map, MsRun, Tissue_specific_peptides, HLA_statistics, HlaType, t_hla_map, Binding_prediction, \
     PeptideRun, t_peptide_run_spectrum_hit_map, Tissue_hla_specific_peptides, Tissue_hla_protein_count, Peptide_query, \
-    t_peptide_protein_map
+    t_peptide_protein_map, DB_statistics
 from sqlalchemy.orm import sessionmaker
 
 here = os.path.dirname(__file__)
@@ -746,6 +746,8 @@ def peptide_query_creater():
     query = DBSession.query(PeptideRun.sequence.label("sequence"),
                             func.group_concat(Protein.name.distinct().op('order by')(Protein.name)).label(
                                 "proteins"),
+                            func.group_concat(Protein.gene_name.distinct().op('order by')(Protein.gene_name)).label(
+                                "gene_names"),
                             func.group_concat(
                                 Source.organ.distinct().op('order by')(Source.organ)).label(
                                 "tissues"),
@@ -768,13 +770,64 @@ def peptide_query_creater():
 
     to_add = list()
     for r in result:
-        to_add.append(dict(zip(['sequence', 'proteins', "tissues", "hla_types"], r)))
+        to_add.append(dict(zip(['sequence', 'proteins', 'gene_names', "tissues", "hla_types"], r)))
 
 
     Peptide_query.__table__.insert().execute(to_add)
 
 
     print "Created peptide_query table"
+
+def DB_statistics_creator():
+    print "Calculating DB Statistics"
+    # Drop the table
+    DB_statistics.__table__.drop(checkfirst=True)
+    # Create the table
+    DB_statistics.__table__.create(checkfirst=False)
+
+    to_add = list()
+    # Peptide distribution
+    query = DBSession.query(func.length(PeptideRun.sequence).label("length"),
+                            func.count(PeptideRun.sequence.distinct()).label("count"),
+                            sqlalchemy.sql.expression.literal(1).label("hla_class")
+                            )
+    query = query.join(MsRun)
+    query = query.join(Source)
+    query = query.join(t_hla_map)
+    query = query.join(HlaType)
+    query = query.join(Binding_prediction, PeptideRun.sequence == Binding_prediction.sequence)
+    query = query.filter(Binding_prediction.hla_type_hla_type_id == HlaType.hla_type_id)
+    query = query.filter(HlaType.hla_string.notlike("D%"))
+    query = query.filter(Binding_prediction.binder == 1)
+    query = query.group_by(func.length(PeptideRun.sequence))
+    # List of peptides for which one will create the Peptide binding motif-Logo
+    classI_distribution = query.all()
+
+    for r in classI_distribution:
+        to_add.append(dict(zip(['length', 'count', "hla_class"], r)))
+
+    # Peptide distribution
+    query = DBSession.query(func.length(PeptideRun.sequence).label("length"),
+                            func.count(PeptideRun.sequence.distinct()).label("count"),
+                            sqlalchemy.sql.expression.literal(2).label("hla_class"))
+    query = query.join(MsRun)
+    query = query.join(Source)
+    query = query.join(t_hla_map)
+    query = query.join(HlaType)
+    query = query.join(Binding_prediction, PeptideRun.sequence == Binding_prediction.sequence)
+    query = query.filter(Binding_prediction.hla_type_hla_type_id == HlaType.hla_type_id)
+    query = query.filter(HlaType.hla_string.like("D%"))
+    query = query.filter(Binding_prediction.binder == 1)
+    query = query.group_by(func.length(PeptideRun.sequence))
+    # List of peptides for which one will create the Peptide binding motif-Logo
+    classII_distribution = query.all()
+
+    for r in classII_distribution:
+        to_add.append(dict(zip(['length', 'count', "hla_class"], r)))
+
+    DB_statistics.__table__.insert().execute(to_add)
+
+    print "Calculated DB Statistics"
 
 if __name__ == '__main__':
     print "static table creater"
@@ -788,5 +841,6 @@ if __name__ == '__main__':
     #tissue_hla_specific_peptides_creater()
     #tissue_hla_protein_count_creater()
     #peptide_query_creater()
+    #DB_statistics_creator()
 
     #spectra_extracter()

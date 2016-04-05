@@ -21,7 +21,7 @@
         </div>
         <div class="row">
             <div class="col-md-8 col-md-offset-2 ">
-                <img class="center-block" width="300px" src="../static/images/figuren_2_cut.svg">
+                <a href="/tissue_browser"><img class="center-block" width="300px" src="../static/images/figuren_2_cut.svg"></a>
             </div>
         </div>
         <div class="row">

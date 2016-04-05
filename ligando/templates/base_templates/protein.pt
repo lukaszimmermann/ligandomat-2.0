@@ -50,10 +50,13 @@
                 </div>
             </div>
             <div class="col-md-4">
+
+
                 <table class="table table-striped table-bordered" id="peptide_sequences">
                         <thead>
                         <tr>
                             <td>Peptides</td>
+                            <td title="Proteins on which the peptide are found">Proteins</td>
                         </tr>
                         </thead>
                         <tbody>
@@ -62,7 +65,6 @@
                         </tr>
                         </tbody>
                     </table>
-                    Warning! The peptides may be also found in other Proteins!
                 </div>
             </div>
         </div>
@@ -111,13 +113,15 @@
 
         // Review: If to many peptides are marked it looks really bad e.g. P07203
         $(document).ready(function () {
+
+
             // TODO: add link to peptides
             // Setting the title
             document.getElementById("title").innerHTML = ${statistics}[0]["name"];
             // Setting basic information
             document.getElementById("gene_name").innerHTML = ${statistics}[0]["gene_name"];
             document.getElementById("description").innerHTML = ${statistics}[0]["description"].split("HUMAN")[1].split("OS=")[0];
-            document.getElementById("uniprot").innerHTML = "<a data-toggle='tooltip' title='Go to Uniprot' class='nostylelink' href='http://www.uniprot.org/uniprot/" + ${statistics}[0]["name"] + "'>" + ${statistics}[0]["name"] + "</a>";
+            document.getElementById("uniprot").innerHTML = "<a data-toggle='tooltip' title='Go to Uniprot' href='http://www.uniprot.org/uniprot/" + ${statistics}[0]["name"] + "'>" + ${statistics}[0]["name"] + "</a>";
             var sequence = ${statistics}[0]["sequence"];
             var complete_sequence = "";
             var numbers = "";
@@ -172,17 +176,36 @@
                 "info": false,
                 searching: false,
                 data: ${sequences},
-                // TODO: Vielleicht die Buttons per bootstrap rechts von der Tabelle machen
                 dom: 'Bfrtip',
                 buttons: [{
                     extend: 'collection',
                     text: "Export",
                     buttons: ['csv', 'excel', 'pdf']
-                }],
+                },{
+                    text: 'Show more details',
+                    action: function ( e, dt, node, config ) {
+                        post('../peptide_query', {protein: '${protein}', grouping:'peptide', count:'${sequences}.length' } )}
+                    }
+                ],
                 columns: [
-                    {"render": function (data, type, row) {
-                        return "<div  data-toggle='modal' data-target='#loading_modal'><a class='nostylelink' href= '/peptide/" + data + "'>" + data + "</a></div>";
-                    }}
+                    {data: "sequence",
+                        "render": function (data, type, row) {
+                        return "<a href= '/peptide/" + data + "'>" + data + "</a>";
+                    }},
+                        { data: "protein",
+                        // split protein string and create single links
+                        "render": function (data, type, row) {
+                            var prot_split = data.split(",");
+                            var return_string = "";
+                            for (var prot = 0; prot < prot_split.length; prot++) {
+                                if (prot < prot_split.length - 1) {
+                                    return_string += "<a class='nostylelink'  href= '/protein/" + prot_split[prot] + "$uniprot'>" + prot_split[prot] + "</a>, ";
+                                } else {
+                                    return_string += "<a class='nostylelink'  href= '/protein/" + prot_split[prot] + "$uniprot'>" + prot_split[prot] + "</a>";
+                                }
+                            }
+                            return return_string
+                        }}
                 ]
             });
         });

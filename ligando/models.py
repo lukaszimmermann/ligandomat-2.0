@@ -295,9 +295,16 @@ class Peptide_query(Base):
     peptide_query_id = Column(Integer, primary_key=True)
     sequence = Column(String(100, u'latin1_german1_ci'), index=True)
     proteins = Column(Text)
+    gene_names = Column(Text)
     tissues = Column(Text)
     hla_types = Column(Text)
 
+class DB_statistics(Base):
+    __tablename__ = "db_statistics"
+    db_statistics_id = Column(Integer, primary_key=True)
+    length = Column(Integer)
+    count = Column(Integer)
+    hla_class =  Column(Integer)
 
 
 

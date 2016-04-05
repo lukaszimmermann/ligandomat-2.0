@@ -286,6 +286,7 @@
                                 ' : ' + this.y + '</b>';
                     }
                 }
+
             };
 
             protein_stats = ${peptide_distribution};

@@ -247,7 +247,7 @@ def protein_page(request):
         query = query.filter(Protein.name == filter)
         temp_statistics = query.all()
         statistics = json.dumps(temp_statistics)
-        query = DBSession.query(PeptideRun.sequence.distinct())
+        query = DBSession.query(PeptideRun.sequence.distinct().label('sequence'))
         query = query.join(Binding_prediction, PeptideRun.sequence == Binding_prediction.sequence)
         query = query.join(t_peptide_run_spectrum_hit_map)
         query = query.join(SpectrumHit)
@@ -259,6 +259,7 @@ def protein_page(request):
         query = query.filter(Binding_prediction.binder ==1)
         sequences = query.all()
 
+
         sequence_start = list()
         sequence_end = list()
         for seq in sequences:
@@ -268,7 +269,18 @@ def protein_page(request):
                 sequence_end.append(pos + len(seq[0]))
         sequence_start = json.dumps(sequence_start)
         sequence_end = json.dumps(sequence_end)
-        sequences = js_list_creator_dataTables(sequences)
+
+        # TODO: Could be slow for large numbers of peptides
+        query = DBSession.query(PeptideRun.sequence.distinct().label('sequence'),
+                                func.group_concat(Protein.name.distinct()).label("protein"))
+        query = query.join(t_peptide_run_spectrum_hit_map)
+        query = query.join(SpectrumHit)
+        query = query.join(t_spectrum_protein_map)
+        query = query.join(Protein)
+        query = query.filter(or_(*[(PeptideRun.sequence == s[0]) for s in sequences]))
+        query = query.group_by(PeptideRun.sequence)
+
+        sequences = json.dumps(query.all())
 
     except:
         return Response(conn_err_msg, content_type='text/plain', status_int=500)

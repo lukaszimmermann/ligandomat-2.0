@@ -9,7 +9,7 @@ from ligando.models import (
     DBSession,
     Source,
     MsRun,
-    HlaType, PeptideRun, t_hla_map, HLA_statistics, Binding_prediction)
+    HlaType, PeptideRun, t_hla_map, HLA_statistics, Binding_prediction, DB_statistics)
 from ligando.views.view_helper import js_list_creator, conn_err_msg
 
 
@@ -55,36 +55,15 @@ def db_stats(request):
     msruns_stat = DBSession.query(func.count(MsRun.ms_run_id.distinct())).all()[0][0]
     peptide_stat = DBSession.query(func.count(PeptideRun.sequence.distinct())).all()[0][0]
 
-    # TODO: Precalculate these (to slow)
     # Peptide distribution
-    query = DBSession.query(func.length(PeptideRun.sequence).label("length"),
-                            func.count(PeptideRun.sequence.distinct()).label("count"))
-    query = query.join(MsRun)
-    query = query.join(Source)
-    query = query.join(t_hla_map)
-    query = query.join(HlaType)
-    query = query.join(Binding_prediction, PeptideRun.sequence == Binding_prediction.sequence)
-    query = query.filter(Binding_prediction.hla_type_hla_type_id == HlaType.hla_type_id)
-    query = query.filter(HlaType.hla_string.notlike("D%"))
-    query = query.filter(Binding_prediction.binder == 1)
-    query = query.group_by(func.length(PeptideRun.sequence))
-    # List of peptides for which one will create the Peptide binding motif-Logo
+    query = DBSession.query(DB_statistics.length.label("length"),
+                            DB_statistics.count.label("count"))
+    query = query.filter(DB_statistics.hla_class == 1)
     classI_distribution = json.dumps(query.all())
 
-    # TODO: Precalculate these (to slow)
-    # Peptide distribution
-    query = DBSession.query(func.length(PeptideRun.sequence).label("length"),
-                            func.count(PeptideRun.sequence.distinct()).label("count"))
-    query = query.join(MsRun)
-    query = query.join(Source)
-    query = query.join(t_hla_map)
-    query = query.join(HlaType)
-    query = query.join(Binding_prediction, PeptideRun.sequence == Binding_prediction.sequence)
-    query = query.filter(Binding_prediction.hla_type_hla_type_id == HlaType.hla_type_id)
-    query = query.filter(HlaType.hla_string.like("D%"))
-    query = query.filter(Binding_prediction.binder == 1)
-    query = query.group_by(func.length(PeptideRun.sequence))
-    # List of peptides for which one will create the Peptide binding motif-Logo
+    query = DBSession.query(DB_statistics.length.label("length"),
+                            DB_statistics.count.label("count"))
+    query = query.filter(DB_statistics.hla_class == 2)
     classII_distribution = json.dumps(query.all())
 
     return {"source_stat" : source_stat,

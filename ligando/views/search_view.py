@@ -21,7 +21,8 @@ def search_result(request):
     result = dict()
     # Search SpectrumHit Sequence
     result["peptide"] = json.dumps(DBSession.query(PeptideRun.sequence.distinct().label('peptide')).join(MsRun).filter(
-        PeptideRun.sequence == request.params["search_all"].upper()).filter(MsRun.flag_trash==0).filter(PeptideRun.source_source_id != None).all())
+        PeptideRun.sequence.like("%" + request.params["search_all"].upper() + "%")
+                                  ).filter(MsRun.flag_trash==0).filter(PeptideRun.source_source_id != None).all())
     test = request.params["search_all"].upper()
     # Search organ columns
     result["organ"] = json.dumps(DBSession.query(Source.organ.distinct().label('organ')).filter(

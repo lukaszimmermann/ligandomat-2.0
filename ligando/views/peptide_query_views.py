@@ -57,7 +57,6 @@ def peptide_query(request):
 # peptide Query POST
 @view_config(route_name='peptide_query', renderer='../templates/peptide_query_result.pt', request_method="POST")
 def peptide_query_result(request):
-    # BUG: Query incorrect for hla!!!
     # Check if one of these parameters is set, if not forward to peptide_query page
     params_check_dict = ['sequence',
                          'source_id',
@@ -86,6 +85,8 @@ def peptide_query_result(request):
     query = DBSession.query(Peptide_query.sequence.distinct().label("sequence"),
                             Peptide_query.proteins.label(
                                 "protein"),
+                            Peptide_query.gene_names.label(
+                                "gene_name"),
                             Peptide_query.tissues.label(
                                 "tissue"),
                             Peptide_query.hla_types.label(
@@ -112,8 +113,7 @@ def peptide_query_result(request):
                           set=False)
     query = create_filter(query, 'dignity', request.params, "dignity", Source, 'dignity_rule', False, set=False)
     query = create_filter(query, 'hla_typing', request.params, "hla_string", HlaType, 'hla_typing_rule', False,
-                          set=False) # TODO: check if it works withou fk,
-                          #fk=HlaLookup.fk_hla_typess)
+                          set=False)
 
     query = query.filter(Binding_prediction.binder == 1)
     #if "hla_typing" in request.params:
@@ -149,7 +149,11 @@ def peptide_query_result(request):
     #except DBAPIError:
     #    return Response(conn_err_msg, content_type='text/plain', status_int=500)
     # MS run group by
+    search_dict = dict()
+    for name, item in request.params.iteritems():
+        if name != "count" and name != "grouping":
+            search_dict[name] = item
+    search = json.dumps(search_dict)
 
-
-    return {'project': result, 'grouping': grouping}
+    return {'project': result, 'grouping': grouping, "search": search}
 
