@@ -83,7 +83,6 @@
                     </ul>
                 </div>
                 <div class="item12 right dropdown" >
-
                 <a href='#' class='dropdown-toggle picture-link' data-toggle="dropdown" ><img src='../static/images/magen.svg'><span class="vertical-center">Stomach</span></a>
                     <ul class="dropdown-menu" id="stomach_menu">
                     </ul>
