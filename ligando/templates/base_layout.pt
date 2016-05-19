@@ -14,8 +14,7 @@
               href="${request.static_url('ligando:static/css/less/bootstrap-theme.css')}">
 
         <!-- Glyphicon Stylesheet not included in Bootswatch Theme -->
-        <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css"
-              crossorigin="anonymous">
+        <link rel="stylesheet" href="${request.static_url('ligando:static/css/less/bootstrap-glyphicons.css')}">
 
 
         <link rel="stylesheet" type="text/css" href="${request.static_url('ligando:static/css/main_styles.css')}">
@@ -86,10 +85,18 @@
                 <!-- Collect the nav links, forms, and other content for toggling -->
                 <div class="collapse navbar-collapse" id="navbar-top">
                     <ul class="nav navbar-nav">
-                        <li ><a href="/tissue_browser">Tissue Browser</a></li>
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
-                               aria-haspopup="true" aria-expanded="false">HLA Browser <span class="caret"></span></a>
+                               aria-haspopup="true" aria-expanded="false">Tissue Browser<span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li ><a href="/tissue_browser">Tissue Browser</a></li>
+                                <li><a href="/tissue_table">Tissue Table</a></li>
+                            </ul>
+                        </li>
+
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
+                               aria-haspopup="true" aria-expanded="false">HLA Browser<span class="caret"></span></a>
                             <ul class="dropdown-menu">
                                 <li><a href="/hla_atlas">HLA Class I</a></li>
                                 <li><a href="/hla_atlas_classII">HLA Class II</a></li>
@@ -97,16 +104,17 @@
                         </li>
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
-                               aria-haspopup="true" aria-expanded="false">About <span class="caret"></span></a>
+                               aria-haspopup="true" aria-expanded="false">About<span class="caret"></span></a>
                             <ul class="dropdown-menu">
                                 <li><a href="/faq">FAQ</a></li>
-                                <li><a href="/info">Information</a></li>
+                                <li><a href="/background">Background</a></li>
                                 <li><a href="/db_stats">Database Statistics</a></li>
                                 <li role="separator" class="divider"></li>
                                 <li><a href="/contact">Contact</a></li>
                                 <li><a href="http://www.uni-tuebingen.de/impressum.html">Imprint</a></li>
                             </ul>
                         </li>
+                        <li><a href="/download">Download</a></li>
                     </ul>
                     <form class="navbar-form navbar-right" method="POST" action="/search">
                         <div class="form-group">

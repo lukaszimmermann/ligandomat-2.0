@@ -1,0 +1,87 @@
+<html metal:use-macro="load: base_layout.pt">
+<!DOCTYPE html>
+<html lang="${request.locale_name}">
+<head>
+
+
+</head>
+
+<body>
+
+<metal:block fill-slot="content">
+
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-10 col-md-offset-1">
+                <ol class="breadcrumb">
+                    <li><a href="/">Home</a></li>
+                    <li>Tissue Table</li>
+                </ol>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-10 col-md-offset-1">
+                <h1>Tissue Table</h1>
+                <table class="table table-striped table-bordered" id="all_tissues">
+                    <thead>
+                        <tr>
+                            <td>Tissue</td>
+                            <td>Number of Samples</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+
+<script>
+    $(document).ready(function() {
+    $('#all_tissues').dataTable( {
+        "paging":   true,
+        "ordering": true,
+        "info":     false,
+        searching: false,
+        data: ${tissues},
+                columns: [
+                    { data: "tissue" ,
+                    "render": function ( data, type, row ) {
+                        return '<a href="organ/'+data+'">'+ data+ '</a>';
+                    }},
+                        { data: "tissue_count" ,
+                    "render": function ( data, type, row ) {
+                        return data;
+                    }}
+                ]
+            } );
+        } );
+    var suborgans = {"heart":["heart", "aorta", "muscle", "tongue"],
+        "brain":["brain", "cerebellum", "small brain", "myelon", "bone marrow"],
+        "spleen": ["spleen"],
+        "breast": ["mamma"],
+        "uterus": ["uterus", "ovary"],
+        "prostate": ["prostate", "testis"],
+        "lung": ["lung", "trachea"],
+        "kidney": ["adrenal gland", "kidney"],
+        "bladder": ["bladder"],
+        "liver": ["liver"],
+        "skin": ["skin"],
+        "stomach": ["colon", "esophagus", "stomach", "small intestine"],
+        "pancreas": ["pankreas"],
+        "thyroid": ["thyroid", "glandula sublingualis", "lymph node"]};
+
+
+
+
+</script>
+
+</metal:block>
+
+</body>
+
+
+</html>
+</html>

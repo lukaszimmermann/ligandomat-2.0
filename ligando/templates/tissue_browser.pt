@@ -98,64 +98,13 @@
                     <ul class="dropdown-menu" id="thyroid_menu">
                     </ul>
                 </div>
-
-                <!--?<a href='organ/heart' class='item1 left'><span class="vertical-center">Heart</span><img src='../static/images/herz.svg'></a>-->
-                <!--?<a href='organ/spleen' class='item3 left'><span class="vertical-center">Spleen</span><img src='../static/images/milz.svg'></a>-->
-                <!--?<a href='organ/breast' class='item4 left'><span class="vertical-center">Breast</span><img src='../static/images/brust.svg'></a>-->
-                <!--?<a href='organ/uterus' class='item5 left'><span class="vertical-center">Uterus</span><img src='../static/images/uterus.svg'></a>-->
-                <!--?<a href='organ/lung' class='item6 left'><span class="vertical-center">Lung</span><img src='../static/images/lungen.svg'></a>-->
-                <!--?<a href='organ/prostate' class='item7 left'><span class="vertical-center">Prostate</span><img src='../static/images/prostata_hoden.svg'></a>-->
-
-                <!-- right -->
-                <!--?<a href='organ/kidney' class='item8  right'><img src='../static/images/niere.svg'><span class="vertical-center">Kidney</span></a>-->
-                <!--?<a href='organ/bladder' class='item9  right'><img src='../static/images/blase.svg'><span class="vertical-center">Bladder</span></a>-->
-                <!--?<a href='organ/liver' class='item10 right'><img src='../static/images/leber.svg'><span class="vertical-center">Liver</span></a>-->
-                <!--?<a href='organ/skin' class='item11 right'><img src='../static/images/haut.svg'><span class="vertical-center">Skin</span></a>-->
-                <!--?<a href='organ/stomach' class='item12 right'><img src='../static/images/magen.svg'><span class="vertical-center">Stomach</span></a>-->
-                <!--?<a href='organ/pancreas' class='item13 right'><img src='../static/images/pankreas.svg'><span class="vertical-center">Pancreas</span></a>-->
-                <!--?<a href='organ/thyroid' class='item14 right'><img src='../static/images/thyroidea.svg'><span class="vertical-center">Thyroid</span></a>-->
             </div>
         </div>
 
-        <div class="row">
-            <div class="col-xs-12" style="height:50px;"></div>
-            <div class="col-md-10 col-md-offset-1">
-                <h1>All tissues:</h1>
-                <table class="table table-striped table-bordered" id="all_tissues">
-                    <thead>
-                        <tr>
-                            <td>Tissue</td>
-                            <td>Number of Samples</td>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    </tbody>
-                </table>
-            </div>
-
-        </div>
     </div>
 
 <script>
-    $(document).ready(function() {
-    $('#all_tissues').dataTable( {
-        "paging":   true,
-        "ordering": true,
-        "info":     false,
-        searching: false,
-        data: ${tissues},
-                columns: [
-                    { data: "tissue" ,
-                    "render": function ( data, type, row ) {
-                        return '<a href="organ/'+data+'">'+ data+ '</a>';
-                    }},
-                        { data: "tissue_count" ,
-                    "render": function ( data, type, row ) {
-                        return data;
-                    }}
-                ]
-            } );
-        } );
+
     var suborgans = {"heart":["heart", "aorta", "muscle", "tongue"],
         "brain":["brain", "cerebellum", "small brain", "myelon", "bone marrow"],
         "spleen": ["spleen"],

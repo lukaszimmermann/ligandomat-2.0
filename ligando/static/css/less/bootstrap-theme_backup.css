@@ -1177,7 +1177,7 @@ h6,
   font-family: inherit;
   font-weight: 400;
   line-height: 1.1;
-  color: black;
+  color: #444;
 }
 h1 small,
 h2 small,
@@ -2543,7 +2543,7 @@ output {
   padding: 6px 16px;
   font-size: 13px;
   line-height: 1.846;
-  color: black;
+  color: #666;
   background-color: transparent;
   background-image: none;
   border: 1px solid transparent;
@@ -3047,7 +3047,7 @@ fieldset[disabled] a.btn {
   pointer-events: none;
 }
 .btn-default {
-  color: black;
+  color: #444;
   background-color: #fff;
   border-color: transparent;
 }
@@ -3541,7 +3541,7 @@ tbody.collapse.in {
   clear: both;
   font-weight: normal;
   line-height: 1.846;
-  color: black;
+  color: #666;
   white-space: nowrap;
 }
 .dropdown-menu > li > a:hover,
@@ -4480,7 +4480,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
   border-color: transparent;
 }
 .navbar-default .navbar-brand {
-  color: black;
+  color: #666;
 }
 .navbar-default .navbar-brand:hover,
 .navbar-default .navbar-brand:focus {
@@ -4491,7 +4491,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
   color: #bbb;
 }
 .navbar-default .navbar-nav > li > a {
-  color: black;
+  color: #666;
 }
 .navbar-default .navbar-nav > li > a:hover,
 .navbar-default .navbar-nav > li > a:focus {

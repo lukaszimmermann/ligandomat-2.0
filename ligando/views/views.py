@@ -83,10 +83,14 @@ def faq(request):
 
 
 # information view
-@view_config(route_name='info', renderer='../templates/info.pt')
-def info(request):
+@view_config(route_name='background', renderer='../templates/background.pt')
+def background(request):
     return dict()
 
+# download view
+@view_config(route_name='download', renderer='../templates/download.pt')
+def download(request):
+    return dict()
 
 # contact view
 @view_config(route_name='contact', renderer='../templates/contact.pt')
@@ -234,6 +238,10 @@ def hla_atlas_classII(request):
 
 @view_config(route_name='tissue_browser', renderer='../templates/tissue_browser.pt')
 def tissue_browser(request):
+    return dict()
+
+@view_config(route_name='tissue_table', renderer='../templates/tissue_table.pt')
+def tissue_table(request):
     query = DBSession.query(Source.organ.label('tissue'), func.count(Source.source_id.distinct()).label('tissue_count'))
     query = query.group_by(Source.organ)
     organs =  json.dumps(query.all())

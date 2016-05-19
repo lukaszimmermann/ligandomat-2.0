@@ -20,7 +20,7 @@ from webtest import TestApp
 
 from models import DBSession, Base, User
 
-from ligando.views.views import my_view,  faq, info, contact, news, hla_atlas, hla_atlas_classII
+from ligando.views.views import my_view,  faq, background, contact, news, hla_atlas, hla_atlas_classII
 
 from pyramid import testing
 
@@ -273,13 +273,13 @@ class TestViews(IntegrationTestBase):
         response = faq(request)
         self.assertEqual(response, dict())
 
-    def test_info(self):
+    def test_background(self):
         # test if site is accessible and added as routine
-        res = self.app.get('/info')
+        res = self.app.get('/background')
         self.assertEqual(res.status_int, 200)
         # test for content of result dict
         request = testing.DummyRequest()
-        response = info(request)
+        response = background(request)
         self.assertEqual(response, dict())
 
     def test_contact(self):

@@ -44,7 +44,8 @@ def route_adder(config):
 
     # About Pages
     config.add_route('faq', '/faq')
-    config.add_route('info', '/info')
+    config.add_route('background', '/background')
+    config.add_route('download', '/download')
     config.add_route('contact', '/contact')
     # News Page
     config.add_route('news', '/news')
@@ -53,6 +54,8 @@ def route_adder(config):
     config.add_route('hla_atlas_classII', '/hla_atlas_classII')
     # Tissue atlas
     config.add_route('tissue_browser', '/tissue_browser')
+    # Tissue list
+    config.add_route('tissue_table', '/tissue_table')
     # Database statistics
     config.add_route('db_stats', '/db_stats')
 

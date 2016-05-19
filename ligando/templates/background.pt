@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html metal:use-macro="load: base_layout.pt">
+<html lang="${request.locale_name}">
+<head>
+
+</head>
+
+<body>
+<metal:block fill-slot="content">
+    <div class="container">
+        <!--? TODO: fill with content-->
+        <div class="row">
+            <div class="col-md-10 col-md-offset-1">
+                <ol class="breadcrumb">
+                    <li><a href="/">Home</a></li>
+                    <li>About</li>
+                    <li>Background</li>
+                </ol>
+            </div>
+            <div class="col-md-10 col-md-offset-1">
+                <h2>Background page</h2>
+                <br>
+                MS method + configuration
+            </div>
+        </div>
+    </div>
+
+
+</metal:block>
+
+</body>
+</html>
+</html>

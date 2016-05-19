@@ -831,8 +831,8 @@ def DB_statistics_creator():
 
 if __name__ == '__main__':
     print "static table creater"
-    #peptide_run_creater()
     #sequence_extractor()
+    #peptide_run_creater()
 
     #HLA_statistics_creater()
 
@@ -842,5 +842,4 @@ if __name__ == '__main__':
     #tissue_hla_protein_count_creater()
     #peptide_query_creater()
     #DB_statistics_creator()
-
     #spectra_extracter()
