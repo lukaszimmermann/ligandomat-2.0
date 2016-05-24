@@ -8,7 +8,6 @@
 <body>
 <metal:block fill-slot="content">
     <div class="container">
-        <!--? TODO: fill with content-->
         <div class="row">
             <div class="col-md-10 col-md-offset-1">
                 <ol class="breadcrumb">
@@ -24,23 +23,23 @@
 
                 <table class="table table-striped table-bordered">
                     <tr>
-                        <td>Total number of Donors</td>
+                        <td>Total number of donors</td>
                         <td id="source_stat" align="right"></td>
                     </tr>
                     <tr>
-                        <td>Total number of different Tissues</td>
+                        <td>Total number of different tissues</td>
                         <td id="tissue_stat" align="right"></td>
                     </tr>
                     <tr>
-                        <td>Total number of Samples</td>
+                        <td>Total number of samples</td>
                         <td id="sample_stat" align="right"></td>
                     </tr>
                     <tr>
-                        <td>Total number of MS Runs</td>
+                        <td>Total number of MS runs</td>
                         <td id="msruns_stat" align="right"></td>
                     </tr>
                     <tr>
-                        <td>Total number of different Peptides</td>
+                        <td>Total number of different peptides</td>
                         <td id="peptide_stat" align="right"></td>
                     </tr>
                 </table>
@@ -48,14 +47,14 @@
         </div>
         <div class="row">
             <div class="col-md-6 col-md-offset-1">
-                <h1>Peptide Distribution Class I</h1>
+                <h1>Peptide distribution class I</h1>
                 <div id="classI_distribution" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
 
             </div>
         </div>
         <div class="row">
             <div class="col-md-6 col-md-offset-1">
-                <h1>Peptide Distribution Class II</h1>
+                <h1>Peptide distribution class II</h1>
                 <div id="classII_distribution" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
 
             </div>
@@ -87,12 +86,12 @@
                     enabled: false
                 },
                 title: {
-                    text: 'Peptide length distribution for Class I'
+                    text: 'Peptide length distribution for class I'
                 },
                 exporting: {
                     chartOptions: {
                          title: {
-                            text: 'Peptide length distribution for Class I'
+                            text: 'Peptide length distribution for class I'
                         },
                         subtitle: {
                             text: "Source: " + document.URL + ", " + date.toUTCString() ,
@@ -101,7 +100,7 @@
                             y: 10
                         }
                     },
-                    filename: 'Peptide length distribution for Class I'
+                    filename: 'Peptide length distribution for class I'
                 },
                 xAxis: {
                     type: [],
@@ -111,7 +110,7 @@
                 },
                 yAxis: {
                     title: {
-                        text: 'Number of Peptides'
+                        text: 'Number of peptides'
                     }
                 },
                 series: [],
@@ -125,7 +124,7 @@
 
             protein_stats = ${classI_distribution};
             var series = {
-                name: ["Number of Peptides"],
+                name: ["Number of peptides"],
                 data: [],
                 showInLegend: false
 
@@ -155,12 +154,12 @@
                     enabled: false
                 },
                 title: {
-                    text: 'Peptide length distribution for Class II'
+                    text: 'Peptide length distribution for class II'
                 },
                 exporting: {
                     chartOptions: {
                          title: {
-                            text: 'Peptide length distribution for Class II'
+                            text: 'Peptide length distribution for class II'
                         },
                         subtitle: {
                             text: "Source: " + document.URL + ", " + date.toUTCString() ,
@@ -169,7 +168,7 @@
                             y: 10
                         }
                     },
-                    filename: 'Peptide length distribution for Class II'
+                    filename: 'Peptide length distribution for class II'
                 },
                 xAxis: {
                     type: [],
@@ -179,7 +178,7 @@
                 },
                 yAxis: {
                     title: {
-                        text: 'Number of Peptides'
+                        text: 'Number of peptides'
                     }
                 },
                 series: [],
@@ -193,7 +192,7 @@
 
             protein_stats = ${classII_distribution};
             var series = {
-                name: ["Number of Peptides"],
+                name: ["Number of peptides"],
                 data: [],
                 showInLegend: false
 

@@ -33,9 +33,9 @@
                         <tr>
                             <th>Sequence</th>
                             <th>Protein</th>
-                            <th>Gene Name</th>
+                            <th>Gene name</th>
                             <th>Tissue</th>
-                            <th>HLA Typing</th>
+                            <th>HLA typing</th>
                         </tr>
 
                         </thead>
@@ -135,9 +135,10 @@
                 dom: 'Bfrtip',
                 buttons: ['csv', 'excel', 'pdf']
 
-
             });
         });
+        // TODO: Fix Mobile pageaging counter (bottom)
+
     </script>
 
 </metal:block>

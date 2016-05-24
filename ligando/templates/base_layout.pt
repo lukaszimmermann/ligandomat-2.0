@@ -44,6 +44,7 @@
         <script src="http://code.highcharts.com/modules/exporting.js"></script>
         <script src="${request.static_url('ligando:static/js/highchart_plugins/export-csv.js')}"></script>
         <script src="https://code.highcharts.com/modules/no-data-to-display.js"></script>
+        <script src="https://code.highcharts.com/modules/drilldown.js"></script>
 
         <script src="${request.static_url('ligando:static/js/jquery-ui.min.js')}"></script>
         <script src="${request.static_url('ligando:static/js/shared.js')}"></script>
@@ -137,7 +138,7 @@
             <div class="row">
                 <div class="col-md-12 text-center">
                     © 2014-<span id="currentYear"></span>
-                    | <a class="nostylelink" href="http://www.uni-tuebingen.de">University of Tübingen</a>
+                    | <a class="nostylelink" href="http://www.uni-tuebingen.de"><img style="max-height: 20px;"  src="../static/images/UT_WBMW_Schwarz_RGB.svg"></a>
                     | <a href="/contact">Contact</a> |
                     <a href="http://www.uni-tuebingen.de/impressum.html">Impressum</a>
                 </div>

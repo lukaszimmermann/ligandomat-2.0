@@ -5,7 +5,7 @@
 
     <div class="container">
         <div class="row">
-            <div class="col-md-10 col-md-offset-1">
+            <div class="col-md-12 ">
                 <ol class="breadcrumb">
                     <li><a href="/">Home</a></li>
                     <li>HLA Browser</li>
@@ -14,7 +14,7 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-md-10 col-md-offset-1 text-center">
+            <div class="col-md-12 text-center">
                 <h1 id="title">HLA-${hla}</h1>
             </div>
         </div>
@@ -22,18 +22,9 @@
 
 
         <div class="row">
-            <div class="col-md-10 col-md-offset-1">
+            <div class="col-md-3 ">
                 <!-- Creating tabs -->
-                <ul class="nav nav-tabs">
-                    <li class="active"><a href="#dbcontent" data-toggle="tab">Statistics</a></li>
-                    <li><a href="#tissuepiechart" data-toggle="tab">Distribution of tissues</a></li>
-                </ul>
-                <div class="tab-content">
 
-                    <!-- Statistics-->
-                    <div class="tab-pane fade in active" id="dbcontent">
-                        <div style="min-width: 50%;  max-width: 50%;height: 400px;">
-                            <br>
                             <table class="table table-striped table-bordered">
                                 <tr>
                                     <td>Binding peptides</td>
@@ -49,28 +40,25 @@
                                 </tr>
                             </table>
                         </div>
-                    </div>
-
+            <div class="col-md-3 ">
+                </div>
+                <div class="col-md-6 ">
                     <!-- Tissue chart -->
-                    <div class="tab-pane fade" id="tissuepiechart">
-                        <div id="tissue_chart"
-                             style="min-width: 310px; height: 400px; max-width: 600px; margin: 0 auto"></div>
-                    </div>
+                        <div id="tissue_chart" style="height: 500px;"></div>
 
                 </div>
             </div>
 
-        </div>
 
         <div class="row">
-            <div class="col-md-10 col-md-offset-1">
+            <div class="col-md-12 ">
                 <div id="distribution" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
             </div>
         </div>
 
         <!-- Peptide-binding motif -->
         <div class="row" tal:condition="not hla.startswith('D')">
-            <div class="col-md-10 col-md-offset-1">
+            <div class="col-md-12 ">
             <h1>Peptide binding motif</h1>
                 <!-- Creating tabs -->
                 <ul class="nav nav-tabs" id="seqlogo_tabs">
@@ -87,10 +75,158 @@
 
     <script>
 
-
+    var organs = ["heart", "brain", "spleen", "breast", "uterus", "prostate", "lung", "kidney", "bladder", "liver", "skin", "stomach", "pancreas", "thyroid"];
+    var suborgans = {"heart":["heart", "aorta", "muscle", "tongue"],
+        "brain":["brain", "cerebellum", "small brain", "myelon", "bone marrow"],
+        "spleen": ["spleen"],
+        "breast": ["mamma"],
+        "uterus": ["uterus", "ovary"],
+        "prostate": ["prostate", "testis"],
+        "lung": ["lung", "trachea"],
+        "kidney": ["adrenal gland", "kidney"],
+        "bladder": ["bladder"],
+        "liver": ["liver"],
+        "skin": ["skin"],
+        "stomach": ["colon", "esophagus", "stomach", "small intestine"],
+        "pancreas": ["pankreas"],
+        "thyroid": ["thyroid", "glandula sublingualis", "lymph node"]};
         //tissue pie chart
-        var date = new Date();
-        $(document).ready(function () {
+    var chart_organs = {'heart': '<img id="heart" width="40px" src="../static/images/herz.svg">',
+                            'brain': '<div class="dropdown" ><a href="#" class="dropdown-toggle picture-link"  data-toggle="dropdown" ><img id="brain" width="40px" src="../static/images/hirn.svg"> </a><ul class="dropdown-menu" id="brain_menu"></ul></div>',
+                            'spleen': '<div class="dropdown" ><a href="#" class="dropdown-toggle picture-link"  data-toggle="dropdown" ><img id="spleen" width="40px" src="../static/images/milz.svg"> </a><ul class="dropdown-menu" id="spleen_menu"></ul></div>',
+                            'breast': '<div class="dropdown" ><a href="#" class="dropdown-toggle picture-link"  data-toggle="dropdown" ><img id="breast" width="40px" src="../static/images/brust_orange.svg"> </a><ul class="dropdown-menu" id="breast_menu"></ul></div>',
+                            'uterus': '<div class="dropdown" ><a href="#" class="dropdown-toggle picture-link"  data-toggle="dropdown" ><img id="uterus" width="40px" src="../static/images/uterus_orange.svg"> </a><ul class="dropdown-menu" id="uterus_menu"></ul></div>',
+                            'prostate': '<div class="dropdown" ><a href="#" class="dropdown-toggle picture-link"  data-toggle="dropdown" ><img id="prostate" width="40px" src="../static/images/prostata_hoden.svg"> </a><ul class="dropdown-menu" id="prostate_menu"></ul></div>',
+                            "lung": '<div class="dropdown" ><a href="#" class="dropdown-toggle picture-link"  data-toggle="dropdown" ><img id="lung" width="40px" src="../static/images/lungen.svg"> </a><ul class="dropdown-menu" id="lung_menu"></ul></div>',
+                            "kidney": '<div class="dropdown" ><a href="#" class="dropdown-toggle picture-link"  data-toggle="dropdown" ><img id="kidney" width="40px" src="../static/images/niere.svg"> </a><ul class="dropdown-menu" id="kidney_menu"></ul></div>',
+                            "bladder": '<div class="dropdown" ><a href="#" class="dropdown-toggle picture-link"  data-toggle="dropdown" ><img id="bladder" width="40px" src="../static/images/blase.svg"> </a><ul class="dropdown-menu" id="bladder_menu"></ul></div>',
+                            "liver": '<div class="dropdown" ><a href="#" class="dropdown-toggle picture-link"  data-toggle="dropdown" ><img id="liver" width="40px" src="../static/images/leber.svg"> </a><ul class="dropdown-menu" id="liver_menu"></ul></div>',
+                            "skin": '<div class="dropdown" ><a href="#" class="dropdown-toggle picture-link"  data-toggle="dropdown" ><img id="skin" width="40px" src="../static/images/haut.svg"> </a><ul class="dropdown-menu" id="skin_menu"></ul></div>',
+                            "stomach": '<div class="dropdown" ><a href="#" class="dropdown-toggle picture-link"  data-toggle="dropdown" ><img id="stomach" width="40px" src="../static/images/magen.svg"> </a><ul class="dropdown-menu" id="stomach_menu"></ul></div>',
+                            "pancreas": '<div class="dropdown" ><a href="#" class="dropdown-toggle picture-link"  data-toggle="dropdown" ><img id="pancreas" width="40px" src="../static/images/pankreas.svg"> </a><ul class="dropdown-menu" id="pancreas_menu"></ul></div>',
+
+                            "thyroid": '<a id="popover" rel="popover" data-content="" title="Popover with image"><img id="thyroid" width="40px" src="../static/images/thyroidea.svg"> </a>'
+}
+
+    var date = new Date();
+    var chart;
+    $(function () {
+        chart = new Highcharts.Chart({
+            chart: {
+                renderTo: 'tissue_chart',
+                type: 'bar',
+                backgroundColor: 'transparent',
+            },
+            title: {
+                text: null
+            },
+            subtitle: {
+                text: null
+            },
+            xAxis: {
+                tickLength: 0,
+                lineWidth: 0,
+                categories: organs,
+                title: {
+                    text: null
+                },
+                labels: {
+//                    enabled: false,
+                    color: '#fff',
+                    x: 5,
+                    useHTML: true,
+                    formatter: function () {
+                        console.log(this)
+                        return chart_organs[this.value];
+                    }
+
+                }
+            },
+            yAxis: {
+                max: 10,
+                min: 0,
+                gridLineWidth: 0,
+                title: {
+                    text: null
+                },
+                labels: {
+                    enabled: false,
+                }
+            },
+            tooltip: {
+                enabled: false
+            },
+            plotOptions: {
+                bar: {
+                    dataLabels: {
+                        enabled: true,
+                        color: '#f60'
+                    }
+                }
+            },
+            legend: {
+                enabled: false
+            },
+            credits: {
+                enabled: false
+            },
+
+            series: [{
+                borderWidth: 0,
+                borderRadius: 3,
+                pointWidth: 16,
+                shadow: false,
+                    data: [{name:"heart", y:3, drilldown: 'heart'},
+                            {name:"brain", y:3, drilldown: 'brain'},
+                            {name:"spleen", y:3, drilldown: 'spleen'},
+                            {name:"breast", y:3},
+                            {name:"uterus", y:3},
+                            {name:"prostate", y:3},
+                            {name:"lung", y:3},
+                            {name:"kidney", y:3},
+                            {name:"bladder", y:3},
+                            {name:"liver", y:3},
+                            {name:"skin", y:3},
+                            {name:"stomach", y:3},
+                            {name:"pancreas", y:3},
+                            {name:"thyroid", y:3},
+                            ]
+            }],
+            drilldown: {
+
+            series: [{
+                id: 'heart',
+                data: [
+                    ['Cats', 4],
+                    ['Dogs', 2],
+                    ['Cows', 1],
+                    ['Sheep', 2],
+                    ['Pigs', 1]
+                ]
+            }, {
+                id: 'brain',
+                data: [
+                    ['Apples', 4],
+                    ['Oranges', 2]
+                ]
+            }, {
+                id: 'spleen',
+                data: [
+                    ['Toyota', 4],
+                    ['Opel', 2],
+                    ['Volkswagen', 2]
+                ]
+            }]
+        }
+
+        });
+    });
+
+    var image = '<img src="../static/images/pankreas.svg">';
+    $('#popover').popover({placement: 'bottom', content: image, html: true});
+
+
+        /*$(document).ready(function () {
             $('#tissue_chart').highcharts({
                 // var options =  {
                 chart: {
@@ -153,7 +289,7 @@
                     data: ${organ}
                 }]
             });
-        });
+        });*/
 
         var min_len  = 8;
         var max_len = 10;
@@ -276,7 +412,7 @@
                 },
                 yAxis: {
                     title: {
-                        text: 'Number of Peptides'
+                        text: 'Number of peptides'
                     }
                 },
                 series: [],
@@ -291,7 +427,7 @@
 
             protein_stats = ${peptide_distribution};
             var series = {
-                name: ["Number of Peptides"],
+                name: ["Number of peptides"],
                 data: [],
                 showInLegend: false,
                 point: {

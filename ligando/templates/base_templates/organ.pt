@@ -46,7 +46,7 @@
                         <td id="pep_stat"></td>
                     </tr>
                     <tr>
-                        <td>Number of Samples:</td>
+                        <td>Number of samples:</td>
                         <td id="source_stat"></td>
                     </tr>
                 </table>
@@ -55,7 +55,7 @@
             </div>
         <div class="row">
             <div class="col-md-10 col-md-offset-1">
-                <h1>HLA Proteins</h1>
+                <h1>HLA proteins</h1>
                 <ul class="nav nav-tabs">
                     <li class="active"><a href="#class1" data-toggle="tab">Class 1</a></li>
                     <li><a href="#class2" data-toggle="tab">Class 2</a></li>
@@ -83,7 +83,7 @@
 
         <div class="row">
             <div class="col-md-10 col-md-offset-1">
-                <h1>HLA Peptides</h1>
+                <h1>HLA peptides</h1>
                 <ul class="nav nav-tabs">
                     <li class="active"><a href="#pep_class1" data-toggle="tab">Class 1</a></li>
                     <li><a href="#pep_class2" data-toggle="tab">Class 2</a></li>
@@ -161,7 +161,7 @@
         });*/
         // set statistics
         $(document).ready(function () {
-            document.getElementById("pep_stat").innerHTML = "<a title='Show all Peptides'  class='nostylelink' href='javascript:post(\x22../peptide_query\x22, {organ: \x22${organ}\x22, grouping:\x22peptide\x22}," + ${statistic}[0]["pep_count"] + " )'> " + ${statistic}[0]["pep_count"] + "</a>";
+            document.getElementById("pep_stat").innerHTML = "<a title='Show all peptides'  class='nostylelink' href='javascript:post(\x22../peptide_query\x22, {organ: \x22${organ}\x22, grouping:\x22peptide\x22}," + ${statistic}[0]["pep_count"] + " )'> " + ${statistic}[0]["pep_count"] + "</a>";
             document.getElementById("source_stat").innerHTML =${sources}.length;
 
         });
@@ -181,12 +181,12 @@
                     enabled: false
                 },
                 title: {
-                    text: '${organ}' + ' specific HLA I Proteins'
+                    text: '${organ}' + ' specific HLA I proteins'
                 },
                 exporting: {
                     chartOptions: {
                          title: {
-                            text: '${organ}' + ' specific HLA I Proteins'
+                            text: '${organ}' + ' specific HLA I proteins'
                         },
                         subtitle: {
                             text: "Source: " + document.URL + ", " + date.toUTCString() ,
@@ -195,14 +195,14 @@
                             y: 10
                         }
                     },
-                    filename: '${organ}' + ' specific HLA I Proteins'
+                    filename: '${organ}' + ' specific HLA I proteins'
                 },
                 xAxis: {
                     type: []
                 },
                 yAxis: {
                     title: {
-                        text: 'Number of Sources'
+                        text: 'Number of sources'
                     }
                 },
                 plotOptions: {
@@ -228,7 +228,7 @@
 
             protein_stats = ${protein_stats_classI};
             var series = {
-                name: ["Number of Sources"],
+                name: ["Number of sources"],
                 data: [],
                 showInLegend: false
             };
@@ -257,12 +257,12 @@
                     enabled: false
                 },
                 title: {
-                    text: '${organ}' + ' specific HLA II Proteins'
+                    text: '${organ}' + ' specific HLA II proteins'
                 },
                    exporting: {
                     chartOptions: {
                          title: {
-                            text: '${organ}' + ' specific HLA II Proteins'
+                            text: '${organ}' + ' specific HLA II proteins'
                         },
                         subtitle: {
                             text: "Source: " + document.URL + ", " + date.toUTCString() ,
@@ -271,14 +271,14 @@
                             y: 10
                         }
                     },
-                    filename: '${organ}' + ' specific HLA II Proteins'
+                    filename: '${organ}' + ' specific HLA II proteins'
                 },
                 xAxis: {
                     categories: []
                 },
                 yAxis: {
                     title: {
-                        text: 'Number of Sources'
+                        text: 'Number of sources'
                     }
                 },
                 plotOptions: {
@@ -304,7 +304,7 @@
 
             protein_stats = ${protein_stats_classII};
             var series = {
-                name: ["Number of Sources"],
+                name: ["Number of sources"],
                 data: [],
                 showInLegend: false
             };
@@ -332,12 +332,12 @@
                     enabled: false
                 },
                 title: {
-                    text: '${organ}' + ' specific HLA I and II Proteins'
+                    text: '${organ}' + ' specific HLA I and II proteins'
                 },
                 exporting: {
                     chartOptions: {
                          title: {
-                            text: '${organ}' + ' specific HLA I and II Proteins'
+                            text: '${organ}' + ' specific HLA I and II proteins'
                         },
                         subtitle: {
                             text: "Source: " + document.URL + ", " + date.toUTCString() ,
@@ -346,14 +346,14 @@
                             y: 10
                         }
                     },
-                    filename: '${organ}' + ' specific HLA I and II Proteins'
+                    filename: '${organ}' + ' specific HLA I and II proteins'
                 },
                 xAxis: {
                     categories: []
                 },
                 yAxis: {
                     title: {
-                        text: 'Number of Sources'
+                        text: 'Number of sources'
                     }
                 },
                 plotOptions: {
@@ -379,7 +379,7 @@
 
             protein_stats = ${protein_stats_combined};
             var series = {
-                name: ["Number of Sources"],
+                name: ["Number of sources"],
                 data: [],
                 showInLegend: false
             };
@@ -409,12 +409,12 @@
                     enabled: false
                 },
                 title: {
-                    text: '${organ}' + ' specific HLA I Peptides'
+                    text: '${organ}' + ' specific HLA I peptides'
                 },
                   exporting: {
                     chartOptions: {
                          title: {
-                            text: '${organ}' + ' specific HLA I Peptides'
+                            text: '${organ}' + ' specific HLA I peptides'
                         },
                         subtitle: {
                             text: "Source: " + document.URL + ", " + date.toUTCString() ,
@@ -423,14 +423,14 @@
                             y: 10
                         }
                     },
-                    filename: '${organ}' + ' specific HLA I Peptides'
+                    filename: '${organ}' + ' specific HLA I peptides'
                 },
                 xAxis: {
                     type: []
                 },
                 yAxis: {
                     title: {
-                        text: 'Number of Sources'
+                        text: 'Number of sources'
                     }
                 },
                 plotOptions: {
@@ -456,7 +456,7 @@
 
             peptide_stats = ${peptide_stats_classI};
             var series = {
-                name: ["Number of Sources"],
+                name: ["Number of sources"],
                 data: [],
                 showInLegend: false
             };
@@ -485,12 +485,12 @@
                     enabled: false
                 },
                 title: {
-                    text: '${organ}' + ' specific HLA II Peptides'
+                    text: '${organ}' + ' specific HLA II peptides'
                 },
                 exporting: {
                     chartOptions: {
                          title: {
-                            text: '${organ}' + ' specific HLA II Peptides'
+                            text: '${organ}' + ' specific HLA II peptides'
                         },
                         subtitle: {
                             text: "Source: " + document.URL + ", " + date.toUTCString() ,
@@ -499,14 +499,14 @@
                             y: 10
                         }
                     },
-                    filename: '${organ}' + ' specific HLA II Peptides'
+                    filename: '${organ}' + ' specific HLA II peptides'
                 },
                 xAxis: {
                     type: []
                 },
                 yAxis: {
                     title: {
-                        text: 'Number of Sources'
+                        text: 'Number of sources'
                     }
                 },
                 plotOptions: {
@@ -532,7 +532,7 @@
 
             peptide_stats = ${peptide_stats_classII};
             var series = {
-                name: ["Number of Sources"],
+                name: ["Number of sources"],
                 data: [],
                 showInLegend: false
             };

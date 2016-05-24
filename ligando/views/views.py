@@ -9,7 +9,7 @@ from ligando.models import (
     DBSession,
     Source,
     MsRun,
-    HlaType, PeptideRun, t_hla_map, HLA_statistics, Binding_prediction, DB_statistics)
+    HlaType, PeptideRun, t_hla_map, HLA_statistics, Binding_prediction, DB_statistics, SpectrumHit)
 from ligando.views.view_helper import js_list_creator, conn_err_msg
 
 
@@ -18,30 +18,16 @@ from ligando.views.view_helper import js_list_creator, conn_err_msg
 def my_view(request):
     try:
         # query statistics for the main page
-        result_dict = dict()
-        result_dict["orphan_msrun_count"] = \
-            DBSession.query(func.count(distinct(MsRun.filename))).filter(MsRun.source_source_id == None).filter(MsRun.flag_trash == 0).one()[0]
-        result_dict["all_msrun_count"] = DBSession.query(func.count(distinct(MsRun.filename))).one()[0]
-        result_dict["sources_count"] = DBSession.query(func.count(distinct(Source.sample_id))).one()[0]
-        result_dict["trash_count"] = DBSession.query(func.count(distinct(MsRun.filename))).filter(MsRun.flag_trash == 1).one()[0]
+        source_stat = DBSession.query(func.count(Source.patient_id.distinct())).all()[0][0]
+        tissue_stat = DBSession.query(func.count(Source.organ.distinct())).all()[0][0]
+        sample_stat = DBSession.query(func.count(Source.source_id.distinct())).all()[0][0]
+        msruns_stat = DBSession.query(func.count(MsRun.ms_run_id.distinct())).all()[0][0]
+        peptide_stat = DBSession.query(func.count(PeptideRun.sequence.distinct())).all()[0][0]
+        spectra_stat = DBSession.query(func.count(SpectrumHit.spectrum_hit_id)).all()[0][0]
 
+        return dict(source_stat=source_stat, tissue_stat=tissue_stat, sample_stat=sample_stat, msruns_stat=msruns_stat,
+                    peptide_stat=peptide_stat, spectra_stat=spectra_stat)
 
-        result_dict["orphan_msrun"] = json.dumps(
-        DBSession.query(distinct(MsRun.filename).label("orphan_ms_run")).filter(MsRun.source_source_id == None).filter(MsRun.flag_trash == 0).order_by(MsRun.filename.desc()).limit(10).all())
-
-        #SELECT (organ), count(organ) from Source group by organ
-        sources = DBSession.query(Source.organ, func.count(Source.organ)).group_by(Source.organ).order_by(func.count(Source.organ).desc()).all()
-        merged_sources = dict()
-        source_acc = 0
-        for i in range(0,len(sources)):
-            if i < 6:
-                merged_sources[sources[i][0]] = sources[i][1]
-            else:
-                source_acc += sources[i][1]
-        merged_sources["others"] = source_acc
-        result_dict["sources"] = json.dumps(merged_sources)
-
-        return result_dict
     except:
         return Response(conn_err_msg, content_type='text/plain', status_int=500)
 
