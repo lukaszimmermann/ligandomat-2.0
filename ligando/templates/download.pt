@@ -10,18 +10,58 @@
     <div class="container">
         <!--? TODO: fill with content-->
         <div class="row">
-            <div class="col-md-10 col-md-offset-1">
+            <div class="col-md-12">
                 <ol class="breadcrumb">
                     <li><a href="/">Home</a></li>
                     <li>Download</li>
                 </ol>
             </div>
-            <div class="col-md-10 col-md-offset-1">
+            <div class="col-md-12">
                 <h2>Download page</h2>
-                <br>
             </div>
+            <table id="download_table" class="table table-bordered table-striped"  width="100%">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Format</th>
+                <th>Version</th>
+                <th>Date</th>
+                <th>Size</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><a>v0_1_filtered.csv</a></td>
+                <td>CSV</td>
+                <td>0.1</td>
+                <td>06.07.16</td>
+                <td>1.8 Mb</td>
+            </tr>
+            <tr>
+                <td><a>v0_1_unfiltered.csv</a></td>
+                <td>CSV</td>
+                <td>0.1</td>
+                <td>06.07.16</td>
+                <td>53.3 Mb</td>
+            </tr>
+            <tr>
+                <td><a>v0_1_mysql.sql</a></td>
+                <td>SQL</td>
+                <td>0.1</td>
+                <td>06.07.16</td>
+                <td>121.0 Mb</td>
+            </tr>
+
+        </tbody>
+    </table>
         </div>
     </div>
+
+    <script>
+        $(document).ready(function() {
+    $('#download_table').DataTable();
+} );
+    </script>
 
 
 </metal:block>

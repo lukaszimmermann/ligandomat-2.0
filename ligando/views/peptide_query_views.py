@@ -57,6 +57,7 @@ def peptide_query(request):
 # peptide Query POST
 @view_config(route_name='peptide_query', renderer='../templates/peptide_query_result.pt', request_method="POST")
 def peptide_query_result(request):
+    # TODO: Grouping does not work at all!
     # Check if one of these parameters is set, if not forward to peptide_query page
     params_check_dict = ['sequence',
                          'source_id',

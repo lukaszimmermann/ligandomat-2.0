@@ -151,7 +151,7 @@ def source_id_page(request):
 
 @view_config(route_name='hla', renderer='../templates/base_templates/hla.pt', request_method="GET")
 def hla_page(request):
-    try:
+    #try:
         query = DBSession.query(Source.organ,Source.source_id, Source.dignity,
                                 Source.histology, Source.patient_id)
         query = query.join(t_hla_map)
@@ -168,8 +168,75 @@ def hla_page(request):
         statistic = json.dumps(query.all())
 
         #extract data for organ pie chart
-        complete_sources = json.loads(sources)
-        organ_chart = get_chart_data(complete_sources)
+        #complete_sources = json.loads(sources)
+        #organ_chart = get_chart_data(complete_sources)
+        query = DBSession.query(Source.organ.label("organ"), func.count(Source.sample_id.distinct()).label("count"))
+        query = query.join(t_hla_map)
+        query = query.join(HlaType)
+        query = query.filter(HlaType.hla_string == request.matchdict["hla"])
+        query = query.group_by(Source.organ)
+        organ_statistics = dict(query.all())
+
+
+        organ_statistics = dict((k.lower(), v) for k, v in organ_statistics.iteritems())
+
+        organ_count = dict(heart=0,
+                           brain=0,
+                           spleen=0,
+                           breast=0,
+                           uterus=0,
+                           prostate=0,
+                           lung=0,
+                           kidney=0,
+                           bladder=0,
+                           liver=0,
+                           skin=0,
+                           stomach=0,
+                           pancreas=0,
+                           thyroid=0)
+
+
+        suborgans = dict(heart=["heart", "aorta", "muscle", "tongue"],
+                         brain=["brain", "cerebellum", "small brain", "myelon", "bone marrow"],
+                         spleen=["spleen"],
+                         breast=["mamma"],
+                         uterus=["uterus", "ovary"],
+                         prostate=["prostate", "testis"],
+                         lung=["lung", "trachea"],
+                         kidney=["adrenal gland", "kidney"],
+                         bladder=["bladder"],
+                         liver=["liver"],
+                         skin=["skin"],
+                         stomach=["colon", "esophagus", "stomach", "small intestine"],
+                         pancreas=["pancreas"],
+                         thyroid=["thyroid", "glandula sublingualis", "lymph node"])
+
+
+        suborgans_inverted = dict((v, k) for k in suborgans for v in suborgans[k])
+
+        for organ, count in organ_statistics.iteritems():
+            main_organ = suborgans_inverted[organ.lower()]
+            organ_count[main_organ] += count
+        organ_table = list()
+        for o, c in organ_count.iteritems():
+            temp_dict = dict(organ=o, count=c)
+            for suborgan in suborgans[o]:
+                if suborgan in organ_statistics.keys():
+                    temp_dict[suborgan] = organ_statistics[suborgan]
+                else:
+                    temp_dict[suborgan] = 0
+            organ_table.append(temp_dict)
+
+        max_values = dict(organ_max = max([i for i in organ_count.values()]))
+        for organ in organ_table:
+            temp_max = 0
+            for o in organ:
+                if o != "count" and o != "organ":
+                    temp_max = max(temp_max,organ[o])
+            max_values[organ["organ"]] = temp_max
+
+
+
 
         # TODO: Precalculate these (to slow)
         # Peptide distribution
@@ -186,9 +253,14 @@ def hla_page(request):
         # List of peptides for which one will create the Peptide binding motif-Logo
         peptide_distribution = json.dumps(query.all())
 
-    except:
-        return Response(conn_err_msg, content_type='text/plain', status_int=500)
-    return {"sources": sources, "hla": request.matchdict["hla"], "statistic": statistic, "organ": organ_chart, "peptide_distribution": peptide_distribution}
+    #except:
+     #   return Response(conn_err_msg, content_type='text/plain', status_int=500)
+        return {"sources": sources,
+                "hla": request.matchdict["hla"],
+                "statistic": statistic,
+                "organ_table_data": json.dumps(organ_table),
+                "peptide_distribution": peptide_distribution,
+                "max_values": json.dumps(max_values)}
 
 
 @view_config(route_name='msrun', renderer='../templates/base_templates/msrun.pt', request_method="GET")
@@ -477,22 +549,70 @@ def peptide_page(request):
         ms_run_count = query.all()[0][0]
 
         # Type of the organ of the sources with the peptides
-        query = DBSession.query(Source.organ.distinct())
+        query = DBSession.query(Source.organ.label("organ"), func.count(Source.sample_id.distinct()).label("count"))
         query = query.join(PeptideRun)
         query = query.join(MsRun)
         query = query.filter(MsRun.flag_trash ==0)
         query = query.filter(PeptideRun.sequence == request.matchdict["peptide"])
-        organs = js_list_creator_dataTables(query.all())
+        query = query.group_by(Source.organ)
+        organ_statistics = dict(query.all())
 
+        organ_statistics = dict((k.lower(), v) for k, v in organ_statistics.iteritems())
 
-        # query = DBSession.query(Source.patient_id)
-        # query = query.join(SpectrumHit)
-        # query = query.join(MsRun)
-        # query = query.filter(MsRun.flag_trash ==0)
-        # query = query.filter(SpectrumHit.sequence == request.matchdict["peptide"])
-        # query = query.group_by(Source.patient_id)
-        # sources = js_list_creator_dataTables(query.all())
+        organ_count = dict(heart=0,
+                           brain=0,
+                           spleen=0,
+                           breast=0,
+                           uterus=0,
+                           prostate=0,
+                           lung=0,
+                           kidney=0,
+                           bladder=0,
+                           liver=0,
+                           skin=0,
+                           stomach=0,
+                           pancreas=0,
+                           thyroid=0)
 
+        suborgans = dict(heart=["heart", "aorta", "muscle", "tongue"],
+                         brain=["brain", "cerebellum", "small brain", "myelon", "bone marrow"],
+                         spleen=["spleen"],
+                         breast=["mamma"],
+                         uterus=["uterus", "ovary"],
+                         prostate=["prostate", "testis"],
+                         lung=["lung", "trachea"],
+                         kidney=["adrenal gland", "kidney"],
+                         bladder=["bladder"],
+                         liver=["liver"],
+                         skin=["skin"],
+                         stomach=["colon", "esophagus", "stomach", "small intestine"],
+                         pancreas=["pancreas"],
+                         thyroid=["thyroid", "glandula sublingualis", "lymph node"])
+
+        suborgans_inverted = dict((v, k) for k in suborgans for v in suborgans[k])
+
+        for organ, count in organ_statistics.iteritems():
+            main_organ = suborgans_inverted[organ.lower()]
+            organ_count[main_organ] += count
+        organ_table = list()
+        for o, c in organ_count.iteritems():
+            temp_dict = dict(organ=o, count=c)
+            for suborgan in suborgans[o]:
+                if suborgan in organ_statistics.keys():
+                    temp_dict[suborgan] = organ_statistics[suborgan]
+                else:
+                    temp_dict[suborgan] = 0
+            organ_table.append(temp_dict)
+
+        max_values = dict(organ_max=max([i for i in organ_count.values()]))
+        for organ in organ_table:
+            temp_max = 0
+            for o in organ:
+                if o != "count" and o != "organ":
+                    temp_max = max(temp_max, organ[o])
+            max_values[organ["organ"]] = temp_max
+
+        # find out on which HLA the peptide is presented
         query = DBSession.query(HlaType.hla_string.distinct().label("hla"),
                                 Binding_prediction.binding_score.label("score"))
         query = query.join(t_hla_map)
@@ -523,7 +643,8 @@ def peptide_page(request):
 
     except:
         return Response(conn_err_msg, content_type='text/plain', status_int=500)
-    return {"proteins": proteins, "organs": organs,
+    return {"proteins": proteins, "organ_table_data": json.dumps(organ_table),
+                "max_values": json.dumps(max_values),
             "peptide": request.matchdict["peptide"],
             "hla_class1": hla_class1,
             "hla_class2": hla_class2, "psms": psms, "ms_run_count": ms_run_count}

@@ -29,6 +29,7 @@ def search_result(request):
         Source.organ == request.params["search_all"]).all())
 
     # Search HLA
+    # TODO: Wildcard search allow!
     result["hla"] = json.dumps(DBSession.query(HlaType.hla_string.distinct().label('hla')).filter(
         HlaType.hla_string == request.params["search_all"]).all())
     # Search Protein

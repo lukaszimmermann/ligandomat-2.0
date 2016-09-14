@@ -25,367 +25,362 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-md-10 col-md-offset-1">
-                <h1>Tissues</h1>
-            </div>
-            <div class="col-md-10 col-md-offset-1">
-                <div class="col-md-8" style="padding-right: 0">
-                    <div class="col-md-1">
-                        <div class="dropdown" > <a href="#" class="dropdown-toggle picture-link"  data-toggle="dropdown" ><img id="heart" width="60px" style="opacity: 0.3" src="../static/images/herz.svg"></a>
-                            <ul class="dropdown-menu" id="heart_menu">
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="col-md-1">
-                        <div class="dropdown" >
-                            <a href="#" class="dropdown-toggle picture-link"  data-toggle="dropdown" >
-                                <img id="brain" width="60px" style="opacity: 0.3" src="../static/images/hirn.svg">
-                        </a>
-                            <ul class="dropdown-menu" id="brain_menu">
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="col-md-1">
-                        <div class="dropdown" >
-                            <a href="#" class="dropdown-toggle picture-link"  data-toggle="dropdown" >
-                                <img id="spleen" width="60px" style="opacity: 0.3" src="../static/images/milz.svg">
-                        </a>
-                            <ul class="dropdown-menu" id="spleen_menu">
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="col-md-1">
-                        <div class="dropdown" >
-                            <a href="#" class="dropdown-toggle picture-link"  data-toggle="dropdown" >
-                                <img id="breast" width="60px" style="opacity: 0.3" src="../static/images/brust_orange.svg">
-                        </a>
-                            <ul class="dropdown-menu" id="breast_menu">
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="col-md-1">
-                        <div class="dropdown" >
-                        <a href="#" class="dropdown-toggle picture-link"  data-toggle="dropdown" >
-                            <img id="uterus" width="60px" style="opacity: 0.3" src="../static/images/uterus_orange.svg">
-                    </a>
-                        <ul class="dropdown-menu" id="uterus_menu">
-                        </ul>
-                        </div>
-                    </div>
+            <div class="col-md-6">
 
-                    <div class="col-md-1">
-                        <div class="dropdown" >
-                            <a href="#" class="dropdown-toggle picture-link"  data-toggle="dropdown" >
-                                <img id="prostate" width="60px" style="opacity: 0.3" src="../static/images/prostata_hoden.svg">
-                        </a>
-                            <ul class="dropdown-menu" id="prostate_menu">
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="col-md-1">
-                        <div class="dropdown" >
-                            <a href="#" class="dropdown-toggle picture-link"  data-toggle="dropdown" >
-                                <img id="lung" width="60px" style="opacity: 0.3" src="../static/images/lungen.svg">
-                        </a>
-                            <ul class="dropdown-menu" id="lung_menu">
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="col-md-1">
-                        <div class="dropdown" >
-                            <a href="#" class="dropdown-toggle picture-link"  data-toggle="dropdown" >
-                                <img id="kidney" width="60px" style="opacity: 0.3" src="../static/images/niere.svg">
-                        </a>
-                            <ul class="dropdown-menu" id="kidney_menu">
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="col-md-1">
-                        <div class="dropdown" >
-                            <a href="#" class="dropdown-toggle picture-link"  data-toggle="dropdown" >
-                                <img id="bladder" width="60px" style="opacity: 0.3" src="../static/images/blase.svg">
-                        </a>
-                            <ul class="dropdown-menu" id="bladder_menu">
-                            </ul>
-                        </div>
-                    </div>
-
-                    <div class="col-md-1">
-                        <div class="dropdown" >
-                            <a href="#" class="dropdown-toggle picture-link"  data-toggle="dropdown" >
-                                <img id="liver" width="60px" style="opacity: 0.3" src="../static/images/leber.svg">
-                        </a>
-                            <ul class="dropdown-menu" id="liver_menu">
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="col-md-1">
-                        <div class="dropdown" >
-                            <a href="#" class="dropdown-toggle picture-link"  data-toggle="dropdown" >
-                                <img id="skin" width="60px" style="opacity: 0.3" src="../static/images/haut.svg">
-                        </a>
-                            <ul class="dropdown-menu" id="skin_menu">
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="col-md-1">
-                        <div class="dropdown" >
-                            <a href="#" class="dropdown-toggle picture-link"  data-toggle="dropdown" >
-                                <img id="stomach" width="60px" style="opacity: 0.3" src="../static/images/magen.svg">
-                        </a>
-                            <ul class="dropdown-menu" id="stomach_menu">
-                            </ul>
-                        </div>
-                    </div>
-
-                </div>
-                <div class="col-md-4 " style="padding-left: 0">
-                    <div class="col-md-2">
-                        <div class="dropdown" >
-                            <a href="#" class="dropdown-toggle picture-link"  data-toggle="dropdown" >
-                                <img id="pancreas" width="60px" style="opacity: 0.3" src="../static/images/pankreas.svg">
-                        </a>
-                            <ul class="dropdown-menu" id="pancreas_menu">
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="col-md-2  ">
-                        <div class="dropdown" >
-                            <a href="#" class="dropdown-toggle picture-link"  data-toggle="dropdown" >
-                                <img id="thyroid" width="60px" style="opacity: 0.3" src="../static/images/thyroidea.svg">
-                        </a>
-                            <ul class="dropdown-menu" id="thyroid_menu">
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-
-
-            </div>
-        </div>
-        <br>
-
-        <div class="row">
-            <div class="col-md-5 col-md-offset-1">
-                <h1>Source Antigen</h1>
-
-                <table class="table table-striped table-bordered" id="proteins">
-                    <thead>
-                    <tr>
-                        <td>Proteins</td>
-                        <td>Gene Name</td>
-                        <td>Uniprot</td>
-                        <td>Position</td>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                    </tbody>
-                </table>
-
-
-                <h1>HLA</h1>
-
-                <h1>Class 1</h1>
-
-                <div class="row no-gutters">
-                    <div class="col-md-12">
-                        <table class="table table-striped table-bordered" id="hla_class1">
+                <div class="row">
+                    <div class="col-md-12 ">
+                        <h1>Source Antigen</h1>
+                        <table class="table table-striped table-bordered" id="proteins">
                             <thead>
                             <tr>
-                                <td>HLA</td>
-                                <td title="IC50 predicted by netMHCpan">IC50</td>
+                                <td>Proteins</td>
+                                <td>Gene Name</td>
+                                <td>Uniprot</td>
+                                <td>Position</td>
                             </tr>
                             </thead>
                             <tbody>
                             <tr>
                                 <td></td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-
-
-            </div>
-
-                <h1>Class 2</h1>
-
-                <div class="row no-gutters">
-                    <div class="col-md-12">
-                        <table class="table table-striped table-bordered" id="hla_class2">
-                            <thead>
-                            <tr>
-                                <td>HLA</td>
-                                <td title="IC50 predicted by netMHCIIpan">IC50</td>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr>
                                 <td></td>
                             </tr>
                             </tbody>
                         </table>
                     </div>
+                </div>
+                <!--? TODO: Ranking rein-->
+                <div class="row">
+                    <div class="col-md-12 ">
+                        <h1>HLA</h1>
+                        <h1>Class 1</h1>
+                        <div class="row ">
+                            <div class="col-md-12">
+                                <table class="table table-striped table-bordered" id="hla_class1">
+                                    <thead>
+                                    <tr>
+                                        <td>HLA</td>
+                                        <td title="IC50 predicted by netMHCpan">IC50</td>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12 ">
+                        <h1>Class 2</h1>
+                        <div class="row ">
+                            <div class="col-md-12">
+                                <table class="table table-striped table-bordered" id="hla_class2">
+                                    <thead>
+                                    <tr>
+                                        <td>HLA</td>
+                                        <td title="IC50 predicted by netMHCIIpan">IC50</td>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <h1>Experimental Evidence</h1>
+                        The peptide was found in ${ms_run_count} MS runs with <a href="/peptide_spectra/${peptide}">${psms}
+                        PSMs</a>.
+                        <br>
+                        <h1>Related Information</h1>
+                        <!--? TODO: implement link outs-->
+                        SYFPEITHI
+                        <a href="http://www.syfpeithi.de/"><span class="glyphicon glyphicon-globe"
+                                                                 aria-hidden="true"></span></a>
+                        <br>
+                        IEDB <a href="http://www.iedb.org/epitope/58560"><span class="glyphicon glyphicon-globe"
+                                                                               aria-hidden="true"></span></a>
+                        <br>
+                        PubMed
+                        <a href="http://www.ncbi.nlm.nih.gov/pubmed/?term="><span class="glyphicon glyphicon-globe"
+                                                                                  aria-hidden="true"></span></a>
+                    </div>
+                </div>
+
             </div>
 
-        </div>
 
-            <div class="col-md-5">
-                <h1>Experimental Evidence</h1>
-                The peptide was found in ${ms_run_count} MS runs with <a href="/peptide_spectra/${peptide}" >${psms} PSMs</a>.
+            <div class="col-md-1 ">
 
-                <br>
-
-                <h1>Related Information</h1>
+            </div>
+            <div class="col-md-4">
                 <!--? TODO: implement link outs-->
-                SYFPEITHI
-                <a href="http://www.syfpeithi.de/"><span class="glyphicon glyphicon-globe"
-                                                         aria-hidden="true"></span></a>
-                <br>
-                IEDB <a href="http://www.iedb.org/epitope/58560"><span class="glyphicon glyphicon-globe"
-                                                                       aria-hidden="true"></span></a>
-                <br>
-                PubMed
-                <a href="http://www.ncbi.nlm.nih.gov/pubmed/?term="><span class="glyphicon glyphicon-globe"
-                                                                          aria-hidden="true"></span></a>
+                    <table id="organ_table" class="table-striped" cellspacing="2px" width="100%">
+                </table>
+            </div>
+
         </div>
     </div>
-</div>
 
-<script>
-    var organs = ["heart", "brain", "spleen", "breast", "uterus", "prostate", "lung", "kidney", "bladder", "liver", "skin", "stomach", "pancreas", "thyroid"];
-    var suborgans = {"heart":["heart", "aorta", "muscle", "tongue"],
-        "brain":["brain", "cerebellum", "small brain", "myelon", "bone marrow"],
-        "spleen": ["spleen"],
-        "breast": ["mamma"],
-        "uterus": ["uterus", "ovary"],
-        "prostate": ["prostate", "testis"],
-        "lung": ["lung", "trachea"],
-        "kidney": ["adrenal gland", "kidney"],
-        "bladder": ["bladder"],
-        "liver": ["liver"],
-        "skin": ["skin"],
-        "stomach": ["colon", "esophagus", "stomach", "small intestine"],
-        "pancreas": ["pankreas"],
-        "thyroid": ["thyroid", "glandula sublingualis", "lymph node"]};
+    <script>
+        $(document).ready(function () {
+            // Setting the title
+            document.getElementById("title").innerHTML = "${peptide}";
+        });
 
-    // Set Opacity of the found tissues
-    $(document).ready(function(){
-        var found_organs = ${organs};
-        for(var i in suborgans){
-            for(var k=0; k < suborgans[i].length; k++){
-                for(var j=0; j < found_organs.length; j++){
-                    if (suborgans[i][k].charAt(0).toUpperCase() + suborgans[i][k].slice(1) == found_organs[j]) {
-                        $('#' + i).css('opacity', '1');
-                        $('#' + i+"_menu").append('<li><a  href="/organ/' + suborgans[i][k] + '">'+ suborgans[i][k].charAt(0).toUpperCase() + suborgans[i][k].slice(1) + '</a></li>');
+
+        $(document).ready(function () {
+// create dataTable
+            //"pageLength": 50
+
+            //console.log(class1_length);
+            var tab = $('#hla_class1').DataTable({
+                "paging": false,
+                "ordering": true,
+                "info": false,
+                "defaultContent": 'No entries to show',
+                "searching": false,
+                "order": [[1, "asc"]],
+                data: ${hla_class1},
+                columns: [
+                    {
+                        data: "hla",
+                        "render": function (data, type, row) {
+                            return "<a href= '/hla/" + data + "'>" + data + "</a>";
+                        }
+                    },
+                    {
+                        data: "score",
+                        "render": function (data, type, row) {
+                            return data.toFixed(1);
+                        }
                     }
+                ]
+            });
+
+            var tab = $('#hla_class2').DataTable({
+                "paging": false,
+                "ordering": true,
+                "info": false,
+                "defaultContent": 'No entries to show',
+                "searching": false,
+                "order": [[1, "asc"]],
+                data: ${hla_class2},
+                columns: [
+                    {
+                        data: "hla",
+                        "render": function (data, type, row) {
+                            return "<a  href= '/hla/" + data + "'>" + data + "</a>";
+                        }
+                    },
+                    {
+                        data: "score",
+                        "render": function (data, type, row) {
+                            return data.toFixed(1);
+                        }
+                    }
+                ]
+            });
+
+            $('#proteins').dataTable({
+                "paging": false,
+                "ordering": false,
+                "info": false,
+                searching: false,
+                data: ${proteins},
+                columns: [
+                    {
+                        data: "protein",
+                        "render": function (data, type, row) {
+                            return "<a href= '/protein/" + data + "$uniprot" + "'>" + data + "</a>";
+                        }
+                    },
+                    {data: "gene_name"},
+                    {
+                        data: "protein",
+                        "render": function (data, type, row) {
+                            return "<a href= 'http://www.uniprot.org/uniprot/" + data + "'>" + "Link" + "</a>";
+                        }
+                    },
+                    {
+                        data: "sequence",
+                        "render": function (data, type, row) {
+                            var n = data.indexOf("${peptide}");
+                            // TODO: does not work if the peptide is twice in the same protein
+                            return (n + 1) + " - " + (n + "${peptide}".length);
+                        }
+                    }
+
+                ]
+            });
+        });
+
+
+        // Tissue distribution
+        var organs = ["heart", "brain", "spleen", "breast", "uterus", "prostate", "lung", "kidney", "bladder", "liver", "skin", "stomach", "pancreas", "thyroid"];
+        var suborgans = {
+            "heart": ["heart", "aorta", "muscle", "tongue"],
+            "brain": ["brain", "cerebellum", "small brain", "myelon", "bone marrow"],
+            "spleen": ["spleen"],
+            "breast": ["mamma"],
+            "uterus": ["uterus", "ovary"],
+            "prostate": ["prostate", "testis"],
+            "lung": ["lung", "trachea"],
+            "kidney": ["adrenal gland", "kidney"],
+            "bladder": ["bladder"],
+            "liver": ["liver"],
+            "skin": ["skin"],
+            "stomach": ["colon", "esophagus", "stomach", "small intestine"],
+            "pancreas": ["pancreas"],
+            "thyroid": ["thyroid", "glandula sublingualis", "lymph node"]
+        };
+        //tissue pie chart
+        var chart_organs = {
+            'heart': '<img id="heart" width="40px" src="../static/images/herz.svg">',
+            'brain': '<div class="dropdown" ><a href="#" class="dropdown-toggle picture-link"  data-toggle="dropdown" ><img id="brain" width="40px" src="../static/images/hirn.svg"> </a><ul class="dropdown-menu" id="brain_menu"></ul></div>',
+            'spleen': '<div class="dropdown" ><a href="#" class="dropdown-toggle picture-link"  data-toggle="dropdown" ><img id="spleen" width="40px" src="../static/images/milz.svg"> </a><ul class="dropdown-menu" id="spleen_menu"></ul></div>',
+            'breast': '<div class="dropdown" ><a href="#" class="dropdown-toggle picture-link"  data-toggle="dropdown" ><img id="breast" width="40px" src="../static/images/brust_orange.svg"> </a><ul class="dropdown-menu" id="breast_menu"></ul></div>',
+            'uterus': '<div class="dropdown" ><a href="#" class="dropdown-toggle picture-link"  data-toggle="dropdown" ><img id="uterus" width="40px" src="../static/images/uterus_orange.svg"> </a><ul class="dropdown-menu" id="uterus_menu"></ul></div>',
+            'prostate': '<div class="dropdown" ><a href="#" class="dropdown-toggle picture-link"  data-toggle="dropdown" ><img id="prostate" width="40px" src="../static/images/prostata_hoden.svg"> </a><ul class="dropdown-menu" id="prostate_menu"></ul></div>',
+            "lung": '<div class="dropdown" ><a href="#" class="dropdown-toggle picture-link"  data-toggle="dropdown" ><img id="lung" width="40px" src="../static/images/lungen.svg"> </a><ul class="dropdown-menu" id="lung_menu"></ul></div>',
+            "kidney": '<div class="dropdown" ><a href="#" class="dropdown-toggle picture-link"  data-toggle="dropdown" ><img id="kidney" width="40px" src="../static/images/niere.svg"> </a><ul class="dropdown-menu" id="kidney_menu"></ul></div>',
+            "bladder": '<div class="dropdown" ><a href="#" class="dropdown-toggle picture-link"  data-toggle="dropdown" ><img id="bladder" width="40px" src="../static/images/blase.svg"> </a><ul class="dropdown-menu" id="bladder_menu"></ul></div>',
+            "liver": '<div class="dropdown" ><a href="#" class="dropdown-toggle picture-link"  data-toggle="dropdown" ><img id="liver" width="40px" src="../static/images/leber.svg"> </a><ul class="dropdown-menu" id="liver_menu"></ul></div>',
+            "skin": '<div class="dropdown" ><a href="#" class="dropdown-toggle picture-link"  data-toggle="dropdown" ><img id="skin" width="40px" src="../static/images/haut.svg"> </a><ul class="dropdown-menu" id="skin_menu"></ul></div>',
+            "stomach": '<div class="dropdown" ><a href="#" class="dropdown-toggle picture-link"  data-toggle="dropdown" ><img id="stomach" width="40px" src="../static/images/magen.svg"> </a><ul class="dropdown-menu" id="stomach_menu"></ul></div>',
+            "pancreas": '<div class="dropdown" ><a href="#" class="dropdown-toggle picture-link"  data-toggle="dropdown" ><img id="pancreas" width="40px" src="../static/images/pankreas.svg"> </a><ul class="dropdown-menu" id="pancreas_menu"></ul></div>',
+
+            "thyroid": '<a id="popover" rel="popover" data-content="" title="Popover with image"><img id="thyroid" width="40px" src="../static/images/thyroidea.svg"> </a>'
+        };
+
+        organ_images = {
+            heart: '<img id="brain" class="table_pic" src="../static/images/herz.svg">',
+            brain: '<img id="brain" class="table_pic" src="../static/images/hirn.svg">',
+            spleen: '<img id="brain" class="table_pic" src="../static/images/milz.svg">',
+            breast: '<img id="brain" class="table_pic" src="../static/images/brust_orange.svg">',
+            uterus: '<img id="brain" class="table_pic" src="../static/images/uterus_orange.svg">',
+            prostate: '<img id="brain" class="table_pic" src="../static/images/prostata_hoden.svg">',
+            lung: '<img id="brain" class="table_pic" src="../static/images/lungen.svg">',
+            kidney: '<img id="brain" class="table_pic" src="../static/images/niere.svg">',
+            bladder: '<img id="brain" class="table_pic" src="../static/images/blase.svg">',
+            liver: '<img id="brain" class="table_pic" src="../static/images/leber.svg">',
+            skin: '<img id="brain" class="table_pic" src="../static/images/haut.svg">',
+            stomach: '<img id="brain" class="table_pic" src="../static/images/magen.svg">',
+            pancreas: '<img id="brain" class="table_pic" src="../static/images/pankreas.svg">',
+            thyroid: '<img id="brain" class="table_pic" src="../static/images/thyroidea.svg">'
+        };
+        var date = new Date();
+
+        var max_value = ${max_values};
+
+        function format(d) {
+            console.log(d)
+            // `d` is the original data object for the row
+            var result = '<table id = "sub_organ_table_' + d['organ'] + '" class="display table-striped" cellspacing="0" width="100%">'
+                    ;
+            for (key in d) {
+                if (key != "count" && key != "organ") {
+                    result += '<tr style="height: 20px" >' +
+                            '<td>' + key + '</td><td></td><td>' + '<div style="background-color: #1d71b8; height: 18px ; width:' + (d[key] / max_value['organ_max']) * 100 + '%"><img ></div>' + '</td><td>' + d[key] + '</td>' +
+                            '</tr>';
                 }
             }
 
+            result += '</table>';
+
+
+            return result;
         }
 
-    // setting empty menu if no organ was found
-    for(var i = 0; i < organs.length; i++){
-        var selected_menu = $('#'+organs[i]+'_menu');
-        if(selected_menu.children("li").length ==0){
-            $('#'+organs[i]+'_menu').append('<li><a class="disabled" href="#">Not found</a></li>' )
-        }
-    }
-    });
-    // Set up organ menus
-    $(document).ready(function(){
 
-
-    });
-
-
-
-    $(document).ready(function () {
-        // Setting the title
-        document.getElementById("title").innerHTML = "${peptide}";
-    });
-
-
-
-    $(document).ready(function () {
-// create dataTable
-        //"pageLength": 50
-
-        //console.log(class1_length);
-        var tab = $('#hla_class1').DataTable({
-            "paging": false,
-            "ordering": true,
-            "info": false,
-            "defaultContent": 'No entries to show',
-            "searching": false,
-            "order": [[ 1, "asc" ]],
-            data: ${hla_class1},
-            columns: [
-                {data: "hla",
-                    "render": function (data, type, row) {
-                    return "<a href= '/hla/" + data + "'>" + data + "</a>";
-                }},
-                {data: "score",
-                        "render": function (data, type, row) {
-                            return data.toFixed(1);
-                        }
+        $(document).ready(function () {
+            var table = $('#organ_table').DataTable({
+                "data": ${organ_table_data},
+                "columns": [
+                    {
+                        "className":      'details-control',
+                        "orderable":      false,
+                        "defaultContent": '',
+                        width: '10%',
+                        data: "organ",
+                                "render": function (data, type, row) {
+                                    return organ_images[data];
+                                }
+                    },
+                    {data: "count",
+                                "render": function (data, type, row) {
+                                    return '<div style="background-color: #7cb5ec; height: 20px ; width:'+ (data/max_value['organ_max'])*100+'%"><img ></div>';
+                                },
+                        width: '90%',
+                        "className":      'details-control',
+                        "orderable":      false,
+                        "defaultContent": ''
+                    }],
+                ordering: false,
+                searching: false,
+                paging: false,
+                info: false,
+                dom: 'Bfrtip',
+                buttons: [{
+                    text: 'Show more details',
+                    action: function ( e, dt, node, config ) {
+                        post('../peptide_query', {sequence: '${peptide}', grouping:'organ'} )}
                     }
-            ]
-        });
+                ]
 
-        var tab = $('#hla_class2').DataTable({
-            "paging": false,
-            "ordering": true,
-            "info": false,
-            "defaultContent": 'No entries to show',
-            "searching": false,
-            "order": [[ 1, "asc" ]],
-            data: ${hla_class2},
-            columns: [
-                {data: "hla",
-                    "render": function (data, type, row) {
-                    return "<a  href= '/hla/" + data + "'>" + data + "</a>";
-                }},
-                {data: "score",
-                        "render": function (data, type, row) {
-                            return data.toFixed(1);
-                        }
-                    }
-            ]
-        });
+            });
 
-        $('#proteins').dataTable({
-            "paging": false,
-            "ordering": false,
-            "info": false,
-            searching: false,
-            data: ${proteins},
-            columns: [
-                {data: "protein",
-                    "render": function (data, type, row) {
-                        return "<a href= '/protein/" + data +"$uniprot" +  "'>" + data + "</a>";
-                    }},
-                {data: "gene_name"},
-                {data: "protein",
-                    "render": function (data, type, row) {
-                        return "<a href= 'http://www.uniprot.org/uniprot/" + data + "'>" + "Link" + "</a>";
-                    }},
-                {data: "sequence",
-                    "render": function (data, type, row) {
-                        var n = data.indexOf("${peptide}");
-                        // TODO: does not work if the peptide is twice in the same protein
-                        return (n + 1) + " - " + (n + "${peptide}".length);
-                    }
+            // Add event listener for opening and closing details
+            $('#organ_table tbody').on('click', 'td.details-control', function () {
+                var tr = $(this).closest('tr');
+                var row = table.row(tr);
+
+                if (row.child.isShown()) {
+                    // This row is already open - close it
+                    row.child.hide();
+                    tr.removeClass('shown');
+
+
                 }
+                else {
+                    // Open this row
+                    row.child(format(row.data())).show();
+                    tr.addClass('shown');
 
-            ]
+                    $('#sub_organ_table_' + row.data()['organ']).DataTable({
+                        "columns": [
+                            {
+                                width: '10%'
+                            },
+                            {
+                                width: '5px'
+                            },
+                            {
+                                width: '80%'
+                            },
+                            {
+                                width: '9%'
+                            }],
+                        ordering: false,
+                        searching: false,
+                        paging: false,
+                        info: false
+                    });
+
+
+                }
+            });
         });
-    });
-    // TODO: Mobile view organ pictures are broken
-</script>
+    </script>
 
 </metal:block>
 

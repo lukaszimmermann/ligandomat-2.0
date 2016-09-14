@@ -13,7 +13,7 @@
 
     <div class="container">
         <div class="row">
-            <div class="col-md-10 col-md-offset-1">
+            <div class="col-md-12 ">
                 <ol class="breadcrumb">
                     <li><a href="/">Home</a></li>
                     <li>Tissue Table</li>
@@ -21,7 +21,7 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-md-10 col-md-offset-1">
+            <div class="col-md-12">
                 <h1>Tissue Table</h1>
                 <table class="table table-striped table-bordered" id="all_tissues">
                     <thead>

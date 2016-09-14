@@ -17,7 +17,7 @@
                     <p style="text-align: justify;">
                         This database contains the naturally processed HLA ligands of more than 10 individuals
                         and more than 20 different tissues. All ligands have been extracted via immunoprecipitation and
-                        measured using mass spectrometry. The HLA ligand atlas is a joined effort of the University of Tübingen and the ETH Zürich.
+                        measured using mass spectrometry. The HLA ligand atlas is a joined effort of the University of Tübingen and the Universityspital Zürich.
                         We present an interactive interface and furthermore the data is
                         publicly available via download. To search for a ligand you can either use the search form below
                         or the main search form in the navigation bar.
@@ -54,7 +54,7 @@
                         <h5>How to cite the HLA ligand atlas:</h5>
                         HLA Ligand Atlas: A database for naturally processed Human Leukocyte Antigen (HLA) ligands. <br>
                         Backert L, Kowalewski D, Neidert M. <br>
-                        Nature (2016) xx:xx <br>
+                        XXXXXXX (201X) xx:xx <br>
                         <a href="http://www.ncbi.nlm.nih.gov/pubmed">Pubmed</a>
                     </div>
                 </div>

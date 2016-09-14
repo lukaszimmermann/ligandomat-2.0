@@ -94,9 +94,9 @@
                             var return_string = "";
                             for (var prot = 0; prot < prot_split.length; prot++) {
                                 if (prot < prot_split.length - 1) {
-                                    return_string += "<a class='nostylelink'  href= '/protein/" + prot_split[prot] + "$gene_name'>" + prot_split[prot] + "</a>, ";
+                                    return_string += "<a class='nostylelink'  href= '/protein/" + prot_split[prot] + "$geneName'>" + prot_split[prot] + "</a>, ";
                                 } else {
-                                    return_string += "<a class='nostylelink'  href= '/protein/" + prot_split[prot] + "$gene_name'>" + prot_split[prot] + "</a>";
+                                    return_string += "<a class='nostylelink'  href= '/protein/" + prot_split[prot] + "$geneName'>" + prot_split[prot] + "</a>";
                                 }
                             }
                             return return_string

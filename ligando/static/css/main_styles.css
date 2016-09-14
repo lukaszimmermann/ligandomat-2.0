@@ -201,3 +201,14 @@ button.nice_button:active {
     vertical-align: middle;
     display: table-cell;
 }
+td.details-control {
+    /*background: url('../images/details_open.png') no-repeat center center;*/
+    cursor: pointer;
+}
+tr.shown td.details-control {
+    /*background: url('../images/details_close.png') no-repeat center center;*/
+}
+
+.table_pic {
+    width: 40px;
+}
