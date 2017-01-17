@@ -50,4 +50,5 @@ setup(name='ligando',
       [console_scripts]
       initialize_ligando_db = ligando.scripts.initializedb:main
       """,
+
       )

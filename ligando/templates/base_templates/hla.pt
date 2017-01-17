@@ -275,7 +275,7 @@ $(document).ready(function() {
                             )
                         }
 
-                        temppath = "${request.static_url("ligando:static/seqlogo/A_0101.png")}";
+                        temppath = "../static/seqlogo/A_0101.png";
                         document.getElementById("seqlogo_"+i).src =  temppath.slice(0, -10)+ "test/" + '${hla}'.replace(":", "").replace("*","_") + "_"+i+".png";
                     }else {
                         $("#seqlogo_tabs").append('<li class="disabled"><a href="#' + i + 'mer" data-toggle="tab">' + i + 'mer</a></li>');

@@ -12,7 +12,9 @@ def main(global_config, **settings):
     Base.metadata.bind = engine
     config = Configurator(settings=settings)
     config.include('pyramid_chameleon')
+    config.set_default_permission('view')
     config = route_adder(config)
+
     return config.make_wsgi_app()
 
 
