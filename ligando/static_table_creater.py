@@ -23,7 +23,7 @@ Base.metadata.bind = engine
 # Tissue_protein_count #
 ########################
 def tissue_protein_count_creater():
-    print "Calculating Tissues specific proteins"
+    print("Calculating Tissues specific proteins")
     # Drop the table
     Tissue_protein_count.__table__.drop(checkfirst=False)
     # Create the table
@@ -78,7 +78,7 @@ def tissue_protein_count_creater():
     # inserting
     Tissue_protein_count.__table__.insert().execute(result)
 
-    print str(len(result)) + " rows added into Tissue_protein_count class I"
+    print(str(len(result))) + " rows added into Tissue_protein_count class I"
 
     ############
     # CLASS II #
@@ -129,7 +129,7 @@ def tissue_protein_count_creater():
     if len(result)>0:
         Tissue_protein_count.__table__.insert().execute(result)
 
-    print str(len(result)) + " rows added into Tissue_protein_count class II"
+    print(str(len(result))) + " rows added into Tissue_protein_count class II"
 
     ############
     # Combined #
@@ -174,15 +174,15 @@ def tissue_protein_count_creater():
     # inserting
     Tissue_protein_count.__table__.insert().execute(result)
 
-    print str(len(result)) + " rows added into Tissue_protein_count combined"
-    print "Calculated Tissues specific proteins"
+    print(str(len(result))) + " rows added into Tissue_protein_count combined"
+    print("Calculated Tissues specific proteins")
 
 
 ########################
 # Tissue__HLA_protein_count #
 ########################
 def tissue_hla_protein_count_creater():
-    print "Calculating Tissues and HLA specific proteins"
+    print("Calculating Tissues and HLA specific proteins")
     # Drop the table
     Tissue_hla_protein_count.__table__.drop(checkfirst=True)
     # Create the table
@@ -247,17 +247,15 @@ def tissue_hla_protein_count_creater():
     # inserting
     Tissue_hla_protein_count.__table__.insert().execute(result)
 
-    print str(len(result)) + " rows added into Tissue_hla_protein_count"
-    print "Calculated Tissues and HLA specific proteins"
-
-
+    print(str(len(result)) + " rows added into Tissue_hla_protein_count")
+    print("Calculated Tissues and HLA specific proteins")
 
 
 ########################
 # tissue_specific_peptides #
 ########################
 def tissue_specific_peptides_creater():
-    print "Calculating Tissues specific peptides"
+    print("Calculating Tissues specific peptides")
     # Drop the table
     Tissue_specific_peptides.__table__.drop(checkfirst=False)
     # Create the table
@@ -314,7 +312,7 @@ def tissue_specific_peptides_creater():
     #    f2.write(str(result)+"\n")
     Tissue_specific_peptides.__table__.insert().execute(result)
 
-    print str(len(result)) + " rows added into Tissue_peptide_count class I"
+    print(str(len(result))) + " rows added into Tissue_peptide_count class I"
 
     ############
     # CLASS II #
@@ -364,15 +362,15 @@ def tissue_specific_peptides_creater():
     if len(result)>0:
         Tissue_specific_peptides.__table__.insert().execute(result)
 
-    print str(len(result)) + " rows added into Tissue_peptide_count class II"
-    print "Calculated Tissues specific peptides"
+    print(str(len(result)) + " rows added into Tissue_peptide_count class II")
+    print("Calculated Tissues specific peptides")
 
 
 ########################
 # tissue_hla_specific_peptides #
 ########################
 def tissue_hla_specific_peptides_creater():
-    print "Calculating Tissue and HLA specific peptides"
+    print("Calculating Tissue and HLA specific peptides")
     # Drop the table
     Tissue_hla_specific_peptides.__table__.drop(checkfirst=True)
     # Create the table
@@ -383,9 +381,9 @@ def tissue_hla_specific_peptides_creater():
     # collect all hlas
     hlas = DBSession.query(HlaType.hla_string.distinct()).all()
 
-    # log file
-    f = open("logs/tissue_hla_specific_peptides_creater.log", "w")
-    f2 = open("logs/tissue_hla_specific_peptides_creater_insert.log", "w")
+    # log file Variblas not used
+    # f = open("logs/tissue_hla_specific_peptides_creater.log", "w")
+    # f2 = open("logs/tissue_hla_specific_peptides_creater_insert.log", "w")
 
 
 
@@ -437,15 +435,15 @@ def tissue_hla_specific_peptides_creater():
     #    f2.write(str(result)+"\n")
     Tissue_hla_specific_peptides.__table__.insert().execute(result)
 
-    print str(len(result)) + " rows added into Tissue_hla_peptide_count"
+    print(str(len(result)) + " rows added into Tissue_hla_peptide_count")
 
 
-    print "Calculated Tissues and HLA specific peptides"
+    print("Calculated Tissues and HLA specific peptides")
 
 
 
 def HLA_statistics_creater():
-    print "Calculating HLA statistics"
+    print("Calculating HLA statistics")
     # Drop the table
     HLA_statistics.__table__.drop(checkfirst=True)
     # Create the table
@@ -456,7 +454,7 @@ def HLA_statistics_creater():
 
     to_add = []
     for hla in hlas:
-        print hla[0]
+        print(hla[0])
         # TODO: Maybe peptiderun should be used instead of Spectrum_hit
         # TODO: query actual binding peptide count
         query = DBSession.query(
@@ -479,12 +477,12 @@ def HLA_statistics_creater():
         for allele in result:
             to_add.append(dict(zip(['hla_type_hla_type_id', 'sample_count', "binding_peptide_count"], allele)))
     HLA_statistics.__table__.insert().execute(to_add)
-    print "Calculated HLA statistics"
+    print("Calculated HLA statistics")
 
 
 
 def sequence_extractor():
-    print "Extracting class I sequences"
+    print("Extracting class I sequences")
     query = DBSession.query(Source.patient_id.label("patient_id"), Source.source_id.label("source_id"))
     patients = query.all()
     for p in patients:
@@ -505,9 +503,9 @@ def sequence_extractor():
             f.write(str(pep[0]) + "\n")
         f.close()
 
-    print "Extracted class I sequences"
+    print("Extracted class I sequences")
 
-    print "Extracting class II sequences"
+    print("Extracting class II sequences")
 
     for p in patients:
         patient = p[0]
@@ -528,9 +526,9 @@ def sequence_extractor():
             f.write(str(pep[0]) + "\n")
         f.close()
 
-    print "Extracted class II sequences"
+    print("Extracted class II sequences")
 
-    print "Extracting Typings"
+    print("Extracting Typings")
     # writing typing file
     query = DBSession.query(Source.patient_id, func.group_concat(HlaType.hla_string.distinct().op('order by')(HlaType.hla_string)))
     query = query.group_by(Source.patient_id)
@@ -541,7 +539,7 @@ def sequence_extractor():
     for typing in typings:
         f.write(typing[0]+"\t"+ typing[1]+"\n")
     f.close()
-    print "Extracted Typings"
+    print("Extracted Typings")
 
 
 def peptide_run_creater():
@@ -563,9 +561,9 @@ def peptide_run_creater():
     ms_runs = query.all()
     count = 1
     for run in ms_runs:
-        print str(count)+"/"+ str(len(ms_runs))
+        print(str(count)+"/"+ str(len(ms_runs)))
         run_id = run[0]
-        antibody_set = run[1]
+        # antibody_set = run[1]  varibale not used
         query = DBSession.query(SpectrumHit.sequence.distinct(),
                                 func.length(SpectrumHit.sequence),
                                 MsRun.ms_run_id,
@@ -643,9 +641,9 @@ def peptide_run_creater():
     ms_runs = query.all()
     count = 1
     for run in ms_runs:
-        print str(count) + "/" + str(len(ms_runs))
+        print(str(count) + "/" + str(len(ms_runs)))
         run_id = run[0]
-        antibody_set = run[1]
+        # antibody_set = run[1]  varibale not used
         query = DBSession.query(SpectrumHit.sequence.distinct(),
                                 func.length(SpectrumHit.sequence),
                                 MsRun.ms_run_id,
@@ -715,7 +713,7 @@ def peptide_run_creater():
     return None
 
 def spectra_extracter():
-    print "Extracting spectra"
+    print("Extracting spectra")
     ms_runs = DBSession.query(MsRun.filename).all()
 
     for run in ms_runs:
@@ -731,11 +729,11 @@ def spectra_extracter():
         for spectrum in result:
             f.write(str(spectrum[0])+ "," + str(spectrum[1]) + "\n")
         f.close()
-    print "Extracted spectra"
-    return None
+    print("Extracted spectra")
+    # return None This is implicit
 
 def peptide_query_creater():
-    print "Creating peptide_query table"
+    print("Creating peptide_query table")
 
     # Drop the table
     Peptide_query.__table__.drop(checkfirst=True)
@@ -774,10 +772,11 @@ def peptide_query_creater():
     Peptide_query.__table__.insert().execute(to_add)
 
 
-    print "Created peptide_query table"
+    print("Created peptide_query table")
+
 
 def DB_statistics_creator():
-    print "Calculating DB Statistics"
+    print("Calculating DB Statistics")
     # Drop the table
     DB_statistics.__table__.drop(checkfirst=True)
     # Create the table
@@ -825,19 +824,20 @@ def DB_statistics_creator():
 
     DB_statistics.__table__.insert().execute(to_add)
 
-    print "Calculated DB Statistics"
+    print("Calculated DB Statistics")
+
 
 if __name__ == '__main__':
-    print "static table creater"
-    #sequence_extractor()
-    #peptide_run_creater()
+    print("static table creater")
+    # sequence_extractor()
+    # peptide_run_creater()
 
-    #HLA_statistics_creater()
+    # HLA_statistics_creater()
 
-    #tissue_specific_peptides_creater()
-    #tissue_protein_count_creater()
-    #tissue_hla_specific_peptides_creater()
-    #tissue_hla_protein_count_creater()
-    #peptide_query_creater()
-    #DB_statistics_creator()
-    #spectra_extracter()
+    # tissue_specific_peptides_creater()
+    # tissue_protein_count_creater()
+    # tissue_hla_specific_peptides_creater()
+    # tissue_hla_protein_count_creater()
+    # peptide_query_creater()
+    # DB_statistics_creator()
+    # spectra_extracter()

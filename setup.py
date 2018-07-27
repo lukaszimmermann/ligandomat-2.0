@@ -13,7 +13,6 @@ requires = [
     'pyramid',
     'pyramid_chameleon',
     'pyramid_debugtoolbar',
-    'mysql-python',
     'SQLAlchemy',
     'transaction',
     'zope.sqlalchemy',

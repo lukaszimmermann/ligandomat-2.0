@@ -51,14 +51,14 @@ def seq2logo_by_peptide_list(peptides, file_name):
 
 
 if __name__ == '__main__':
-    print "Started SeqLogo creation"
+    print("Started SeqLogo creation")
 
     hlas = DBSession.query(HlaType.hla_string).all()
     for i in range(8, 20, 1):
-        print i
+        print(i)
         for h in hlas:
             hla = h[0]
-            print hla
+            print(hla)
             # Test query to get peptide list
             query = DBSession.query(PeptideRun.sequence.distinct())
             query = query.join(MsRun)
@@ -75,11 +75,11 @@ if __name__ == '__main__':
             peptide_list = query.all()
             filename = hla.replace("*", "_").replace(":", "")+"_" + str(i)
 
-            print "Queried " + filename
+            print("Queried " + filename)
 
-            if len(peptide_list) >10:
+            if len(peptide_list) > 10:
                 seq2logo_by_peptide_list(peptide_list, filename)
             else:
-                print "No peptides found for "+ filename
+                print("No peptides found for "+ filename)
 
-    print "Completed SeqLogo creation"
+    print("Completed SeqLogo creation")
