@@ -4,3 +4,6 @@ dist
 .idea
 .git
 .gitignore
+*ini
+production.ini
+development.ini
