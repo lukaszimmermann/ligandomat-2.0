@@ -5,13 +5,11 @@ __author__ = 'Linus Backert'
 
 import os
 from paste.deploy import appconfig
-from sqlalchemy.sql import text
 from sqlalchemy import engine_from_config, func, String
-from models import DBSession, Base, User, Source, Tissue_protein_count, metadata, Protein, SpectrumHit, \
+from .models import DBSession, Base, Source, Tissue_protein_count, Protein, SpectrumHit, \
     t_spectrum_protein_map, MsRun, Tissue_specific_peptides, HLA_statistics, HlaType, t_hla_map, Binding_prediction, \
     PeptideRun, t_peptide_run_spectrum_hit_map, Tissue_hla_specific_peptides, Tissue_hla_protein_count, Peptide_query, \
     t_peptide_protein_map, DB_statistics
-from sqlalchemy.orm import sessionmaker
 
 here = os.path.dirname(__file__)
 settings = appconfig('config:' + os.path.join(here, '../', 'development.ini'))

@@ -1,12 +1,8 @@
 from pyramid.httpexceptions import HTTPFound
 
 __author__ = 'Linus Backert'
-from pyramid.response import Response
 from pyramid.view import view_config
-from sqlalchemy import func
-from sqlalchemy.exc import DBAPIError
 import simplejson as json
-from sqlalchemy import or_
 
 from ligando.models import (
     DBSession,
@@ -17,9 +13,9 @@ from ligando.models import (
     HlaType,
     t_hla_map,
     t_peptide_protein_map,
-    SpectrumHit,
-    t_spectrum_protein_map, Binding_prediction, Peptide_query)
-from ligando.views.view_helper import conn_err_msg, create_filter, js_list_creator
+    Binding_prediction,
+    Peptide_query)
+from ligando.views.view_helper import create_filter, js_list_creator
 
 
 # peptide Query GET

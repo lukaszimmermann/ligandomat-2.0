@@ -1,10 +1,8 @@
-from sqlite3 import complete_statement
 from pyramid.response import Response
 from pyramid.view import view_config
-from sqlalchemy import func, distinct, String, desc
+from sqlalchemy import String, desc
 import simplejson as json
 from sqlalchemy import or_, func
-from ligando.views.view_helper import get_chart_data
 import pyopenms as oms
 
 
@@ -18,7 +16,7 @@ from ligando.models import (
     SpectrumHit,
     t_spectrum_protein_map, Tissue_protein_count, Tissue_specific_peptides, HLA_statistics, PeptideRun,
     t_peptide_run_spectrum_hit_map, Binding_prediction, Tissue_hla_protein_count, Tissue_hla_specific_peptides)
-from ligando.views.view_helper import conn_err_msg, js_list_creator, js_list_creator_dataTables
+from ligando.views.view_helper import conn_err_msg
 
 
 @view_config(route_name='source', renderer='../templates/base_templates/source.pt', request_method="GET")

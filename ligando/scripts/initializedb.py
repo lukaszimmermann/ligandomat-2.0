@@ -1,6 +1,5 @@
 import os
 import sys
-import transaction
 
 from sqlalchemy import engine_from_config
 
@@ -13,18 +12,7 @@ from pyramid.scripts.common import parse_vars
 
 from ..models import (
     DBSession,
-    Base,
-
-    t_hla_map,
-    HlaType,
-    MsRun,
-    t_peptide_protein_map,
-    PeptideRun,
-    t_peptide_run_spectrum_hit_map,
-    Protein,
-    Source,
-    SpectrumHit,
-    t_spectrum_protein_map
+    Base
 )
 
 

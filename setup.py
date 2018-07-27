@@ -8,9 +8,8 @@ with open(os.path.join(here, 'README.txt')) as f:
 with open(os.path.join(here, 'CHANGES.txt')) as f:
     CHANGES = f.read()
 
-
-
 requires = [
+    'paste',
     'pyramid',
     'pyramid_chameleon',
     'pyramid_debugtoolbar',
@@ -18,11 +17,11 @@ requires = [
     'SQLAlchemy',
     'transaction',
     'zope.sqlalchemy',
-    'waitress',
     'pyramid_tm',
     'simplejson',
     'webtest',
-    'mock', 'pyopenms'
+    'mock',
+    'pyopenms'
     ]
 
 setup(name='ligando',

@@ -1,24 +1,20 @@
-import collections
 import os
 from paste.deploy import appconfig
-import pyramid
 from sqlalchemy.orm import sessionmaker
 from ligando import main, route_adder
-from ligando.views.base_views import peptide_page, protein_page, source_page, source_id_page, hla_page, msrun_page, \
+from ligando.views.base_views import peptide_page, protein_page, source_page, source_id_page, msrun_page, \
     organ_page
-from ligando.views.db_analysis import venn_analysis, venn_analysis_result
+from ligando.views.db_analysis import venn_analysis
 from ligando.views.search_view import search_result
 
 __author__ = 'Linus Backert'
 
 from mock import Mock
 import unittest
-import transaction
-from pyramid.config import Configurator
 from sqlalchemy import engine_from_config
 from webtest import TestApp
 
-from models import DBSession, Base, User
+from .models import DBSession, Base
 
 from ligando.views.views import my_view,  faq, background, contact, news, hla_atlas, hla_atlas_classII
 

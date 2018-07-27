@@ -1,6 +1,4 @@
-from pyramid.response import Response
 from pyramid.view import view_config
-from sqlalchemy import func, distinct, String
 import simplejson as json
 
 from ligando.models import (
@@ -9,10 +7,7 @@ from ligando.models import (
     MsRun,
     Protein,
     HlaType,
-    t_hla_map,
-    SpectrumHit,
-    t_spectrum_protein_map, PeptideRun)
-from ligando.views.view_helper import conn_err_msg, js_list_creator, js_list_creator_dataTables
+    PeptideRun)
 
 
 @view_config(route_name='search', renderer='../templates/search_result.pt', request_method="POST")

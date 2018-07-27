@@ -1,6 +1,6 @@
 from pyramid.response import Response
 from pyramid.view import view_config, notfound_view_config, forbidden_view_config
-from sqlalchemy import func, distinct
+from sqlalchemy import func
 from sqlalchemy.exc import OperationalError as SqlAlchemyOperationalError
 from pyramid.httpexceptions import HTTPBadRequest, HTTPUnauthorized
 import simplejson as json
@@ -9,8 +9,8 @@ from ligando.models import (
     DBSession,
     Source,
     MsRun,
-    HlaType, PeptideRun, t_hla_map, HLA_statistics, Binding_prediction, DB_statistics, SpectrumHit)
-from ligando.views.view_helper import js_list_creator, conn_err_msg
+    HlaType, PeptideRun, HLA_statistics, DB_statistics, SpectrumHit)
+from ligando.views.view_helper import conn_err_msg
 
 
 # home view
