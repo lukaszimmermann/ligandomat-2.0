@@ -1,0 +1,6 @@
+build
+ligando.egg-info
+dist
+.idea
+.git
+.gitignore
