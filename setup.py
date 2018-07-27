@@ -8,20 +8,17 @@ with open(os.path.join(here, 'README.txt')) as f:
 with open(os.path.join(here, 'CHANGES.txt')) as f:
     CHANGES = f.read()
 
-requires = [
-    'paste',
-    'pyramid',
-    'pyramid_chameleon',
-    'pyramid_debugtoolbar',
-    'SQLAlchemy',
-    'transaction',
-    'zope.sqlalchemy',
-    'pyramid_tm',
-    'simplejson',
-    'webtest',
-    'mock',
-    'pyopenms'
-    ]
+install_requires = [
+        "pyramid==1.9.2",
+        "pyramid_tm==2.2",
+        "pyramid_chameleon==0.3",
+        "PyMySQL==0.9.2",
+        "pyopenms==2.2.0",
+        "simplejson==3.16.0",
+        "SQLAlchemy==1.2.10",
+        "waitress==1.1.0",
+        "zope.sqlalchemy==1.0"
+]
 
 setup(name='ligando',
       version='0.1',
@@ -41,12 +38,12 @@ setup(name='ligando',
       include_package_data=True,
       zip_safe=False,
       test_suite='HLA_Ligand_Atlas',
-      install_requires=requires,
+      install_requires=install_requires,
       entry_points="""\
       [paste.app_factory]
       main = ligando:main
       [console_scripts]
       initialize_ligando_db = ligando.scripts.initializedb:main
-      """,
+      """
+)
 
-      )
