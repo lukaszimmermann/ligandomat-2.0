@@ -165,9 +165,9 @@ def hla_page(request):
         query = query.filter(HlaType.hla_string == request.matchdict["hla"])
         statistic = json.dumps(query.all())
 
-        #extract data for organ pie chart
-        #complete_sources = json.loads(sources)
-        #organ_chart = get_chart_data(complete_sources)
+        # extract data for organ pie chart
+        # complete_sources = json.loads(sources)
+        # organ_chart = get_chart_data(complete_sources)
         query = DBSession.query(Source.organ.label("organ"), func.count(Source.sample_id.distinct()).label("count"))
         query = query.join(t_hla_map)
         query = query.join(HlaType)
@@ -176,7 +176,7 @@ def hla_page(request):
         organ_statistics = dict(query.all())
 
 
-        organ_statistics = dict((k.lower(), v) for k, v in organ_statistics.iteritems())
+        organ_statistics = dict((k.lower(), v) for k, v in organ_statistics.items())
 
         organ_count = dict(heart=0,
                            brain=0,
@@ -212,11 +212,11 @@ def hla_page(request):
 
         suborgans_inverted = dict((v, k) for k in suborgans for v in suborgans[k])
 
-        for organ, count in organ_statistics.iteritems():
+        for organ, count in organ_statistics.items():
             main_organ = suborgans_inverted[organ.lower()]
             organ_count[main_organ] += count
         organ_table = list()
-        for o, c in organ_count.iteritems():
+        for o, c in organ_count.items():
             temp_dict = dict(organ=o, count=c)
             for suborgan in suborgans[o]:
                 if suborgan in organ_statistics.keys():
@@ -325,10 +325,9 @@ def protein_page(request):
         query = query.join(Protein)
         query = query.join(MsRun, PeptideRun.ms_run_ms_run_id == MsRun.ms_run_id)
         query = query.filter(Protein.name == filter)
-        query = query.filter(PeptideRun.source_source_id != None)
+        query = query.filter(PeptideRun.source_source_id is not None)
         query = query.filter(Binding_prediction.binder ==1)
         sequences = query.all()
-
 
         sequence_start = list()
         sequence_end = list()
@@ -380,7 +379,7 @@ def organ_page(request):
         query = DBSession.query(Tissue_protein_count.source_count, Protein.name, Protein.gene_name)
         query = query.order_by(desc(Tissue_protein_count.source_count))
         query = query.join(Protein)
-        #query = query.group_by(Protein.name)
+        # query = query.group_by(Protein.name)
         query = query.filter(Tissue_protein_count.tissue == organ)
         query = query.filter(Tissue_protein_count.hla_class == 2)
         query = query.filter(Tissue_protein_count.source_count > 1)
@@ -390,7 +389,7 @@ def organ_page(request):
         query = DBSession.query(Tissue_protein_count.source_count, Protein.name, Protein.gene_name)
         query = query.order_by(desc(Tissue_protein_count.source_count))
         query = query.join(Protein)
-        #query = query.group_by(Protein.name)
+        # query = query.group_by(Protein.name)
         query = query.filter(Tissue_protein_count.tissue == organ)
         query = query.filter(Tissue_protein_count.hla_class == 0)
         query = query.filter(Tissue_protein_count.source_count > 1)
@@ -401,7 +400,7 @@ def organ_page(request):
         # class I
         query = DBSession.query(Tissue_specific_peptides.source_count, Tissue_specific_peptides.peptide_run_sequence)
         query = query.order_by(desc(Tissue_specific_peptides.source_count))
-        #query = query.group_by(Tissue_specific_peptides.spectrum_hit_sequence)
+        # query = query.group_by(Tissue_specific_peptides.spectrum_hit_sequence)
         query = query.filter(Tissue_specific_peptides.tissue == organ)
         query = query.filter(Tissue_specific_peptides.hla_class == 1)
         query = query.filter(Tissue_specific_peptides.source_count > 1)
@@ -411,7 +410,7 @@ def organ_page(request):
         # class I
         query = DBSession.query(Tissue_specific_peptides.source_count, Tissue_specific_peptides.peptide_run_sequence)
         query = query.order_by(desc(Tissue_specific_peptides.source_count))
-        #query = query.group_by(Tissue_specific_peptides.spectrum_hit_sequence)
+        # query = query.group_by(Tissue_specific_peptides.spectrum_hit_sequence)
         query = query.filter(Tissue_specific_peptides.tissue == organ)
         query = query.filter(Tissue_specific_peptides.hla_class == 2)
         query = query.filter(Tissue_specific_peptides.source_count > 1)
@@ -454,11 +453,9 @@ def organ_page(request):
 @view_config(route_name='organ_hla', renderer='../templates/base_templates/organ_hla.pt', request_method="GET")
 def organ_hla_page(request):
     try:
-        organ = request.matchdict["organ"]
+        # organ = request.matchdict["organ"]  # Variable not used
         hla = request.matchdict["hla"]
         hla_id = DBSession.query(HlaType.hla_type_id).filter(HlaType.hla_string == hla).all()[0][0]
-
-
 
         # TODO: Gene_name is not unique, but using Uniprot names is not understandable
         # Tissue specific proteins
@@ -482,13 +479,12 @@ def organ_hla_page(request):
 
         # query sources
         query = DBSession.query(Source.source_id, Source.organ,
-                                    Source.histology, Source.patient_id, Source.dignity)
+                                Source.histology, Source.patient_id, Source.dignity)
         query = query.join(t_hla_map)
         query = query.join(HlaType)
         query = query.filter(Source.organ == request.matchdict["organ"])
         query = query.filter(HlaType.hla_type_id == hla_id)
         sources = json.dumps(query.all())
-
 
         query = DBSession.query(func.count(PeptideRun.sequence.distinct()).label("pep_count"))
         query = query.join(Source)
@@ -555,7 +551,7 @@ def peptide_page(request):
         query = query.group_by(Source.organ)
         organ_statistics = dict(query.all())
 
-        organ_statistics = dict((k.lower(), v) for k, v in organ_statistics.iteritems())
+        organ_statistics = dict((k.lower(), v) for k, v in organ_statistics.items())
 
         organ_count = dict(heart=0,
                            brain=0,
@@ -589,11 +585,11 @@ def peptide_page(request):
 
         suborgans_inverted = dict((v, k) for k in suborgans for v in suborgans[k])
 
-        for organ, count in organ_statistics.iteritems():
+        for organ, count in organ_statistics.items():
             main_organ = suborgans_inverted[organ.lower()]
             organ_count[main_organ] += count
         organ_table = list()
-        for o, c in organ_count.iteritems():
+        for o, c in organ_count.items():
             temp_dict = dict(organ=o, count=c)
             for suborgan in suborgans[o]:
                 if suborgan in organ_statistics.keys():
@@ -642,7 +638,7 @@ def peptide_page(request):
     except:
         return Response(conn_err_msg, content_type='text/plain', status_int=500)
     return {"proteins": proteins, "organ_table_data": json.dumps(organ_table),
-                "max_values": json.dumps(max_values),
+            "max_values": json.dumps(max_values),
             "peptide": request.matchdict["peptide"],
             "hla_class1": hla_class1,
             "hla_class2": hla_class2, "psms": psms, "ms_run_count": ms_run_count}
@@ -662,19 +658,20 @@ def specs(request):
     mi = str("/Users/Backert/Documents/Doktorarbeit/LigandosphereDb/HLAtlas_test/"+ filename.strip(".RAW")+ ".mzML_shortened.mzml")
     si = mzML_id
     imf_skip = oms.IndexedMzMLFile()
-    #imf_skip.setSkipXMLChecks(True)
+    # imf_skip.setSkipXMLChecks(True)
     imf_skip.openFile(mi)
-    print imf_skip.getParsingSuccess()
+    print(imf_skip.getParsingSuccess())
     if imf_skip.getParsingSuccess():
         p = imf_skip.getSpectrumById(si)
         mz = p.getMZArray()
         inte = p.getIntensityArray()
 
+    return {'peaks': zip(mz, inte), "ntermMod" : 164.07, "filename": filename}
 
 
-    return {'peaks': zip(mz, inte), "ntermMod" : 164.07, "filename" : filename}
-
-@view_config(route_name='peptide_spectra', renderer='../templates/base_templates/peptide_spectra.pt', request_method="GET")
+@view_config(route_name='peptide_spectra',
+             renderer='../templates/base_templates/peptide_spectra.pt',
+             request_method="GET")
 def peptide_spectra_page(request):
     sequence = request.matchdict["peptide"]
 
@@ -692,5 +689,5 @@ def peptide_spectra_page(request):
     query = query.filter(PeptideRun.sequence == sequence)
     spectra = json.dumps(query.all())
 
-    #peaks = open("ligando/static/spectra_test/test_output_0_100.txt").readline()
+    # peaks = open("ligando/static/spectra_test/test_output_0_100.txt").readline()
     return {'peptide': sequence, "spectra" : spectra}#, 'peaks': peaks}

@@ -15,7 +15,7 @@ from ligando.views.view_helper import conn_err_msg
 
 # home view
 @view_config(route_name='home', renderer='../templates/home.pt')
-def my_view(request):
+def my_view():
     try:
         # query statistics for the main page
         source_stat = DBSession.query(func.count(Source.patient_id.distinct())).all()[0][0]
@@ -62,6 +62,7 @@ def db_stats(request):
 
             }
 
+
 # faq view
 @view_config(route_name='faq', renderer='../templates/faq.pt')
 def faq(request):
@@ -73,10 +74,12 @@ def faq(request):
 def background(request):
     return dict()
 
+
 # download view
 @view_config(route_name='download', renderer='../templates/download.pt')
 def download(request):
     return dict()
+
 
 # contact view
 @view_config(route_name='contact', renderer='../templates/contact.pt')
@@ -205,7 +208,6 @@ def hla_atlas_classII(request):
     query = DBSession.query(HlaType.hla_string.label("hla"), HLA_statistics.sample_count.label("samples"),
                             HLA_statistics.binding_peptide_count.label("scored_peptides"),
                             )
-
 
     query = query.join(HLA_statistics)
     query = query.filter(HlaType.digits == 4)
